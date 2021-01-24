@@ -1,5 +1,5 @@
 // hack: depends on esdoc internal class
-const FileDoc = require('esdoc-core/lib/Doc/FileDoc').default;
+const FileDoc = require('@enterthenamehere/esdoc-core/lib/Doc/FileDoc').default;
 
 /**
  * Doc class for test code file.

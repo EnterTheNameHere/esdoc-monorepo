@@ -1,5 +1,5 @@
 import fs from 'fs';
-import IceCap from 'ice-cap';
+import IceCap from '@enterthenamehere/ice-cap';
 import DocBuilder from './DocBuilder.js';
 import {dateForUTC} from './util.js';
 

@@ -1,4 +1,4 @@
-import IceCap from 'ice-cap';
+import IceCap from '@enterthenamehere/ice-cap';
 import path from 'path';
 import cheerio from 'cheerio';
 import DocBuilder from './DocBuilder.js';

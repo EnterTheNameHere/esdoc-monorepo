@@ -1,13 +1,13 @@
 import fs from 'fs-extra';
 import path from 'path';
 import assert from 'assert';
-import logger from 'color-logger';
-import ASTUtil from 'esdoc-core/lib/Util/ASTUtil.js';
-import ESParser from 'esdoc-core/lib/Parser/ESParser.js';
-import PathResolver from 'esdoc-core/lib/Util/PathResolver.js';
-import DocFactory from 'esdoc-core/lib/Factory/DocFactory.js';
-import InvalidCodeLogger from 'esdoc-core/lib/Util/InvalidCodeLogger.js';
-import Plugin from 'esdoc-core/lib/Plugin/Plugin.js';
+import logger from '@enterthenamehere/color-logger';
+import ASTUtil from '@enterthenamehere/esdoc-core/lib/Util/ASTUtil.js';
+import ESParser from '@enterthenamehere/esdoc-core/lib/Parser/ESParser.js';
+import PathResolver from '@enterthenamehere/esdoc-core/lib/Util/PathResolver.js';
+import DocFactory from '@enterthenamehere/esdoc-core/lib/Factory/DocFactory.js';
+import InvalidCodeLogger from '@enterthenamehere/esdoc-core/lib/Util/InvalidCodeLogger.js';
+import Plugin from '@enterthenamehere/esdoc-core/lib/Plugin/Plugin.js';
 
 /**
  * API Documentation Generator.

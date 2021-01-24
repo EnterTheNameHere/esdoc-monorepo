@@ -1,12 +1,12 @@
 /* eslint-disable max-lines */
 import fs from 'fs';
 import path from 'path';
-import IceCap from 'ice-cap';
-import logger from 'color-logger';
+import IceCap from '@enterthenamehere/ice-cap';
+import logger from '@enterthenamehere/color-logger';
 import escapeStringRegexp from 'escape-string-regexp';
 import {shorten, parseExample, escapeURLHash, sanitize, highlight} from './util.js';
 import DocResolver from './DocResolver.js';
-import NPMUtil from 'esdoc-core/lib/Util/NPMUtil.js';
+import NPMUtil from '@enterthenamehere/esdoc-core/lib/Util/NPMUtil.js';
 
 /**
  * Builder base class.

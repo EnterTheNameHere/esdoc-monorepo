@@ -11,7 +11,7 @@ npm install color-logger
 ## Example
 
 ```js
-import Logger from 'color-logger';
+import Logger from '@enterthenamehere/color-logger';
 
 // simple usage
 Logger.v('verbose log1', 'verbose log2');
