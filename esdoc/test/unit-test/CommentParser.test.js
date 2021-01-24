@@ -1,5 +1,5 @@
 import assert from 'assert';
-import CommentParser from 'esdoc-core/lib/Parser/CommentParser.js';
+import CommentParser from '@enterthenamehere/esdoc-core/lib/Parser/CommentParser.js';
 
 /** @test {CommentParser} */
 describe('CommentParser:', ()=>{
