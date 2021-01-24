@@ -10,9 +10,12 @@
     "url": "https://github.com/EnterTheNameHere/esdoc-monorepo",
     "directory": "packages/esdoc-flow-type-plugin"
   },
+  "dependencies":{
+    "@enterthenamehere/esdoc-core": "^1.3.0-beta"
+  },
   "devDependencies": {
-    "@enterthenamehere/esdoc": "^1.3.0",
-    "@enterthenamehere/esdoc-standard-plugin": "^1.3.0",
+    "@enterthenamehere/esdoc": "^1.3.0-beta",
+    "@enterthenamehere/esdoc-standard-plugin": "^1.3.0-beta",
     "mocha": "^8.2.1",
     "trash-cli": "^3.1.0"
   },

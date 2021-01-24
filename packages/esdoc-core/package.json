@@ -30,7 +30,7 @@
     "@babel/parser": "^7.12.5",
     "@babel/preset-env": "^7.12.1",
     "@babel/traverse": "^7.12.5",
-    "@enterthenamehere/color-logger": "^0.0.7",
+    "@enterthenamehere/color-logger": "^0.0.7-beta",
     "fs-extra": "^9.0.1"
   },
   "devDependencies": {
