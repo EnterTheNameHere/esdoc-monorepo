@@ -20,7 +20,7 @@ describe('ColorLogger:', ()=>{
     const now = `\\[${d.getFullYear()}-${month}-${date}T${hour}:${minutes}:${sec}.\\d+Z\\]`;
     assert(actual.match(new RegExp(now)));
 
-    assert(actual.match(/\[ColorLoggerTest.js:\d+:\d+\]/));
+    assert(actual.match(/\[ColorLogger.test.js:\d+:\d+\]/));
 
     assert(actual.includes(expect));
   }
