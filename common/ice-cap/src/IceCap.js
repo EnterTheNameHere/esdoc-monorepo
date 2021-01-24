@@ -38,7 +38,7 @@ export default class IceCap {
     }
 
     if (typeof html === 'string') {
-      this._$root = cheerio.load(html, {}, false).root();
+      this._$root = cheerio.load(html, { _useHtmlParser2: true, emptyAttrs: false }, false).root();
     } else if (html.find) {
       this._$root = html;
     }
@@ -210,9 +210,9 @@ export default class IceCap {
     for (const node of nodes.iterator) {
       const results = [];
       for (let j = 0; j < values.length; j++) {
-        const parent = cheerio.load('<div/>', {}, false).root();
+        const parent = cheerio.load('<div/>', { _useHtmlParser2: true, emptyAttrs: false }, false).root();
         const clonedNode = node.clone();
-        const textNode = cheerio.load('\n', {}, false).root();
+        const textNode = cheerio.load('\n', { _useHtmlParser2: true, emptyAttrs: false }, false).root();
 
         parent.append(clonedNode);
         results.push(clonedNode[0]);
