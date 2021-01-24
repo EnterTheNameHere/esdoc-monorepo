@@ -48,13 +48,13 @@ export class ColorLogger {
    * @private
    */
   _getInfo() {
-    let info;
+    let info = "";
     try {
       throw new Error();
     } catch (e) {
       const lines = e.stack.split('\n');
       const line = lines[4];
-      const matched = line.match(/([\w\d\-_.]*:\d+:\d+)/);
+      const matched = line.match(/([\w\d\-_.]*:\d+:\d+)/u);
       info = matched[1];
     }
 
@@ -74,6 +74,13 @@ export class ColorLogger {
    */
   get allLogs() {
     return [].concat(this._allLogs);
+  }
+  
+  /**
+   * @return {boolean} if false, not display log. default is true.
+   */
+  get debug() {
+      return this._debug;
   }
 
   /**
