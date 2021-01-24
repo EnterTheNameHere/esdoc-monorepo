@@ -1,0 +1,37 @@
+{
+  "source": "./src",
+  "destination": "./out/docs",
+  "excludes": ["Publisher/Builder/template/"],
+  "debug": false,
+  "index": "./README.md",
+  "package": "./package.json",
+  "plugins": [
+    {
+      "name": "esdoc-standard-plugin",
+      "option": {
+        "brand": {"title": "ESDoc", "logo": "./manual/asset/image/logo.png"},
+        "test": {"source": "./test", "includes": ["\\.test\\.js$"]},
+        "manual": {
+          "index": "./README.md",
+          "asset": "./manual/asset",
+          "files": [
+            "./manual/usage.md",
+            "./manual/feature.md",
+            "./manual/tags.md",
+            "./manual/config.md",
+            "./manual/api.md",
+            "./manual/faq.md",
+            "./manual/migration.md",
+            "./CHANGELOG.md"
+          ]
+        }
+      }
+    },
+    {
+      "name": "esdoc-importpath-plugin",
+      "option": {
+        "replaces": [{"from": "^src/", "to": "out/src/"}]
+      }
+    }
+  ]
+}
