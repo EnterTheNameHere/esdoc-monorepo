@@ -25,7 +25,7 @@ const levelToColor = {
  * - error: red
  *
  * @example
- * import Logger from 'color-logger'
+ * import Logger from '@enterthenamehere/color-logger'
  *
  * // simple usage
  * Logger.v('verbose log');

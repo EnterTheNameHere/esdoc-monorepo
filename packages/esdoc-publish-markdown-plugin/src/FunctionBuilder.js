@@ -1,5 +1,5 @@
 const AbstractBuilder = require('./AbstractBuilder');
-const IceCap = require('ice-cap').default;
+const IceCap = require('@enterthenamehere/ice-cap').default;
 
 class FunctionBuilder extends AbstractBuilder {
   makeHTML() {

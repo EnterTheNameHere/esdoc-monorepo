@@ -1,4 +1,4 @@
-import logger from 'color-logger';
+import logger from '@enterthenamehere/color-logger';
 import AbstractDoc from './AbstractDoc.js';
 import ParamParser from '../Parser/ParamParser.js';
 

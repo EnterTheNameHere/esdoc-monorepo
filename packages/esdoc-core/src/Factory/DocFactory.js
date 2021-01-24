@@ -1,4 +1,4 @@
-import logger from 'color-logger';
+import logger from '@enterthenamehere/color-logger';
 import CommentParser from '../Parser/CommentParser.js';
 import FileDoc from '../Doc/FileDoc.js';
 import ClassDoc from '../Doc/ClassDoc.js';

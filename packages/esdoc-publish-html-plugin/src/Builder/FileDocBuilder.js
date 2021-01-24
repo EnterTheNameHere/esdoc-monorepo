@@ -1,4 +1,4 @@
-import IceCap from 'ice-cap';
+import IceCap from '@enterthenamehere/ice-cap';
 import DocBuilder from './DocBuilder.js';
 import cheerio from 'cheerio';
 import {highlight} from './util';

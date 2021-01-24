@@ -1,6 +1,6 @@
 import path from 'path';
 import {taffy} from 'taffydb';
-import IceCap from 'ice-cap';
+import IceCap from '@enterthenamehere/ice-cap';
 import DocBuilder from './Builder/DocBuilder';
 import StaticFileBuilder from './Builder/StaticFileBuilder.js';
 import IdentifiersDocBuilder from './Builder/IdentifiersDocBuilder.js';

@@ -1,5 +1,5 @@
 import path from 'path';
-import IceCap from 'ice-cap';
+import IceCap from '@enterthenamehere/ice-cap';
 import DocBuilder from './DocBuilder.js';
 import {markdown} from './util.js';
 

@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import minimist from 'minimist';
 import ESDoc from './ESDoc.js';
-import NPMUtil from 'esdoc-core/lib/Util/NPMUtil.js';
+import NPMUtil from '@enterthenamehere/esdoc-core/lib/Util/NPMUtil.js';
 
 /**
  * Command Line Interface for ESDoc.
