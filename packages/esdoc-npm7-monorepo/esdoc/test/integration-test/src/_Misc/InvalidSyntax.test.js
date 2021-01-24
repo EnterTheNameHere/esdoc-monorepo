@@ -1,5 +1,5 @@
 import assert from 'assert';
-import InvalidCodeLogger from 'esdoc-core/lib/Util/InvalidCodeLogger';
+import InvalidCodeLogger from '@enterthenamehere/esdoc-core/lib/Util/InvalidCodeLogger';
 
 describe('test/_Misc/InvalidSyntax:', ()=>{
   it('is invalid', ()=>{

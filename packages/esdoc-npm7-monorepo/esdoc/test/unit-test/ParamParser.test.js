@@ -1,5 +1,5 @@
 import assert from 'assert';
-import ParamParser from 'esdoc-core/lib/Parser/ParamParser.js';
+import ParamParser from '@enterthenamehere/esdoc-core/lib/Parser/ParamParser.js';
 
 /** @test {ParamParser} */
 describe('ParamParser:', ()=>{
