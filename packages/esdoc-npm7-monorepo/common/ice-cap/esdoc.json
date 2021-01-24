@@ -1,0 +1,11 @@
+{
+  "source": "./src",
+  "destination": "./out/esdoc",
+  "access": ["public", "protected"],
+  "onlyExported": true,
+  "coverage": true,
+  "readme": "./README.md",
+  "package": "./package.json",
+  "importPathPrefix": "out",
+  "title": "IceCap"
+}

@@ -1,0 +1,80 @@
+{
+  "name": "@enterthenamehere/esdoc-publish-html-plugin",
+  "version": "1.3.0-beta.0",
+  "description": "A publish HTML plugin for ESDoc",
+  "author": "h13i32maru",
+  "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/packages/esdoc-publish-html-plugin",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EnterTheNameHere/esdoc-monorepo",
+    "directory": "packages/esdoc-publish-html-plugin"
+  },
+  "dependencies": {
+    "@babel/generator": "^7.12.5",
+    "cheerio": "^1.0.0-rc.3",
+    "cpx2": "^3.0.0",
+    "escape-string-regexp": "^4.0.0",
+    "@enterthenamehere/esdoc-core": "^1.3.0",
+    "fs-extra": "^9.0.1",
+    "highlight.js": "^10.4.0",
+    "@enterthenamehere/ice-cap": "^0.2.0",
+    "marked": "^1.2.5",
+    "sanitize-html": "^2.1.2",
+    "taffydb": "^2.7.3",
+    "trash-cli": "^3.1.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.8",
+    "@babel/core": "^7.12.9",
+    "@babel/eslint-parser": "^7.12.1",
+    "@babel/eslint-plugin": "^7.12.1",
+    "@babel/plugin-transform-modules-commonjs": "^7.12.1",
+    "@enterthenamehere/esdoc": "^1.3.0",
+    "@enterthenamehere/esdoc-accessor-plugin": "^1.3.0",
+    "@enterthenamehere/esdoc-brand-plugin": "^1.3.0",
+    "@enterthenamehere/esdoc-coverage-plugin": "^1.3.0",
+    "@enterthenamehere/esdoc-ecmascript-proposal-plugin": "^1.3.0",
+    "@enterthenamehere/esdoc-external-ecmascript-plugin": "^1.3.0",
+    "@enterthenamehere/esdoc-integrate-manual-plugin": "^1.3.0",
+    "@enterthenamehere/esdoc-integrate-test-plugin": "^1.3.0",
+    "@enterthenamehere/esdoc-type-inference-plugin": "^1.3.0",
+    "@enterthenamehere/esdoc-undocumented-identifier-plugin": "^1.3.0",
+    "@enterthenamehere/esdoc-unexported-identifier-plugin": "^1.3.0",
+    "eslint": "^7.14.0",
+    "eslint-plugin-compat": "^3.8.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-security": "^1.4.0",
+    "esm": "^3.2.25",
+    "mocha": "^8.2.1"
+  },
+  "engines": {
+    "node": ">= 10.23.1"
+  },
+  "scripts": {
+    "build": "npm run clear && npm run transpile && npm run copy:template && npm run copy:highlight.js-css",
+    "clear": "trash ./out",
+    "copy:template": "npm run copy:template-css && npm run copy:template-image && npm run copy:template-dirfiles",
+    "copy:template-css": "cpx \"src/Builder/template/css/**/*.*\" \"out/Builder/template/css\" --verbose",
+    "copy:template-image": "cpx \"src/Builder/template/image/**/*.*\" \"out/Builder/template/image\" --verbose",
+    "copy:template-dirfiles": "cpx \"src/Builder/template/*.*\" \"out/Builder/template\" --verbose",
+    "copy:highlight.js-css": "cpx \"node_modules/highlight.js/styles/tomorrow.css\" \"out/Builder/template/css\" --verbose",
+    "prepare": "npm run build",
+    "test": "npm run test:clear && npm run test:mocha",
+    "test:clear": "trash ./test/fixture/out",
+    "test:mocha": "mocha ./test/src --recursive --extension .test.js -t 10000 --require esm --require ./test/src/init.js",
+    "transpile": "babel ./src --out-dir ./out"
+  },
+  "keywords": [
+    "esdoc",
+    "publish",
+    "html",
+    "plugin"
+  ],
+  "files": [
+    "out",
+    "src"
+  ],
+  "main": "out/Plugin.js"
+}

@@ -1,0 +1,55 @@
+{
+  "name": "@enterthenamehere/esdoc-core",
+  "version": "1.3.0-beta.0",
+  "private": true,
+  "description": "esdoc core.",
+  "author": {
+    "name": "h13i32maru",
+    "url": "https://h13i32maru.jp"
+  },
+  "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/packages/esdoc-core",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EnterTheNameHere/esdoc-monorepo",
+    "directory": "packages/esdoc-core"
+  },
+  "engines": {
+    "node": ">= 10.23.1"
+  },
+  "scripts": {
+    "prebuild": "npm run clear",
+    "build": "npm run transpile",
+    "clear": "trash ./lib",
+    "prepare": "npm run build",
+    "transpile": "babel ./src --out-dir ./lib --source-maps inline"
+  },
+  "dependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/generator": "^7.12.5",
+    "@babel/parser": "^7.12.5",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/traverse": "^7.12.5",
+    "@enterthenamehere/color-logger": "^0.0.7",
+    "fs-extra": "^9.0.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.1",
+    "@babel/eslint-parser": "^7.12.1",
+    "@babel/eslint-plugin": "^7.12.1",
+    "@babel/plugin-transform-modules-commonjs": "^7.12.1",
+    "eslint": "^7.13.0",
+    "eslint-plugin-compat": "^3.8.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-security": "^1.4.0",
+    "mocha": "^8.2.1",
+    "trash-cli": "^3.1.0"
+  },
+  "files": [
+    "src",
+    "lib",
+    "README.md",
+    "LICENSE"
+  ]
+}

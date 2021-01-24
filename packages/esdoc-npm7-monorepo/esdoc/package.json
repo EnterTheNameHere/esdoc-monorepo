@@ -1,0 +1,79 @@
+{
+  "name": "@enterthenamehere/esdoc",
+  "version": "1.3.0-beta.0",
+  "description": "Good Documentation Generator For JavaScript, updated for new decade",
+  "author": {
+    "name": "h13i32maru",
+    "url": "https://h13i32maru.jp"
+  },
+  "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/esdoc",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EnterTheNameHere/esdoc-monorepo",
+    "directory": "esdoc"
+  },
+  "engines": {
+    "node": ">= 10.23.1"
+  },
+  "scripts": {
+    "prebuild": "npm run clear",
+    "build": "npm run transpile",
+    "clear": "trash ./out",
+    "lint": "eslint ./src",
+    "prepare": "npm run build",
+    "pretest": "npm run test:clear",
+    "test": "mocha ./test --recursive -t 0 --require esm --require ./test/init.js --extension .test.js",
+    "test:clear": "trash ./test/integration-test/out",
+    "transpile": "babel ./src --out-dir ./out"
+  },
+  "dependencies": {
+    "@enterthenamehere/color-logger": "^0.0.7",
+    "@enterthenamehere/esdoc-core": "^1.3.0",
+    "fs-extra": "^9.0.1",
+    "minimist": "^1.2.5"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/eslint-parser": "^7.12.1",
+    "@babel/eslint-plugin": "^7.12.1",
+    "@babel/plugin-transform-modules-commonjs": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "eslint": "^7.13.0",
+    "eslint-plugin-compat": "^3.8.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-security": "^1.4.0",
+    "esm": "^3.2.25",
+    "mocha": "^8.2.1",
+    "trash-cli": "^3.1.0"
+  },
+  "keywords": [
+    "jsdoc",
+    "api",
+    "document",
+    "documentation",
+    "ES6",
+    "ECMAScript6",
+    "ES2015",
+    "ECMAScript2015",
+    "ES7",
+    "ECMAScript7",
+    "ES2016",
+    "ECMAScript2016",
+    "ES8",
+    "ECMAScript8",
+    "ES2017",
+    "ECMAScript2017",
+    "proposal"
+  ],
+  "files": [
+    "out",
+    "src"
+  ],
+  "main": "out/ESDoc.js",
+  "bin": {
+    "esdoc": "out/ESDocCLI.js"
+  }
+}

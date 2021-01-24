@@ -1,0 +1,112 @@
+{
+    "root": true,
+    "extends": [
+        "eslint:recommended",
+        "plugin:security/recommended",
+        "plugin:promise/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": true
+        }
+    },
+    "env": {
+        "node": true,
+        "es6": true
+    },
+    "plugins": [
+        "compat",
+        "import",
+        "security",
+        "promise"
+    ],
+    "rules": {
+        "accessor-pairs": "error",
+        "array-callback-return": "error",
+        "arrow-body-style": [ "error", "always" ],
+        "arrow-parens": "error",
+        "arrow-spacing": "error",
+        "block-scoped-var": "error",
+        "consistent-return": "error",
+        "default-case": "error",
+        "eqeqeq": "error",
+        "guard-for-in": "error",
+        "handle-callback-err": "error",
+        "import/extensions": 0,
+        "import/no-unresolved": [ "error", { "ignore": [ "electron", "atom" ] } ],
+        "init-declarations": [ "error", "always" ],
+        "no-alert": "error",
+        "no-await-in-loop": "error",
+        "no-confusing-arrow": [ "error", { "allowParens": false } ],
+        "no-console": [ "error", { "allow": [ "warn", "error", "assert", "info", "debug" ] } ],
+        "no-duplicate-imports": [ "error", { "includeExports": true } ],
+        "no-else-return": "error",
+        "no-eq-null": "error",
+        "no-eval": "error",
+        "no-extra-bind": "error",
+        "no-floating-decimal": "error",
+        "no-implicit-coercion": "error",
+        "no-implicit-globals": "error",
+        "no-implied-eval": "error",
+        "no-iterator": "error",
+        "no-labels": "error",
+        "no-loop-func": "error",
+        "no-loss-of-precision": "error",
+        "no-multi-str": "error",
+        "no-new": "error",
+        "no-new-func": "error",
+        "no-new-wrappers": "error",
+        "no-octal-escape": "error",
+        "no-promise-executor-return": "error",
+        "no-proto": "error",
+        "no-prototype-builtins": "error",
+        "no-return-assign": "error",
+        "no-return-await": "error",
+        "no-self-compare": "error",
+        "no-sequences": "error",
+        "no-shadow": "error",
+        "no-template-curly-in-string": "error",
+        "no-throw-literal": "error",
+        "no-unreachable-loop": "error",
+        "no-useless-backreference": "error",
+        "no-useless-call": "error",
+        "no-useless-computed-key": [ "error", { "enforceForClassMembers": true } ],
+        "no-useless-concat": "error",
+        "no-useless-rename": "error",
+        "no-useless-return": "error",
+        "no-var": "error",
+        "prefer-arrow-callback": "error",
+        "prefer-const": "error",
+        "prefer-numeric-literals": "error",
+        "prefer-promise-reject-errors": "error",
+        "prefer-rest-params": "error",
+        "prefer-spread": "error",
+        "prefer-template": "error",
+        "promise/valid-params": [ "off" ],
+        "require-atomic-updates": "error",
+        "require-unicode-regexp": "error",
+        "rest-spread-spacing": [ "error", "never" ],
+        "symbol-description": "error",
+        "strict": 1,
+        "template-curly-spacing": "error"
+    },
+    "overrides": [
+        {
+            "files": ["test/**"],
+            "rules": {
+                "arrow-spacing": "off",
+                "prefer-arrow-callback": "off"
+            },
+            "env": {
+                "mocha": true
+            },
+            "globals": {
+                "assert": false
+            }
+        }
+    ]
+}
