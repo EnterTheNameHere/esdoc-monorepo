@@ -311,7 +311,7 @@ export default class IceCap {
       }
     }
 
-    const $result = cheerio(results);
+    const $result = cheerio(results, null, null, { _useHtmlParser2: true, emptyAttrs: false });
 
     Object.defineProperty($result, 'iterator', {
       get: function() {
