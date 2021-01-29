@@ -1,11 +1,11 @@
 # ESDoc Standard Plugin
 
-Use with updated [EnterTheNameHere/esdoc](https://github.com/EnterTheNameHere/esdoc).
+Use with updated [EnterTheNameHere/esdoc-monorepo](https://github.com/EnterTheNameHere/esdoc-monorepo).
 Original esdoc is [here](https://github.com/esdoc/esdoc).
 
 ## Install
 ```
-npm install esdoc-standard-plugin
+npm install @enterthenamehere/esdoc-standard-plugin
 ```
 
 Original plugins can be found [here](https://github.com/esdoc/esdoc-plugins).
@@ -17,7 +17,7 @@ Original plugins can be found [here](https://github.com/esdoc/esdoc-plugins).
   "destination": "./doc",
   "plugins": [
     {
-      "name": "esdoc-standard-plugin",
+      "name": "@enterthenamehere/esdoc-standard-plugin",
       "option": {
         "lint": {"enable": true},
         "coverage": {"enable": true},
@@ -65,17 +65,18 @@ Original plugins can be found [here](https://github.com/esdoc/esdoc-plugins).
 ```
 
 The `esdoc-standard-plugin` is a glue plugin. The following plugins are used by this.
-- [esdoc-lint-plugin](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-lint-plugin)
-- [esdoc-coverage-plugin](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-coverage-plugin)
-- [esdoc-accessor-plugin](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-accessor-plugin)
-- [esdoc-type-inference-plugin](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-type-inference-plugin)
-- [esdoc-external-ecmascript-plugin](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-external-ecmascript-plugin)
-- [esdoc-brand-plugin](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-brand-plugin)
-- [esdoc-undocumented-identifier-plugin](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-undocumented-identifier-plugin)
-- [esdoc-unexported-identifier-plugin](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-unexported-identifier-plugin)
-- [esdoc-integrate-manual-plugin](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-integrate-manual-plugin)
-- [esdoc-integrate-test-plugin](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-integrate-test-plugin)
-- [esdoc-publish-html-plugin](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-publish-html-plugin)
+- [@enterthenamehere/esdoc-lint-plugin](https://github.com/enterthenamehere/esdoc-monorepo/tree/master/packages/esdoc-lint-plugin)
+- [@enterthenamehere/esdoc-coverage-plugin](https://github.com/enterthenamehere/esdoc-monorepo/tree/master/packages/esdoc-coverage-plugin)
+- [@enterthenamehere/esdoc-accessor-plugin](https://github.com/enterthenamehere/esdoc-monorepo/tree/master/packages/esdoc-accessor-plugin)
+- [@enterthenamehere/esdoc-type-inference-plugin](https://github.com/enterthenamehere/esdoc-monorepo/tree/master/packages/esdoc-type-inference-plugin)
+- [@enterthenamehere/esdoc-external-ecmascript-plugin](https://github.com/enterthenamehere/esdoc-monorepo/tree/master/packages/esdoc-external-ecmascript-plugin)
+- [@enterthenamehere/esdoc-brand-plugin](https://github.com/enterthenamehere/esdoc-monorepo/tree/master/packages/esdoc-brand-plugin)
+- [@enterthenamehere/esdoc-undocumented-identifier-plugin](https://github.com/enterthenamehere/esdoc-monorepo/tree/master/packages/esdoc-undocumented-identifier-plugin)
+- [@enterthenamehere/esdoc-unexported-identifier-plugin](https://github.com/enterthenamehere/esdoc-monorepo/tree/master/packages/esdoc-unexported-identifier-plugin)
+- [@enterthenamehere/esdoc-integrate-manual-plugin](https://github.com/enterthenamehere/esdoc-monorepo/tree/master/packages/esdoc-integrate-manual-plugin)
+- [@enterthenamehere/esdoc-integrate-test-plugin](https://github.com/enterthenamehere/esdoc-monorepo/tree/master/packages/esdoc-integrate-test-plugin)
+- [@enterthenamehere/esdoc-publish-html-plugin](https://github.com/enterthenamehere/esdoc-monorepo/tree/master/packages/esdoc-publish-html-plugin)
+- [@enterthenamehere/esdoc-ecmascript-proposal-plugin](https://github.com/enterthenamehere/esdoc-monorepo/tree/master/packages/esdoc-ecmascript-proposal-plugin)
 
 ## LICENSE
 MIT
