@@ -15,10 +15,6 @@
                     "source": "./test",
                     "includes": ["\\.test\\.js$"]
                 },
-                "manual": {
-                    "index": "./README.md",
-                    "asset": "./misc/color-logger.png"
-                },
                 "coverage": {}
             }
         },
