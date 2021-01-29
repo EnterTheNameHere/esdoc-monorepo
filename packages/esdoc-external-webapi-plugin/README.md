@@ -1,7 +1,11 @@
 # ESDoc External WebAPI Plugin
+
+Use with updated [EnterTheNameHere/esdoc-monorepo](https://github.com/EnterTheNameHere/esdoc-monorepo).
+Original esdoc is [here](https://github.com/esdoc/esdoc).
+
 ## Install
 ```bash
-npm install https://github.com/EnterTheNameHere/esdoc-external-webapi-plugin.git
+npm install @enterthenamehere/esdoc-external-webapi-plugin
 ```
 
 ## Config
@@ -10,7 +14,7 @@ npm install https://github.com/EnterTheNameHere/esdoc-external-webapi-plugin.git
   "source": "./src",
   "destination": "./doc",
   "plugins": [
-    {"name": "esdoc-external-webapi-plugin", "option": {"enable": true}}
+    {"name": "@enterthenamehere/esdoc-external-webapi-plugin", "option": {"enable": true}}
   ]
 }
 ```

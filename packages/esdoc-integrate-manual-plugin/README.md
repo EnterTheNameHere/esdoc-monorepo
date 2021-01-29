@@ -1,7 +1,11 @@
 # ESDoc Integrate Manual Plugin
+
+Use with updated [EnterTheNameHere/esdoc-monorepo](https://github.com/EnterTheNameHere/esdoc-monorepo).
+Original esdoc is [here](https://github.com/esdoc/esdoc).
+
 ## Install
 ```bash
-npm install https://github.com/EnterTheNameHere/esdoc-integrate-manual-plugin.git
+npm install @enterthenamehere/esdoc-integrate-manual-plugin
 ```
 
 ## Config
@@ -11,7 +15,7 @@ npm install https://github.com/EnterTheNameHere/esdoc-integrate-manual-plugin.gi
   "destination": "./doc",
   "plugins": [
     {
-      "name": "esdoc-integrate-manual-plugin",
+      "name": "@enterthenamehere/esdoc-integrate-manual-plugin",
       "option": {
         "index": "./manual/index.md",
         "globalIndex": true,

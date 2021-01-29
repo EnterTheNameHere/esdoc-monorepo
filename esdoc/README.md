@@ -1,7 +1,13 @@
-<!--![Owner Status](https://img.shields.io/badge/owner-busy-red.svg)-->
-[![Build Status](https://travis-ci.com/EnterTheNameHere/esdoc.svg?branch=master)](https://travis-ci.org/EnterTheNameHere/esdoc)
-<!--[![Coverage Status](https://codecov.io/gh/esdoc/esdoc/branch/master/graph/badge.svg)](https://codecov.io/gh/esdoc/esdoc)-->
-[![Document](https://doc.esdoc.org/github.com/esdoc/esdoc/badge.svg?t=0)](https://doc.esdoc.org/github.com/esdoc/esdoc)
+
+This is an updated version of esdoc. It uses babel 7, so it can parse most modern code including TypeScript and Flow.
+
+Please use updated plugins too. It is not compatible with original [esdoc](https://github.com/esdoc/esdoc).
+
+Main changes:
+- updated dependencies
+- updated to babel 7
+- replaced code-prettify with highlightjs
+- ecmascript-proposal plugin is now part of standard-plugin
 
 # ESDoc
 
@@ -31,17 +37,19 @@ And [more](https://github.com/search?o=desc&q=esdoc+filename%3Apackage.json+-use
 cd your-project/
 
 # Install ESDoc and standard plugin.
-npm install --save-dev https://github.com/EnterTheNameHere/esdoc.git esdoc-standard-plugin
+npm install --save-dev @enterthenamehere/esdoc @enterthenamehere/esdoc-standard-plugin
 
 # Create a configuration file.
 echo '{
   "source": "./src",
   "destination": "./docs",
-  "plugins": [{"name": "esdoc-standard-plugin"}]
+  "plugins": [{"name": "@enterthenamehere/esdoc-standard-plugin"}]
 }' > .esdoc.json
 
 # Run ESDoc.
-./node_modules/.bin/esdoc
+esdoc
+or
+./node_modules/@enterthenamehere/esdoc
 
 # View a documentation
 open ./docs/index.html

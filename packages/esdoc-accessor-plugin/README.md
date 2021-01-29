@@ -1,17 +1,30 @@
 # ESDoc Accessor Plugin
+
+Use with updated [EnterTheNameHere/esdoc-monorepo](https://github.com/EnterTheNameHere/esdoc-monorepo).
+Original esdoc is [here](https://github.com/esdoc/esdoc).
+
 ## Install
 ```bash
-npm install https://github.com/EnterTheNameHere/esdoc-accessor-plugin.git
+npm install @enterthenamehere/esdoc-accessor-plugin
 ```
 
 ## Config
 ```json
 {
-  "source": "./src",
-  "destination": "./doc",
-  "plugins": [
-    {"name": "esdoc-accessor-plugin", "option": {"access": ["public", "protected", "private"], "autoPrivate": true}}
-  ]
+    "source": "./src",
+    "destination": "./doc",
+    "plugins": [
+        {
+            "name": "@enterthenamehere/esdoc-accessor-plugin",
+            "option": {
+                "access": [
+                    "public",
+                    "protected",
+                    "private"],
+                "autoPrivate": true
+            }
+        }
+    ]
 }
 ```
 

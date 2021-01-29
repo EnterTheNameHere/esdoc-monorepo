@@ -1,7 +1,11 @@
 # ESDoc Lint Plugin
+
+Use with updated [EnterTheNameHere/esdoc-monorepo](https://github.com/EnterTheNameHere/esdoc-monorepo).
+Original esdoc is [here](https://github.com/esdoc/esdoc).
+
 ## Install
 ```bash
-npm install https://github.com/EnterTheNameHere/esdoc-lint-plugin.git
+npm install @enterthenamehere/esdoc-lint-plugin
 ```
 
 ## Config
@@ -10,7 +14,7 @@ npm install https://github.com/EnterTheNameHere/esdoc-lint-plugin.git
   "source": "./src",
   "destination": "./doc",
   "plugins": [
-    {"name": "esdoc-lint-plugin", "option": {"enable": true}}
+    {"name": "@enterthenamehere/esdoc-lint-plugin", "option": {"enable": true}}
   ]
 }
 ```

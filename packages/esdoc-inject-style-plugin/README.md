@@ -1,7 +1,11 @@
 # ESDoc Inject Style Plugin
+
+Use with updated [EnterTheNameHere/esdoc-monorepo](https://github.com/EnterTheNameHere/esdoc-monorepo).
+Original esdoc is [here](https://github.com/esdoc/esdoc).
+
 ## Install
 ```bash
-npm install https://github.com/EnterTheNameHere/esdoc-inject-style-plugin.git
+npm install @enterthenamehere/esdoc-inject-style-plugin
 ```
 
 ## Config
@@ -10,7 +14,7 @@ npm install https://github.com/EnterTheNameHere/esdoc-inject-style-plugin.git
   "source": "./src",
   "destination": "./doc",
   "plugins": [
-    {"name": "esdoc-inject-style-plugin", "option": {"enable": true, "styles": ["./foo.css"]}}
+    {"name": "@enterthenamehere/esdoc-inject-style-plugin", "option": {"enable": true, "styles": ["./foo.css"]}}
   ]
 }
 ```

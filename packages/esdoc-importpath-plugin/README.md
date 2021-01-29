@@ -1,4 +1,8 @@
 # ESDoc Import Path Plugin
+
+Use with updated [EnterTheNameHere/esdoc-monorepo](https://github.com/EnterTheNameHere/esdoc-monorepo).
+Original esdoc is [here](https://github.com/esdoc/esdoc).
+
 This is a plugin that converts the import path in documentation.
 ESDoc displays the import path of class/function into the document.
 However, the import path may be different from real import path because usually ES2015 is transpiled to use it.
@@ -15,7 +19,7 @@ Therefore, convert the import path by using following setting.
   "destination": "./doc",
   "plugins": [
     {
-      "name": "esdoc-importpath-plugin",
+      "name": "@enterthenamehere/esdoc-importpath-plugin",
       "option": {
         "stripPackageName": false,
         "replaces": [
@@ -40,7 +44,7 @@ This is useful for projects that have custom module resolvers where you want to 
 
 ## Install
 ```sh
-npm install https://github.com/EnterTheNameHere/esdoc-importpath-plugin.git
+npm install @enterthenamehere/esdoc-importpath-plugin
 ```
 
 ## Config
@@ -51,7 +55,7 @@ npm install https://github.com/EnterTheNameHere/esdoc-importpath-plugin.git
   "destination": "./doc",
   "plugins": [
     {
-      "name": "esdoc-importpath-plugin",
+      "name": "@enterthenamehere/esdoc-importpath-plugin",
       "option": {
         "replaces": [
           {"from": "^src/", "to": "lib"}

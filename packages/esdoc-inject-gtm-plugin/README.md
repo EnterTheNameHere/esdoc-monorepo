@@ -1,9 +1,12 @@
 # ESDoc Inject GTM Plugin
 
+Use with updated [EnterTheNameHere/esdoc-monorepo](https://github.com/EnterTheNameHere/esdoc-monorepo).
+Original esdoc is [here](https://github.com/esdoc/esdoc).
+
 ## Install
 
 ```bash
-npm install esdoc-inject-gtm-plugin
+npm install @enterthenamehere/esdoc-inject-gtm-plugin
 ```
 
 ## Config
@@ -13,7 +16,7 @@ npm install esdoc-inject-gtm-plugin
   "source": "./src",
   "destination": "./doc",
   "plugins": [
-    {"name": "esdoc-inject-script-plugin", "option": {"enable": true, "id": "GTM-XXXXX"}}
+    {"name": "@enterthenamehere/esdoc-inject-script-plugin", "option": {"enable": true, "id": "GTM-XXXXX"}}
   ]
 }
 ```

@@ -1,11 +1,12 @@
-[![Build Status](https://travis-ci.org/h13i32maru/color-logger.svg?branch=master)](https://travis-ci.org/h13i32maru/color-logger)
-[![Coverage Status](https://coveralls.io/repos/h13i32maru/color-logger/badge.svg)](https://coveralls.io/r/h13i32maru/color-logger)
+
+Used with updated [EnterTheNameHere/esdoc-monorepo](https://github.com/EnterTheNameHere/esdoc-monorepo).
+Original color-logger is [here](https://github.com/h13i32maru/color-logger).
 
 # Color Logger
 colorful logger for node.
 
 ```
-npm install color-logger
+npm install @enterthenamehere/color-logger
 ```
 
 ## Example

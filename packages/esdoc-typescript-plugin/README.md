@@ -1,9 +1,13 @@
 # ESDoc TypeScript Plugin (PoC)
+
+Use with updated [EnterTheNameHere/esdoc-monorepo](https://github.com/EnterTheNameHere/esdoc-monorepo).
+Original esdoc is [here](https://github.com/esdoc/esdoc).
+
 **This plugin is proof of concept**
 
 ## Install
 ```bash
-npm install https://github.com/EnterTheNameHere/esdoc-typescript-plugin.git
+npm install @enterthenamehere/esdoc-typescript-plugin
 ```
 
 ## Config
@@ -12,7 +16,7 @@ npm install https://github.com/EnterTheNameHere/esdoc-typescript-plugin.git
   "source": "./src",
   "destination": "./doc",
   "plugins": [
-    {"name": "esdoc-typescript-plugin", "option": {"enable": true}}
+    {"name": "@enterthenamehere/esdoc-typescript-plugin", "option": {"enable": true}}
   ]
 }
 ```

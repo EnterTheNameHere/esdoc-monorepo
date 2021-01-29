@@ -1,7 +1,11 @@
 # ESDoc External Node.js Plugin
+
+Use with updated [EnterTheNameHere/esdoc-monorepo](https://github.com/EnterTheNameHere/esdoc-monorepo).
+Original esdoc is [here](https://github.com/esdoc/esdoc).
+
 ## Install
 ```bash
-npm install https://github.com/EnterTheNameHere/esdoc-external-nodejs-plugin.git
+npm install @enterthenamehere/esdoc-external-nodejs-plugin
 ```
 
 ## Config
@@ -10,7 +14,7 @@ npm install https://github.com/EnterTheNameHere/esdoc-external-nodejs-plugin.git
   "source": "./src",
   "destination": "./doc",
   "plugins": [
-    {"name": "esdoc-external-nodejs-plugin", "option": {"enable": true}}
+    {"name": "@enterthenamehere/esdoc-external-nodejs-plugin", "option": {"enable": true}}
   ]
 }
 ```

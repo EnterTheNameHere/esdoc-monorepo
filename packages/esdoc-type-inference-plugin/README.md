@@ -1,8 +1,12 @@
 # ESDoc Type Inference Plugin(PoC)
+
+Use with updated [EnterTheNameHere/esdoc-monorepo](https://github.com/EnterTheNameHere/esdoc-monorepo).
+Original esdoc is [here](https://github.com/esdoc/esdoc).
+
 **This is Proof of Concept**
 ## Install
 ```bash
-npm install https://github.com/EnterTheNameHere/esdoc-type-inference-plugin.git
+npm install @enterthenamehere/esdoc-type-inference-plugin
 ```
 
 ## Config
@@ -11,7 +15,7 @@ npm install https://github.com/EnterTheNameHere/esdoc-type-inference-plugin.git
   "source": "./src",
   "destination": "./doc",
   "plugins": [
-    {"name": "esdoc-type-inference-plugin", "option": {"enable": true}}
+    {"name": "@enterthenamehere/esdoc-type-inference-plugin", "option": {"enable": true}}
   ]
 }
 ```
