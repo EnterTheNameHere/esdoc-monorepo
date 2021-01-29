@@ -1,7 +1,11 @@
 # ESDoc External ECMAScript Plugin
+
+Use with updated [EnterTheNameHere/esdoc-monorepo](https://github.com/EnterTheNameHere/esdoc-monorepo).
+Original esdoc is [here](https://github.com/esdoc/esdoc).
+
 ## Install
 ```bash
-npm install https://github.com/EnterTheNameHere/esdoc-external-ecmascript-plugin.git
+npm install @enterthenamehere/esdoc-external-ecmascript-plugin
 ```
 
 ## Config
@@ -10,7 +14,7 @@ npm install https://github.com/EnterTheNameHere/esdoc-external-ecmascript-plugin
   "source": "./src",
   "destination": "./doc",
   "plugins": [
-    {"name": "esdoc-external-ecmascript-plugin", "option": {"enable": true}}
+    {"name": "@enterthenamehere/esdoc-external-ecmascript-plugin", "option": {"enable": true}}
   ]
 }
 ```

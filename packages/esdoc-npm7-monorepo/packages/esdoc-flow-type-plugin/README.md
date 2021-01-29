@@ -1,9 +1,13 @@
 # ESDoc Flow Type Plugin (PoC)
+
+Use with updated [EnterTheNameHere/esdoc-monorepo](https://github.com/EnterTheNameHere/esdoc-monorepo).
+Original esdoc is [here](https://github.com/esdoc/esdoc).
+
 **This plugin is proof of concept.**
 
 ## Install
 ```bash
-npm install esdoc-flow-type-plugin
+npm install @enterthenamehere/esdoc-flow-type-plugin
 ```
 
 ## Config
@@ -12,7 +16,7 @@ npm install esdoc-flow-type-plugin
   "source": "./src",
   "destination": "./doc",
   "plugins": [
-    {"name": "esdoc-flow-type-plugin", "option": {"enable": true}}
+    {"name": "@enterthenamehere/esdoc-flow-type-plugin", "option": {"enable": true}}
   ]
 }
 ```
@@ -40,7 +44,7 @@ export class Foo {
   /**
    * this is method3.
    * @param n - this is param desc.
-   * @return this is return desc. 
+   * @return this is return desc.
    */
   method3(n: number): string {
   }

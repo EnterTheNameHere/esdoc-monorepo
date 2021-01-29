@@ -1,7 +1,11 @@
 # ESDoc Brand Plugin
+
+Use with updated [EnterTheNameHere/esdoc-monorepo](https://github.com/EnterTheNameHere/esdoc-monorepo).
+Original esdoc is [here](https://github.com/esdoc/esdoc).
+
 ## Install
 ```bash
-npm install https://github.com/EnterTheNameHere/esdoc-brand-plugin.git
+npm install @enterthenamehere/esdoc-brand-plugin
 ```
 
 ## Config
@@ -13,7 +17,7 @@ This plugin takes a title and a repository from `package.json (name, repsitory)`
   "package.json": "./package.json",
   "plugins": [
     {
-      "name": "esdoc-brand-plugin",
+      "name": "@enterthenamehere/esdoc-brand-plugin",
       "option": {
         "logo": "./logo.png",
         "title": "My Library",

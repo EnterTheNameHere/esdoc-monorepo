@@ -1,7 +1,11 @@
 # ESDoc Integrate Test Plugin
+
+Use with updated [EnterTheNameHere/esdoc-monorepo](https://github.com/EnterTheNameHere/esdoc-monorepo).
+Original esdoc is [here](https://github.com/esdoc/esdoc).
+
 ## Install
 ```bash
-npm install https://github.com/EnterTheNameHere/esdoc-integrate-test-plugin.git
+npm install @enterthenamehere/esdoc-integrate-test-plugin
 ```
 
 ## Config
@@ -11,7 +15,7 @@ npm install https://github.com/EnterTheNameHere/esdoc-integrate-test-plugin.git
   "destination": "./docs",
   "plugins": [
     {
-      "name": "esdoc-integrate-test-plugin",
+      "name": "@enterthenamehere/esdoc-integrate-test-plugin",
       "option": {
         "source": "./test/",
         "interfaces": ["describe", "it", "context", "suite", "test"],

@@ -1,7 +1,11 @@
 # ESDoc Undocumented Identifier Plugin
+
+Use with updated [EnterTheNameHere/esdoc-monorepo](https://github.com/EnterTheNameHere/esdoc-monorepo).
+Original esdoc is [here](https://github.com/esdoc/esdoc).
+
 ## Install
 ```bash
-npm install https://github.com/EnterTheNameHere/esdoc-undocumented-identifier-plugin.git
+npm install @enterthenamehere/esdoc-undocumented-identifier-plugin
 ```
 
 ## Config
@@ -10,7 +14,7 @@ npm install https://github.com/EnterTheNameHere/esdoc-undocumented-identifier-pl
   "source": "./src",
   "destination": "./doc",
   "plugins": [
-    {"name": "esdoc-undocumented-identifier-plugin", "option": {"enable": true}}
+    {"name": "@enterthenamehere/esdoc-undocumented-identifier-plugin", "option": {"enable": true}}
   ]
 }
 ```

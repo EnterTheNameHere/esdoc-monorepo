@@ -1,7 +1,11 @@
 # ESDoc Exclude Source Plugin
+
+Use with updated [EnterTheNameHere/esdoc-monorepo](https://github.com/EnterTheNameHere/esdoc-monorepo).
+Original esdoc is [here](https://github.com/esdoc/esdoc).
+
 ## Install
 ```bash
-npm install https://github.com/EnterTheNameHere/esdoc-exclude-source-plugin.git
+npm install @enterthenamehere/esdoc-exclude-source-plugin
 ```
 
 ## Config
@@ -10,7 +14,7 @@ npm install https://github.com/EnterTheNameHere/esdoc-exclude-source-plugin.git
   "source": "./src",
   "destination": "./doc",
   "plugins": [
-    {"name": "esdoc-exclude-source-plugin"}
+    {"name": "@enterthenamehere/esdoc-exclude-source-plugin"}
   ]
 }
 ```

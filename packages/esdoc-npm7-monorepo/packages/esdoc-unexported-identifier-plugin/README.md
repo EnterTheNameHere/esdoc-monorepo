@@ -1,7 +1,11 @@
 # ESDoc Unexported Identifier Plugin
+
+Use with updated [EnterTheNameHere/esdoc-monorepo](https://github.com/EnterTheNameHere/esdoc-monorepo).
+Original esdoc is [here](https://github.com/esdoc/esdoc).
+
 ## Install
 ```bash
-npm install https://github.com/EnterTheNameHere/esdoc-unexported-identifier-plugin.git
+npm install @enterthenamehere/esdoc-unexported-identifier-plugin
 ```
 
 ## Config
@@ -10,7 +14,7 @@ npm install https://github.com/EnterTheNameHere/esdoc-unexported-identifier-plug
   "source": "./src",
   "destination": "./doc",
   "plugins": [
-    {"name": "esdoc-unexported-identifier-plugin", "option": {"enable": false}}
+    {"name": "@enterthenamehere/esdoc-unexported-identifier-plugin", "option": {"enable": false}}
   ]
 }
 ```

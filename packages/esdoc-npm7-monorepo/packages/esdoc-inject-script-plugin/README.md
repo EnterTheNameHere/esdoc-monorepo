@@ -1,7 +1,11 @@
 # ESDoc Inject Script Plugin
+
+Use with updated [EnterTheNameHere/esdoc-monorepo](https://github.com/EnterTheNameHere/esdoc-monorepo).
+Original esdoc is [here](https://github.com/esdoc/esdoc).
+
 ## Install
 ```bash
-npm install https://github.com/EnterTheNameHere/esdoc-inject-script-plugin.git
+npm install @enterthenamehere/esdoc-inject-script-plugin
 ```
 
 ## Config
@@ -10,7 +14,7 @@ npm install https://github.com/EnterTheNameHere/esdoc-inject-script-plugin.git
   "source": "./src",
   "destination": "./doc",
   "plugins": [
-    {"name": "esdoc-inject-script-plugin", "option": {"enable": true, "scripts": ["./foo.js"]}}
+    {"name": "@enterthenamehere/esdoc-inject-script-plugin", "option": {"enable": true, "scripts": ["./foo.js"]}}
   ]
 }
 ```

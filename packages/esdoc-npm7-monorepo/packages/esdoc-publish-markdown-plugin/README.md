@@ -1,16 +1,20 @@
 # ESDoc Publish Markdown Plugin (PoC)
+
+Use with updated [EnterTheNameHere/esdoc-monorepo](https://github.com/EnterTheNameHere/esdoc-monorepo).
+Original esdoc is [here](https://github.com/esdoc/esdoc).
+
 **This plugin is proof of concept.**
 **So, the plugin has only minimum features.**
 **We are waiting for your pull request!**
 
 ## Example
-[example](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-publish-markdown-plugin/misc/index.md)
+[example](https://github.com/enterthenamehere/esdoc-monorepo/tree/master/packages/esdoc-publish-markdown-plugin/misc/index.md)
 
 <img src="https://raw.githubusercontent.com/esdoc/esdoc-plugins/master/esdoc-publish-markdown-plugin/misc/ss.png" width="400px">
 
 ## Install
 ```bash
-npm install esdoc-publish-markdown-plugin
+npm install @enterthenamehere/esdoc-publish-markdown-plugin
 ```
 
 ## Config
@@ -20,7 +24,7 @@ npm install esdoc-publish-markdown-plugin
   "destination": "./doc",
   "plugins": [
     {
-      "name": "esdoc-publish-markdown-plugin",
+      "name": "@enterthenamehere/esdoc-publish-markdown-plugin",
       "option": {
         "filename":"README.md"
       }

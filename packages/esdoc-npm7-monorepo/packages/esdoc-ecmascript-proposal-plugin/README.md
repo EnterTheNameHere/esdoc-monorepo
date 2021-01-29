@@ -1,7 +1,11 @@
 # ESDoc ECMAScript Proposal Plugin
+
+Use with updated [EnterTheNameHere/esdoc-monorepo](https://github.com/EnterTheNameHere/esdoc-monorepo).
+Original esdoc is [here](https://github.com/esdoc/esdoc).
+
 ## Install
 ```
-npm install https://github.com/EnterTheNameHere/esdoc-ecmascript-proposal-plugin.git
+npm install @enterthenamehere/esdoc-ecmascript-proposal-plugin
 ```
 
 ## Config
@@ -10,7 +14,7 @@ npm install https://github.com/EnterTheNameHere/esdoc-ecmascript-proposal-plugin
   "source": "./src",
   "destination": "./doc",
   "plugins": [
-    {"name": "esdoc-ecmascript-proposal-plugin", "option": {"all": true}}
+    {"name": "@enterthenamehere/esdoc-ecmascript-proposal-plugin", "option": {"all": true}}
   ]
 }
 ```
