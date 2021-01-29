@@ -107,11 +107,11 @@ export default class ManualDocBuilder extends DocBuilder {
       const toc = [];
       const fileName = this._getManualOutputFileName(manual.name);
       const html = markdown(manual.content);
-      const $root = cheerio.load(html).root();
+      const $root = cheerio.load(html, { _useHtmlParser2: true, emptyAttrs: false }).root();
       const h1Count = $root.find('h1').length;
 
       $root.find('h1,h2,h3,h4,h5').each((_2, el) => {
-        const $el = cheerio(el);
+        const $el = cheerio(el, null, null, { _useHtmlParser2: true, emptyAttrs: false });
         const label = $el.text();
         const indent = `indent-${el.tagName.toLowerCase()}`;
 
@@ -144,9 +144,9 @@ export default class ManualDocBuilder extends DocBuilder {
     ice.load('content', html);
 
     // convert relative src to base url relative src.
-    const $root = cheerio.load(ice.html).root();
+    const $root = cheerio.load(ice.html, { _useHtmlParser2: true, emptyAttrs: false }).root();
     $root.find('img').each((i, el) => {
-      const $el = cheerio(el);
+      const $el = cheerio(el, null, null, { _useHtmlParser2: true, emptyAttrs: false });
       const src = $el.attr('src');
       if (!src) return;
       if (src.match(/^http[s]?:/u)) return;
@@ -154,7 +154,7 @@ export default class ManualDocBuilder extends DocBuilder {
       $el.attr('src', `./manual/${src}`);
     });
     $root.find('a').each((i, el) => {
-      const $el = cheerio(el);
+      const $el = cheerio(el, null, null, { _useHtmlParser2: true, emptyAttrs: false });
       const href = $el.attr('href');
       if (!href) return;
       if (href.match(/^http[s]?:/u)) return;
@@ -177,11 +177,11 @@ export default class ManualDocBuilder extends DocBuilder {
     for (const manual of manuals) {
       const fileName = this._getManualOutputFileName(manual.name);
       const html = this._buildManual(manual);
-      const $root = cheerio.load(html).root();
+      const $root = cheerio.load(html, { _useHtmlParser2: true, emptyAttrs: false }).root();
       const h1Count = $root.find('h1').length;
 
       $root.find('h1').each((i, el) => {
-        const $el = cheerio(el);
+        const $el = cheerio(el, null, null, { _useHtmlParser2: true, emptyAttrs: false });
         const label = $el.text();
         const link = h1Count === 1 ? fileName : `${fileName}#${$el.attr('id')}`;
         let card = `<h1>${label}</h1>`;
@@ -191,7 +191,7 @@ export default class ManualDocBuilder extends DocBuilder {
           const next = nextAll.get(ii2);
           const tagName = next.tagName.toLowerCase();
           if (tagName === 'h1') return;
-          const $next = cheerio(next);
+          const $next = cheerio(next, null, null, { _useHtmlParser2: true, emptyAttrs: false });
           card += `<${tagName}>${$next.html()}</${tagName}>`;
         }
 
