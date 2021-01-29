@@ -31,11 +31,11 @@
     - [Migration to v1.0](https://esdoc.org/manual/migration.html)
     - [v0.5 documentation](https://esdoc.org/v0.5/index.html)
 - **Feat**
-  - [esdoc-publish-markdown-plugin](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-publish-markdown-plugin) PoC
-  - [esdoc-flow-type-plugin](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-flow-type-plugin) PoC
-  - [esdoc-typescript-plugin](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-typescript-plugin) PoC
-  - [esdoc-react-plugin](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-react-plugin) PoC
-  - [esdoc-jsx-plugin](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-jsx-plugin)
+  - [esdoc-publish-markdown-plugin](https://github.com/esdoc/esdoc-plugins/tree/main/esdoc-publish-markdown-plugin) PoC
+  - [esdoc-flow-type-plugin](https://github.com/esdoc/esdoc-plugins/tree/main/esdoc-flow-type-plugin) PoC
+  - [esdoc-typescript-plugin](https://github.com/esdoc/esdoc-plugins/tree/main/esdoc-typescript-plugin) PoC
+  - [esdoc-react-plugin](https://github.com/esdoc/esdoc-plugins/tree/main/esdoc-react-plugin) PoC
+  - [esdoc-jsx-plugin](https://github.com/esdoc/esdoc-plugins/tree/main/esdoc-jsx-plugin)
 - **Note**
   - `v1.0.0` can not use. Because `v1.0.0` had been used in past.
 

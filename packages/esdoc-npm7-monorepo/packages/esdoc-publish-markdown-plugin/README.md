@@ -8,7 +8,7 @@ Original esdoc is [here](https://github.com/esdoc/esdoc).
 **We are waiting for your pull request!**
 
 ## Example
-[example](https://github.com/enterthenamehere/esdoc-monorepo/tree/master/packages/esdoc-publish-markdown-plugin/misc/index.md)
+[example](https://github.com/enterthenamehere/esdoc-monorepo/tree/main/packages/esdoc-publish-markdown-plugin/misc/index.md)
 
 <img src="https://raw.githubusercontent.com/esdoc/esdoc-plugins/master/esdoc-publish-markdown-plugin/misc/ss.png" width="400px">
 

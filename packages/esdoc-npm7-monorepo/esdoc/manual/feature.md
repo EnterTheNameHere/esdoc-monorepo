@@ -8,7 +8,7 @@ ESDoc provides a lot of features.
 - [ES Module](#es-module)
 - [Plugin Architecture](#plugin-architecture)
 
-**Standard Features (via [esdoc-standard-plugin](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-standard-plugin))**
+**Standard Features (via [esdoc-standard-plugin](https://github.com/esdoc/esdoc-plugins/tree/main/esdoc-standard-plugin))**
 - [Publish HTML]()
 - [Documentation Coverage](#documentation-coverage)
 - [Documentation Lint](#documentation-lint)
@@ -16,12 +16,12 @@ ESDoc provides a lot of features.
 - [Integration Manual](#integration-manual)
 - [Search Documentation](#search-documentation)
 - [Type Inference](#type-inference)
-- [and more](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-standard-plugin)
+- [and more](https://github.com/esdoc/esdoc-plugins/tree/main/esdoc-standard-plugin)
 
 **Other Features (via [various plugins](https://github.com/esdoc/esdoc-plugins))**
 - [Inject Style](https://github.com/esdoc/esdoc-plugins/blob/master/esdoc-inject-style-plugin)
-- [Inject Script](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-inject-script-plugin)
-- [ECMAScript Proposal](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-ecmascript-proposal-plugin)
+- [Inject Script](https://github.com/esdoc/esdoc-plugins/tree/main/esdoc-inject-script-plugin)
+- [ECMAScript Proposal](https://github.com/esdoc/esdoc-plugins/tree/main/esdoc-ecmascript-proposal-plugin)
 - [Flow](https://github.com/esdoc/esdoc-plugins/blob/master/esdoc-flow-type-plugin) [PoC]
 - [TypeScript](https://github.com/esdoc/esdoc-plugins/blob/master/esdoc-typescript-plugin) [PoC]
 - [JSX](https://github.com/esdoc/esdoc-plugins/blob/master/esdoc-jsx-plugin)
@@ -79,14 +79,14 @@ This is useful because you not need to see export style in source code.
 
 <img src="./asset/image/feature/module1.png" class="screen-shot" width="500px">
 
-And you may as well as use [esdoc-importpath-plugin](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-importpath-plugin) to transform path.
+And you may as well as use [esdoc-importpath-plugin](https://github.com/esdoc/esdoc-plugins/tree/main/esdoc-importpath-plugin) to transform path.
 
 Note: ESDoc doesn't support commonjs.
 
 ## Plugin Architecture
 ESDoc adopts plugin architecture. So, almost all features are provided as plugins.
 
-Especially [esdoc-standard-plugin](https://github.com/esdoc/esdoc-plugins/tree/master/esdoc-standard-plugin) is a packaging plugin with major plugins.<br/>
+Especially [esdoc-standard-plugin](https://github.com/esdoc/esdoc-plugins/tree/main/esdoc-standard-plugin) is a packaging plugin with major plugins.<br/>
 Normally we recommend using this plugin. There are various plugins in [esdoc/esdoc-plugins](https://github.com/esdoc/esdoc-plugins).
 
 You can easily make plugins, and there are many [third party plugins](https://www.npmjs.com/search?q=esdoc%20plugin&page=1&ranking=optimal).<br/>
