@@ -40,7 +40,9 @@ export default class FileDocBuilder extends DocBuilder {
                 withDomLvl1: true,
                 normalizeWhiteSpace: false,
                 xmlMode: false,
-                decodeEntities: true
+                decodeEntities: true,
+                _useHtmlParser2: true,
+                emptyAttrs: false
             };
             const $ = cheerio.load(contentInsideOL, cheerioOptions);
             
