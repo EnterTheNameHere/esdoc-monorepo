@@ -1,11 +1,32 @@
 {
-  "source": "./src",
-  "destination": "./out/esdoc",
-  "access": ["public", "protected"],
-  "onlyExported": true,
-  "coverage": true,
-  "readme": "./README.md",
-  "package": "./package.json",
-  "importPathPrefix": "out",
-  "title": "ColorLogger"
+    "source": "./src",
+    "destination": "./out/docs",
+    "onlyExported": true,
+    "index": "./README.md",
+    "package": "./package.json",
+    "plugins": [
+        {
+            "name": "@enterthenamehere/esdoc-standard-plugin",
+            "option": {
+                "brand": {
+                    "title": "ColorLogger"
+                },
+                "test": {
+                    "source": "./test",
+                    "includes": ["\\.test\\.js$"]
+                },
+                "manual": {
+                    "index": "./README.md",
+                    "asset": "./misc/color-logger.png"
+                },
+                "coverage": {}
+            }
+        },
+        {
+            "name": "@enterthenamehere/esdoc-importpath-plugin",
+            "option": {
+                "replaces": [{"from": "^src/", "to": "out/src/"}]
+            }
+        }
+    ]
 }
