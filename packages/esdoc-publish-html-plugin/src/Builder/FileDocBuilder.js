@@ -44,7 +44,7 @@ export default class FileDocBuilder extends DocBuilder {
                 _useHtmlParser2: true,
                 emptyAttrs: false
             };
-            const $ = cheerio.load(contentInsideOL, cheerioOptions);
+            const $ = cheerio.load(contentInsideOL, cheerioOptions, false);
             
             // First we need to make sure every child tag which has multiple lines is split and each line has opening and closing tag.
             // So this:
@@ -93,7 +93,7 @@ export default class FileDocBuilder extends DocBuilder {
             const newHtml = codeLines.join(''); // Remember, no newlines...
             
             $('ol[class="linenums"]').html(newHtml);
-            content = $('body').html();
+            content = $('ol').html();
         }
 
         const ice = new IceCap(this._readTemplate('file.html'));
