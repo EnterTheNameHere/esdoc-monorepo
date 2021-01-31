@@ -38,9 +38,9 @@ describe('test/Export/Variable:', function () {
       assert.equal(doc.export, true);
     });
 
-    xit('is export that second', function () {
-      // const doc = find('longname', 'src/Export/Variable.js~testExportVariable8');
-      // assert.equal(doc.export, true);
+    it('is export that second', function () {
+      const doc = find('longname', 'src/Export/Variable.js~testExportVariable8');
+      assert.equal(doc.export, true);
     });
   });
 
@@ -50,9 +50,9 @@ describe('test/Export/Variable:', function () {
       assert.equal(doc.export, true);
     });
 
-    xit('is export that second', function () {
-      // const doc = find('longname', 'src/Export/Variable.js~testExportVariable10');
-      // assert.equal(doc.export, true);
+    it('is export that second', function () {
+      const doc = find('longname', 'src/Export/Variable.js~testExportVariable10');
+      assert.equal(doc.export, true);
     });
   });
 });
