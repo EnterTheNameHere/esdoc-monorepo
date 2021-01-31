@@ -39,7 +39,7 @@ class Plugin {
 
     // find target doc
     const doc = this._reactPropsDocs.find( (doc2) => {
-      const regexp = new RegExp(`${doc2.fileName}$`, 'u');
+      const regexp = new RegExp(`${doc2.fileName.replace('/', '[/|\\\\]')}$`, 'u');
       if (fileName.match(regexp)) return true;
       return false;
     });
