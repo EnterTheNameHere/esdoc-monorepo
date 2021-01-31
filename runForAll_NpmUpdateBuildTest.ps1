@@ -149,6 +149,7 @@ npm run test
 
 cd "$originalLocation\esdoc"
 Write-Host "Updating $(Get-Location)"
+npm update
 npm run build
 npm run test
 
