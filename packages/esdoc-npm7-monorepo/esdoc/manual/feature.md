@@ -133,10 +133,10 @@ So, ESDoc generates a cross reference of test codes and document.
 
 ```javascript
 /** @test {MyClass} */
-describe('MyClass is super useful class.', ()=>{
+describe('MyClass is super useful class.', function () {
 
   /** @test {MyClass#sayMyName} */
-  it('say my name', ()=>{
+  it('say my name', function () {
     let foo = new MyClass('Alice');
     assert.equal(foo.sayMyName(), 'My name is Alice');
   })

@@ -2,8 +2,8 @@ import assert from 'assert';
 import fs from 'fs';
 import {find} from '../util';
 
-describe('test/plugin/MyPlugin1:', ()=>{
-  it('calls handlers', ()=>{
+describe('test/plugin/MyPlugin1:', function () {
+  it('calls handlers', function () {
     const callInfo = require('./MyPlugin1').callInfo;
     assert.deepEqual(callInfo.handlerNames, {
       onStart: true,
@@ -20,12 +20,12 @@ describe('test/plugin/MyPlugin1:', ()=>{
     assert.equal(callInfo.usedParser, true);
   });
 
-  it('modified input', ()=>{
+  it('modified input', function () {
     const doc = find('longname', /EmptyForPlugin_Modified1_Modified2$/);
     assert.equal(doc.kind, 'class');
   });
 
-  it('output', ()=>{
+  it('output', function () {
     const content = fs.readFileSync('./test/integration-test/out/index.md').toString();
     assert(content.includes('EmptyForPlugin_Modified1_Modified2'));
     assert(content.includes('made by MyPlugin1_Modified'));
