@@ -3,7 +3,7 @@
   "version": "1.3.0-beta.0",
   "description": "A integrate test plugin for ESDoc",
   "author": "h13i32maru",
-  "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/packages/esdoc-integrate-test-plugin",
+  "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-integrate-test-plugin",
   "license": "MIT",
   "repository": {
     "type": "git",

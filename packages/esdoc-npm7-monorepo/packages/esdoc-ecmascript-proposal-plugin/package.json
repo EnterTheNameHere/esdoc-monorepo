@@ -3,7 +3,7 @@
   "version": "1.3.0-beta.0",
   "description": "A ECMAScript proposal plugin for ESDoc",
   "author": "h13i32maru",
-  "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/packages/esdoc-ecmascript-proposal-plugin",
+  "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-ecmascript-proposal-plugin",
   "license": "MIT",
   "repository": {
     "type": "git",

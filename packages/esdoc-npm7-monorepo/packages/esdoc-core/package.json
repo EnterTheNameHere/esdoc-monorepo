@@ -6,7 +6,7 @@
     "name": "h13i32maru",
     "url": "https://h13i32maru.jp"
   },
-  "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/packages/esdoc-core",
+  "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-core",
   "license": "MIT",
   "repository": {
     "type": "git",

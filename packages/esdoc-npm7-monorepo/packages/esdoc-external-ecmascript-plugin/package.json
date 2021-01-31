@@ -3,7 +3,7 @@
   "version": "1.3.0-beta.0",
   "description": "A external ECMAScript plugin for ESDoc",
   "author": "h13i32maru",
-  "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/packages/esdoc-external-ecmascript-plugin",
+  "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-external-ecmascript-plugin",
   "license": "MIT",
   "repository": {
     "type": "git",
