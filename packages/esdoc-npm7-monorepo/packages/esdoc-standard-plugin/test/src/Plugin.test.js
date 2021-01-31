@@ -1,8 +1,8 @@
 const assert = require('assert');
 const path = require('path');
 
-describe('test standard plugin:', ()=>{
-  it('dynamically load plugins', ()=>{
+describe('test standard plugin:', function () {
+  it('dynamically load plugins', function () {
     const plugins = require('../spy-plugin.js').testTargetPlugins;
 
     assert.deepEqual(plugins, [

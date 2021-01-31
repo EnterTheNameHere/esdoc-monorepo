@@ -1,11 +1,11 @@
 import {readDoc, assert, findParent} from './../../util.js';
 
 /** @test {AbstractDoc#@emits} */
-describe('TestEmitsMethod', ()=> {
+describe('TestEmitsMethod', function () {
   const doc = readDoc('class/src/Emits/Method.js~TestEmitsMethod.html');
 
-  describe('in details', ()=>{
-    it('has desc.', ()=>{
+  describe('in details', function () {
+    it('has desc.', function () {
       findParent(doc, '[id="instance-method-method1"]', '[data-ice="detail"]', (doc)=>{
         findParent(doc, '[data-ice="emit"] [href$="TestEmitsMethodEvent1.html"]', '[data-ice="emit"]', (doc)=>{
           assert.includes(doc, 'a', 'TestEmitsMethodEvent1');

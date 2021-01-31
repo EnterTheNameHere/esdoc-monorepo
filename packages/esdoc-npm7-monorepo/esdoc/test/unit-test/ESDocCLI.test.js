@@ -4,10 +4,10 @@ import fs from 'fs';
 import assert from 'assert';
 import path from 'path';
 
-describe('test ESDocCLI:', ()=>{
-  describe('command option', ()=>{
+describe('test ESDocCLI:', function () {
+  describe('command option', function () {
     const orig = console.log;
-    it('can show help', ()=>{
+    it('can show help', function () {
       const argv = [null, null];
       const cli = new ESDocCLI(argv);
       console.log = function(){};
@@ -15,7 +15,7 @@ describe('test ESDocCLI:', ()=>{
       console.log = orig;
     });
 
-    it('can show version', ()=>{
+    it('can show version', function () {
       const argv = [null, null];
       const cli = new ESDocCLI(argv);
       console.log = function(){};
@@ -24,13 +24,13 @@ describe('test ESDocCLI:', ()=>{
     });
   });
 
-  describe('find configuration', ()=>{
-    it('finds -c', ()=>{
+  describe('find configuration', function () {
+    it('finds -c', function () {
       const cli = new ESDocCLI([null, null, '-c', 'esdoc.json']);
       assert.equal(cli._findConfigFilePath(), 'esdoc.json');
     });
 
-    it('finds .esdoc.json', ()=>{
+    it('finds .esdoc.json', function () {
       process.chdir('./test/');
       fs.writeFileSync('.esdoc.json', 'dummy');
       const cli = new ESDocCLI([null, null]);
@@ -39,7 +39,7 @@ describe('test ESDocCLI:', ()=>{
       process.chdir('../');
     });
 
-    it('finds .esdoc.js', ()=>{
+    it('finds .esdoc.js', function () {
       process.chdir('./test/');
       fs.writeFileSync('.esdoc.js', 'dummy');
       const cli = new ESDocCLI([null, null]);

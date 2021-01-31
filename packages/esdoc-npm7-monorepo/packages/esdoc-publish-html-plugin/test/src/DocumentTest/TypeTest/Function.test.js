@@ -4,10 +4,10 @@ import {readDoc, assert, findParent} from './../../util.js';
  * @test {ParamParser#parseParamValue}
  * @test {ParamParser#parseParam}
  */
-describe('TestTypeFunction', ()=> {
+describe('TestTypeFunction', function () {
   const doc = readDoc('class/src/Type/Function.js~TestTypeFunction.html');
 
-  it('has function type.', ()=> {
+  it('has function type.', function () {
     findParent(doc, '[data-ice="summary"] [href$="#instance-method-method1"]', '[data-ice="target"]', (doc)=> {
       assert.includes(doc, null, 'method1(p1: function(x1: number, x2: string): boolean)');
       assert.multiIncludes(doc, '[data-ice="signature"] a', [

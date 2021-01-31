@@ -1,11 +1,11 @@
 import {readDoc, assert, findParent} from './../../util.js';
 
 /** @test {DocResolver#_resolveDuplication} */
-describe('TestDuplicationDefinition', ()=> {
+describe('TestDuplicationDefinition', function () {
   const doc = readDoc('class/src/Duplication/Definition.js~TestDuplicationDefinition.html');
 
-  describe('in summary', ()=> {
-    it('has setter/getter/method.', ()=> {
+  describe('in summary', function () {
+    it('has setter/getter/method.', function () {
       findParent(doc, '[data-ice="summary"] [href$="#instance-set-value"]', '[data-ice="target"]', (doc)=> {
         assert.includes(doc, null, 'public set value: number');
       });
@@ -20,8 +20,8 @@ describe('TestDuplicationDefinition', ()=> {
     });
   });
 
-  describe('in details', ()=>{
-    it('has setter/getter/method.', ()=>{
+  describe('in details', function () {
+    it('has setter/getter/method.', function () {
       findParent(doc, '[id="instance-set-value"]', '[data-ice="detail"]', (doc)=>{
         assert.includes(doc, null, 'public set value: number');
       });

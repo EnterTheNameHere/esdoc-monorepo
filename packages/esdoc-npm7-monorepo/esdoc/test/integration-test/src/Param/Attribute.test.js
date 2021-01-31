@@ -1,8 +1,8 @@
 import assert from 'assert';
 import {find} from '../../util';
 
-describe('test/Param/Attribute', ()=>{
-  it('has default value', ()=>{
+describe('test/Param/Attribute', function () {
+  it('has default value', function () {
     const doc = find('longname', 'src/Param/Attribute.js~TestParamAttribute#methodDefault');
 
     assert.equal(doc.params.length, 3);
@@ -17,7 +17,7 @@ describe('test/Param/Attribute', ()=>{
     assert.equal(doc.params[2].defaultRaw, ' new Foo()');
   });
 
-  it('is nullable/not-nullable', ()=>{
+  it('is nullable/not-nullable', function () {
     const doc = find('longname', 'src/Param/Attribute.js~TestParamAttribute#methodNullable');
 
     assert.equal(doc.params.length, 2);
@@ -25,7 +25,7 @@ describe('test/Param/Attribute', ()=>{
     assert.equal(doc.params[1].nullable, false);
   });
 
-  it('is optional', ()=>{
+  it('is optional', function () {
     const doc = find('longname', 'src/Param/Attribute.js~TestParamAttribute#methodOptional');
 
     assert.equal(doc.params.length, 1);

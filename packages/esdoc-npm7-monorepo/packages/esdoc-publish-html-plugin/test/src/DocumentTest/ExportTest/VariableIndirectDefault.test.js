@@ -1,10 +1,10 @@
 import {readDoc, assert, findParent} from './../../util.js';
 
 /** @test {VariableDoc#@_name} */
-describe('test export variable indirect default', ()=> {
+describe('test export variable indirect default', function () {
   const doc = readDoc('variable/index.html');
 
-  it('has default import path with indirect variable definition.', ()=> {
+  it('has default import path with indirect variable definition.', function () {
     findParent(doc, '[id="static-variable-testExportVariableIndirectDefault"]', '[data-ice="detail"]', (doc)=>{
       assert.includes(doc, '[data-ice="importPath"]', `import testExportVariableIndirectDefault from 'esdoc-test-fixture/src/Export/VariableIndirectDefault.js'`);
     });

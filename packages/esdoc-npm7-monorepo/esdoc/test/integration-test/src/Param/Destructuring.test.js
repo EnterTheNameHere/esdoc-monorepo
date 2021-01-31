@@ -1,8 +1,8 @@
 import assert from 'assert';
 import {find} from '../../util';
 
-describe('test/Param/Destructuring:', ()=>{
-  it('has array destructuring param', ()=>{
+describe('test/Param/Destructuring:', function () {
+  it('has array destructuring param', function () {
     const doc = find('longname', 'src/Param/Destructuring.js~TestParamDestructuring#methodArray');
     assert.deepEqual(doc.params, [
       {nullable: null, types: ['number[]'], spread: false, optional: false, name: 'p', description: ''},

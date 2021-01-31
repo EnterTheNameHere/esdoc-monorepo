@@ -4,10 +4,10 @@ import {readDoc, assert, findParent} from './../../util.js';
  * @test {ParamParser#parseParamValue}
  * @test {ParamParser#parseParam}
  */
-describe('TestTypeComplex', ()=> {
+describe('TestTypeComplex', function () {
   const doc = readDoc('class/src/Type/Complex.js~TestTypeComplex.html');
 
-  it('has function complex type.', ()=> {
+  it('has function complex type.', function () {
     findParent(doc, '[data-ice="summary"] [href$="#instance-method-method1"]', '[data-ice="target"]', (doc)=> {
       assert.includes(doc, null, 'method1(p1: function(x1: number[], x2: Map<string, boolean>): Object)');
       assert.multiIncludes(doc, '[data-ice="signature"] a', [
@@ -21,7 +21,7 @@ describe('TestTypeComplex', ()=> {
     });
   });
 
-  it('has complex generics type.', ()=>{
+  it('has complex generics type.', function () {
     findParent(doc, '[data-ice="summary"] [href$="#instance-method-method2"]', '[data-ice="target"]', (doc)=> {
       assert.includes(doc, null, 'method2(p1: Map<number, string[]>)');
       assert.multiIncludes(doc, '[data-ice="signature"] a', [
@@ -32,7 +32,7 @@ describe('TestTypeComplex', ()=> {
     });
   });
 
-  it('has complex record type.', ()=>{
+  it('has complex record type.', function () {
     findParent(doc, '[data-ice="summary"] [href$="#instance-method-method3"]', '[data-ice="target"]', (doc)=> {
       assert.includes(doc, null, 'method3(p1: {x1: number[], x2: Map<string, boolean>, x3: {y1: number, y2: string}})');
       assert.multiIncludes(doc, '[data-ice="signature"] a', [
@@ -46,7 +46,7 @@ describe('TestTypeComplex', ()=> {
     });
   });
 
-  it('has complex union type.', ()=>{
+  it('has complex union type.', function () {
     findParent(doc, '[data-ice="summary"] [href$="#instance-method-method4"]', '[data-ice="target"]', (doc)=> {
       assert.includes(doc, null, 'method4(p1: number | string, p2: number | string)');
       assert.multiIncludes(doc, '[data-ice="signature"] a', [
@@ -58,7 +58,7 @@ describe('TestTypeComplex', ()=> {
     });
   });
 
-  it('has complex union type in generics.', ()=>{
+  it('has complex union type in generics.', function () {
     findParent(doc, '[data-ice="summary"] [href$="#instance-method-method5"]', '[data-ice="target"]', (doc)=> {
       assert.includes(doc, null, 'method5(p1: Promise<string|number, Error>)');
       assert.multiIncludes(doc, '[data-ice="signature"] a', [
@@ -70,7 +70,7 @@ describe('TestTypeComplex', ()=> {
     });
   });
 
-  it('has complex union type with spread.', ()=>{
+  it('has complex union type with spread.', function () {
     findParent(doc, '[data-ice="summary"] [href$="#instance-method-method6"]', '[data-ice="target"]', (doc)=> {
       assert.includes(doc, null, 'method6(p1: ...(number|string))');
       assert.multiIncludes(doc, '[data-ice="signature"] a', [

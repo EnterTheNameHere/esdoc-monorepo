@@ -1,7 +1,7 @@
 import fs from 'fs';
 import assert from 'assert';
 
-describe('test search', ()=>{
+describe('test search', function () {
   const searchIndexJS = fs.readFileSync('./test/fixture/out/script/search_index.js', {encoding: 'utf8'}).toString();
   const searchIndexJSON = searchIndexJS.replace('window.esdocSearchIndex = ', '');
   const searchIndex = JSON.parse(searchIndexJSON);
@@ -17,7 +17,7 @@ describe('test search', ()=>{
     return results[0];
   }
 
-  it('has class index', ()=>{
+  it('has class index', function () {
     assert.deepEqual(find(searchIndex, 'class/src/Desc/Class.js~TestDescClass.html'), [
       'esdoc-test-fixture/src/desc/class.js~testdescclass',
       'class/src/Desc/Class.js~TestDescClass.html',
@@ -26,7 +26,7 @@ describe('test search', ()=>{
     ]);
   });
 
-  it('has member index', ()=>{
+  it('has member index', function () {
     assert.deepEqual(find(searchIndex, 'class/src/Desc/Class.js~TestDescClass.html#instance-member-p1'), [
       'src/desc/class.js~testdescclass#p1',
       'class/src/Desc/Class.js~TestDescClass.html#instance-member-p1',
@@ -35,7 +35,7 @@ describe('test search', ()=>{
     ]);
   });
 
-  it('has method index', ()=>{
+  it('has method index', function () {
     assert.deepEqual(find(searchIndex, 'class/src/Desc/Class.js~TestDescClass.html#instance-method-method1'), [
       'src/desc/class.js~testdescclass#method1',
       'class/src/Desc/Class.js~TestDescClass.html#instance-method-method1',
@@ -44,7 +44,7 @@ describe('test search', ()=>{
     ]);
   });
 
-  it('has interface index', ()=>{
+  it('has interface index', function () {
     assert.deepEqual(find(searchIndex, 'class/src/Interface/Definition.js~TestInterfaceDefinition.html'), [
       'esdoc-test-fixture/src/interface/definition.js~testinterfacedefinition',
       'class/src/Interface/Definition.js~TestInterfaceDefinition.html',
@@ -53,7 +53,7 @@ describe('test search', ()=>{
     ]);
   });
 
-  it('has function index', ()=>{
+  it('has function index', function () {
     assert.deepEqual(find(searchIndex, 'function/index.html#static-function-testDescFunction'), [
       'esdoc-test-fixture/src/desc/function.js~testdescfunction',
       'function/index.html#static-function-testDescFunction',
@@ -62,7 +62,7 @@ describe('test search', ()=>{
     ]);
   });
 
-  it('has variable index', ()=>{
+  it('has variable index', function () {
     assert.deepEqual(find(searchIndex, 'variable/index.html#static-variable-testDescVariable'), [
       'esdoc-test-fixture/src/desc/variable.js~testdescvariable',
       'variable/index.html#static-variable-testDescVariable',
@@ -71,7 +71,7 @@ describe('test search', ()=>{
     ]);
   });
 
-  it('has typedef index', ()=>{
+  it('has typedef index', function () {
     assert.deepEqual(find(searchIndex, 'typedef/index.html#static-typedef-TestTypedefDefinition'), [
       'src/typedef/definition.js~testtypedefdefinition',
       'typedef/index.html#static-typedef-TestTypedefDefinition',
@@ -80,7 +80,7 @@ describe('test search', ()=>{
     ]);
   });
 
-  it('has external index', ()=>{
+  it('has external index', function () {
     assert.deepEqual(find(searchIndex, 'http://example.com'), [
       'src/external/definition.js~testexternaldefinition',
       'http://example.com',
@@ -89,7 +89,7 @@ describe('test search', ()=>{
     ]);
   });
 
-  it('has file index', ()=>{
+  it('has file index', function () {
     assert.deepEqual(find(searchIndex, 'file/src/Desc/Class.js.html'), [
       'src/desc/class.js',
       'file/src/Desc/Class.js.html',
@@ -98,7 +98,7 @@ describe('test search', ()=>{
     ]);
   });
 
-  it('has test file index', ()=>{
+  it('has test file index', function () {
     assert.deepEqual(find(searchIndex, 'test-file/test/Desc.test.js.html'), [
       'test/desc.test.js',
       'test-file/test/Desc.test.js.html',
@@ -107,7 +107,7 @@ describe('test search', ()=>{
     ]);
   });
 
-  it('has test index', ()=>{
+  it('has test index', function () {
     assert.deepEqual(find(searchIndex, 'test-file/test/Desc.test.js.html#lineNumber2'), [
       'testdescclass src/desc/class.js~testdescclass,testdescclass',
       'test-file/test/Desc.test.js.html#lineNumber2',

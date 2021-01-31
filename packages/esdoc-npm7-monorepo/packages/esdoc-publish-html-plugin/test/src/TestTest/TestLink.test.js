@@ -1,10 +1,10 @@
 import {readDoc, assert, findParent} from './../util.js';
 
 /** @test {ClassDocBuilder} */
-describe('test link of test', ()=>{
+describe('test link of test', function () {
   const doc = readDoc('class/src/Desc/Class.js~TestDescClass.html');
 
-  it('has link of test at class', ()=>{
+  it('has link of test at class', function () {
     assert.multiIncludes(doc, '.self-detail [data-ice="test"] a', [
       'Use describe style mocha interface',
       'Use suite style mocha interface'
@@ -16,7 +16,7 @@ describe('test link of test', ()=>{
     ], 'href');
   });
 
-  it('has link of test at constructor', ()=>{
+  it('has link of test at constructor', function () {
     findParent(doc, '#instance-constructor-constructor', '[data-ice="detail"]', (doc)=>{
       assert.multiIncludes(doc, '[data-ice="test"] a', [
         'Use describe style mocha interface Use it style mocha interface',
@@ -30,7 +30,7 @@ describe('test link of test', ()=>{
     });
   });
 
-  it('has link of test at member', ()=>{
+  it('has link of test at member', function () {
     findParent(doc, '#instance-member-p1', '[data-ice="detail"]', (doc)=>{
       assert.multiIncludes(doc, '[data-ice="test"] a', [
         'Use describe style mocha interface Nested describe',
@@ -44,7 +44,7 @@ describe('test link of test', ()=>{
     });
   });
 
-  it('has link of test at method', ()=>{
+  it('has link of test at method', function () {
     findParent(doc, '#instance-method-method1', '[data-ice="detail"]', (doc)=>{
       assert.multiIncludes(doc, '[data-ice="test"] a', [
         'Use describe style mocha interface Use context style mocha interface',

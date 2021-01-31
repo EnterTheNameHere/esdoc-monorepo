@@ -2,25 +2,25 @@ const fs = require('fs');
 const assert = require('assert');
 const cheerio = require('cheerio');
 
-describe('test/MyClass.js:', ()=> {
+describe('test/MyClass.js:', function () {
   const $ = cheerio.load(fs.readFileSync('./test/out/index.html'));
 
-  it('has brand logo', ()=>{
+  it('has brand logo', function () {
     assert.equal($('header a[href="./"] img[src="./image/brand_logo.png"]').length, 1);
     assert(fs.readFileSync('./test/out/image/brand_logo.png'));
   });
 
-  it('has brand title', ()=>{
+  it('has brand title', function () {
     assert.equal($('title').text(), 'Home | @enterthenamehere/esdoc-brand-plugin-test');
   });
 
-  it('has repository link', ()=>{
+  it('has repository link', function () {
     assert.equal($('header a[href="https://github.com/esdoc/esdoc-optional-plugins"]').length, 1);
     assert.equal($('header img[src="./image/github.png"]').length, 1);
     assert(fs.readFileSync('./test/out/image/github.png'));
   });
 
-  it('has meta tag', ()=>{
+  it('has meta tag', function () {
     // normal
     assert.equal($('meta[name="description"]').attr('content'), 'this is esdoc-brand-plugin test');
 

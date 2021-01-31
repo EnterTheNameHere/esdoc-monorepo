@@ -4,11 +4,11 @@ import {readDoc, assert, find, findParent} from './../../util.js';
  * @test {ClassDoc#@extends}
  * @test {ClassDocBuilder#_buildInheritedSummaryHTML}
  */
-describe('test deep extends', ()=>{
-  describe('TestExtendsDeepSquare', ()=> {
+describe('test deep extends', function () {
+  describe('TestExtendsDeepSquare', function () {
     const doc = readDoc('class/src/Extends/Deep.js~TestExtendsDeepSquare.html');
 
-    it('has extends chain.', ()=> {
+    it('has extends chain.', function () {
       find(doc, '.self-detail [data-ice="extendsChain"]', (doc)=>{
         assert.includes(doc, null, 'TestExtendsDeepShape → TestExtendsDeepRectangle → TestExtendsDeepSquare');
         assert.includes(doc, 'a[href$="Array"]', 'Array');
@@ -17,7 +17,7 @@ describe('test deep extends', ()=>{
       });
     });
 
-    it('has super^1 class methods and more.', ()=>{
+    it('has super^1 class methods and more.', function () {
       findParent(doc, '[data-ice="inheritedSummary"] a[href$="TestExtendsDeepRectangle.html"]', '[data-ice="summary"]', (doc)=>{
         assert.includes(doc, 'thead', 'From class TestExtendsDeepRectangle');
         assert.includes(doc, 'thead a', 'class/src/Extends/Deep.js~TestExtendsDeepRectangle.html', 'href');
@@ -34,7 +34,7 @@ describe('test deep extends', ()=>{
       });
     });
 
-    it('has super^2 class methods and more.', ()=>{
+    it('has super^2 class methods and more.', function () {
       findParent(doc, '[data-ice="inheritedSummary"] a[href$="TestExtendsDeepShape.html"]', '[data-ice="summary"]', (doc)=>{
         assert.includes(doc, 'thead', 'From class TestExtendsDeepShape');
         assert.includes(doc, 'thead a', 'class/src/Extends/Deep.js~TestExtendsDeepShape.html', 'href');
@@ -52,26 +52,26 @@ describe('test deep extends', ()=>{
     });
   });
 
-  describe('TestExtendsDeepRectangle', ()=>{
+  describe('TestExtendsDeepRectangle', function () {
     const doc = readDoc('class/src/Extends/Deep.js~TestExtendsDeepRectangle.html');
 
-    it('has direct subclass.', ()=> {
+    it('has direct subclass.', function () {
       find(doc, '.self-detail [data-ice="directSubclass"]', (doc)=>{
         assert.includes(doc, 'a[href="class/src/Extends/Deep.js~TestExtendsDeepSquare.html"]', 'TestExtendsDeepSquare');
       });
     });
   });
 
-  describe('TestExtendsDeepShape', ()=>{
+  describe('TestExtendsDeepShape', function () {
     const doc = readDoc('class/src/Extends/Deep.js~TestExtendsDeepShape.html');
 
-    it('has direct subclass.', ()=> {
+    it('has direct subclass.', function () {
       find(doc, '.self-detail [data-ice="directSubclass"]', (doc)=>{
         assert.includes(doc, 'a[href="class/src/Extends/Deep.js~TestExtendsDeepRectangle.html"]', 'TestExtendsDeepRectangle');
       });
     });
 
-    it('has indirect subclass.', ()=> {
+    it('has indirect subclass.', function () {
       find(doc, '.self-detail [data-ice="indirectSubclass"]', (doc)=>{
         assert.includes(doc, 'a[href="class/src/Extends/Deep.js~TestExtendsDeepSquare.html"]', 'TestExtendsDeepSquare');
       });

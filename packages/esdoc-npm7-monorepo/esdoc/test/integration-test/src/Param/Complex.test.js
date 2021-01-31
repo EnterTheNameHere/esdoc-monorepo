@@ -1,29 +1,29 @@
 import assert from 'assert';
 import {find} from '../../util';
 
-describe('test/Param/Complex:', ()=>{
-  it('has function param', ()=>{
+describe('test/Param/Complex:', function () {
+  it('has function param', function () {
     const doc = find('longname', 'src/Param/Complex.js~TestParamComplex#methodFunction');
     assert.equal(doc.params.length, 1);
     assert.equal(doc.params[0].types.length, 1);
     assert.equal(doc.params[0].types[0], 'function(x1: number[], x2: Map<string, boolean>): Object');
   });
 
-  it('has generics param', ()=>{
+  it('has generics param', function () {
     const doc = find('longname', 'src/Param/Complex.js~TestParamComplex#methodGenerics');
     assert.equal(doc.params.length, 1);
     assert.equal(doc.params[0].types.length, 1);
     assert.equal(doc.params[0].types[0], 'Map<number, string[]>');
   });
 
-  it('has record param', ()=>{
+  it('has record param', function () {
     const doc = find('longname', 'src/Param/Complex.js~TestParamComplex#methodRecord');
     assert.equal(doc.params.length, 1);
     assert.equal(doc.params[0].types.length, 1);
     assert.equal(doc.params[0].types[0], '{x1: number[], x2: Map<string, boolean>, x3: {y1: number, y2: string}}');
   });
 
-  it('has union param', ()=>{
+  it('has union param', function () {
     const doc = find('longname', 'src/Param/Complex.js~TestParamComplex#methodUnion');
     assert.equal(doc.params.length, 2);
 
@@ -36,7 +36,7 @@ describe('test/Param/Complex:', ()=>{
     assert.equal(doc.params[1].nullable, false);
   });
 
-  it('has union and generics param', ()=>{
+  it('has union and generics param', function () {
     const doc = find('longname', 'src/Param/Complex.js~TestParamComplex#methodUnionAndGenerics');
     assert.equal(doc.params.length, 1);
 
@@ -44,7 +44,7 @@ describe('test/Param/Complex:', ()=>{
     assert.equal(doc.params[0].types[0], 'Promise<string|number, Error>');
   });
 
-  it('has union and spread param', ()=>{
+  it('has union and spread param', function () {
     const doc = find('longname', 'src/Param/Complex.js~TestParamComplex#methodUnionAndSpread');
     assert.equal(doc.params.length, 1);
 

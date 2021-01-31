@@ -1,8 +1,8 @@
 import assert from 'assert';
 import {find} from '../../util';
 
-describe('test/Param/Param:', ()=>{
-  it('has param', ()=>{
+describe('test/Param/Param:', function () {
+  it('has param', function () {
     const doc = find('longname', 'src/Param/Param.js~TestParam#method');
     assert.equal(doc.params.length, 1);
     assert.deepEqual(doc.params[0].types, ['number']);

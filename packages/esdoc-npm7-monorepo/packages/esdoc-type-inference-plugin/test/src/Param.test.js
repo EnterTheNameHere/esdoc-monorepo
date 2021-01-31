@@ -1,8 +1,8 @@
 const assert = require('assert');
 const {find} = require('../util');
 
-describe('test/Param.js:', ()=> {
-  it('infer literal param', ()=>{
+describe('test/Param.js:', function () {
+  it('infer literal param', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodLiteral');
     assert.deepEqual(doc.params, [
       {
@@ -17,7 +17,7 @@ describe('test/Param.js:', ()=> {
     ]);
   });
 
-  it('infer identifier param', ()=>{
+  it('infer identifier param', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodIdentifier');
     assert.deepEqual(doc.params, [
       {
@@ -32,7 +32,7 @@ describe('test/Param.js:', ()=> {
     ]);
   });
 
-  it('infer new expression param', ()=>{
+  it('infer new expression param', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodNewExpression');
     assert.deepEqual(doc.params, [
       {
@@ -45,7 +45,7 @@ describe('test/Param.js:', ()=> {
     ]);
   });
 
-  it('infer array param', ()=>{
+  it('infer array param', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodArray');
     assert.deepEqual(doc.params, [
       {
@@ -63,7 +63,7 @@ describe('test/Param.js:', ()=> {
     ]);
   });
 
-  it('infer array destructuring param', ()=>{
+  it('infer array destructuring param', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodArrayDestructuring');
     assert.deepEqual(doc.params, [
       {
@@ -80,7 +80,7 @@ describe('test/Param.js:', ()=> {
     ]);
   });
 
-  it('infer array default and destructuring param', ()=>{
+  it('infer array default and destructuring param', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodArrayAndDestructuring');
     assert.deepEqual(doc.params, [
       {
@@ -98,7 +98,7 @@ describe('test/Param.js:', ()=> {
     ]);
   });
 
-  it('infer array sparse destructuring param', ()=>{
+  it('infer array sparse destructuring param', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodArraySparseDestructuring');
     assert.deepEqual(doc.params, [
       {
@@ -115,7 +115,7 @@ describe('test/Param.js:', ()=> {
     ]);
   });
 
-  it('infer object param', ()=>{
+  it('infer object param', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodObject');
     assert.deepEqual(doc.params, [
       {
@@ -133,7 +133,7 @@ describe('test/Param.js:', ()=> {
     ]);
   });
 
-  it('infer object destructuring param', ()=>{
+  it('infer object destructuring param', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodObjectDestructuring');
     assert.deepEqual(doc.params, [
       {
@@ -150,7 +150,7 @@ describe('test/Param.js:', ()=> {
     ]);
   });
 
-  it('infer object default and destructuring param', ()=>{
+  it('infer object default and destructuring param', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodObjectAndDestructuring');
     assert.deepEqual(doc.params, [
       {
@@ -168,7 +168,7 @@ describe('test/Param.js:', ()=> {
     ]);
   });
 
-  it('infer spread param', ()=>{
+  it('infer spread param', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodSpread');
     assert.deepEqual(doc.params, [
       {
@@ -181,7 +181,7 @@ describe('test/Param.js:', ()=> {
     ]);
   });
 
-  it('infer array destructuring and partial default param', ()=>{
+  it('infer array destructuring and partial default param', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodArrayDestructuringAndPartialDefault');
     assert.deepEqual(doc.params, [
       {
@@ -201,4 +201,3 @@ describe('test/Param.js:', ()=> {
     ]);
   });
 });
-

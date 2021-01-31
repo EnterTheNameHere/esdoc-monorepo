@@ -1,13 +1,13 @@
 const assert = require('assert');
 const {find, file} = require('../util');
 
-describe('test ecmascript proposal result:', ()=> {
-  it('parses AsyncGenerators', ()=>{
+describe('test ecmascript proposal result:', function () {
+  it('parses AsyncGenerators', function () {
     const doc = find('longname', 'src/AsyncGenerators.js~AsyncGenerators#method');
     assert(doc);
   });
 
-  it('parses ClassProperties', ()=>{
+  it('parses ClassProperties', function () {
     let doc = find('longname', 'src/ClassProperties.js~ClassProperties.p1');
     assert.equal(doc.static, true);
     assert.equal(doc.type.types[0], 'number');
@@ -17,7 +17,7 @@ describe('test ecmascript proposal result:', ()=> {
     assert.equal(doc.type.types[0], 'number');
   });
 
-  it('parses Decorators', ()=>{
+  it('parses Decorators', function () {
     let doc = find('longname', 'src/Decorators.js~Decorators');
     assert.deepEqual(doc.decorators, [{name: 'annotation1', arguments: null}]);
 
@@ -37,32 +37,32 @@ describe('test ecmascript proposal result:', ()=> {
     assert.deepEqual(doc.decorators, [{name: 'annotation1.bar', arguments: null}, {name: 'annotation1.foo', arguments: '(1, 2)'}]);
   });
 
-  it('parses DoExpressions', ()=>{
+  it('parses DoExpressions', function () {
     const doc = find('longname', 'src/DoExpressions.js~DoExpressions');
     assert(doc);
   });
 
-  it('parses DynamicImport', ()=>{
+  it('parses DynamicImport', function () {
     const doc = find('longname', 'src/DynamicImport.js~DynamicImport');
     assert(doc);
   });
 
-  it('parses ExportExtensions', ()=>{
+  it('parses ExportExtensions', function () {
     const doc = find('longname', 'src/ExportExtensions.js~ExportExtensions');
     assert(doc);
   });
 
-  it('parses FunctionBind', ()=>{
+  it('parses FunctionBind', function () {
     const doc = find('longname', 'src/FunctionBind.js~FunctionBind');
     assert(doc);
   });
 
-  it('parses FunctionSent', ()=>{
+  it('parses FunctionSent', function () {
     const doc = find('longname', 'src/FunctionSent.js~FunctionSent');
     assert(doc);
   });
 
-  it('parses ObjectRestSpread', ()=>{
+  it('parses ObjectRestSpread', function () {
     let doc = find('longname', 'src/ObjectRestSpread.js~ObjectRestSpread#method1');
     assert.deepEqual(doc.params, [
       {
@@ -128,4 +128,3 @@ describe('test ecmascript proposal result:', ()=> {
     });
   });
 });
-

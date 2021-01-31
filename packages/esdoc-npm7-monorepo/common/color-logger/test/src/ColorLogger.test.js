@@ -1,7 +1,7 @@
 import assert from 'assert';
 import Logger from '../../src/ColorLogger.js';
 
-describe('ColorLogger:', ()=>{
+describe('ColorLogger:', function () {
   function test(actual, level, expect) {
     level = level.toUpperCase();
     assert(actual.includes(`[${level}]`));
@@ -25,7 +25,7 @@ describe('ColorLogger:', ()=>{
     assert(actual.includes(expect));
   }
 
-  it('show log.', ()=>{
+  it('show log.', function () {
     let log;
 
     log = Logger.v('verbose log');
@@ -47,7 +47,7 @@ describe('ColorLogger:', ()=>{
     test(log, 'n', 'normal log');
   });
 
-  it ('show log with object.', ()=>{
+  it ('show log with object.', function () {
     let log = Logger.v({foo: 123, bar: [1, 2, 3]});
     assert(log.includes(`{
   "foo": 123,
@@ -59,7 +59,7 @@ describe('ColorLogger:', ()=>{
 }`));
   });
 
-  it('does not show log.', ()=>{
+  it('does not show log.', function () {
     Logger.debug = false;
     const orig = console.log;
     console.log = ()=> {assert(false)};
@@ -68,7 +68,7 @@ describe('ColorLogger:', ()=>{
     Logger.debug = true;
   });
 
-  it('get all logs', ()=>{
+  it('get all logs', function () {
     Logger.clearAllLogs();
     Logger.d('foo');
     Logger.d('bar');

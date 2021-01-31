@@ -4,8 +4,8 @@ const MyClass = require('../src/MyClass');
 /**
  * @test {MyClass}
  */
-describe('MyClass', ()=>{
-  it('has MyClass', ()=>{
+describe('MyClass', function () {
+  it('has MyClass', function () {
     assert(MyClass)
   });
 });

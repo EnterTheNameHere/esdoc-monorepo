@@ -1,10 +1,10 @@
 import {readDoc, assert, findParent} from './../../util.js';
 
 /** @test {AbstractDoc#@throws} */
-describe('TestThrowsMethod', ()=> {
+describe('TestThrowsMethod', function () {
   const doc = readDoc('class/src/Throws/Method.js~TestThrowsMethod.html');
 
-  it('has throws.', ()=>{
+  it('has throws.', function () {
     findParent(doc, '[id="instance-method-method1"]', '[data-ice="detail"]', (doc)=>{
       assert.includes(doc, 'tr[data-ice="throw"]:nth-child(1)', 'TestThrowsMethodError1 throw error if foo.');
       assert.includes(doc, 'tr[data-ice="throw"]:nth-child(1) a', 'class/src/Throws/Method.js~TestThrowsMethodError1.html', 'href');

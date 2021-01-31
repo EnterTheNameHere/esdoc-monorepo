@@ -1,16 +1,16 @@
 import {readDoc, assert, find} from './../util.js';
 
 /** @test {ManualDocBuilder} */
-describe('test manual', ()=>{
-  describe('test navigation', ()=>{
-    it('has manual link in header', ()=>{
+describe('test manual', function () {
+  describe('test navigation', function () {
+    it('has manual link in header', function () {
       const doc = readDoc('index.html');
       assert.includes(doc, '[data-ice="manualHeaderLink"]', 'Manual');
       assert.includes(doc, '[data-ice="manualHeaderLink"]', './manual/index.html', 'href');
     });
 
     /** @test {ManualDocBuilder#_buildManualNav} */
-    it('has manual navigation', ()=>{
+    it('has manual navigation', function () {
       const doc = readDoc('manual/index.html');
       find(doc, '[data-ice="nav"]', (doc)=>{
         assert.includes(doc, '[data-ice="manual"]:nth-of-type(1)', 'Overview Feature Demo License Author');
@@ -100,70 +100,70 @@ describe('test manual', ()=>{
   });
 
   /** @test {ManualDocBuilder#_buildManualIndex} */
-  describe('test each heading tags', ()=>{
+  describe('test each heading tags', function () {
     const doc = readDoc('manual/index.html');
 
-    it('has overview heading tags', ()=>{
+    it('has overview heading tags', function () {
       find(doc, '.manual-card-wrap:nth-of-type(1)', (doc)=>{
         assert.includes(doc, '.manual-card > a', 'manual/overview.html', 'href');
       });
     });
 
-    it('has design heading tags', ()=>{
+    it('has design heading tags', function () {
       find(doc, '.manual-card-wrap:nth-of-type(2)', (doc)=>{
         assert.includes(doc, '.manual-card > a', 'manual/design.html', 'href');
       });
     });
 
-    it('has installation heading tags', ()=>{
+    it('has installation heading tags', function () {
       find(doc, '.manual-card-wrap:nth-of-type(3)', (doc)=>{
         assert.includes(doc, '.manual-card > a', 'manual/installation.html', 'href');
       });
     });
 
-    it('has tutorial heading tags', ()=>{
+    it('has tutorial heading tags', function () {
       find(doc, '.manual-card-wrap:nth-of-type(4)', (doc)=>{
         assert.includes(doc, '.manual-card > a', 'manual/tutorial.html', 'href');
       });
     });
 
-    it('has usage heading tags', ()=>{
+    it('has usage heading tags', function () {
       find(doc, '.manual-card-wrap:nth-of-type(5)', (doc)=>{
         assert.includes(doc, '.manual-card > a', 'manual/usage1.html', 'href');
       });
     });
 
-    it('has usage2 heading tags', ()=>{
+    it('has usage2 heading tags', function () {
       find(doc, '.manual-card-wrap:nth-of-type(6)', (doc)=>{
         assert.includes(doc, '.manual-card > a', 'manual/usage2.html', 'href');
       });
     });
 
-    it('has configuration heading tags', ()=>{
+    it('has configuration heading tags', function () {
       find(doc, '.manual-card-wrap:nth-of-type(7)', (doc)=>{
         assert.includes(doc, '.manual-card > a', 'manual/configuration.html', 'href');
       });
     });
 
-    it('has example heading tags', ()=>{
+    it('has example heading tags', function () {
       find(doc, '.manual-card-wrap:nth-of-type(8)', (doc)=>{
         assert.includes(doc, '.manual-card > a', 'manual/example.html', 'href');
       });
     });
 
-    it('has advanced heading tags', ()=>{
+    it('has advanced heading tags', function () {
       find(doc, '.manual-card-wrap:nth-of-type(9)', (doc)=>{
         assert.includes(doc, '.manual-card > a', 'manual/advanced.html', 'href');
       });
     });
 
-    it('has faq heading tags', ()=>{
+    it('has faq heading tags', function () {
       find(doc, '.manual-card-wrap:nth-of-type(10)', (doc)=>{
         assert.includes(doc, '.manual-card > a', 'manual/faq.html', 'href');
       });
     });
 
-    it('has changelog heading tags', ()=>{
+    it('has changelog heading tags', function () {
       find(doc, '.manual-card-wrap:nth-of-type(11)', (doc)=>{
         assert.includes(doc, '.manual-card > a', 'manual/CHANGELOG.html', 'href');
       });
@@ -171,50 +171,50 @@ describe('test manual', ()=>{
   });
 
   /** @test {ManualDocBuilder#_buildManual} */
-  describe('test each manual', ()=>{
-    it('has overview', ()=>{
+  describe('test each manual', function () {
+    it('has overview', function () {
       const doc = readDoc('manual/overview.html');
       assert.includes(doc, '.github-markdown h1', 'Overview');
       assert.includes(doc, '.github-markdown[data-ice="content"]', 'ESDoc is a documentation generator for JavaScript(ES6).');
     });
 
-    it('has installation', ()=>{
+    it('has installation', function () {
       const doc = readDoc('manual/installation.html');
       assert.includes(doc, '.github-markdown h1', 'Installation');
       assert.includes(doc, '.github-markdown[data-ice="content"]', 'npm install -g esdoc');
     });
 
-    it('has usage', ()=>{
+    it('has usage', function () {
       const doc = readDoc('manual/usage1.html');
       assert.includes(doc, '.github-markdown h1:nth-of-type(1)', 'Usage');
       assert.includes(doc, '.github-markdown[data-ice="content"]', 'esdoc -c esdoc.json');
     });
 
-    it('has tutorial', ()=>{
+    it('has tutorial', function () {
       const doc = readDoc('manual/tutorial.html');
       assert.includes(doc, '.github-markdown h1', 'Tutorial');
       assert.includes(doc, '.github-markdown[data-ice="content"]', 'this is tutorial');
     });
 
-    it('has configuration', ()=>{
+    it('has configuration', function () {
       const doc = readDoc('manual/configuration.html');
       assert.includes(doc, '.github-markdown h1', 'Configuration');
       assert.includes(doc, '.github-markdown[data-ice="content"]', 'this is configuration');
     });
 
-    it('has example', ()=>{
+    it('has example', function () {
       const doc = readDoc('manual/example.html');
       assert.includes(doc, '.github-markdown h1', 'Example');
       assert.includes(doc, '.github-markdown[data-ice="content"] h2:nth-of-type(1)', 'Minimum Config');
     });
 
-    it('has faq', ()=>{
+    it('has faq', function () {
       const doc = readDoc('manual/faq.html');
       assert.includes(doc, '.github-markdown h1', 'FAQ');
       assert.includes(doc, '.github-markdown[data-ice="content"]', 'ESDoc has two goals.');
     });
 
-    it('has changelog', ()=>{
+    it('has changelog', function () {
       const doc = readDoc('manual/CHANGELOG.html');
       assert.includes(doc, '.github-markdown h1', 'Changelog');
       assert.includes(doc, '.github-markdown[data-ice="content"] h2:nth-of-type(1)', '0.0.1');
