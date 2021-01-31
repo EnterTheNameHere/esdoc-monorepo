@@ -140,6 +140,7 @@ npm run test
 cd "$originalLocation\packages\esdoc-react-plugin"
 Write-Host "Updating $(Get-Location)"
 npm update
+npm run test
 
 cd "$originalLocation\packages\esdoc-flow-type-plugin"
 Write-Host "Updating $(Get-Location)"
