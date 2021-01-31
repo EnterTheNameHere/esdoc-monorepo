@@ -52,8 +52,18 @@ describe('test/Kind/Kind:', function () {
     assert.equal(doc.kind, 'external');
   });
 
-  xit('has kind = file');
+  it('has kind = file', function () {
+      const doc = find('longname', new RegExp('src/Kind/Kind.js$', 'u'));
+      assert.equal(doc.kind, 'file');
+  });
 
-  xit('has kind = packageJOSN');
-  xit('has kind = index');
+  it('has kind = packageJSON', function () {
+      const doc = find('longname', new RegExp('package.json$', 'u'));
+      assert.equal(doc.kind, 'packageJSON');
+  });
+  
+  it('has kind = index', function () {
+      const doc = find('longname', new RegExp('README.md$', 'u'));
+      assert.equal(doc.kind, 'index');
+  });
 });
