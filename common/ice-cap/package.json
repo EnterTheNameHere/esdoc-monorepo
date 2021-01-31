@@ -3,6 +3,7 @@
   "version": "0.2.0-beta.1",
   "description": "Programmable DOM-based HTML template library.",
   "author": "h13i32maru",
+  "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/common/ice-cap",
   "license": "MIT",
   "repository": {
     "type": "git",
