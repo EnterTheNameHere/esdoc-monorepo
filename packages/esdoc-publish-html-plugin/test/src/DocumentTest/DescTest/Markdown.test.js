@@ -1,11 +1,11 @@
 import {readDoc, assert, find} from './../../util.js';
 
 /** @test {AbstractDoc#@desc} */
-describe('TestDescMarkdown:', ()=> {
+describe('TestDescMarkdown:', function () {
   const doc = readDoc('class/src/Desc/Markdown.js~TestDescMarkdown.html');
 
-  describe('in self detail', ()=> {
-    it('has markdown desc.', ()=> {
+  describe('in self detail', function () {
+    it('has markdown desc.', function () {
       find(doc, '.self-detail [data-ice="description"]', (doc)=>{
         // line
         assert.includes(doc.find('p:nth-child(1)'), null, 'this is TestDescMarkdown.');

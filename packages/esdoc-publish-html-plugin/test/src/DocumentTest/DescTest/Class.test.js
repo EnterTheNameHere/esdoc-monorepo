@@ -1,17 +1,17 @@
 import {readDoc, assert, findParent} from './../../util.js';
 
 /** @test {AbstractDoc#@desc} */
-describe('TestDescClass', ()=> {
+describe('TestDescClass', function () {
   const doc = readDoc('class/src/Desc/Class.js~TestDescClass.html');
 
-  describe('in self detail', ()=> {
-    it('has desc.', ()=> {
+  describe('in self detail', function () {
+    it('has desc.', function () {
       assert.includes(doc, '.self-detail [data-ice="description"]', 'this is TestDescClass.');
     });
   });
 
-  describe('in summary', ()=> {
-    it('has desc', ()=> {
+  describe('in summary', function () {
+    it('has desc', function () {
       assert.includes(doc, '[data-ice="constructorSummary"] [data-ice="description"]', 'this is constructor.');
 
       findParent(doc, '[data-ice="summary"] [href$="#instance-member-p1"]', '[data-ice="target"]', (doc)=> {
@@ -24,8 +24,8 @@ describe('TestDescClass', ()=> {
     });
   });
 
-  describe('in details', ()=>{
-    it('has desc.', ()=>{
+  describe('in details', function () {
+    it('has desc.', function () {
       findParent(doc, '[id="instance-constructor-constructor"]', '[data-ice="detail"]', (doc)=>{
         assert.includes(doc, '[data-ice="description"]', 'this is constructor.');
       });

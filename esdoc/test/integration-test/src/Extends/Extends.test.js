@@ -1,13 +1,13 @@
 import assert from 'assert';
 import {find} from '../../util';
 
-describe('test/Extends/Extends:', ()=>{
-  it('extends builtin', ()=>{
+describe('test/Extends/Extends:', function () {
+  it('extends builtin', function () {
     const doc = find('longname', 'src/Extends/Extends.js~TestExtendsBuiltin');
     assert.deepEqual(doc.extends, ['Array']);
   });
 
-  it('extends deep', ()=>{
+  it('extends deep', function () {
     const [doc1, doc2, doc3] = find('longname',
       'src/Extends/Extends.js~TestExtendsDeepShape',
       'src/Extends/Extends.js~TestExtendsDeepRectangle',
@@ -19,29 +19,29 @@ describe('test/Extends/Extends:', ()=>{
     assert.deepEqual(doc3.extends, ['TestExtendsDeepRectangle']);
   });
 
-  it('extends expression', ()=>{
+  it('extends expression', function () {
     const doc = find('longname', 'src/Extends/Extends.js~TestExtendsExpression');
     assert.deepEqual(doc.extends, ['TestExtendsExpressionInner']);
     assert.equal(doc.expressionExtends, 'TestExtendsExpressionInner(123)');
   });
 
-  it('extends inner', ()=>{
+  it('extends inner', function () {
     const doc = find('longname', 'src/Extends/Extends.js~TestExtendsInner');
     assert.deepEqual(doc.extends, ['_TestExtendsInner']);
   });
 
-  it('extends mixin', ()=>{
+  it('extends mixin', function () {
     const doc = find('longname', 'src/Extends/Extends.js~TestExtendsMixin');
     assert.deepEqual(doc.extends, ['TestExtendsMixinInner1', 'TestExtendsMixinInner2']);
     assert.equal(doc.expressionExtends, 'mixin(TestExtendsMixinInner1, TestExtendsMixinInner2)');
   });
 
-  it('extends outer', ()=>{
+  it('extends outer', function () {
     const doc = find('longname', 'src/Extends/Extends.js~TestExtendsOuter');
     assert.deepEqual(doc.extends, ['src/Extends/Foo/Bar.js~Bar']);
   });
 
-  it('extends property', ()=>{
+  it('extends property', function () {
     const doc = find('longname', 'src/Extends/Extends.js~TestExtendsProperty');
     assert.deepEqual(doc.extends, ['TestExtendsPropertyPackage~obj.TestExtendsPropertyInner']);
   });

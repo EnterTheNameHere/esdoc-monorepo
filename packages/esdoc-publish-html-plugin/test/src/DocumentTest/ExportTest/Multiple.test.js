@@ -1,8 +1,8 @@
 import {readDoc, assert, findParent} from './../../util.js';
 
 /** @test {DocFactory#_inspectExportNamedDeclaration} */
-describe('test multiple export', ()=> {
-  it('is documented.', ()=>{
+describe('test multiple export', function () {
+  it('is documented.', function () {
     const doc1 = readDoc('class/src/Export/Multiple.js~TestExportMultiple.html');
     assert.includes(doc1, '.header-notice [data-ice="importPath"]', `import {TestExportMultiple} from 'esdoc-test-fixture/src/Export/Multiple.js'`);
 

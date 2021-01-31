@@ -1,8 +1,8 @@
 const assert = require('assert');
 const fs = require('fs');
 
-describe('test/MyClass.js:', ()=> {
-  it('has coverage', ()=>{
+describe('test/MyClass.js:', function () {
+  it('has coverage', function () {
     const tmp = fs.readFileSync('./test/out/coverage.json').toString();
     const coverage = JSON.parse(tmp);
 
@@ -18,9 +18,8 @@ describe('test/MyClass.js:', ()=> {
     });
   });
 
-  it('has coverage badge', ()=> {
+  it('has coverage badge', function () {
     const badge = fs.readFileSync('./test/out/badge.svg').toString();
     assert(badge.includes('80%'));
   });
 });
-

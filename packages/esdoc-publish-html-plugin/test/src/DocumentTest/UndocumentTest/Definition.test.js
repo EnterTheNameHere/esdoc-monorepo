@@ -5,10 +5,10 @@ import {readDoc, assert} from './../../util.js';
  * @test {AbstractDoc#@desc}
  * @test {DocResolver#_resolveUndocumentIdentifier}
  */
-describe('TestUndocumentDefinition', ()=> {
+describe('TestUndocumentDefinition', function () {
   const doc = readDoc('class/src/Undocument/Definition.js~TestUndocumentDefinition.html');
 
-  it('is exist', ()=> {
+  it('is exist', function () {
     assert.includes(doc, '.self-detail [data-ice="name"]', 'TestUndocumentDefinition');
   });
 });

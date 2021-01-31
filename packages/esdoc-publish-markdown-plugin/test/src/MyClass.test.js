@@ -1,23 +1,23 @@
 const assert = require('assert');
 const {hasLine} = require('../util');
 
-describe('test/MyClass.js:', ()=> {
-  it('has class', ()=>{
+describe('test/MyClass.js:', function () {
+  it('has class', function () {
     assert(hasLine('## `MyClass`'));
     assert(hasLine('this is MyClass'));
   });
 
-  it('has constructor', ()=>{
+  it('has constructor', function () {
     assert(hasLine('### `constructor()`'));
     assert(hasLine('this is constructor'));
   });
 
-  it('has member', ()=>{
+  it('has member', function () {
     assert(hasLine('### `member1: number`'));
     assert(hasLine('this is member1.'));
   });
 
-  it('has method', ()=>{
+  it('has method', function () {
     assert(hasLine('### `method1(p1: ...number): boolean`'));
     assert(hasLine('this is method1.'));
     assert(hasLine('| p1 | ...number |  | this is p1 |'));

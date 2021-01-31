@@ -4,8 +4,8 @@ import {readDoc, assert, find, findParent} from './../../util.js';
  * @test {DocFactory#_inspectExportDefaultDeclaration}
  * @test {DocFactory#_inspectExportNamedDeclaration}
  */
-describe('test default export with new expression and indirect.', ()=> {
-  it('has instance description', ()=> {
+describe('test default export with new expression and indirect.', function () {
+  it('has instance description', function () {
     const doc = readDoc('class/src/Export/NewExpressionIndirect.js~TestExportNewExpressionIndirect.html');
 
     find(doc, '[data-ice="instanceDocs"]', (doc)=>{
@@ -23,7 +23,7 @@ describe('test default export with new expression and indirect.', ()=> {
     assert(false);
   });
 
-  it('has class description', ()=>{
+  it('has class description', function () {
     const doc = readDoc('variable/index.html');
 
     findParent(doc, '[data-ice="summary"] [href$="#static-variable-testExportNewExpressionIndirect"]', '[data-ice="target"]', (doc)=>{

@@ -1,8 +1,8 @@
 import assert from 'assert';
 import InvalidCodeLogger from '@enterthenamehere/esdoc-core/lib/Util/InvalidCodeLogger';
 
-describe('test/_Misc/InvalidSyntax:', ()=>{
-  it('is invalid', ()=>{
+describe('test/_Misc/InvalidSyntax:', function () {
+  it('is invalid', function () {
     assert.equal(InvalidCodeLogger._logs.length, 2);
 
     assert(InvalidCodeLogger._logs[0].filePath.match(/test[\\|\/]integration-test[\\|\/]src[\\|\/]_Misc[\\|\/]InvalidSyntaxCode.js/u));

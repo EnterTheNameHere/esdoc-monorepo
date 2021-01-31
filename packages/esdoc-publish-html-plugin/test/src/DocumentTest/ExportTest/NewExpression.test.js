@@ -4,9 +4,9 @@ import {readDoc, assert, find, findParent} from './../../util.js';
  * @test {DocFactory#_inspectExportDefaultDeclaration}
  * @test {DocFactory#_inspectExportNamedDeclaration}
  */
-describe('test default export with new expression.', ()=> {
-  describe('default export', ()=>{
-    it('has instance description', ()=> {
+describe('test default export with new expression.', function () {
+  describe('default export', function () {
+    it('has instance description', function () {
       const doc = readDoc('class/src/Export/NewExpression.js~TestExportNewExpression.html');
 
       find(doc, '[data-ice="instanceDocs"]', (doc)=>{
@@ -24,7 +24,7 @@ describe('test default export with new expression.', ()=> {
       assert(false);
     });
 
-    it('has class description', ()=>{
+    it('has class description', function () {
       const doc = readDoc('variable/index.html');
 
       findParent(doc, '[data-ice="summary"] [href$="#static-variable-testExportNewExpression"]', '[data-ice="target"]', (doc)=>{
@@ -38,8 +38,8 @@ describe('test default export with new expression.', ()=> {
     });
   });
 
-  describe('named export', ()=>{
-    it('has instance description', ()=> {
+  describe('named export', function () {
+    it('has instance description', function () {
       const doc = readDoc('class/src/Export/NewExpression.js~TestExportNewExpression2.html');
 
       find(doc, '[data-ice="instanceDocs"]', (doc)=>{
@@ -57,7 +57,7 @@ describe('test default export with new expression.', ()=> {
       assert(false);
     });
 
-    it('has class description', ()=>{
+    it('has class description', function () {
       const doc = readDoc('variable/index.html');
 
       findParent(doc, '[data-ice="summary"] [href$="#static-variable-testExportNewExpression2"]', '[data-ice="target"]', (doc)=>{

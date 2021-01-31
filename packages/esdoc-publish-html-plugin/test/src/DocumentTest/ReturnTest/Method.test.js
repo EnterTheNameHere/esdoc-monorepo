@@ -1,11 +1,11 @@
 import {readDoc, assert, findParent} from './../../util.js';
 
 /** @test {MethodDoc#@return} */
-describe('TestReturnMethod', ()=> {
+describe('TestReturnMethod', function () {
   const doc = readDoc('class/src/Return/Method.js~TestReturnMethod.html');
 
-  describe('in summary', ()=> {
-    it('has return', ()=> {
+  describe('in summary', function () {
+    it('has return', function () {
       findParent(doc, '[data-ice="summary"] [href$="#instance-method-method1"]', '[data-ice="target"]', (doc)=> {
         assert.includes(doc, null, 'public method1(): number');
       });
@@ -16,8 +16,8 @@ describe('TestReturnMethod', ()=> {
     });
   });
 
-  describe('in details', ()=>{
-    it('has desc.', ()=>{
+  describe('in details', function () {
+    it('has desc.', function () {
       findParent(doc, '[id="instance-method-method1"]', '[data-ice="detail"]', (doc)=>{
         assert.includes(doc, 'h3', 'public method1(): number');
         assert.includes(doc, '[data-ice="returnParams"] tbody tr', 'number this is return value.');

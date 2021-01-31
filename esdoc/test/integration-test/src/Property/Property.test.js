@@ -1,8 +1,8 @@
 import assert from 'assert';
 import {find} from '../../util';
 
-describe('test/Property/Property:', ()=>{
-  it('has property', ()=>{
+describe('test/Property/Property:', function () {
+  it('has property', function () {
     const doc = find('longname', 'src/Property/Property.js~TestProperty#methodProperty');
     assert.deepEqual(doc.properties, [
       {

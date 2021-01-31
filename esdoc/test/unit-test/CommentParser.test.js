@@ -2,9 +2,9 @@ import assert from 'assert';
 import CommentParser from '@enterthenamehere/esdoc-core/lib/Parser/CommentParser.js';
 
 /** @test {CommentParser} */
-describe('CommentParser:', ()=>{
+describe('CommentParser:', function () {
   /** @test {CommentParser.parse} */
-  it('can parse doc comment.', ()=>{
+  it('can parse doc comment.', function () {
     const value = `*
 * this is desc.
 * @tag1
@@ -26,7 +26,7 @@ describe('CommentParser:', ()=>{
   });
 
     /** @test {CommentParser.parse} */
-  it('can parse doc comments with trailing tabs', ()=>{
+  it('can parse doc comments with trailing tabs', function () {
     const value = `*
 \t* this is desc.
 \t* @tag1
@@ -48,7 +48,7 @@ describe('CommentParser:', ()=>{
   });
 
   /** @test {CommentParser.isESDoc} */
-  it('return empty with non doc comment.', ()=>{
+  it('return empty with non doc comment.', function () {
     const value = `\
 this is not doc comment.
 `;
@@ -58,7 +58,7 @@ this is not doc comment.
   });
 
   /** @test {CommentParser.parse} */
-  it('return empty with line comment.', ()=>{
+  it('return empty with line comment.', function () {
     const value = `this is line comment.`;
     const comment = {type: 'CommentLine', value: value};
     const tags = CommentParser.parse(comment);

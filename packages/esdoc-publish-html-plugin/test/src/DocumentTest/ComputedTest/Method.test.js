@@ -2,11 +2,11 @@
 import {readDoc, assert, find} from './../../util.js';
 
 /** @test {MethodDoc#@_name} */
-describe('TestComputedMethod:', ()=> {
+describe('TestComputedMethod:', function () {
   const doc = readDoc('class/src/Computed/Method.js~TestComputedMethod.html');
 
-  describe('in summary:', ()=>{
-    it('has computed methods.', ()=> {
+  describe('in summary:', function () {
+    it('has computed methods.', function () {
       find(doc, '[data-ice="summary"]', (doc)=>{
         assert.includes(doc, `[href="class/src/Computed/Method.js~TestComputedMethod.html#instance-method-['foo']"]`,            `['foo']`);
         assert.includes(doc, `[href="class/src/Computed/Method.js~TestComputedMethod.html#instance-method-[Symbol.iterator]"]`,  `[Symbol.iterator]`);
@@ -22,8 +22,8 @@ describe('TestComputedMethod:', ()=> {
     });
   });
 
-  describe('in detail:', ()=>{
-    it('has computed method.', ()=>{
+  describe('in detail:', function () {
+    it('has computed method.', function () {
       assert.includes(doc, `[id="instance-method-['foo']"] [data-ice="name"]`,            `['foo']`);
       assert.includes(doc, `[id="instance-method-[Symbol.iterator]"] [data-ice="name"]`,  `[Symbol.iterator]`);
       assert.includes(doc, '[id="instance-method-[`${foo}`]"] [data-ice="name"]',       '[`${foo}`]');

@@ -1,19 +1,19 @@
 import {readDoc, assert, find} from './../../util.js';
 
 /** @test {ClassDocBuilder} */
-describe('TestClassDefinition:', ()=> {
+describe('TestClassDefinition:', function () {
   const doc = readDoc('class/src/Class/Definition.js~TestClassDefinition.html');
 
   /** @test {DocBuilder#_getTitle} */
-  describe('in title:', ()=>{
-    it('has document title', ()=> {
+  describe('in title:', function () {
+    it('has document title', function () {
       assert.includes(doc, 'head title', 'TestClassDefinition');
     });
   });
 
   /** @test {ClassDocBuilder#_buildClassDoc} */
-  describe('in header', ()=>{
-    it('has header notice.', ()=> {
+  describe('in header', function () {
+    it('has header notice.', function () {
       find(doc, '[data-ice="content"] .header-notice', (doc)=> {
         assert.includes(doc, '[data-ice="importPath"]', "import TestClassDefinition from 'esdoc-test-fixture'");
         assert.includes(doc, '[data-ice="access"]', 'public');
@@ -25,8 +25,8 @@ describe('TestClassDefinition:', ()=> {
   });
 
   /** @test {ClassDocBuilder#_buildClassDoc} */
-  describe('in detail', ()=>{
-    it('has self detail.', ()=>{
+  describe('in detail', function () {
+    it('has self detail.', function () {
       find(doc, '[data-ice="content"] .self-detail', (doc)=>{
         assert.includes(doc, '[data-ice="name"]', 'TestClassDefinition');
         assert.includes(doc, '[data-ice="description"]', 'this is TestClassDefinition.');
@@ -35,8 +35,8 @@ describe('TestClassDefinition:', ()=> {
   });
 
   /** @test {ClassDocBuilder#_buildClassDoc} */
-  describe('in summary', ()=>{
-    it('has static member', ()=>{
+  describe('in summary', function () {
+    it('has static member', function () {
       find(doc, '[data-ice="staticMemberSummary"]', (doc)=>{
         find(doc, 'table[data-ice="summary"]:nth-of-type(1)', (doc)=>{
           assert.includes(doc, '[data-ice="target"]:nth-of-type(1)', 'public static p1: number this is static p1.');
@@ -45,7 +45,7 @@ describe('TestClassDefinition:', ()=> {
       });
     });
 
-    it('has static method.', ()=>{
+    it('has static method.', function () {
       find(doc, '[data-ice="staticMethodSummary"]', (doc)=>{
         find(doc, 'table[data-ice="summary"]:nth-of-type(1)', (doc)=>{
           assert.includes(doc, '[data-ice="target"]:nth-of-type(1)', 'public static method1() this is static method1.');
@@ -54,7 +54,7 @@ describe('TestClassDefinition:', ()=> {
       });
     });
 
-    it('has constructor.', ()=>{
+    it('has constructor.', function () {
       find(doc, '[data-ice="constructorSummary"]', (doc)=>{
         find(doc, 'table[data-ice="summary"]:nth-of-type(1)', (doc)=>{
           assert.includes(doc, '[data-ice="target"]:nth-of-type(1)', 'public constructor() this is constructor.');
@@ -63,7 +63,7 @@ describe('TestClassDefinition:', ()=> {
       });
     });
 
-    it('has member.', ()=>{
+    it('has member.', function () {
       find(doc, '[data-ice="memberSummary"]', (doc)=>{
         find(doc, 'table[data-ice="summary"]:nth-of-type(1)', (doc)=> {
           assert.includes(doc, '[data-ice="target"]:nth-of-type(1)', 'public p1: number this is p1.');
@@ -78,7 +78,7 @@ describe('TestClassDefinition:', ()=> {
       });
     });
 
-    it('has method summary.', ()=>{
+    it('has method summary.', function () {
       find(doc, '[data-ice="methodSummary"]', (doc)=>{
         find(doc, 'table[data-ice="summary"]:nth-of-type(1)', (doc)=>{
           assert.includes(doc, '[data-ice="target"]:nth-of-type(1)', 'public method1() this is method1.');
@@ -89,8 +89,8 @@ describe('TestClassDefinition:', ()=> {
   });
 
   /** @test {ClassDocBuilder#_buildClassDoc} */
-  describe('in detail', ()=>{
-    it('has static member.', ()=>{
+  describe('in detail', function () {
+    it('has static member.', function () {
       find(doc, '[data-ice="staticMemberDetails"]', (doc)=>{
         find(doc, '[data-ice="detail"]:nth-of-type(1)', (doc)=>{
           assert.includes(doc, '#static-member-p1', 'public static p1: number');
@@ -99,7 +99,7 @@ describe('TestClassDefinition:', ()=> {
       });
     });
 
-    it('has static method.', ()=>{
+    it('has static method.', function () {
       find(doc, '[data-ice="staticMethodDetails"]', (doc)=>{
         find(doc, '[data-ice="detail"]:nth-of-type(1)', (doc)=>{
           assert.includes(doc, '#static-method-method1', 'public static method1()');
@@ -108,7 +108,7 @@ describe('TestClassDefinition:', ()=> {
       });
     });
 
-    it('has member.', ()=>{
+    it('has member.', function () {
       find(doc, '[data-ice="memberDetails"]', (doc)=>{
         find(doc, '[data-ice="detail"]:nth-of-type(1)', (doc)=>{
           assert.includes(doc, '#instance-member-p1', 'public p1: number');
@@ -127,7 +127,7 @@ describe('TestClassDefinition:', ()=> {
       });
     });
 
-    it('has constructor detail.', ()=>{
+    it('has constructor detail.', function () {
       find(doc, '[data-ice="constructorDetails"]', (doc)=>{
         find(doc, '[data-ice="detail"]:nth-of-type(1)', (doc)=>{
           assert.includes(doc, '#instance-constructor-constructor', 'public constructor()');
@@ -136,7 +136,7 @@ describe('TestClassDefinition:', ()=> {
       });
     });
 
-    it('has method detail.', ()=>{
+    it('has method detail.', function () {
       find(doc, '[data-ice="methodDetails"]', (doc)=>{
         find(doc, '[data-ice="detail"]:nth-of-type(1)', (doc)=> {
           assert.includes(doc, '#instance-method-method1', 'public method1()');

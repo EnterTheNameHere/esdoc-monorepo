@@ -1,8 +1,8 @@
 const assert = require('assert');
 const {load, text} = require('../util');
 
-describe('test/MyClass.js:', ()=> {
-  it('has React props', ()=>{
+describe('test/MyClass.js:', function () {
+  it('has React props', function () {
     const $ = load('./test/out/class/src/MyClass.js~MyClass.html');
     const $table = $('.self-detail.detail [data-ice="properties"]');
 
@@ -13,7 +13,7 @@ describe('test/MyClass.js:', ()=> {
     assert.equal(text($table, 'tbody tr:nth-child(2)'), 'prop2 string this is prop2');
   });
 
-  it('does not have React props', ()=>{
+  it('does not have React props', function () {
     const $ = load('./test/out/class/src/MyClass.js~NonReactClass.html');
     const $table = $('.self-detail.detail [data-ice="properties"]');
 

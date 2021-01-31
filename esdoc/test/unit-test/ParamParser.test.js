@@ -2,9 +2,9 @@ import assert from 'assert';
 import ParamParser from '@enterthenamehere/esdoc-core/lib/Parser/ParamParser.js';
 
 /** @test {ParamParser} */
-describe('ParamParser:', ()=>{
+describe('ParamParser:', function () {
   /** @test {ParamParser.parseParamValue} */
-  it('parse param value.', ()=>{
+  it('parse param value.', function () {
     const value = '{number} p1 this is desc';
     const {typeText, paramName, paramDesc} = ParamParser.parseParamValue(value);
     assert.equal(typeText, 'number');
@@ -13,7 +13,7 @@ describe('ParamParser:', ()=>{
   });
 
   /** @test {ParamParser.parseParamValue} */
-  it('parse param value with hyphen prefix.', ()=>{
+  it('parse param value with hyphen prefix.', function () {
     const value = '{number} p1 - this is desc';
     const {typeText, paramName, paramDesc} = ParamParser.parseParamValue(value);
     assert.equal(typeText, 'number');
@@ -22,7 +22,7 @@ describe('ParamParser:', ()=>{
   });
 
   /** @test {ParamParser.parseParamValue} */
-  it('parse param value without param name', ()=>{
+  it('parse param value without param name', function () {
     const value = '{number} this is desc';
     const {typeText, paramDesc} = ParamParser.parseParamValue(value, true, false, true);
     assert.equal(typeText, 'number');
@@ -30,7 +30,7 @@ describe('ParamParser:', ()=>{
   });
 
   /** @test {ParamParser.parseParamValue} */
-  it('parse param value without param desc', ()=>{
+  it('parse param value without param desc', function () {
     const value = '{number} p1';
     const {typeText, paramName} = ParamParser.parseParamValue(value, true, true, false);
     assert.equal(typeText, 'number');
@@ -38,7 +38,7 @@ describe('ParamParser:', ()=>{
   });
 
   /** @test {ParamParser.parseParamValue} */
-  it('parse param value with complex', ()=>{
+  it('parse param value with complex', function () {
     const value = '{!(number|string|boolean[])} [p1=10] this is desc';
     const {typeText, paramName, paramDesc} = ParamParser.parseParamValue(value);
     assert.equal(typeText, '!(number|string|boolean[])');
@@ -47,7 +47,7 @@ describe('ParamParser:', ()=>{
   });
 
   /** @test {ParamParser.parseParam} */
-  it('parse param.', ()=>{
+  it('parse param.', function () {
     const value = '{number} p1 this is desc';
     const {typeText, paramName, paramDesc} = ParamParser.parseParamValue(value);
     const result = ParamParser.parseParam(typeText, paramName, paramDesc);
@@ -62,7 +62,7 @@ describe('ParamParser:', ()=>{
   });
 
   /** @test {ParamParser.parseParam} */
-  it('parse param with complex.', ()=>{
+  it('parse param with complex.', function () {
     const value = '{?(number|string|boolean[])} [p1] this is desc';
     const {typeText, paramName, paramDesc} = ParamParser.parseParamValue(value);
     const result = ParamParser.parseParam(typeText, paramName, paramDesc);
@@ -77,7 +77,7 @@ describe('ParamParser:', ()=>{
   });
 
   /** @test {ParamParser.parseParam} */
-  it('parse param with object ({}) as default.', ()=>{
+  it('parse param with object ({}) as default.', function () {
     const value = '{!(number|string|boolean[])} [p1={}] this is desc';
     const {typeText, paramName, paramDesc} = ParamParser.parseParamValue(value);
     const result = ParamParser.parseParam(typeText, paramName, paramDesc);
@@ -94,7 +94,7 @@ describe('ParamParser:', ()=>{
   });
 
   /** @test {ParamParser.parseParam} */
-  it('parse param with complex.', ()=>{
+  it('parse param with complex.', function () {
     const value = '{...number} [p1=[10,20,30]] this is desc';
     const {typeText, paramName, paramDesc} = ParamParser.parseParamValue(value);
     const result = ParamParser.parseParam(typeText, paramName, paramDesc);
@@ -110,7 +110,7 @@ describe('ParamParser:', ()=>{
     });
   });
 
-  it('parse param even if description has {}.', ()=>{
+  it('parse param even if description has {}.', function () {
     const value = '{number} p1 foo {a: number} bar';
     const {typeText, paramName, paramDesc} = ParamParser.parseParamValue(value);
     const result = ParamParser.parseParam(typeText, paramName, paramDesc);
@@ -125,7 +125,7 @@ describe('ParamParser:', ()=>{
   });
 
   /** @test {ParamParser.parseParam} */
-  it('throws error when empty type.', ()=>{
+  it('throws error when empty type.', function () {
     const value = '{} foo bar';
     const {typeText, paramName, paramDesc} = ParamParser.parseParamValue(value);
 

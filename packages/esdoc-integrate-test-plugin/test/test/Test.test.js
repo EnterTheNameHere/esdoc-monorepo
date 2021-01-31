@@ -1,8 +1,8 @@
 const assert = require('assert');
 const {find} = require('../util');
 
-describe('test/Test.js:', ()=>{
-  it('has describe/', ()=>{
+describe('test/Test.js:', function () {
+  it('has describe/', function () {
     const doc = find('longname', 'test/Test.js~describe0');
     assert.equal(doc.testId, 0);
     assert.equal(doc.testDepth, 0);
@@ -10,7 +10,7 @@ describe('test/Test.js:', ()=>{
     assert.deepEqual(doc.testTargets, ['TestTarget1']);
   });
 
-  it('has describe/it', ()=>{
+  it('has describe/it', function () {
     const doc = find('longname', 'test/Test.js~describe0.it1');
     assert.equal(doc.testId, 1);
     assert.equal(doc.testDepth, 1);
@@ -18,7 +18,7 @@ describe('test/Test.js:', ()=>{
     assert.deepEqual(doc.testTargets, ['TestTarget2']);
   });
 
-  it('has describe/describe', ()=>{
+  it('has describe/describe', function () {
     const doc = find('longname', 'test/Test.js~describe0.describe2');
     assert.equal(doc.testId, 2);
     assert.equal(doc.testDepth, 1);
@@ -26,7 +26,7 @@ describe('test/Test.js:', ()=>{
     assert.deepEqual(doc.testTargets, ['TestTarget3']);
   });
 
-  it('has describe/describe/it', ()=>{
+  it('has describe/describe/it', function () {
     const doc = find('longname', 'test/Test.js~describe0.describe2.it3');
     assert.equal(doc.testId, 3);
     assert.equal(doc.testDepth, 2);
@@ -34,7 +34,7 @@ describe('test/Test.js:', ()=>{
     assert.deepEqual(doc.testTargets, ['TestTarget4']);
   });
 
-  it('has describe/context/it', ()=>{
+  it('has describe/context/it', function () {
     const doc = find('longname', 'test/Test.js~describe0.context4.it5');
     assert.equal(doc.testId, 5);
     assert.equal(doc.testDepth, 2);
@@ -42,7 +42,7 @@ describe('test/Test.js:', ()=>{
     assert.deepEqual(doc.testTargets, ['TestTarget6']);
   });
 
-  it('has suite/', ()=>{
+  it('has suite/', function () {
     const doc = find('longname', 'test/Test.js~suite6');
     assert.equal(doc.testId, 6);
     assert.equal(doc.testDepth, 0);
@@ -50,7 +50,7 @@ describe('test/Test.js:', ()=>{
     assert.deepEqual(doc.testTargets, ['TestTarget7']);
   });
 
-  it('has suite/test', ()=>{
+  it('has suite/test', function () {
     const doc = find('longname', 'test/Test.js~suite6.test7');
     assert.equal(doc.testId, 7);
     assert.equal(doc.testDepth, 1);
@@ -58,7 +58,7 @@ describe('test/Test.js:', ()=>{
     assert.deepEqual(doc.testTargets, ['TestTarget8']);
   });
 
-  it('has suite/suite/', ()=>{
+  it('has suite/suite/', function () {
     const doc = find('longname', 'test/Test.js~suite6.suite8');
     assert.equal(doc.testId, 8);
     assert.equal(doc.testDepth, 1);
@@ -66,7 +66,7 @@ describe('test/Test.js:', ()=>{
     assert.deepEqual(doc.testTargets, ['TestTarget9']);
   });
 
-  it('has suite/suite/test', ()=>{
+  it('has suite/suite/test', function () {
     const doc = find('longname', 'test/Test.js~suite6.suite8.test9');
     assert.equal(doc.testId, 9);
     assert.equal(doc.testDepth, 2);
@@ -74,5 +74,3 @@ describe('test/Test.js:', ()=>{
     assert.deepEqual(doc.testTargets, ['TestTarget10']);
   });
 });
-
-

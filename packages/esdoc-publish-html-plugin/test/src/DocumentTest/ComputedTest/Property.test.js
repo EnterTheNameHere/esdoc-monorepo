@@ -2,11 +2,11 @@
 import {readDoc, assert, find} from './../../util.js';
 
 /** @test {MemberDoc#@_name} */
-describe('TestComputedProperty:', ()=> {
+describe('TestComputedProperty:', function () {
   const doc = readDoc('class/src/Computed/Property.js~TestComputedProperty.html');
 
-  describe('in summary:', ()=>{
-    it('has computed properties.', ()=> {
+  describe('in summary:', function () {
+    it('has computed properties.', function () {
       find(doc, '[data-ice="memberSummary"]', (doc)=>{
         assert.includes(doc, `[href="class/src/Computed/Property.js~TestComputedProperty.html#instance-member-['foo']"]`,             `['foo']`);
         assert.includes(doc, `[href="class/src/Computed/Property.js~TestComputedProperty.html#instance-member-[Symbol.iterator]"]`,  `[Symbol.iterator]`);
@@ -22,8 +22,8 @@ describe('TestComputedProperty:', ()=> {
     });
   });
 
-  describe('in detail:', ()=>{
-    it('has computed properties.', ()=>{
+  describe('in detail:', function () {
+    it('has computed properties.', function () {
       assert.includes(doc, `[id="instance-member-['foo']"] [data-ice="name"]`,            `['foo']`);
       assert.includes(doc, `[id="instance-member-[Symbol.iterator]"] [data-ice="name"]`,  `[Symbol.iterator]`);
       assert.includes(doc, '[id="instance-member-[`${foo}`]"] [data-ice="name"]',         '[`${foo}`]');
