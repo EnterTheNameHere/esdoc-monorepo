@@ -3,7 +3,7 @@ const cheerio = require('cheerio');
 
 module.exports.load = function(fileName) {
   const html = fs.readFileSync(fileName, {encoding: 'utf-8'});
-  return cheerio.load(html);
+  return cheerio.load(html, { _useHtmlParser2: true, emptyAttrs: false }, false);
 };
 
 module.exports.text = function($el, query) {
