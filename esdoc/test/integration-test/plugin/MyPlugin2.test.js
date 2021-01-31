@@ -1,7 +1,7 @@
 import assert from 'assert';
 
-describe('test/plugin/MyPlugin2:', ()=>{
-  it('calls handlers', ()=>{
+describe('test/plugin/MyPlugin2:', function () {
+  it('calls handlers', function () {
     const callInfo = require('./MyPlugin2').callInfo;
     assert.deepEqual(callInfo.handlerNames, {
       onStart: true,

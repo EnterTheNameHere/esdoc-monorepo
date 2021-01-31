@@ -40,10 +40,10 @@ And if use ``@test``, more better integration.
 
 ```javascript
 /** @test {MyClass} */
-describe('MyClass has foo bar feature', ()=>{
+describe('MyClass has foo bar feature', function () {
 
   /** @test {MyClass#baz} */
-  it('MyClass#baz returns magic value', ()=>{
+  it('MyClass#baz returns magic value', function () {
     assert(true);
   });
 });
@@ -117,7 +117,7 @@ describe('MyClass has foo bar feature', ()=>{
         "excludes": ["\\.config\\.js$"]
       }
     }
-  }] 
+  }]
 }
 ```
 
