@@ -2,6 +2,7 @@
 
 $originalLocation = Get-Location
 
+npm update
 Write-Host $originalLocation
 
 cd "$originalLocation\common\color-logger"
@@ -153,4 +154,7 @@ npm update
 npm run build
 npm run test
 
+
+
 cd "$originalLocation"
+npm update
