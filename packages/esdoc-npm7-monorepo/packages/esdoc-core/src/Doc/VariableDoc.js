@@ -19,16 +19,18 @@ export default class VariableDoc extends AbstractDoc {
       case 'Identifier':
         this._value.name = this._node.declarations[0].id.name;
         break;
-      case 'ObjectPattern':
-        // TODO: optimize for multi variables.
-        // e.g. export const {a, b} = obj
-        this._value.name = this._node.declarations[0].id.properties[0].key.name;
-        break;
-      case 'ArrayPattern':
-        // TODO: optimize for multi variables.
-        // e.g. export cont [a, b] = arr
-        this._value.name = this._node.declarations[0].id.elements.find((v) => { return v; }).name;
-        break;
+      case 'ObjectPattern': {
+        // HACK implementing multiple variables from object pattern. e.g. export const {a, b} = obj
+        // Uses propertyIndex which was added to node to know which element to pick.
+        const propertyIndex = this._node.propertyIndex;
+        this._value.name = this._node.declarations[0].id.properties[propertyIndex].key.name;
+      } break;
+      case 'ArrayPattern': {
+          // HACK implementing multiple variables from array pattern. e.g. export cont [a, b] = arr
+          // Uses elementIndex which was added to node to know which element to pick.
+          const elementIndex = this._node.elementIndex;
+          this._value.name = this._node.declarations[0].id.elements[elementIndex].name;
+      } break;
       default:
         throw new Error(`unknown declarations type: ${type}`);
     }

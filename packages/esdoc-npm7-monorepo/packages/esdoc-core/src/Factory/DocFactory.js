@@ -347,14 +347,41 @@ export default class DocFactory {
 
       let doc = null;
       if (comment === lastComment) {
-        doc = this._createDoc(node, tags);
+        if (node.declarations && node.declarations[0].id.type === "ArrayPattern") {
+          // HACK implementing multiple variables from array pattern. e.g. export cont [a, b] = arr
+          // Uses elementIndex which we add to node so VariableDoc knows which element to pick.
+          const length = node.declarations[0].id.elements.length;
+          for (let ii = 0; ii < length; ii = ii + 1) {
+            if (typeof(node.elementIndex) === 'undefined') {
+              Reflect.defineProperty(node, 'elementIndex', {writable: true});
+            }
+            node.elementIndex = ii;
+            doc = this._createDoc(node, tags);
+            if (doc) results.push(doc.value);
+          }
+        } else if (node.declarations && node.declarations[0].id.type === 'ObjectPattern') {
+          // HACK implementing multiple variables from object pattern. e.g. export const {a, b} = obj
+          // Uses propertyIndex which we add to node so VariableDoc knows which element to pick.
+          const length = node.declarations[0].id.properties.length;
+          for (let ii = 0; ii < length; ii = ii + 1) {
+            if (typeof(node.propertyIndex) === 'undefined') {
+              Reflect.defineProperty(node, 'propertyIndex', {writable: true});
+            }
+            node.propertyIndex = ii;
+            doc = this._createDoc( node, tags );
+            if (doc) results.push(doc.value);
+          }
+        } else {
+          doc = this._createDoc(node, tags);
+          if (doc) results.push(doc.value);
+        }
       } else {
         const virtualNode = {};
         Reflect.defineProperty(virtualNode, 'parent', {value: parentNode});
         doc = this._createDoc(virtualNode, tags);
+        
+        if (doc) results.push(doc.value);
       }
-
-      if (doc) results.push(doc.value);
     }
 
     return results;
