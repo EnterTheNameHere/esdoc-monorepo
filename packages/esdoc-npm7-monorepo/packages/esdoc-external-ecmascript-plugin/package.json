@@ -10,6 +10,9 @@
     "url": "https://github.com/EnterTheNameHere/esdoc-monorepo",
     "directory": "packages/esdoc-external-ecmascript-plugin"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "fs-extra": "^9.0.1"
   },

@@ -10,6 +10,9 @@
     "url": "https://github.com/EnterTheNameHere/esdoc-monorepo",
     "directory": "packages/esdoc-react-plugin"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@enterthenamehere/esdoc-standard-plugin": "^1.3.0-beta",
     "cheerio": "^1.0.0-rc.5"

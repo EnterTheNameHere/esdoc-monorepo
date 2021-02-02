@@ -10,6 +10,9 @@
     "url": "https://github.com/EnterTheNameHere/esdoc-monorepo",
     "directory": "packages/esdoc-publish-markdown-plugin"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@enterthenamehere/ice-cap": "^0.2.0-beta",
     "fs-extra": "^9.0.1",

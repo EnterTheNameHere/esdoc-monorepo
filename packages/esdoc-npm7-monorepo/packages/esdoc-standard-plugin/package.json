@@ -10,6 +10,9 @@
     "url": "https://github.com/EnterTheNameHere/esdoc-monorepo",
     "directory": "packages/esdoc-standard-plugin"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@enterthenamehere/esdoc-accessor-plugin": "^1.3.0-beta",
     "@enterthenamehere/esdoc-brand-plugin": "^1.3.0-beta",

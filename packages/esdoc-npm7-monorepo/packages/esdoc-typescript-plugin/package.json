@@ -10,6 +10,9 @@
     "url": "https://github.com/EnterTheNameHere/esdoc-monorepo",
     "directory": "packages/esdoc-typescript-plugin"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "typescript": "^4.0.5"
   },

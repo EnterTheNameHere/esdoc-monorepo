@@ -10,6 +10,9 @@
     "url": "https://github.com/EnterTheNameHere/esdoc-monorepo",
     "directory": "packages/esdoc-type-inference-plugin"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@enterthenamehere/esdoc": "^1.3.0-beta",
     "eslint": "^7.13.0",
