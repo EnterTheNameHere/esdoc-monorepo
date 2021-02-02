@@ -10,6 +10,9 @@
     "url": "https://github.com/EnterTheNameHere/esdoc-monorepo",
     "directory": "packages/esdoc-inject-script-plugin"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "fs-extra": "^9.0.1",
     "cheerio": "^1.0.0-rc.3"
