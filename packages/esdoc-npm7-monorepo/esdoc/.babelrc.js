@@ -11,12 +11,10 @@ module.exports = {
     ],
     ignore: [ "test" ],
     sourceMaps: "inline",
-    plugins: [
-        "@babel/transform-modules-commonjs"
-    ],
+    plugins: [ "@babel/plugin-transform-modules-commonjs" ],
     env: {
         coverage: {
-            plugins: ["istanbul"]
+            plugins: [ "istanbul" ]
         }
     }
 };
