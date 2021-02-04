@@ -1,6 +1,5 @@
 import fs from 'fs-extra';
 import path from 'path';
-import assert from 'assert';
 import logger from '@enterthenamehere/color-logger';
 import ASTUtil from '@enterthenamehere/esdoc-core/lib/Util/ASTUtil.js';
 import ESParser from '@enterthenamehere/esdoc-core/lib/Parser/ESParser.js';
@@ -24,8 +23,14 @@ export default class ESDoc {
    * @param {ESDocConfig} config - config for generation.
    */
   static generate(config) {
-    assert(config.source);
-    assert(config.destination);
+    if( typeof(config.source) === 'undefined' || config.source === null ) {
+        console.error(`[31mError: config.source needs to be a directory where your source code resides![0m`);
+        throw new Error('Error: config.source needs to be a directory where your source code resides!');
+    }
+    if( typeof(config.destination) === 'undefined' || config.destination === null ) {
+        console.error(`[31mError: config.destination needs to be a directory where to output generated documentation![0m`);
+        throw new Error('Error: config.destination needs to be a directory where to output generated documentation!');
+    }
 
     this._checkOldConfig(config);
 

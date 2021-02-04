@@ -1,5 +1,3 @@
-import assert from 'assert';
-
 /**
  * Param Type Parser class.
  */
@@ -71,7 +69,10 @@ export default class ParamParser {
       paramDesc = ( value.startsWith('-') ? value.substring(1).trimStart() : value );
     }
 
-    assert(typeText || paramName || paramDesc, `param is invalid. param = "${value}"`);
+    if( !(typeText || paramName || paramDesc ) ) {
+        console.error(`[31mParamParser::parseParamValue() - Param is invalid. param = "${value}"[0m`);
+        throw new Error(`ParamParser::parseParamValue() - Param is invalid. param = "${value}"`);
+    }
 
     return {typeText, paramName, paramDesc};
   }

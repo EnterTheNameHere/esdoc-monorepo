@@ -1,4 +1,3 @@
-const assert = require('assert');
 const path = require('path');
 const fs = require('fs-extra');
 const TestDocFactory = require('./TestDocFactory');
@@ -28,7 +27,10 @@ class Plugin {
     if (!this._option) return;
 
     const option = this._option;
-    assert(option.source);
+    if( typeof(option.source) !== 'string' ) {
+        console.error('[31mesdoc-integrate-test-plugin: option.source must be a directory![0m');
+        throw new Error('esdoc-integrate-test-plugin: option.source must be a directory!');
+    }
     if (!option.interfaces) option.interfaces = ['describe', 'it', 'context', 'suite', 'test'];
     if (!option.includes) option.includes = ['(spec|Spec|test|Test)\\.js$'];
     if (!option.excludes) option.excludes = ['\\.config\\.js$'];

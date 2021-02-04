@@ -1,5 +1,4 @@
 import path from 'path';
-import assert from 'assert';
 import os from 'os';
 
 /**
@@ -19,8 +18,14 @@ export default class PathResolver {
    * @param {string} [mainFilePath] - npm main file path.
    */
   constructor(inDirPath, filePath, packageName = null, mainFilePath = null) {
-    assert(inDirPath);
-    assert(filePath);
+    if( typeof(inDirPath) !== 'string' ) {
+        console.error('[31mPathResolver::constructor() - inDirPath must be string[0m');
+        throw new Error('PathResolver::constructor() - inDirPath must be string');
+    }
+    if( typeof(filePath) !== 'string' ) {
+        console.error('[31mPathResolver::constructor() - filePath must be string[0m');
+        throw new Error('PathResolver::constructor() - filePath must be string');
+    }
 
     /** @type {string} */
     this._inDirPath = path.resolve(inDirPath);
