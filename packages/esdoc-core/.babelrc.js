@@ -9,5 +9,10 @@ module.exports = {
         }],
     ],
     sourceMaps: "inline",
-    plugins: [ "@babel/plugin-transform-modules-commonjs", "istanbul" ],
+    plugins: [ "@babel/plugin-transform-modules-commonjs" ],
+    env: {
+        coverage: {
+            plugins: [ "istanbul" ]
+        }
+    }
 };
