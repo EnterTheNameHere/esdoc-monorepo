@@ -18,10 +18,7 @@
     "clear": "trash ./out",
     "esdoc": "esdoc -c esdoc.json",
     "prepare": "npm run build",
-    "test": "npm run test:clear && npm run test:transpile && npm run test:mocha",
-    "test:clear": "trash ./test/out",
-    "test:mocha": "mocha ./test/out --recursive --extension .test.js --require esm -t 5000",
-    "test:transpile": "babel ./test/src --out-dir ./test/out",
+    "test": "mocha ./test/src --recursive --extension .test.js --require esm -t 5000",
     "transpile": "babel ./src --out-dir ./out"
   },
   "dependencies": {
