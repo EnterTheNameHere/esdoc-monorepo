@@ -16,6 +16,9 @@
   "scripts": {
     "build": "npm run clear && npm run transpile",
     "clear": "trash ./out",
+    "precoverage": "trash ./nyc_output && trash ./coverage",
+    "coverage": "npm run coverage:build && nyc npm run test && npm run build",
+    "coverage:build": "cross-env NODE_ENV=coverage npm run build",
     "esdoc": "npm run esdoc:generate && npm run esdoc:copy",
     "esdoc:generate": "esdoc -c esdoc.json",
     "esdoc:copy": "cpx \"./misc/color-logger.png\" \"out/docs/misc\" --verbose",
