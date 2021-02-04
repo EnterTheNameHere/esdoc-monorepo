@@ -21,6 +21,7 @@ cd "$originalLocation\packages\esdoc-core"
 Write-Host "Updating $(Get-Location)"
 npm update
 npm run build
+npm run test
 
 cd "$originalLocation\packages\esdoc-exclude-source-plugin"
 Write-Host "Updating $(Get-Location)"
