@@ -1,5 +1,5 @@
 import _assert from 'assert';
-import fs from 'fs';
+import fs from 'fs-extra';
 import cheerio from 'cheerio';
 // import path from 'path';
 // import ESDocCLI from '../../src/ESDocCLI.js';

@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'fs-extra';
 import IceCap from '@enterthenamehere/ice-cap';
 import DocBuilder from './DocBuilder.js';
 import {dateForUTC} from './util.js';

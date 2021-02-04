@@ -1,5 +1,5 @@
 /* eslint-disable max-lines */
-import fs from 'fs';
+import fs from 'fs-extra';
 import path from 'path';
 import IceCap from '@enterthenamehere/ice-cap';
 import logger from '@enterthenamehere/color-logger';
