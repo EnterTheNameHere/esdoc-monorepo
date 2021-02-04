@@ -12,6 +12,10 @@ cd "$originalLocation\common\ice-cap"
 Write-Host "Testing $(Get-Location)"
 npm run test
 
+cd "$originalLocation\packages\esdoc-core"
+Write-Host "Testing $(Get-Location)"
+npm run test
+
 cd "$originalLocation\packages\esdoc-exclude-source-plugin"
 Write-Host "Testing $(Get-Location)"
 npm run test
