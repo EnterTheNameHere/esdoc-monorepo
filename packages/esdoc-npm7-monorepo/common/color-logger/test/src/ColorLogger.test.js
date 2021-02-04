@@ -1,5 +1,5 @@
 import assert from 'assert';
-import Logger from '../../src/ColorLogger.js';
+import Logger from '../../out/ColorLogger.js';
 
 describe('ColorLogger:', function () {
   function test(actual, level, expect) {

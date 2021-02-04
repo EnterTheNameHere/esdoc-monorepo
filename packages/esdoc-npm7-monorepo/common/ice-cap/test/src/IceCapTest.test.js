@@ -1,5 +1,5 @@
 import assert from 'assert';
-import IceCap from '../../src/IceCap.js';
+import IceCap from '../../out/IceCap.js';
 
 describe('IceCap:', function () {
   describe('#constructor', function () {
