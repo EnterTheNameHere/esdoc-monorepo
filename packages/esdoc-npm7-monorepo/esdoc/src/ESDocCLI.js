@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import fs from 'fs';
+import fs from 'fs-extra';
 import path from 'path';
 import minimist from 'minimist';
 import ESDoc from './ESDoc.js';
