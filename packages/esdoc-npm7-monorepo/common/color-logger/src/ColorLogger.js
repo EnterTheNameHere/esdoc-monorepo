@@ -129,6 +129,7 @@ export class ColorLogger {
     this._allLogs.push(offColorLog);
     if (this._allLogs.length > 10000) this._allLogs.shift();
 
+    // eslint-disable-next-line no-console
     if (this._debug) console.log(log);
 
     return log;
