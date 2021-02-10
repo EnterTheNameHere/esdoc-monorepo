@@ -10,7 +10,7 @@ describe('ESDoc test:', function () {
             console.error = function() {};
             try {
                 ESDoc.generate();
-                assert.fail('generate() didn\'t throw exception!')
+                assert.fail('generate() didn\'t throw exception!');
             } catch( err ) {
                 assert( err instanceof Error );
             }
