@@ -23,15 +23,25 @@ export default class ESDoc {
    * @param {ESDocConfig} config - config for generation.
    */
   static generate(config) {
-    if( typeof(config.source) === 'undefined' || config.source === null ) {
-        console.error(`[31mError: config.source needs to be a directory where your source code resides![0m`);
-        throw new Error('Error: config.source needs to be a directory where your source code resides!');
+    if( typeof(config) === 'undefined' || config === null ) {
+        const message = `[31mError: config object is expected as an argument![0m`;
+        console.error(`[31m${message}[0m`);
+        throw new Error(message);
     }
-    if( typeof(config.destination) === 'undefined' || config.destination === null ) {
-        console.error(`[31mError: config.destination needs to be a directory where to output generated documentation![0m`);
-        throw new Error('Error: config.destination needs to be a directory where to output generated documentation!');
+    
+    if( typeof(config.source) !== 'string' || config.source === '' ) {
+        const message = `[31mError: config.source needs to be a directory where your source code resides![0m`;
+        console.error(`[31m${message}[0m`);
+        throw new Error(message);
     }
-
+    if( typeof(config.destination) !== 'string' || config.destination === '' ) {
+        const message = `[31mError: config.destination needs to be a directory where to output generated documentation![0m`;
+        console.error(`[31m${message}[0m`);
+        throw new Error(message);
+    }
+    
+    console.error('esdoc package name:', require('../package.json').name);
+    
     this._checkOldConfig(config);
 
     Plugin.init(config.plugins);
