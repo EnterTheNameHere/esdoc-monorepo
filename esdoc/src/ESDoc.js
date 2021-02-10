@@ -358,4 +358,33 @@ export default class ESDoc {
       process.exit(1);
     }
   }
+  
+  /**
+   * Returns prefix, or scope, of package, ie. '@enterthenamehere/esdoc' will return '@enterthenamehere'. If no prefix
+   * is present, it will return empty string.
+   *
+   * Returns emptry string if name of package doesn't end '/esdoc' (eg. '/esdoc-something-after') and returns
+   * empty string if name doesn't start with '@' (eg. 'prefix/esdoc' instead of '@prefix/esdoc').
+   *
+   * @return {string} prefix of package.
+   */
+  static _prefix = null;
+  static _getPackagePrefix() {
+      if( ESDoc._prefix === null ) {
+          prefix = require('../package.json').name;
+          if( typeof(prefix) !== 'string' ) {
+              prefix = '';
+          } else {
+              const regex = new RegExp('/esdoc$', 'u');
+              if( regex.test(prefix) && prefix.length > 1 && prefix.substr(0,1) === '@' ) {
+                  const length = prefix.length;
+                  prefix = prefix.substr(0, length - 6); // minus /esdoc
+              } else {
+                  prefix = '';
+              }
+          }
+      }
+      
+      return prefix;
+  }
 }
