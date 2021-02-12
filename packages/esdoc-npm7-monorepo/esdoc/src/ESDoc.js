@@ -359,6 +359,8 @@ export default class ESDoc {
     }
   }
   
+  static _prefix = null;
+  
   /**
    * Returns prefix, or scope, of package, ie. '@enterthenamehere/esdoc' will return '@enterthenamehere'. If no prefix
    * is present, it will return empty string.
@@ -368,23 +370,32 @@ export default class ESDoc {
    *
    * @return {string} prefix of package.
    */
-  static _prefix = null;
   static _getPackagePrefix() {
       if( ESDoc._prefix === null ) {
-          prefix = require('../package.json').name;
-          if( typeof(prefix) !== 'string' ) {
-              prefix = '';
+          if( require.resolve('../package.json') in require.cache ) {
+              // Since require do cache of loaded modules/files, we need to reset the entry for the
+              // file we will require in case it was already required, which would get us cached version
+              // instead of live version.
+              delete require.cache[require.resolve('../package.json')];
+          }
+          ESDoc._prefix = require('../package.json').name;
+          // Since require do cache of loaded modules/files, we need to reset the entry for the
+          // file we just required, or on next time it would not load the file and instead just
+          // fetch it from cache.
+          delete require.cache[require.resolve('../package.json')];
+          if( typeof(ESDoc._prefix) !== 'string' ) {
+              ESDoc._prefix = '';
           } else {
               const regex = new RegExp('/esdoc$', 'u');
-              if( regex.test(prefix) && prefix.length > 1 && prefix.substr(0,1) === '@' ) {
-                  const length = prefix.length;
-                  prefix = prefix.substr(0, length - 6); // minus /esdoc
+              if( regex.test(ESDoc._prefix) && ESDoc._prefix.length > 1 && ESDoc._prefix.substr(0,1) === '@' ) {
+                  const length = ESDoc._prefix.length;
+                  ESDoc._prefix = ESDoc._prefix.substr(0, length - 6); // minus /esdoc
               } else {
-                  prefix = '';
+                  ESDoc._prefix = '';
               }
           }
       }
       
-      return prefix;
+      return ESDoc._prefix;
   }
 }
