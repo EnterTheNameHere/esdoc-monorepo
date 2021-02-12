@@ -97,30 +97,16 @@ describe('ESDoc test:', function () {
     
     describe('package prefix', function () {
         const testPackagePrefix = ( packageName, expectedPrefix ) => function() {
-            fs.ensureDir('test_tmp/packagePrefixTest')
-            .then( () => {
-                fs.copy('../../out/ESDOC.js', 'test_tmp/packagePrefixTest/out/ESDOC.js')
-                .then( () => {
-                    fs.writeJson('test_tmp/packagePrefixTest/package.json', { name: packageName } , { mode: 'w' })
-                    .then( () => {
-                        const tmpESDOC = require('test_tmp/packagePrefixTest/out/ESDoc');
-                        assert.strictEquals(tmpESDOC._getPackagePrefix(), expectedPrefix);
-                    })
-                    .catch( (err) => {
-                        assert(false, err.message);
-                    });
-                })
-                .catch( (err) => {
-                    assert(false, err.message);
-                });
-            }).catch( (err) => {
-                assert(false, err.message);
-            });
+            fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
+            fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
             
-            fs.remove('test_tmp')
-            .catch( (err) => {
-                assert.fail('Cannot delete test_tmp directory! Results of other tests cannot be guaranteed. ' + err.message);
-            });
+            const tmpESDOC = require('../test_tmp/packagePrefixTest/out/ESDoc.js');
+            assert.strictEqual(tmpESDOC.default._getPackagePrefix(), expectedPrefix);
+            // We need to delete the cached version from require, or next time we would get cached version with
+            // all data already set instead of freshly initialized
+            delete require.cache[require.resolve('../test_tmp/packagePrefixTest/out/ESDoc.js')];
+            
+            fs.removeSync('test/test_tmp');
         }
         
         it( 'should return empty string 1', testPackagePrefix('', '') );
@@ -135,7 +121,7 @@ describe('ESDoc test:', function () {
         it( 'should return probably incorrect prefix', testPackagePrefix('@this/@is/@probably/@incorrect/esdoc', '@this/@is/@probably/@incorrect') );
         
         it( 'should return empty with different name containing /esdoc', testPackagePrefix('@malformed/esdoc-plugin-name-for-some-reason', '') );
-        it( 'should return even with malformed packaged name', testPackagePrefix('esdoc/esdoc', 'esdoc') );
+        it( 'should return empty with malformed packaged name', testPackagePrefix('esdoc/esdoc', '') );
         
         it( 'should return empty string if package name is different 1', testPackagePrefix('esdoc/name', '') );
         it( 'should return empty string if package name is different 2', testPackagePrefix('@differect/name', '') );
