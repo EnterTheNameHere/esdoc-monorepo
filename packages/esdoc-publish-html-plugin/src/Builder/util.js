@@ -12,7 +12,7 @@ export function highlight(code, language = 'JavaScript') {
     if(!code || code === '' || typeof code !== 'string') return '';
     
     const validLanguage = highlightjs.getLanguage(language) ? language : 'JavaScript';
-    return highlightjs.highlight(validLanguage, code).value;
+    return highlightjs.highlight( code, { language: validLanguage } ).value;
 }
 
 /**
