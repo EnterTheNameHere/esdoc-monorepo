@@ -58,7 +58,7 @@
     "esm": "^3.2.25",
     "mocha": "^8.2.1",
     "nyc": "^15.1.0",
-    "trash-cli": "^3.1.0"
+    "trash-cli": "^4.0.0"
   },
   "keywords": [
     "jsdoc",
