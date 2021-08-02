@@ -2,25 +2,25 @@
 
 $originalLocation = Get-Location
 
-cd "$originalLocation\common\color-logger"
+Set-Location "$originalLocation\common\color-logger"
 Write-Host "Building $(Get-Location)"
 npm run build
 
-cd "$originalLocation\common\ice-cap"
+Set-Location "$originalLocation\common\ice-cap"
 Write-Host "Building $(Get-Location)"
 npm run build
 
-cd "$originalLocation\packages\esdoc-core"
+Set-Location "$originalLocation\packages\esdoc-core"
 Write-Host "Building $(Get-Location)"
 npm run build
 
-cd "$originalLocation\packages\esdoc-publish-html-plugin"
+Set-Location "$originalLocation\packages\esdoc-publish-html-plugin"
 Write-Host "Building $(Get-Location)"
 npm run build
 
-cd "$originalLocation\esdoc"
+Set-Location "$originalLocation\esdoc"
 Write-Host "Building $(Get-Location)"\nnpm update
 npm run build
 
-cd "$originalLocation"
+Set-Location "$originalLocation"
 npm update
