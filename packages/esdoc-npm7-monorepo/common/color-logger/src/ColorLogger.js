@@ -98,6 +98,14 @@ export class ColorLogger {
    * @private
    */
   _output(level, ...msg) {
+    if(typeof(level) !== "string") {
+      level = "n";
+    }
+
+    if(["v", "d", "i", "w", "e", "n"].indexOf(level) === -1) {
+      level = "n";
+    }
+
     const text = [];
     for (const m of msg) {
       if (typeof m === 'object') {
@@ -107,7 +115,8 @@ export class ColorLogger {
       }
     }
 
-    const color = levelToColor[level];
+    // level is checked for being a string and one of supported letters
+    const color = levelToColor[level]; // don't silence eslint
     const info = this._getInfo();
 
     const d = new Date();
