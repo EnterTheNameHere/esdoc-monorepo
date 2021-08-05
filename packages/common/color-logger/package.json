@@ -3,7 +3,7 @@
   "version": "0.0.7-beta.0",
   "description": "Colorful Logger",
   "author": "h13i32maru",
-  "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/common/color-logger",
+  "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/plugins/common/color-logger",
   "license": "MIT",
   "repository": {
     "type": "git",
