@@ -1,6 +1,6 @@
 {
   "name": "@enterthenamehere/esdoc-standard-plugin",
-  "version": "1.3.0-beta.1",
+  "version": "2.0.0",
   "description": "A standard plugin for ESDoc",
   "author": "h13i32maru",
   "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-standard-plugin",
