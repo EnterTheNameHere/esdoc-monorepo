@@ -14,7 +14,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@enterthenamehere/ice-cap": "file:../../common/ice-cap",
+    "@enterthenamehere/ice-cap": "file:../ice-cap",
     "fs-extra": "^9.0.1",
     "to-markdown": "^3.1.1"
   },

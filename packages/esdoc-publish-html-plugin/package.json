@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@babel/generator": "^7.12.5",
-    "@enterthenamehere/ice-cap": "file:../../common/ice-cap",
+    "@enterthenamehere/ice-cap": "file:../ice-cap",
     "cheerio": "^1.0.0-rc.5",
     "cpx2": "^3.0.0",
     "escape-string-regexp": "^4.0.0",
@@ -25,11 +25,6 @@
     "sanitize-html": "^2.1.2",
     "taffydb": "^2.7.3",
     "trash-cli": "^4.0.0"
-  },
-  "devDependencies": {
-    "@enterthenamehere/esdoc-type-inference-plugin": "file:../esdoc-type-inference-plugin",
-    "@enterthenamehere/esdoc-undocumented-identifier-plugin": "file:../esdoc-undocumented-identifier-plugin",
-    "@enterthenamehere/esdoc-unexported-identifier-plugin": "file:../esdoc-unexported-identifier-plugin"
   },
   "peerDependencies": {
     "@enterthenamehere/esdoc-core": "^1.3.0-beta"
