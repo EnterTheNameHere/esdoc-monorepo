@@ -3,7 +3,7 @@
   "version": "1.3.0-beta.0",
   "description": "A unexported identifier plugin for ESDoc",
   "author": "h13i32maru",
-  "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/plugins/esdoc-unexported-identifier-plugin",
+  "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-unexported-identifier-plugin",
   "license": "MIT",
   "repository": {
     "type": "git",

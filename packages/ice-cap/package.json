@@ -3,12 +3,12 @@
   "version": "0.2.0-beta.1",
   "description": "Programmable DOM-based HTML template library.",
   "author": "h13i32maru",
-  "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/plugins/common/ice-cap",
+  "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/ice-cap",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/EnterTheNameHere/esdoc-monorepo",
-    "directory": "common/color-logger"
+    "directory": "common/ice-cap"
   },
   "publishConfig": {
     "access": "public"

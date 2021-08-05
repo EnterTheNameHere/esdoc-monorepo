@@ -3,7 +3,7 @@
   "version": "1.3.0-beta.0",
   "description": "A flow type plugin for ESDoc [PoC]",
   "author": "h13i32maru",
-  "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/plugins/esdoc-flow-type-plugin",
+  "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-flow-type-plugin",
   "license": "MIT",
   "repository": {
     "type": "git",
