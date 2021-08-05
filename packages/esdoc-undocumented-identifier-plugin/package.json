@@ -1,6 +1,6 @@
 {
   "name": "@enterthenamehere/esdoc-undocumented-identifier-plugin",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "A undocumented identifier plugin for ESDoc",
   "author": "h13i32maru",
   "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-undocumented-identifier-plugin",
