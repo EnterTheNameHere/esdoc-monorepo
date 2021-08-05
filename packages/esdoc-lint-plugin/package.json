@@ -13,7 +13,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "peerDependencies": {
+  "dependencies": {
     "@enterthenamehere/esdoc-core": "file:../esdoc-core"
   },
   "engines": {

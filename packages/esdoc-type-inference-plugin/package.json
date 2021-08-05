@@ -13,7 +13,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "peerDependencies": {
+  "dependencies": {
     "@enterthenamehere/color-logger": "file:../color-logger",
     "@enterthenamehere/esdoc-core": "file:../esdoc-core"
   },
