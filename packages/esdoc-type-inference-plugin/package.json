@@ -14,8 +14,8 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@enterthenamehere/color-logger": "^0.0.7-beta",
-    "@enterthenamehere/esdoc-core": "^1.3.0-beta"
+    "@enterthenamehere/color-logger": "file:../color-logger",
+    "@enterthenamehere/esdoc-core": "file:../esdoc-core"
   },
   "engines": {
     "node": ">= 10.23.1"

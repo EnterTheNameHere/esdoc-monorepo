@@ -41,7 +41,7 @@
     "fs-extra": "^9.0.1"
   },
   "peerDependencies": {
-    "@enterthenamehere/color-logger": "^0.0.7-beta"
+    "@enterthenamehere/color-logger": "file:../color-logger"
   },
   "files": [
     "src",

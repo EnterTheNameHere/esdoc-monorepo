@@ -27,7 +27,7 @@
     "trash-cli": "^4.0.0"
   },
   "peerDependencies": {
-    "@enterthenamehere/esdoc-core": "^1.3.0-beta"
+    "@enterthenamehere/esdoc-core": "file:../esdoc-core"
   },
   "engines": {
     "node": ">= 10.23.1"
