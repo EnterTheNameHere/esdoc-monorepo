@@ -14,29 +14,18 @@
     "access": "public"
   },
   "dependencies": {
-    "@enterthenamehere/esdoc-accessor-plugin": "^1.3.0-beta",
-    "@enterthenamehere/esdoc-brand-plugin": "^1.3.0-beta",
-    "@enterthenamehere/esdoc-coverage-plugin": "^1.3.0-beta",
-    "@enterthenamehere/esdoc-ecmascript-proposal-plugin": "^1.3.0-beta",
-    "@enterthenamehere/esdoc-external-ecmascript-plugin": "^1.3.0-beta",
-    "@enterthenamehere/esdoc-integrate-manual-plugin": "^1.3.0-beta",
-    "@enterthenamehere/esdoc-integrate-test-plugin": "^1.3.0-beta",
-    "@enterthenamehere/esdoc-lint-plugin": "^1.3.0-beta",
-    "@enterthenamehere/esdoc-publish-html-plugin": "^1.3.0-beta",
-    "@enterthenamehere/esdoc-type-inference-plugin": "^1.3.0-beta",
-    "@enterthenamehere/esdoc-undocumented-identifier-plugin": "^1.3.0-beta",
-    "@enterthenamehere/esdoc-unexported-identifier-plugin": "^1.3.0-beta"
-  },
-  "devDependencies": {
-    "@enterthenamehere/esdoc": "^1.3.0-beta",
-    "eslint": "^7.13.0",
-    "eslint-plugin-compat": "^3.8.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-security": "^1.4.0",
-    "mocha": "^8.2.1",
-    "nyc": "^15.1.0",
-    "trash-cli": "^4.0.0"
+    "@enterthenamehere/esdoc-accessor-plugin": "file:../esdoc-accessor-plugin",
+    "@enterthenamehere/esdoc-brand-plugin": "file:../esdoc-brand-plugin",
+    "@enterthenamehere/esdoc-coverage-plugin": "file:../esdoc-coverage-plugin",
+    "@enterthenamehere/esdoc-ecmascript-proposal-plugin": "file:../esdoc-ecmascript-proposal-plugin",
+    "@enterthenamehere/esdoc-external-ecmascript-plugin": "file:../esdoc-external-ecmascript-plugin",
+    "@enterthenamehere/esdoc-integrate-manual-plugin": "file:../esdoc-integrate-manual-plugin",
+    "@enterthenamehere/esdoc-integrate-test-plugin": "file:../esdoc-integrate-test-plugin",
+    "@enterthenamehere/esdoc-lint-plugin": "file:../esdoc-lint-plugin",
+    "@enterthenamehere/esdoc-publish-html-plugin": "file:../esdoc-publish-html-plugin",
+    "@enterthenamehere/esdoc-type-inference-plugin": "file:../esdoc-type-inference-plugin",
+    "@enterthenamehere/esdoc-undocumented-identifier-plugin": "file:../esdoc-undocumented-identifier-plugin",
+    "@enterthenamehere/esdoc-unexported-identifier-plugin": "file:../esdoc-unexported-identifier-plugin"
   },
   "engines": {
     "node": ">= 10.23.1"

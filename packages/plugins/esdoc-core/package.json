@@ -40,23 +40,6 @@
     "@babel/traverse": "^7.12.5",
     "fs-extra": "^9.0.1"
   },
-  "devDependencies": {
-    "@babel/cli": "^7.12.1",
-    "@babel/eslint-parser": "^7.12.1",
-    "@babel/eslint-plugin": "^7.12.1",
-    "@babel/plugin-transform-modules-commonjs": "^7.12.1",
-    "@istanbuljs/nyc-config-babel": "^3.0.0",
-    "babel-plugin-istanbul": "^6.0.0",
-    "cross-env": "^7.0.3",
-    "eslint": "^7.13.0",
-    "eslint-plugin-compat": "^3.8.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-security": "^1.4.0",
-    "mocha": "^8.2.1",
-    "nyc": "^15.1.0",
-    "trash-cli": "^4.0.0"
-  },
   "peerDependencies": {
     "@enterthenamehere/color-logger": "^0.0.7-beta"
   },

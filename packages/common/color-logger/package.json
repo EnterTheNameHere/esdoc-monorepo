@@ -26,25 +26,6 @@
     "test": "mocha ./test/src --recursive --extension .test.js --require esm -t 5000",
     "transpile": "babel ./src --out-dir ./out"
   },
-  "devDependencies": {
-    "@babel/cli": "^7.12.7",
-    "@babel/core": "^7.12.7",
-    "@babel/eslint-parser": "^7.12.1",
-    "@babel/eslint-plugin": "^7.12.1",
-    "@babel/plugin-transform-modules-commonjs": "^7.12.1",
-    "@babel/preset-env": "^7.12.7",
-    "cpx2": "^3.0.0",
-    "cross-env": "^7.0.3",
-    "eslint": "^7.14.0",
-    "eslint-plugin-compat": "^3.8.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-security": "^1.4.0",
-    "esm": "^3.2.25",
-    "mocha": "^8.2.1",
-    "nyc": "^15.1.0",
-    "trash-cli": "^4.0.0"
-  },
   "keywords": [
     "logger",
     "log"
