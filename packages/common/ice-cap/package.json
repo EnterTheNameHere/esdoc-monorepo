@@ -36,5 +36,8 @@
     "out",
     "src"
   ],
+  "directories": {
+    "test": "test"
+  },
   "main": "out/IceCap.js"
 }

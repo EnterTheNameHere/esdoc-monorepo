@@ -31,6 +31,9 @@
     "src",
     "README.md"
   ],
+  "directories": {
+    "test": "test"
+  },
   "main": "src/Plugin.js",
   "dependencies": {
     "fs-extra": "^9.0.1"

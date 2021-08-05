@@ -34,5 +34,8 @@
     "src",
     "README.md"
   ],
+  "directories": {
+    "test": "test"
+  },
   "main": "src/Plugin.js"
 }

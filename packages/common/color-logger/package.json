@@ -34,5 +34,8 @@
     "out",
     "src"
   ],
+  "directories": {
+    "test": "test"
+  },
   "main": "out/ColorLogger.js"
 }

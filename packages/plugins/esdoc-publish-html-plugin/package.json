@@ -64,5 +64,8 @@
     "out",
     "src"
   ],
+  "directories": {
+    "test": "test"
+  },
   "main": "out/Plugin.js"
 }

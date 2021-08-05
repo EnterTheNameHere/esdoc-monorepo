@@ -62,6 +62,9 @@
     "out",
     "src"
   ],
+  "directories": {
+    "test": "test"
+  },
   "main": "out/ESDoc.js",
   "bin": {
     "esdoc": "out/ESDocCLI.js"
