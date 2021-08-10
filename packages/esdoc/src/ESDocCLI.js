@@ -58,18 +58,19 @@ export default class ESDocCLI {
    * @private
    */
   _showHelp() { /* eslint-disable no-console */
-    console.log('Usage: esdoc [-c esdoc.json]');
-    console.log('');
-    console.log('Options:');
-    console.log('  -c', 'specify config file');
-    console.log('  -h', 'output usage information');
-    console.log('  -v', 'output the version number');
-    console.log('');
-    console.log('ESDoc finds configuration by the order:');
-    console.log('  1. `-c your-esdoc.json`');
-    console.log('  2. `.esdoc.json` in current directory');
-    console.log('  3. `.esdoc.js` in current directory');
-    console.log('  4. `esdoc` property in package.json');
+    console.log(
+        `${String('Usage: esdoc [-c or --config esdoc.json]\n' +
+        '\n' +
+        'Options:\n' +
+        '    -c,  --config    specify config file                     [string]\n' +
+        '    -h,  --help      output usage information (this text)\n' +
+        '    -v,  --version   output the version number\n' +
+        'ESDoc finds configuration by the order:\n' +
+        '    1. `-c your-esdoc.json`\n' +
+        '    2. `[.]esdoc.json` in current directory\n' +
+        '    3. `[.]esdoc.js` in current directory\n' +
+        '    4. `esdoc` property in package.json')}`
+    );
   } /* eslint-enable no-console */
 
   /**
@@ -94,7 +95,7 @@ export default class ESDocCLI {
     if( this._argv.c ) {
       // We DO NOT control this._argv.c
       if( fs.existsSync(this._argv.c) ) {
-      return this._argv.c;
+        return this._argv.c;
       }
     }
 
@@ -122,7 +123,7 @@ export default class ESDocCLI {
     if( fs.existsSync( filePath ) ) {
       return filePath;
     }
-
+    
     filePath = path.resolve('./esdoc.js');
     // We control filePath
     if( fs.existsSync( filePath ) ) {
