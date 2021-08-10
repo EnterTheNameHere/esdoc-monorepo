@@ -22,7 +22,7 @@
     "esdoc": "esdoc -c esdoc.json",
     "prepare": "npm run build",
     "test": "mocha ./test/src --recursive --extension .test.js --require esm -t 5000",
-    "transpile": "babel ./src --out-dir ./out"
+    "transpile": "babel ./src --out-dir ./out --root-mode upward"
   },
   "dependencies": {
     "@enterthenamehere/color-logger": "file:../color-logger",

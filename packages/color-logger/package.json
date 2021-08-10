@@ -24,7 +24,7 @@
     "esdoc:copy": "cpx \"./misc/color-logger.png\" \"out/docs/misc\" --verbose",
     "prepare": "npm run build",
     "test": "mocha ./test/src --recursive --extension .test.js --require esm -t 5000",
-    "transpile": "babel ./src --out-dir ./out"
+    "transpile": "babel ./src --out-dir ./out --root-mode upward"
   },
   "keywords": [
     "logger",

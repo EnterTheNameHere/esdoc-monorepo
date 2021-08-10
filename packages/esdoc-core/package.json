@@ -23,7 +23,7 @@
     "prebuild": "npm run build:clear",
     "build": "npm run build:transpile",
     "build:clear": "trash ./lib",
-    "build:transpile": "babel ./src --out-dir ./lib --source-maps inline",
+    "build:transpile": "babel ./src --out-dir ./lib --root-mode upward",
     "precoverage": "trash ./nyc_output && trash ./coverage",
     "coverage": "npm run coverage:build && nyc npm run test && npm run build",
     "coverage:build": "cross-env NODE_ENV=coverage npm run build",
