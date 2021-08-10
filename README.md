@@ -19,6 +19,19 @@ So how do I use your version of ESDoc?
 npm install @enterthenamehere/esdoc @enterthenamehere/esdoc-standard-plugin
 ```
 
+and you can run esdoc by
+```bash
+npx esdoc
+```
+or use it in npm "script"
+```json
+{
+    "scripts": {
+        "esdoc": "esdoc"
+    }
+}
+```
+
 ## Config
 esdoc.json
 ```json
