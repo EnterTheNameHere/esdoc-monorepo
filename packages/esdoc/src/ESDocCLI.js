@@ -86,29 +86,47 @@ export default class ESDocCLI {
   }
 
   /**
-   * find ESDoc config file.
-   * @returns {string|null} config file path.
+   * Returns string filepath of ESDoc config file if exists or null if none can be found.
+   * @returns {string|null} Config file path.
    * @private
    */
   _findConfigFilePath() {
-    if (this._argv.c) {
+    if( this._argv.c ) {
+      // We DO NOT control this._argv.c
+      if( fs.existsSync(this._argv.c) ) {
       return this._argv.c;
+      }
     }
 
-    try {
-      const filePath = path.resolve('./.esdoc.json');
-      fs.readFileSync(filePath);
-      return filePath;
-    } catch (e) {
-      // ignore
+    if( this._argv.config ) {
+      // We DO NOT control this._argv.config
+      if( fs.existsSync(this._argv.config) ) {
+        return this._argv.config;
+      }
     }
 
-    try {
-      const filePath = path.resolve('./.esdoc.js');
-      fs.readFileSync(filePath);
+    let filePath = path.resolve('./.esdoc.json');
+    // We control filePath
+    if( fs.existsSync( filePath ) ) {
       return filePath;
-    } catch (e) {
-      // ignore
+    }
+
+    filePath = path.resolve('./esdoc.json');
+    // We control filePath
+    if( fs.existsSync( filePath ) ) {
+      return filePath;
+    }
+    
+    filePath = path.resolve('./.esdoc.js');
+    // We control filePath
+    if( fs.existsSync( filePath ) ) {
+      return filePath;
+    }
+
+    filePath = path.resolve('./esdoc.js');
+    // We control filePath
+    if( fs.existsSync( filePath ) ) {
+      return filePath;
     }
 
     return null;
