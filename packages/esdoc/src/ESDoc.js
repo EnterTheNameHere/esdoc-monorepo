@@ -365,7 +365,7 @@ export default class ESDoc {
    * Returns prefix, or scope, of package, ie. '@enterthenamehere/esdoc' will return '@enterthenamehere'. If no prefix
    * is present, it will return empty string.
    *
-   * Returns emptry string if name of package doesn't end '/esdoc' (eg. '/esdoc-something-after') and returns
+   * Returns empty string if name of package doesn't end '/esdoc' (eg. '/esdoc-something-after') and returns
    * empty string if name doesn't start with '@' (eg. 'prefix/esdoc' instead of '@prefix/esdoc').
    *
    * @return {string} prefix of package.
