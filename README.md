@@ -11,7 +11,7 @@ Original [ESDoc](https://github.com/esdoc/esdoc) is unfortunately no more mantai
 * Added esdoc-ecmascript-proposal-plugin to esdoc-standard-plugin, so you can use ESNext right away;
 * Updated dependencies to get rid of high risk vulnerabilities;
 * Replaced prettify with highlight.js - it's not 100% replacement though, so if you see issues, do tell;
-* Monorepository is using lerna;
+* Monorepository is using [lerna](https://github.com/lerna/lerna);
 
 ## Install
 So how do I use your version of ESDoc?
