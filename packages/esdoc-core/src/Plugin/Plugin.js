@@ -14,9 +14,10 @@ class Plugin {
   /**
    * initialize with plugin property.
    * @param {Array<{name: string, option: object}>} plugins - expect config.plugins property.
+   * @param {string} scopePrefix - scope of packages (ie. @enterthenamehere), or empty string.
    */
-  init(plugins = []) {
-    this.onHandlePlugins(plugins);
+  init(plugins = [], scopePrefix = '') {
+    this.onHandlePlugins(plugins, scopePrefix);
   }
 
   /**
@@ -45,11 +46,39 @@ class Plugin {
     }
   }
 
-  onHandlePlugins(plugins) {
+  /**
+   * 
+   * @param {Array<{object}>} plugins - ESDoc config.plugins property.
+   * @param {string} scopePrefix - scope of packages (ie. @enterthenamehere), or empty string.
+   */
+  onHandlePlugins(plugins, scopePrefix = '') {
+    const checkForScopePrefix = () => {
+      if( typeof(scopePrefix) === 'string' && scopePrefix !== '' ) {
+        // Check all plugins for scopePrefix
+        const pluginsLength = this._plugins.length || 0;
+    
+        for( let pluginsIndex = 0; pluginsIndex < pluginsLength; pluginsIndex++ ) {
+          // We control pluginsIndex
+          const plugin = this._plugins[pluginsIndex];
+          if( plugin.name && typeof(plugin.name) === 'string' ) {
+            // Plugin name can be a file path, for these do not check for scopePrefix
+            if( plugin.name.startsWith('.') || plugin.name.startsWith('/') ) continue;
+          
+            // Check if name of package contains prefix, if not, add it...
+            if( !plugin.name.startsWith(scopePrefix) ) {
+              plugin.name = `${scopePrefix}/${plugin.name}`;
+            }
+          }
+        }
+      }
+    };
+      
     this._plugins = plugins;
+    checkForScopePrefix();
     const ev = new PluginEvent({plugins});
     this._execHandler('onHandlePlugins', ev);
     this._plugins = ev.data.plugins;
+    checkForScopePrefix();
   }
 
   /**
