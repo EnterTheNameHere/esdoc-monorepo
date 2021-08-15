@@ -2,15 +2,15 @@
   "name": "root",
   "private": true,
   "scripts": {
-      "build": "lerna run build",
-      "precoverage": "trash ./coverage",
-      "coverage": "npm run coverage:build && nyc npm run test:execute && npm run build",
-      "coverage:build": "lerna run coverage:build",
-      "coverage:remove_nyc_output": "trash ./.nyc_output",
-      "postcoverage": "npm run coverage:remove_nyc_output",
-      "test": "npm run build && npm run test:execute",
-      "test:execute": "lerna run test",
-      "test:latest": "lerna run --since main build && lerna run --since main test"
+    "build": "lerna run build",
+    "precoverage": "trash ./coverage",
+    "coverage": "npm run coverage:build && nyc npm run test:execute && npm run build",
+    "coverage:build": "lerna run coverage:build",
+    "coverage:remove_nyc_output": "trash ./.nyc_output",
+    "postcoverage": "npm run coverage:remove_nyc_output",
+    "test": "npm run build && npm run test:execute",
+    "test:execute": "lerna run test",
+    "test:latest": "lerna run --since main build && lerna run --since main test"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.8",
