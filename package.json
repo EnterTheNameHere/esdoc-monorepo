@@ -34,6 +34,7 @@
     "@enterthenamehere/esdoc-unexported-identifier-plugin": "file:packages\\esdoc-unexported-identifier-plugin",
     "@istanbuljs/nyc-config-babel": "^3.0.0",
     "babel-plugin-istanbul": "^6.0.0",
+    "chai": "^4.3.4",
     "cpx2": "^3.0.0",
     "cross-env": "^7.0.3",
     "eslint": "^7.13.0",
