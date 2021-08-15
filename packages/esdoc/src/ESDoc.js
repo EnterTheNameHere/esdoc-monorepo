@@ -44,11 +44,11 @@ export default class ESDoc {
     
     this._checkOldConfig(config);
 
-    Plugin.init(config.plugins);
+    this._setDefaultConfig(config);
+
+    Plugin.init(config.plugins, this._getPackagePrefix());
     Plugin.onStart();
     config = Plugin.onHandleConfig(config);
-
-    this._setDefaultConfig(config);
 
     logger.debug = Boolean(config.debug);
     const includes = config.includes.map((v) => { return new RegExp(v, 'u'); });
@@ -178,6 +178,8 @@ export default class ESDoc {
     if (!config.package) config.package = './package.json';
 
     if (!('outputAST' in config)) config.outputAST = true;
+
+    if (!config.plugins) config.plugins = [];
   }
 
   /**
