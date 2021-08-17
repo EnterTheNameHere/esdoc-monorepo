@@ -26,4 +26,23 @@ export default class MyClass {
    * method5 is auto private.
    */
   _method5(){}
+
+  /**
+   * unnamed method.
+   */
+  function(){}
+}
+
+/**
+  * unnamed method.
+  */
+MyClass.prototype["@@iterator"] = function(){
+  return this;
+}
+
+/**
+  * unnamed arrow method.
+  */
+MyClass.prototype["@@asyncIterator"] = () => {
+  return undefined;
 }
