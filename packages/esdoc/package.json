@@ -30,7 +30,7 @@
     "prepare": "npm run build",
     "pretest": "npm run test:clear",
     "test": "mocha ./test --recursive -t 5000 --require esm --extension .test.js",
-    "test:clear": "trash ./test/integration-test/out",
+    "test:clear": "trash ./test/out",
     "transpile": "babel ./src --out-dir ./out --root-mode upward"
   },
   "dependencies": {
