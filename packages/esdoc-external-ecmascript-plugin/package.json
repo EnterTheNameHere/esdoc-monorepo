@@ -1,6 +1,6 @@
 {
   "name": "@enterthenamehere/esdoc-external-ecmascript-plugin",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "A external ECMAScript plugin for ESDoc",
   "author": "h13i32maru",
   "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-external-ecmascript-plugin",
