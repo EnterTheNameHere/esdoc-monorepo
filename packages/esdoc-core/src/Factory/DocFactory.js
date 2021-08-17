@@ -504,7 +504,7 @@ export default class DocFactory {
 
   /**
    * decide Doc type from class property node.
-   * @param {ASTNode} node - target node that is classs property node.
+   * @param {ASTNode} node - target node that is class property node.
    * @returns {{type: ?string, node: ?ASTNode}} decided type.
    * @private
    */
