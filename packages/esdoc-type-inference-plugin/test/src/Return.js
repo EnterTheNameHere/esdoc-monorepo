@@ -18,4 +18,10 @@ export default class TestReturn {
   methodTemplateLiteral(){
     return `text`;
   }
+
+  methodObjectWithSpread(){
+    const spread1 = ['a', 'b', 'c'];
+    const spread2 = [1,2,3];
+    return { ...spread1, ...spread2 }
+  }
 }

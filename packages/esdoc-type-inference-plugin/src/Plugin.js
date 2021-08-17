@@ -340,6 +340,12 @@ class Plugin {
             typeMap[name] = 'Object';
             break;
           }
+          case 'SpreadElement': {
+            const name = `"...${prop.argument.name}"`;
+            // TODO: Somehow try finding if this variable is already inferred and in that case use that?
+            typeMap[name] = '*';
+            break;
+          }
           default: {
             const name = `"${prop.key.name || prop.key.value}"`;
             typeMap[name] = '*';

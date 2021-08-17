@@ -21,4 +21,9 @@ describe('test/Return.js:', function () {
     const doc = find('longname', 'src/Return.js~TestReturn#methodTemplateLiteral');
     assert.deepEqual(doc.return, {types: ['string']});
   });
+
+  it('infer return value of object with spreads as object', function () {
+    const doc = find('longname', 'src/Return.js~TestReturn#methodObjectWithSpread');
+    assert.deepEqual(doc.return, {types: ['{"...spread1": *, "...spread2": *}']});
+  });
 });
