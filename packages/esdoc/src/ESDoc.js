@@ -86,7 +86,7 @@ export default class ESDoc {
         if (relativeFilePath.match(reg)) return;
       }
 
-      console.info(`parse: ${filePath}`);
+      if( config.verbose ) console.info(`parse: ${filePath}`);
       const temp = this._traverse(config.source, filePath, packageName, mainFilePath);
       if (!temp) return;
       results.push(...temp.results);
@@ -180,6 +180,10 @@ export default class ESDoc {
     if (!('outputAST' in config)) config.outputAST = true;
 
     if (!config.plugins) config.plugins = [];
+
+    if (!config.verbose) config.verbose = false;
+
+    if (!config.debug) config.debug = false;
   }
 
   /**
@@ -339,13 +343,13 @@ export default class ESDoc {
         const _filePath = path.resolve(config.destination, filePath);
         content = Plugin.onHandleContent(content, _filePath);
 
-        console.info(`output: ${_filePath}`);
+        if( config.verbose ) console.info(`output: ${_filePath}`);
         fs.outputFileSync(_filePath, content, option);
       };
 
       const copy = (srcPath, destPath) => {
         const _destPath = path.resolve(config.destination, destPath);
-        console.info(`output: ${_destPath}`);
+        if( config.verbose ) console.info(`output: ${_destPath}`);
         fs.copySync(srcPath, _destPath);
       };
 
