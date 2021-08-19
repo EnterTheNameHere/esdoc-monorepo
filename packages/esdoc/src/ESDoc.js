@@ -40,8 +40,6 @@ export default class ESDoc {
         throw new Error(message);
     }
     
-    console.error('esdoc package name:', require('../package.json').name);
-    
     this._checkOldConfig(config);
 
     this._setDefaultConfig(config);
