@@ -599,6 +599,11 @@ export default class DocFactory {
 
     if (!isTop) return {type: null, node: null};
 
+    if( !node.left.id || !node.left.property ) {
+      // TODO: AssignmentExpression's left doesn't have id or property. Check why and what are the consequences.
+      return {type: null, node: null};
+    }
+
     /* eslint-disable prefer-const */
     innerNode = node.right;
     innerNode.id = this._copy(node.left.id || node.left.property);
