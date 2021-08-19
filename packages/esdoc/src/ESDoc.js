@@ -6,7 +6,7 @@ import ESParser from '@enterthenamehere/esdoc-core/lib/Parser/ESParser.js';
 import PathResolver from '@enterthenamehere/esdoc-core/lib/Util/PathResolver.js';
 import DocFactory from '@enterthenamehere/esdoc-core/lib/Factory/DocFactory.js';
 import InvalidCodeLogger from '@enterthenamehere/esdoc-core/lib/Util/InvalidCodeLogger.js';
-import Plugin from '@enterthenamehere/esdoc-core/lib/Plugin/Plugin.js';
+import PluginManager from '@enterthenamehere/esdoc-core/lib/Plugin/PluginManager.js';
 
 /**
  * API Documentation Generator.
@@ -46,9 +46,9 @@ export default class ESDoc {
 
     this._setDefaultConfig(config);
 
-    Plugin.init(config.plugins, this._getPackagePrefix());
-    Plugin.onStart();
-    config = Plugin.onHandleConfig(config);
+    PluginManager.init(config.plugins, this._getPackagePrefix());
+    PluginManager.onStart();
+    config = PluginManager.onHandleConfig(config);
 
     logger.debug = Boolean(config.debug);
     const includes = config.includes.map((v) => { return new RegExp(v, 'u'); });
@@ -107,7 +107,7 @@ export default class ESDoc {
 
     results = this._resolveDuplication(results);
 
-    results = Plugin.onHandleDocs(results);
+    results = PluginManager.onHandleDocs(results);
 
     // index.json
     {
@@ -125,7 +125,7 @@ export default class ESDoc {
     // publish
     this._publish(config);
 
-    Plugin.onComplete();
+    PluginManager.onComplete();
   }
 
   /**
@@ -341,7 +341,7 @@ export default class ESDoc {
     try {
       const write = (filePath, content, option) => {
         const _filePath = path.resolve(config.destination, filePath);
-        content = Plugin.onHandleContent(content, _filePath);
+        content = PluginManager.onHandleContent(content, _filePath);
 
         if( config.verbose ) console.info(`output: ${_filePath}`);
         fs.outputFileSync(_filePath, content, option);
@@ -358,7 +358,7 @@ export default class ESDoc {
         return fs.readFileSync(_filePath).toString();
       };
 
-      Plugin.onPublish(write, copy, read);
+      PluginManager.onPublish(write, copy, read);
     } catch (e) {
       InvalidCodeLogger.showError(e);
       process.exit(1);

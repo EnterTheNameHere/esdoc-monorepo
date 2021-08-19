@@ -3,7 +3,7 @@ import path from 'path';
 /**
  * Plugin system for your plugin.
  */
-class Plugin {
+class PluginManager {
   /**
    * create instance.
    */
@@ -213,4 +213,4 @@ function copy(obj) {
 /**
  * Instance of Plugin class.
  */
-export default new Plugin();
+export default new PluginManager();
