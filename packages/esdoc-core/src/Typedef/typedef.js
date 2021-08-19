@@ -47,6 +47,14 @@
  */
 
 /**
+ * GlobalConfig object.
+ * @typedef {Object} GlobalConfig
+ * @property {string} packageScopePrefix
+ * @property {boolean} debug
+ * @property {boolean} verbose
+ */
+
+/**
  * doc comment tag.
  * @typedef {Object} Tag
  * @property {string} tagName
