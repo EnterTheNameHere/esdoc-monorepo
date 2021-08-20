@@ -1,4 +1,5 @@
 import path from 'path';
+import { isDeepStrictEqual } from 'util';
 
 /**
  * Plugin system for your plugin.
@@ -9,6 +10,102 @@ class PluginManager {
    */
   constructor() {
     this._plugins = null;
+    /** @type {GlobalOptions} */
+    this._globalOptions = null;
+    /** @type {Map<string,PluginEntry} */
+    this._pluginEntries = new Map();
+  }
+
+  /**
+   * Sets ESDoc globalOptions (eg. debug, verbose) which will be passed to all plugins. Should be called before registering any plugin.
+   * @param {GlobalOptions} globalOptions
+   */
+  setGlobalConfig( globalOptions ) {
+    this._globalOptions = globalOptions;
+  }
+
+  /**
+   * Returns all plugins registered with the PluginManager.
+   * @returns {Map<string,PluginEntry>}
+   */
+  getPluginEntries() {
+    return this._pluginEntries;
+  }
+
+  /**
+   * Returns globalSettings set with PluginManager#setGlobalSettings or `null` if none was set.
+   * @returns {GlobalOptions|null}
+   */
+  getGlobalOptions() {
+    return this._globalOptions;
+  }
+
+  /**
+   * Returns Map with plugin settings { name: string, option: object }, where name is name of package or path of plugin and option are options for that plugin.
+   * @returns {Map<string,{name:string,option:object}>}
+   */
+  getPluginsConfigObjects() {
+    return this._pluginsConfigObjects;
+  }
+
+  /**
+   * Register ESDoc plugin. Expects object with `name` property, which is npm package name or path (absolute or relative) to file, and `option` property, which is object with settings.
+   * @param {{name:string, option:Object}} pluginSettings 
+   */
+  registerPlugin( pluginSettings ) {
+    if( !pluginSettings || typeof(pluginSettings.name) !== 'string' ) {
+      console.error('PluginManager::registerPlugin - Plugin must have a name!', pluginSettings);
+      return;
+    }
+
+    // Check if package name has package scope prefix. Required for replace ESDoc & run functionality.
+    if( pluginSettings.name && typeof(pluginSettings.name) === 'string' ) {
+      // Plugin name can be a file path, for these do not check for scopePrefix
+      if( !pluginSettings.name.startsWith('.') && !pluginSettings.name.startsWith('/') )
+      {
+        // Check if name of package contains prefix, if not, add it...
+        if( !pluginSettings.name.startsWith(this._globalOptions.packageScopePrefix) ) {
+          pluginSettings.name = `${this._globalOptions.packageScopePrefix}/${pluginSettings.name}`;
+        }
+      }
+    }
+    
+    let savedPluginEntry = this._pluginEntries.get(pluginSettings.name);
+    if( !savedPluginEntry ) {
+      this._pluginEntries.set(pluginSettings.name, {instance: null, settings: pluginSettings});
+      savedPluginEntry = this._pluginEntries.get(pluginSettings.name);
+    } else {
+      return;
+    }
+
+    if( !isDeepStrictEqual( savedPluginEntry.settings.option, pluginSettings.option ) ) {
+      console.warn(`PluginManager::registerPlugin - ${pluginSettings.name} is registered more than once, which itself is not an issue, but option is not equal, which might be an issue!`);
+      console.warn('Current plugin option:\n', savedPluginEntry.settings.option, 'New option:\n', pluginSettings.option);
+    }
+
+    let pluginInstance = null;
+    
+    try {
+      if( savedPluginEntry.settings.name.startsWith('.') || savedPluginEntry.settings.name.startsWith('/') ) {
+        // plugin's name is path
+        const filePath = path.resolve(savedPluginEntry.settings.name);
+        pluginInstance = require(filePath);
+      } else {
+        // plugin's name is package
+        module.paths.push('./node_modules');
+        pluginInstance = require(savedPluginEntry.settings.name);
+        module.paths.pop();
+      }
+    } catch (err) {
+      console.error(`PluginManager::registerPlugin - ${savedPluginEntry.name} cannot be found!`);
+    }
+
+    savedPluginEntry.instance = pluginInstance;
+
+    // If plugin have onInitialize function, call it with options as argument.
+    if(pluginInstance.onInitialize && pluginInstance.onInitialize instanceof Function) {
+      pluginInstance.onInitialize(savedPluginEntry.settings.option, this._globalOptions);
+    }
   }
 
   /**
@@ -21,64 +118,22 @@ class PluginManager {
   }
 
   /**
-   * exec plugin handler.
+   * Executes function named `handlerName`, if exists, on all plugins.
    * @param {string} handlerName - handler name(e.g. onHandleCode)
    * @param {PluginEvent} ev - plugin event object.
    * @private
    */
   _execHandler(handlerName, ev) {
-    /* eslint-disable global-require */
-    for (const item of this._plugins) {
-      let plugin = null;
-      if (item.name.match(/^[./]/u)) {
-        const pluginPath = path.resolve(item.name);
-        plugin = require(pluginPath);
-      } else {
-        module.paths.push('./node_modules');
-        plugin = require(item.name);
-        module.paths.pop();
+    for( const pluginName of this._pluginEntries.keys() ) {
+      const pluginEntry = this._pluginEntries.get(pluginName);
+      // We don't have control over handlerName
+      const targetFunction = pluginEntry.instance[handlerName] || null;
+      if( targetFunction && targetFunction instanceof Function ) {
+        ev.data.option = pluginEntry.settings.option;
+        ev.data.globalOption = this._globalOptions;
+        targetFunction.call(pluginEntry.instance, ev);
       }
-
-      if (!plugin[handlerName]) continue;
-
-      ev.data.option = item.option;
-      plugin[handlerName](ev);
     }
-  }
-
-  /**
-   * 
-   * @param {Array<{object}>} plugins - ESDoc config.plugins property.
-   * @param {string} scopePrefix - scope of packages (ie. @enterthenamehere), or empty string.
-   */
-  onHandlePlugins(plugins, scopePrefix = '') {
-    const checkForScopePrefix = () => {
-      if( typeof(scopePrefix) === 'string' && scopePrefix !== '' ) {
-        // Check all plugins for scopePrefix
-        const pluginsLength = this._plugins.length || 0;
-    
-        for( let pluginsIndex = 0; pluginsIndex < pluginsLength; pluginsIndex++ ) {
-          // We control pluginsIndex
-          const plugin = this._plugins[pluginsIndex];
-          if( plugin.name && typeof(plugin.name) === 'string' ) {
-            // Plugin name can be a file path, for these do not check for scopePrefix
-            if( plugin.name.startsWith('.') || plugin.name.startsWith('/') ) continue;
-          
-            // Check if name of package contains prefix, if not, add it...
-            if( !plugin.name.startsWith(scopePrefix) ) {
-              plugin.name = `${scopePrefix}/${plugin.name}`;
-            }
-          }
-        }
-      }
-    };
-      
-    this._plugins = plugins;
-    checkForScopePrefix();
-    const ev = new PluginEvent({plugins});
-    this._execHandler('onHandlePlugins', ev);
-    this._plugins = ev.data.plugins;
-    checkForScopePrefix();
   }
 
   /**

@@ -17,11 +17,12 @@ export default class DocBuilder {
    * @param {String} template - template absolute path
    * @param {Taffy} data - doc object database.
    */
-  constructor(template, data, tags) {
+  constructor(template, data, tags, globalOption) {
     this._template = template;
     this._data = data;
     this._tags = tags;
-    new DocResolver(this).resolve();
+    this._globalOption = globalOption;
+    new DocResolver(this).resolve(globalOption);
   }
 
   /* eslint-disable no-unused-vars */

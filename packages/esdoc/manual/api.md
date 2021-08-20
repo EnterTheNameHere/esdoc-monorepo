@@ -2,36 +2,40 @@
 
 You can modify data(config, code, parser, AST, doc and content) at hook points with plugins.
 
-## Plugin API
-
-First, you set ``plugins`` property in config.
-- specify directly JavaScript file (e.g. `./my-plugin.js`)
-- specify npm module name (e.g. `esdoc-foo-plugin`), before you need to install the module.
+## Config
 
 ```json
 {
   "source": "./src",
   "destination": "./docs",
   "plugins": [
-    {"name": "./MyPlugin.js"},
-    {"name": "esdoc-foo-plugin", "option": {"foo": 123}}
+    {
+      "name": "my-plugin",
+      "options": {
+        "foo": 123
+      }
+    }
   ]
 }
 ```
 
-Second, you write plugin code.
+Config for a plugin is an object with two properties: **name** and **options**.
+**name** can be an npm package (e.g. `esdoc-foo-plugin`) or a path to a file (e.g. `./my-plugin.js`)
+**options** is an object where you can set properties and their values.
+
+## Plugin API
 
 <div class="file-path">MyPlugin.js</div>
 
 ```javascript
 class MyPlugin {
+  onInitialize(options, globalOptions) {
+    // Run once, when plugin is registered with PluginManager
+    // If you want to require some other plugins, do it here by calling PluginManager
+  }
+
   onStart(ev) {
     console.log(ev.data);
-  }
-  
-  onHandlePlugins(ev) {
-    // modify plugins
-    ev.data.plugins = ...; 
   }
   
   onHandleConfig(ev) {
@@ -87,8 +91,5 @@ class MyPlugin {
 module.exports = new MyPlugin();
 ```
 
-Note: [esdoc/esdoc-plugins](https://github.com/esdoc/esdoc-plugins) is helpful for writing plugins.
-
-## Data Format
-TODO: describe data format.
+Check other plugins to learn more.
 

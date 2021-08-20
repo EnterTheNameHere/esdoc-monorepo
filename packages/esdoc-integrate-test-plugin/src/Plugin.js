@@ -12,6 +12,7 @@ class Plugin {
   onHandleDocs(ev) {
     this._docs = ev.data.docs;
     this._option = ev.data.option;
+    this._globalOption = ev.data.globalOption;
 
     this._exec();
   }
@@ -64,7 +65,7 @@ class Plugin {
         if (relativeFilePath.match(reg)) return;
       }
 
-      console.info(`parse: ${filePath}`);
+      if(this._globalOption.verbose) console.info(`parse: ${filePath}`);
       const temp = this._traverse(option.interfaces, option.source, filePath);
       if (!temp) return;
       results.push(...temp.results);

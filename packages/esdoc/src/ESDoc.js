@@ -44,8 +44,14 @@ export default class ESDoc {
 
     this._setDefaultConfig(config);
 
-    PluginManager.init(config.plugins, this._getPackagePrefix());
+    PluginManager.setGlobalConfig( this._getGlobalConfig(config) );
+
+    config.plugins.forEach((pluginSettings) => {
+      PluginManager.registerPlugin(pluginSettings);
+    });
+
     PluginManager.onStart();
+    
     config = PluginManager.onHandleConfig(config);
 
     logger.debug = Boolean(config.debug);
@@ -182,6 +188,18 @@ export default class ESDoc {
     if (!config.verbose) config.verbose = false;
 
     if (!config.debug) config.debug = false;
+  }
+
+  /**
+   * Returns GlobalConfig object.
+   * @param {ESDocConfig} config 
+   */
+  static _getGlobalConfig(config) {
+    return {
+      debug: config.debug,
+      verbose: config.verbose,
+      packageScopePrefix: this._getPackagePrefix()
+    };
   }
 
   /**

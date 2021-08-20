@@ -17,9 +17,9 @@ class Plugin {
   }
 
   _setDefault() {
-    if (!this._option) return;
+    //if (!this._option) return;
 
-    if (!('coverage' in this._option)) this._option.coverage = true;
+    //if (!('coverage' in this._option)) this._option.coverage = true;
   }
 
   _generateDocs() {

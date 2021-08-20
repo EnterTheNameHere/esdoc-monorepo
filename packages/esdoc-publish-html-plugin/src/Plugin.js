@@ -21,6 +21,7 @@ class Plugin {
 
   onPublish(ev) {
     this._option = ev.data.option || {};
+    this._globalOption = ev.data.globalOption;
     this._template = typeof this._option.template === 'string'
       ? path.resolve(process.cwd(), this._option.template)
       : path.resolve(__dirname, './Builder/template');
@@ -34,7 +35,7 @@ class Plugin {
 
     //bad hack: for other plugin uses builder.
     DocBuilder.createDefaultBuilder = () => {
-      return new DocBuilder(this._template, data, tags);
+      return new DocBuilder(this._template, data, tags, this._globalOption);
     };
 
     let coverage = null;

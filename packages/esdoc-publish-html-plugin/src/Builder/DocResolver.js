@@ -17,25 +17,25 @@ export default class DocResolver {
   /**
    * resolve various properties.
    */
-  resolve() {
+  resolve(globalOption) {
     if (this._data.__RESOLVED_ALL__) return;
 
-    console.info('resolve: extends chain');
+    if(globalOption && globalOption.verbose) console.info('resolve: extends chain');
     this._resolveExtendsChain();
 
-    console.info('resolve: necessary');
+    if(globalOption && globalOption.verbose) console.info('resolve: necessary');
     this._resolveNecessary();
 
-    console.info('resolve: ignore');
+    if(globalOption && globalOption.verbose) console.info('resolve: ignore');
     this._resolveIgnore();
 
-    console.info('resolve: link');
+    if(globalOption && globalOption.verbose) console.info('resolve: link');
     this._resolveLink();
 
-    console.info('resolve: markdown in description');
+    if(globalOption && globalOption.verbose) console.info('resolve: markdown in description');
     this._resolveMarkdown();
 
-    console.info('resolve: test relation');
+    if(globalOption && globalOption.verbose) console.info('resolve: test relation');
     this._resolveTestRelation();
 
     this._data.__RESOLVED_ALL__ = true;
