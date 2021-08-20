@@ -47,11 +47,25 @@
  */
 
 /**
- * GlobalConfig object.
- * @typedef {Object} GlobalConfig
+ * GlobalOptions object.
+ * @typedef {Object} GlobalOptions
  * @property {string} packageScopePrefix
  * @property {boolean} debug
  * @property {boolean} verbose
+ */
+
+/**
+ * PluginEntry object.
+ * @typedef {Object} PluginEntry
+ * @property {PluginSettings} settings
+ * @property {Plugin} instance
+ */
+
+/**
+ * PluginSettings object.
+ * @typedef {Object} PluginSettings
+ * @property {string} name
+ * @property {Object} option
  */
 
 /**
