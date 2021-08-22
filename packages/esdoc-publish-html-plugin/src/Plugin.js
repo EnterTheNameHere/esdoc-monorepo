@@ -24,7 +24,7 @@ class Plugin {
     this._globalOption = ev.data.globalOption;
     this._template = typeof this._option.template === 'string'
       ? path.resolve(process.cwd(), this._option.template)
-      : path.resolve(__dirname, './Builder/template');
+      : path.resolve(__dirname, './html-template');
     this._exec(this._docs, ev.data.writeFile, ev.data.copyDir, ev.data.readFile);
   }
 
