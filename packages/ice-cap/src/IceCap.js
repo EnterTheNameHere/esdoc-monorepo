@@ -98,7 +98,7 @@ export default class IceCap {
           throw new Error(`unknown mode. mode = "${mode}"`);
       }
 
-      node.text(transformedValue);
+      node.html(transformedValue);
     }
 
     return this;
