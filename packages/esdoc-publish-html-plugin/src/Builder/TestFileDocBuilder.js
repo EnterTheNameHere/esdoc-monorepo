@@ -1,5 +1,6 @@
 import IceCap from '@enterthenamehere/ice-cap';
 import DocBuilder from './DocBuilder.js';
+import { addLineNumbersToSourceCode } from './util.js';
 
 /**
  * File output html builder class.
@@ -27,10 +28,12 @@ export default class TestFileDocBuilder extends DocBuilder {
    * @private
    */
   _buildFileDoc(doc) {
+    const content = addLineNumbersToSourceCode(doc.content);
+
     const ice = new IceCap(this._readTemplate('file.html'));
     ice.text('title', doc.name);
-    ice.text('content', doc.content);
-    ice.drop('emptySourceCode', Boolean(doc.content));
+    ice.load('content', content);
+    ice.drop('emptySourceCode', Boolean(content));
     return ice.html;
   }
 }
