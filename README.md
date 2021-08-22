@@ -75,6 +75,7 @@ npm install @enterthenamehere/esdoc-standard-plugin
  
 ESDoc offers even more plugins, but you have to install these individually:
 
+--------------- | ---------------
 [esdoc-exclude-source-plugin](https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-exclude-source-plugin) | Do not add source code files into documentation.
 [esdoc-external-nodejs-plugin](https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-external-nodejs-plugin) | Makes ESDoc recognize Node.js identifiers and point to their manual.
 [esdoc-external-webapi-plugin](https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-external-webapi-plugin) | Makes ESDoc recognize WebAPI identifiers and point to their manual.
