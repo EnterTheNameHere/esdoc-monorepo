@@ -7,6 +7,7 @@ class Plugin {
     PluginManager.registerPlugin({name: '@enterthenamehere/esdoc-coverage-plugin', option: option.coverage});
     PluginManager.registerPlugin({name: '@enterthenamehere/esdoc-accessor-plugin', option: option.accessor});
     PluginManager.registerPlugin({name: '@enterthenamehere/esdoc-type-inference-plugin', option: option.typeInference});
+    PluginManager.registerPlugin({name: '@enterthenamehere/esdoc-ecmascript-proposal-plugin', option: option.ecmascriptProposal});
     PluginManager.registerPlugin({name: '@enterthenamehere/esdoc-external-ecmascript-plugin'});
     PluginManager.registerPlugin({name: '@enterthenamehere/esdoc-brand-plugin', option: option.brand});
     PluginManager.registerPlugin({name: '@enterthenamehere/esdoc-undocumented-identifier-plugin', option: option.undocumentIdentifier});
