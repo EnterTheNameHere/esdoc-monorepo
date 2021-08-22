@@ -166,7 +166,7 @@ export function parseExample(example) {
   const matched = example.match(regexp);
   if (matched) {
     body = example.replace(regexp, '');
-    body = highlightjs.highlight('JavaScript', body).value;
+    body = highlight(body, 'JavaScript').value;
     caption = matched[1].trim();
   }
   return {body, caption};
