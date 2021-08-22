@@ -599,7 +599,7 @@ pre.source-code.line-number li.error-line {
 .inner-link-active {
   /*background: rgb(255, 255, 150) !important;*/
   background: #039BE5 !important;
-  color: #fff !important;
+  /*color: #fff !important;*/
   padding-left: 0.1em !important;
 }
 
