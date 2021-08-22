@@ -162,14 +162,13 @@ export function parseExample(example) {
   let body = example;
   let caption = '';
 
-  /* eslint-disable no-control-regex */
-  const regexp = new RegExp('^<caption>(.*?)</caption>\n', 'u');
-  const matched = example.match(regexp);
+  const regexp = /^<caption>(.*?)<\/caption>\n/u;
+  const matched = body.match(regexp);
   if (matched) {
-    body = example.replace(regexp, '');
-    body = highlight(body, 'JavaScript').value;
+    body = body.replace(matched[0], '');
     caption = matched[1].trim();
   }
+  body = highlight(body, 'JavaScript');
   return {body, caption};
 }
 

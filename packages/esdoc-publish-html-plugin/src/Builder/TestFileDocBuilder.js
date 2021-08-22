@@ -32,7 +32,7 @@ export default class TestFileDocBuilder extends DocBuilder {
 
     const ice = new IceCap(this._readTemplate('file.html'));
     ice.text('title', doc.name);
-    ice.load('content', content);
+    ice.text('content', content);
     ice.drop('emptySourceCode', Boolean(content));
     return ice.html;
   }

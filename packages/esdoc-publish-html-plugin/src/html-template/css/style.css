@@ -603,6 +603,46 @@ pre.source-code.line-number li.error-line {
   padding-left: 0.1em !important;
 }
 
+.inner-link-active span.access {
+  color: #fff;
+}
+
+.inner-link-active span.abstract {
+  color: #fff;
+}
+
+.inner-link-active span.code {
+  color: #fff;
+}
+
+.inner-link-active span.right-info {
+  color: #fff;
+}
+
 .inner-link-active a {
   color: inherit;
+}
+
+h1.inner-link-active {
+  color: #fff;
+}
+
+h2.inner-link-active {
+  color: #fff;
+}
+
+h3.inner-link-active {
+  color: #fff;
+}
+
+h4.inner-link-active {
+  color: #fff;
+}
+
+h5.inner-link-active {
+  color: #fff;
+}
+
+h6.inner-link-active {
+  color: #fff;
 }
