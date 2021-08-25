@@ -43,6 +43,7 @@ export default class ESDoc {
     this._checkOldConfig(config);
 
     this._setDefaultConfig(config);
+    if( config.debug ) config.verbose = true;
 
     PluginManager.setGlobalConfig( this._getGlobalConfig(config) );
 
