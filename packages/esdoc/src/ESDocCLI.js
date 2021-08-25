@@ -30,6 +30,11 @@ export default class ESDocCLI {
       this._showVersion();
       process.exit(0);
     }
+
+    if (this._argv.init) {
+      this._createConfigFileForUser();
+      process.exit(0);
+    }
   }
 
   /**
@@ -65,6 +70,7 @@ export default class ESDocCLI {
         '    -c,  --config    specify config file                     [string]\n' +
         '    -h,  --help      output usage information (this text)\n' +
         '    -v,  --version   output the version number\n' +
+        '         --init      create .esdoc.json with default values\n' +
         'ESDoc finds configuration by the order:\n' +
         '    1. `-c your-esdoc.json`\n' +
         '    2. `[.]esdoc.json` in current directory\n' +
@@ -83,6 +89,54 @@ export default class ESDocCLI {
       console.log(packageObj.version); // eslint-disable-line no-console
     } else {
       console.log('0.0.0'); // eslint-disable-line no-console
+    }
+  }
+
+  /**
+   * Creates ".esdoc.json" file for user, with default required values.
+   */
+  _createConfigFileForUser() {
+    if( fs.existsSync('.esdoc.json') ) {
+      console.warn('.esdoc.json file already exists!');
+      return;
+    }
+    const text =
+      '{\n' +
+      '  "source": "./src",\n' +
+      '  "destination": "./docs",\n' +
+      '  "debug": false,\n' +
+      '  "verbose": false,\n' +
+      '  "includes": [\n' +
+      '    "*.js"\n' +
+      '  ],\n' +
+      '  "excludes": [\n' +
+      '    "*.config.js",\n' +
+      '    "*modules/"\n' +
+      '  ],\n' +
+      '  "index": "./README.md",\n' +
+      '  "package": "./package.json",\n' +
+      '  "plugins": [{\n' +
+      '    "name": "esdoc-standard-plugin",\n' +
+      '    "options": {\n' +
+      '      "accessor": { "access": ["public", "protected", "private"], "autoPrivate": true },\n' +
+      '      "lint": { "enable": true },\n' +
+      '      "coverage": { "enable": true },\n' +
+      '      "undocumentIdentifier": { "enable": true },\n' +
+      '      "unexportedIdentifier": { "enable": false },\n' +
+      '      "typeInference": { "enable": true },\n' +
+      '      "test": {\n' +
+      '        "source": "./test",\n' +
+      '        "includes": ["*.(spec|Spec|test|Test).js"],\n' +
+      '        "excludes": ["*.config.js"]\n' +
+      '      }\n' +
+      '    }\n' +
+      '  }]\n' +
+      '}';
+    try {
+      fs.writeFileSync('.esdoc.json',text);
+    } catch (err) {
+      console.error('Error: creating .esdoc.json failed!\n', err.message);
+      console.error(err);
     }
   }
 
