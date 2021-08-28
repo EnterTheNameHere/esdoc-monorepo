@@ -22,7 +22,7 @@ class FileManager {
         if( typeof includes === 'object' && typeof includes.length === 'number' && includes.length > 0 ) options.include = includes;
         if( typeof excludes === 'object' && typeof excludes.length === 'number' && excludes.length > 0 ) options.exclude = excludes;
 
-        const entries = rrdir.sync( path, options );
+        const entries = rrdir.sync( path_package.join(path), options );
         entries.forEach( (entry) => {
             if( typeof(entry.directory) === 'boolean' && !entry.directory ) {
                 files.push( path_package.join( entry.path ) );
