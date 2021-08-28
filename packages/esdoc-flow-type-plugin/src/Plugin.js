@@ -67,17 +67,17 @@ class FlowTypePlugin {
   onHandleAST(ev) {
     if (!this._enable) return;
 
-    ASTUtil.traverse(ev.data.ast, (node, parent, path) =>{
+    ASTUtil.traverse(ev.data.ast, (node, parent, path) => {
       try {
         this._dispatch(node, parent, path);
-      } catch (e) {
-        console.log(`[31m${e.message}[0m`);
+      } catch (err) {
+        console.error(`[31m${err.message}[0m`);
         InvalidCodeLogger.show(ev.data.filePath, node);
       }
     });
   }
 
-  _dispatch(node, parent, path) {
+  _dispatch(node) {
     switch (node.type) {
       case 'ClassMethod':
         switch (node.kind) {
@@ -106,6 +106,7 @@ class FlowTypePlugin {
         this._applyCallableParam(node);
         this._applyCallableReturn(node);
         break;
+      default:
     }
   }
 
@@ -116,7 +117,7 @@ class FlowTypePlugin {
     const {tags, commentNode} = CommentParser.parseFromNode(node);
 
     // get types
-    const types = node.params.map(param => {
+    const types = node.params.map((param) => {
       switch (param.type) {
       case 'Identifier':
         return {
@@ -147,7 +148,7 @@ class FlowTypePlugin {
         };
       }
     });
-    const paramTags = tags.filter(tag => tag.tagName === '@param');
+    const paramTags = tags.filter((tag) => {return tag.tagName === '@param';});
 
     // merge
     // case: params without comments
@@ -195,7 +196,7 @@ class FlowTypePlugin {
 
     // get comments
     const {tags, commentNode} = CommentParser.parseFromNode(node);
-    const returnTag = tags.find(tag => tag.tagName === '@return' || tag.tagName === '@returns');
+    const returnTag = tags.find((tag) => {return tag.tagName === '@return' || tag.tagName === '@returns';});
 
     // merge
     if (returnTag) {
@@ -220,7 +221,7 @@ class FlowTypePlugin {
 
     // get comments
     const {tags, commentNode} = CommentParser.parseFromNode(classMethodNode);
-    const typeComment = tags.find(tag => tag.tagName === '@type');
+    const typeComment = tags.find((tag) => {return tag.tagName === '@type';});
 
     if (typeComment) {
       if (typeComment.tagValue.charAt(0) !== '{') { // type with comment but does not have tpe
@@ -244,7 +245,7 @@ class FlowTypePlugin {
 
     // get comment
     const {tags, commentNode} = CommentParser.parseFromNode(classMethodNode);
-    const typeComment = tags.find(tag => tag.tagName === '@type');
+    const typeComment = tags.find((tag) => {return tag.tagName === '@type';});
     if (typeComment) return;
 
     // merge
@@ -262,7 +263,7 @@ class FlowTypePlugin {
 
     // get comments
     const {tags, commentNode} = CommentParser.parseFromNode(classPropertyNode);
-    const typeComment = tags.find(tag => tag.tagName === '@type');
+    const typeComment = tags.find((tag) => {return tag.tagName === '@type';});
 
     if (typeComment) {
       if (typeComment.tagValue.charAt(0) !== '{') { // type with comment but does not have tpe
