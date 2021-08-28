@@ -47,11 +47,13 @@ class Plugin {
 
     // ev.data.parser = this._tsParser.bind(this, esParser, esParserOption, filePath);
 
-    ev.data.parser = (code) =>{
+    ev.data.parser = (code) => {
       try {
         return this._tsParser(esParser, esParserOption, filePath, code);
-      } catch(e) {
-        console.log(e)
+      } catch(err) {
+        console.error('Ooops! Something went wrong when trying to create tsParser!');
+        console.error(err);
+        return null;
       }
     };
   }
@@ -66,7 +68,7 @@ class Plugin {
     const nodes = this._getTargetTSNodes(sourceFile);
 
     // rewrite jsdoc comment
-    nodes.sort((a,b) => b.pos - a.pos); // hack: transpile comment with reverse
+    nodes.sort((a,b) => { return b.pos - a.pos; }); // hack: transpile comment with reverse
     const codeChars = [...code];
     for (const node of nodes) {
       const jsDocNode = this._getJSDocNode( node);
@@ -98,6 +100,7 @@ class Plugin {
         case ts.SyntaxKind.FunctionDeclaration:
           nodes.push(node);
           break;
+        default:
       }
 
       ts.forEachChild(node, walk);
@@ -137,6 +140,7 @@ class Plugin {
         this._applyCallableParam(node, tags);
         this._applyCallableReturn(node, tags);
         break;
+      default:
     }
 
     return `\n/*${CommentParser.buildComment(tags)} */\n`;
@@ -146,20 +150,22 @@ class Plugin {
     let loc = 1;
     const codeChars = [...code];
     for (let i = 0; i < node.name.end; i++) {
-      if (codeChars[i] === '\n') loc++;
+      if (codeChars === '\n') loc++;
     }
     tags.push({tagName: '@lineNumber', tagValue: `${loc}`});
   }
 
   _applyCallableParam(node, tags) {
-    const types = node.parameters.map(param => {
+    const types = node.parameters.map((param) => {
       return {
         type: this._getTypeFromAnnotation(param.type),
         name: param.name.text
       };
     });
 
-    const paramTags = tags.filter(tag => tag.tagName === '@param');
+    const paramTags = tags.filter((tag) => {
+      return tag.tagName === '@param';
+    });
 
     // merge
     // case: params without comments
@@ -198,7 +204,7 @@ class Plugin {
     if (!type) return;
 
     // get comments
-    const returnTag = tags.find(tag => tag.tagName === '@return' || tag.tagName === '@returns');
+    const returnTag = tags.find((tag) => {return tag.tagName === '@return' || tag.tagName === '@returns';});
 
     // merge
     if (returnTag && returnTag.tagValue.charAt(0) !== '{') { // return with comment but does not have type
@@ -216,7 +222,7 @@ class Plugin {
     if (!type) return;
 
     // get comments
-    const typeComment = tags.find(tag => tag.tagName === '@type');
+    const typeComment = tags.find((tag) => {return tag.tagName === '@type';});
 
     if (typeComment && typeComment.tagValue.charAt(0) !== '{') { // type with comment but does not have tpe
       typeComment.tagValue = `{${type}}`;
@@ -233,7 +239,7 @@ class Plugin {
     if (!type) return;
 
     // get comment
-    const typeComment = tags.find(tag => tag.tagName === '@type');
+    const typeComment = tags.find((tag) => {return tag.tagName === '@type';});
     if (typeComment) return;
 
     // merge
@@ -249,7 +255,7 @@ class Plugin {
     if (!type) return;
 
     // get comments
-    const typeComment = tags.find(tag => tag.tagName === '@type');
+    const typeComment = tags.find((tag) => {return tag.tagName === '@type';});
 
     if (typeComment && typeComment.tagValue.charAt(0) !== '{') { // type with comment but does not have tpe
       typeComment.tagValue = `{${type}}`;
@@ -268,6 +274,8 @@ class Plugin {
       case ts.SyntaxKind.StringKeyword: return 'string';
       case ts.SyntaxKind.BooleanKeyword: return 'boolean';
       case ts.SyntaxKind.TypeReference: return typeNode.typeName.text;
+      default:
+        return '';
     }
   }
 
