@@ -111,6 +111,12 @@
             "globals": {
                 "assert": false
             }
+        },
+        {
+          "files": ["packages/esdoc-publish-html-plugin/src/html-template/script/**"],
+          "env": {
+            "browser": true
+          }
         }
     ]
 }
