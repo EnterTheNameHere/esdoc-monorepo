@@ -7,6 +7,7 @@ import PathResolver from '@enterthenamehere/esdoc-core/lib/Util/PathResolver.js'
 import DocFactory from '@enterthenamehere/esdoc-core/lib/Factory/DocFactory.js';
 import InvalidCodeLogger from '@enterthenamehere/esdoc-core/lib/Util/InvalidCodeLogger.js';
 import PluginManager from '@enterthenamehere/esdoc-core/lib/Plugin/PluginManager.js';
+import FileManager from '@enterthenamehere/esdoc-core/lib/Util/FileManager';
 
 /**
  * API Documentation Generator.
@@ -42,7 +43,28 @@ export default class ESDoc {
     
     this._checkOldConfig(config);
 
-    this._setDefaultConfig(config);
+    // Check whether includes/excludes is possibly regexp
+    let isRegExp = false;
+    if( config.includes ) {
+        for( const value of config.includes ) {
+            //console.log('value', value);
+            //console.log('value', value.match(/[$^]/u));
+            if( value.match(/[$^]/u) ) {
+                isRegExp = true;
+            }
+        }
+    }
+    if( config.excludes ) {
+        for( const value of config.excludes ) {
+            //console.log('value', value);
+            //console.log('value', value.match(/[$^]/u));
+            if( value.match(/[$^]/u) ) {
+                isRegExp = true;
+            }
+        }
+    }
+
+    this._setDefaultConfig(config, isRegExp);
     if( config.debug ) config.verbose = true;
 
     PluginManager.setGlobalConfig( this._getGlobalConfig(config) );
@@ -56,8 +78,17 @@ export default class ESDoc {
     config = PluginManager.onHandleConfig(config);
 
     logger.debug = Boolean(config.debug);
-    const includes = config.includes.map((v) => { return new RegExp(v, 'u'); });
-    const excludes = config.excludes.map((v) => { return new RegExp(v, 'u'); });
+
+    let includes = [];
+    let excludes = [];
+    if( isRegExp ) {
+        includes = config.includes.map((v) => { return new RegExp(v, 'u'); });
+        excludes = config.excludes.map((v) => { return new RegExp(v, 'u'); });
+    } else {
+        includes = config.includes;
+        excludes = config.excludes;
+    }
+    
 
     let packageName = null;
     let mainFilePath = null;
@@ -76,20 +107,28 @@ export default class ESDoc {
     const asts = [];
     const sourceDirPath = path.resolve(config.source);
 
-    this._walk(config.source, (filePath) => {
-      const relativeFilePath = path.relative(sourceDirPath, filePath);
-      let match = false;
-      for (const reg of includes) {
-        if (relativeFilePath.match(reg)) {
-          match = true;
-          break;
-        }
-      }
-      if (!match) return;
+    let fileList = [];
+    
+    if( isRegExp ) {
+        this._walk( config.source, (filePath) => {
+            const relativeFilePath = path.relative(sourceDirPath, filePath);
+            for( const pattern of excludes ) {
+                if( relativeFilePath.match(pattern) ) {
+                    return;
+                }
+            }
+            for( const pattern of includes ) {
+                if( relativeFilePath.match(pattern) ) {
+                    fileList.push(filePath);
+                }
+            }
+        });
+    } else {
+        fileList = FileManager.getListOfFiles( config.source, includes, excludes );
+    }
 
-      for (const reg of excludes) {
-        if (relativeFilePath.match(reg)) return;
-      }
+    fileList.forEach( (filePath) => {
+      const relativeFilePath = path.relative(sourceDirPath, filePath);
 
       if( config.verbose ) console.info(`parse: ${filePath}`);
       const temp = this._traverse(config.source, filePath, packageName, mainFilePath);
@@ -171,12 +210,17 @@ export default class ESDoc {
   /**
    * set default config to specified config.
    * @param {ESDocConfig} config - specified config.
+   * @param {boolean}     [useRegExp=false] - fallback for RegExp if config is found using it in includes/excludes.
    * @private
    */
-  static _setDefaultConfig(config) {
-    if (!config.includes) config.includes = ['\\.js$'];
-
-    if (!config.excludes) config.excludes = ['\\.config\\.js$', '\\.test\\.js$'];
+  static _setDefaultConfig(config, useRegExp = false) {
+    if ( useRegExp ) {
+        if (!config.includes) config.includes = ['.js$'];
+        if (!config.excludes) config.excludes = ['(config|Config).js'];
+    } else {
+        if (!config.includes) config.includes = ['**/*.js'];
+        if (!config.excludes) config.excludes = ['**/*.(spec|Spec|config|Config|test|Test).js'];
+    }
 
     if (!config.index) config.index = './README.md';
 

@@ -16,7 +16,26 @@ class Plugin {
     if (!this._enable) return;
 
     if (!ev.data.config.includes)  ev.data.config.includes = [];
-    ev.data.config.includes.push('\\.ts$', '\\.js$');
+
+    // HACK: fallback if includes or excludes possibly contains regexp instead of glob
+    let isRegExp = false;
+    ev.data.config.includes.forEach( (value) => {
+        if( value.match(/[$^]/u) ) {
+            isRegExp = true;
+        }
+    });
+    ev.data.config.excludes.forEach( (value) => {
+        if( value.match(/[$^]/u) ) {
+            isRegExp = true;
+        }
+    });
+
+    if( isRegExp ) {
+        ev.data.config.includes.push('\\.ts$', '\\.js$');
+    }
+    else {
+        ev.data.config.includes.push('**/*.ts', '**/*.js');
+    }
   }
 
   onHandleCodeParser(ev) {
