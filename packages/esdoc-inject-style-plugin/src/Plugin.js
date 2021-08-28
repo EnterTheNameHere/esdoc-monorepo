@@ -14,9 +14,15 @@ class Plugin {
 
     const $ = cheerio.load(ev.data.content);
 
-    let i = 0;
+    const baseNames = new Map();
     for (const style of this._option.styles) {
-      const src = `./inject/css/${i}-${path.basename(style)}`;
+      const baseName = path.basename(style);
+      if( !baseNames.has(baseName) ) {
+        baseNames.set( baseName, 0 );
+      } else {
+        baseNames.set( baseName, baseNames.get(baseName) + 1 );
+      }
+      const src = `./inject/css/${baseNames.get(baseName)}-${baseName}`;
       $('head').append(`<link rel="stylesheet" href="${src}"/>`);
     }
 
@@ -26,9 +32,15 @@ class Plugin {
   onPublish(ev) {
     if (!this._option.enable) return;
 
-    let i = 0;
+    const baseNames = new Map();
     for (const style of this._option.styles) {
-      const outPath = `inject/css/${i}-${path.basename(style)}`;
+      const baseName = path.basename(style);
+      if( !baseNames.has(baseName) ) {
+        baseNames.set( baseName, 0 );
+      } else {
+        baseNames.set( baseName, baseNames.get(baseName) + 1 );
+      }
+      const outPath = `inject/css/${baseNames.get(baseName)}-${baseName}`;
       const content = fs.readFileSync(style).toString();
       ev.data.writeFile(outPath, content);
     }

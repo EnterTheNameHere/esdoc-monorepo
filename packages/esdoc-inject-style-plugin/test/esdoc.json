@@ -4,6 +4,6 @@
   "excludes": ["\\.test\\.js$"],
   "plugins": [
     {"name": "./test/misc/publish-html-mock-plugin.js"},
-    {"name": "./src/Plugin.js", "option": {"styles": ["./test/misc/inject.css"]}}
+    {"name": "./src/Plugin.js", "option": {"styles": ["./test/misc/inject.css", "./test/misc/submisc/inject.css"]}}
   ]
 }
