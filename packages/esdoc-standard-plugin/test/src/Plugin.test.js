@@ -31,6 +31,7 @@ describe('test standard plugin:', function () {
       {name: '@enterthenamehere/esdoc-coverage-plugin', option: undefined},
       {name: '@enterthenamehere/esdoc-accessor-plugin', option: undefined},
       {name: '@enterthenamehere/esdoc-type-inference-plugin', option: undefined},
+      {name: '@enterthenamehere/esdoc-ecmascript-proposal-plugin', option: undefined},
       {name: '@enterthenamehere/esdoc-external-ecmascript-plugin'},
       {name: '@enterthenamehere/esdoc-brand-plugin', option: {title: 'My Library'}},
       {name: '@enterthenamehere/esdoc-undocumented-identifier-plugin', option: undefined},

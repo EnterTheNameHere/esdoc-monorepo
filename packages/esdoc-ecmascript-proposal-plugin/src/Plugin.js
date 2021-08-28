@@ -1,6 +1,6 @@
 class Plugin {
   onHandleCodeParser(ev) {
-    const option = ev.data.option;
+    const option = ev.data.option || { all: true };
     const plugins = ev.data.parserOption.plugins;
 
     if (option.all || option.classProperties) plugins.push('classProperties');
