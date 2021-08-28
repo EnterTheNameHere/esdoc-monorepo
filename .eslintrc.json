@@ -46,7 +46,7 @@
         "no-alert": "error",
         "no-await-in-loop": "error",
         "no-confusing-arrow": [ "error", { "allowParens": false } ],
-        "no-console": [ "error", { "allow": [ "warn", "error", "assert", "info", "debug" ] } ],
+        "no-console": [ "error", { "allow": [ "warn", "error", "assert", "info", "debug", "dir" ] } ],
         "no-duplicate-imports": [ "error", { "includeExports": true } ],
         "no-else-return": "error",
         "no-eq-null": "error",
