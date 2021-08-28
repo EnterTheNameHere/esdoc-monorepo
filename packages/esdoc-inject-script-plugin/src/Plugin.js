@@ -16,9 +16,15 @@ class Plugin {
 
     const $ = cheerio.load(ev.data.content);
 
-    let i = 0;
+    const baseNames = new Map();
     for (const script of this._option.scripts) {
-      const src = `./inject/script/${i}-${path.basename(script)}`;
+      const baseName = path.basename(script);
+      if( !baseNames.has(baseName) ) {
+        baseNames.set(baseName, 0);
+      } else {
+        baseNames.set( baseName, baseNames.get(baseName) + 1 );
+      }
+      const src = `./inject/script/${baseNames.get(baseName)}-${baseName}`;
       $('head').append(`<script src="${src}"></script>`);
     }
 
@@ -28,9 +34,15 @@ class Plugin {
   onPublish(ev) {
     if (!this._option.enable) return;
 
-    let i = 0;
+    const baseNames = new Map();
     for (const script of this._option.scripts) {
-      const outPath = `inject/script/${i}-${path.basename(script)}`;
+      const baseName = path.basename(script);
+      if( !baseNames.has(baseName) ) {
+        baseNames.set(baseName, 0);
+      } else {
+        baseNames.set( baseName, baseNames.get(baseName) + 1 );
+      }
+      const outPath = `inject/script/${baseNames.get(baseName)}-${baseName}`;
       const content = fs.readFileSync(script).toString();
       ev.data.writeFile(outPath, content);
     }
