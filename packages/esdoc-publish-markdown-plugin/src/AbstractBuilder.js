@@ -1,5 +1,5 @@
 const path = require('path');
-const fs = require('fs-extra');
+const { FileManager } = require('@enterthenamehere/esdoc-core/lib/Util/FileManager');
 
 class AbstractBuilder {
   constructor(docs) {
@@ -49,7 +49,7 @@ class AbstractBuilder {
 
   _readTemplate(fileName) {
     const filePath = path.resolve(__dirname, `./template/${fileName}`);
-    return fs.readFileSync(filePath, {encoding: 'utf-8'});
+    return FileManager.loadFileContents(filePath);
   }
 }
 

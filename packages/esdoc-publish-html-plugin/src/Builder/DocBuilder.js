@@ -1,5 +1,4 @@
 /* eslint-disable max-lines */
-import fs from 'fs-extra';
 import path from 'path';
 import IceCap from '@enterthenamehere/ice-cap';
 import logger from '@enterthenamehere/color-logger';
@@ -7,6 +6,7 @@ import escapeStringRegexp from 'escape-string-regexp';
 import {shorten, parseExample, escapeURLHash, sanitize, highlight} from './util.js';
 import DocResolver from './DocResolver.js';
 import NPMUtil from '@enterthenamehere/esdoc-core/lib/Util/NPMUtil.js';
+import { FileManager } from '@enterthenamehere/esdoc-core/lib/Util/FileManager.js';
 
 /**
  * Builder base class.
@@ -143,7 +143,7 @@ export default class DocBuilder {
    */
   _readTemplate(fileName) {
     const filePath = path.resolve(this._template, `./${fileName}`);
-    return fs.readFileSync(filePath, {encoding: 'utf-8'});
+    return FileManager.loadFileContents(filePath);
   }
 
 
