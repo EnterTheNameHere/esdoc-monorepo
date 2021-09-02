@@ -13,9 +13,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "fs-extra": "^9.0.1"
-  },
   "engines": {
     "node": ">= 10.13"
   },
