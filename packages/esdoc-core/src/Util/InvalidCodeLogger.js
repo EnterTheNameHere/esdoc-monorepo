@@ -1,4 +1,4 @@
-import fs from 'fs-extra';
+import { FileManager } from './FileManager';
 
 /**
  * logger for invalid code which can not be parsed with ESDoc.
@@ -19,7 +19,7 @@ class InvalidCodeLogger {
       return;
     }
 
-    const lines = fs.readFileSync(filePath).toString().split('\n');
+    const lines = FileManager.loadFileContents(filePath).split('\n');
     const targetLines = [];
     let start = -1;
     const end = node.loc.start.line;
@@ -58,7 +58,7 @@ class InvalidCodeLogger {
    * @param {Error} error - error object.
    */
   showFile(filePath, error) {
-    const lines = fs.readFileSync(filePath).toString().split('\n');
+    const lines = FileManager.loadFileContents(filePath).split('\n');
     if (!Object.prototype.hasOwnProperty.call(error, 'loc')) {
       console.error(`In file '${filePath}':`);
       console.error('[31m');

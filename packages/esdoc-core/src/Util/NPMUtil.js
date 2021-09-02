@@ -1,5 +1,5 @@
 import path from 'path';
-import fs from 'fs-extra';
+import { FileManager } from './FileManager';
 
 /**
  * Node Package Manager(npm) util class.
@@ -13,11 +13,11 @@ export default class NPMUtil {
     let packageObj = null;
     try {
       const packageFilePath = path.resolve(__dirname, '../../package.json');
-      const json = fs.readFileSync(packageFilePath, {encode: 'utf8'});
+      const json = FileManager.loadFileContents(packageFilePath);
       packageObj = JSON.parse(json);
     } catch (e) {
       const packageFilePath = path.resolve(__dirname, '../../../package.json');
-      const json = fs.readFileSync(packageFilePath, {encode: 'utf8'});
+      const json = FileManager.loadFileContents(packageFilePath);
       packageObj = JSON.parse(json);
     }
 

@@ -5,7 +5,7 @@ const path = require('path');
 
 const expect = require('chai').expect;
 
-const FileManager = require('../../lib/Util/FileManager').default;
+const { FileManager } = require('../../lib/Util/FileManager');
 
 let originalPath = '';
 

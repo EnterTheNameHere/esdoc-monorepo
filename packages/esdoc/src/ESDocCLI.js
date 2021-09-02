@@ -4,6 +4,7 @@ import path from 'path';
 import minimist from 'minimist';
 import ESDoc from './ESDoc.js';
 import NPMUtil from '@enterthenamehere/esdoc-core/lib/Util/NPMUtil.js';
+import { FileManager } from '@enterthenamehere/esdoc-core/lib/Util/FileManager';
 
 /**
  * Command Line Interface for ESDoc.
@@ -201,7 +202,7 @@ export default class ESDocCLI {
       return require(configFilePath);
     }
     
-    const configJSON = fs.readFileSync(configFilePath, {encode: 'utf8'});
+    const configJSON = FileManager.loadFileContents(configFilePath);
     const config = JSON.parse(configJSON);
     return config;
   }
@@ -214,7 +215,7 @@ export default class ESDocCLI {
   _createConfigFromPackageJSON() {
     try {
       const filePath = path.resolve('./package.json');
-      const packageJSON = fs.readFileSync(filePath, 'utf8').toString();
+      const packageJSON = FileManager.loadFileContents(filePath);
       const packageObj = JSON.parse(packageJSON);
       return packageObj.esdoc;
     } catch (e) {

@@ -1,5 +1,24 @@
+import fs from 'fs-extra';
 import path_package from 'path';
 import rrdir from 'rrdir';
+
+class FileDoesNotExistOrNoPermissionError extends Error {
+    /**
+     * Custom Error with `path` parameter to indicate requested file does not exist.
+     * @param {fs.PathLike} path file to load
+     */
+    constructor( path ) {
+        super( `Error: File '${path}' does not exist or ESDoc doesn't have permission to read!` );
+        this.name = 'FileDoesNotExistError';
+    }
+}
+
+class PathIsDirectoryError extends Error {
+    constructor( path ) {
+        super( `Error: Path '${path}' points to a directory. File is expected!` );
+        this.name = 'PathIsDirectoryError';
+    }
+}
 
 class FileManager {
     /**
@@ -31,6 +50,34 @@ class FileManager {
 
         return files;
     }
+
+    /**
+     * Returns contents of file at `path` or throws Error.
+     * 
+     * @param {fs.PathLike} path path of file to load contents of.
+     * @param {string} [encoding='utf8'] default is utf8. Can be one of {@link https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings}.
+     * @returns {string} Contents of file at `path`
+     * 
+     * @throws {FileDoesNotExistOrNoPermissionError} when file does not exist or cannot be opened.
+     * @throws {PathIsDirectoryError} when path is directory but we expect a file.
+     */
+    loadFileContents( path, encoding = 'utf8' ) {
+        if( typeof encoding !== 'string' ) encoding = 'utf8';
+        if( encoding.toLowerCase() === 'buffer' ) encoding = 'utf8';
+
+        let stats = null;
+        try {
+            stats = fs.accessSync(path,fs.constants.R_OK | fs.constants.F_OK);
+        } catch {
+            throw new FileDoesNotExistOrNoPermissionError(path);
+        }
+
+        if( stats && stats.isDirectory() ) throw new PathIsDirectoryError(path);
+
+        // We don't control path!
+        return fs.readFileSync( path, { encoding: encoding, flag: 'r' } );
+    }
 }
 
-export default new FileManager();
+const FileManagerInstance = new FileManager;
+export { FileManagerInstance as FileManager, PathIsDirectoryError, FileDoesNotExistOrNoPermissionError };
