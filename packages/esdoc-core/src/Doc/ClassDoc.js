@@ -1,7 +1,7 @@
-import fs from 'fs-extra';
 import AbstractDoc from './AbstractDoc.js';
 import ParamParser from '../Parser/ParamParser.js';
 import NamingUtil from '../Util/NamingUtil.js';
+import { FileManager } from '../Util/FileManager.js';
 
 /**
  * Doc Class from Class Declaration AST node.
@@ -129,7 +129,7 @@ export default class ClassDoc extends AbstractDoc {
    * @private
    */
   _readSelection(filePath, line, startColumn, endColumn) {
-    const code = fs.readFileSync(filePath).toString();
+    const code = FileManager.loadFileContents(filePath);
     const lines = code.split('\n');
     const selectionLine = lines[line - 1];
     const tmp = [];

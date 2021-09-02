@@ -7,7 +7,7 @@ import PathResolver from '@enterthenamehere/esdoc-core/lib/Util/PathResolver.js'
 import DocFactory from '@enterthenamehere/esdoc-core/lib/Factory/DocFactory.js';
 import InvalidCodeLogger from '@enterthenamehere/esdoc-core/lib/Util/InvalidCodeLogger.js';
 import PluginManager from '@enterthenamehere/esdoc-core/lib/Plugin/PluginManager.js';
-import FileManager from '@enterthenamehere/esdoc-core/lib/Util/FileManager';
+import { FileManager } from '@enterthenamehere/esdoc-core/lib/Util/FileManager';
 
 /**
  * API Documentation Generator.
@@ -94,7 +94,7 @@ export default class ESDoc {
     let mainFilePath = null;
     if (config.package) {
       try {
-        const packageJSON = fs.readFileSync(config.package, {encode: 'utf8'});
+        const packageJSON = FileManager.loadFileContents(config.package);
         const packageConfig = JSON.parse(packageJSON);
         packageName = packageConfig.name;
         mainFilePath = packageConfig.main;
@@ -314,7 +314,7 @@ export default class ESDoc {
     let indexContent = '';
 
     if (fs.existsSync(config.index)) {
-      indexContent = fs.readFileSync(config.index, {encode: 'utf8'}).toString();
+      indexContent = FileManager.loadFileContents(config.index);
     } else {
       console.warn(`[31mwarning: ${config.index} is not found. Please check config.index.[0m`);
     }
@@ -341,7 +341,7 @@ export default class ESDoc {
     let packageJSON = '';
     let packagePath = '';
     try {
-      packageJSON = fs.readFileSync(config.package, {encoding: 'utf-8'});
+      packageJSON = FileManager.loadFileContents(config.package);
       packagePath = path.resolve(config.package);
     } catch (e) {
       // ignore
@@ -416,7 +416,7 @@ export default class ESDoc {
 
       const read = (filePath) => {
         const _filePath = path.resolve(config.destination, filePath);
-        return fs.readFileSync(_filePath).toString();
+        return FileManager.loadFileContents(_filePath);
       };
 
       PluginManager.onPublish(write, copy, read);

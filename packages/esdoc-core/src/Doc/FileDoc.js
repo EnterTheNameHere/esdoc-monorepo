@@ -1,5 +1,5 @@
-import fs from 'fs-extra';
 import AbstractDoc from './AbstractDoc.js';
+import { FileManager } from '../Util/FileManager';
 
 /**
  * Doc Class from source file.
@@ -39,7 +39,7 @@ export default class FileDoc extends AbstractDoc {
     super._$content();
 
     const filePath = this._pathResolver.fileFullPath;
-    const content = fs.readFileSync(filePath, {encode: 'utf8'}).toString();
+    const content = FileManager.loadFileContents(filePath);
     this._value.content = content;
   }
 }

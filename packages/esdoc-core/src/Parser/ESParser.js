@@ -1,5 +1,5 @@
-import fs from 'fs-extra';
 import PluginManager from '../Plugin/PluginManager.js';
+import { FileManager } from '../Util/FileManager';
 const BabelParser = require('@babel/parser');
 
 /**
@@ -15,7 +15,7 @@ export default class ESParser {
    * @returns {AST} AST of source code.
    */
   static parse(filePath) {
-    let code = fs.readFileSync(filePath, {encode: 'utf8'}).toString();
+    let code = FileManager.loadFileContents(filePath);
     code = PluginManager.onHandleCode(code, filePath);
     if (code.charAt(0) === '#') code = code.replace(/^#!/u, '//');
 
