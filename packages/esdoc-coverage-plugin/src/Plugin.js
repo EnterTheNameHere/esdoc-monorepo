@@ -1,4 +1,3 @@
-const fs = require('fs-extra');
 const path = require('path');
 
 class Plugin {
@@ -53,7 +52,7 @@ class Plugin {
     }
 
     const filePath = path.resolve(__dirname, 'badge.svg');
-    let badge = fs.readFileSync(filePath, {encoding: 'utf-8'});
+    let badge = ev.FileManager.loadFileContents(filePath);
     badge = badge.replace(/@ratio@/gu, `${ratio}%`);
     badge = badge.replace(/@color@/gu, color);
 

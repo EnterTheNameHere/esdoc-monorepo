@@ -1,4 +1,3 @@
-const fs = require('fs-extra');
 const path = require('path');
 const cheerio = require('cheerio');
 
@@ -11,7 +10,7 @@ class Plugin {
     let packageObj = {};
     try {
       const packagePath = config.package || './package.json';
-      const tmp = fs.readFileSync(packagePath).toString();
+      const tmp = ev.FileManager.loadFileContents(packagePath);
       packageObj = JSON.parse(tmp);
     } catch (e) {
       // ignore

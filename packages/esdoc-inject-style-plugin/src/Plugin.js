@@ -1,4 +1,3 @@
-const fs = require('fs-extra');
 const path = require('path');
 const cheerio = require('cheerio');
 
@@ -41,7 +40,7 @@ class Plugin {
         baseNames.set( baseName, baseNames.get(baseName) + 1 );
       }
       const outPath = `inject/css/${baseNames.get(baseName)}-${baseName}`;
-      const content = fs.readFileSync(style).toString();
+      const content = ev.FileManager.loadFileContents(style);
       ev.data.writeFile(outPath, content);
     }
   }

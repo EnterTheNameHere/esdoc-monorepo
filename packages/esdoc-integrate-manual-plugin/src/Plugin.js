@@ -1,4 +1,3 @@
-const fs = require('fs-extra');
 const path = require('path');
 
 class Plugin {
@@ -6,13 +5,13 @@ class Plugin {
     this._docs = ev.data.docs;
     this._option = ev.data.option;
 
-    this._exec();
+    this._exec(ev);
   }
 
-  _exec(){
+  _exec(ev){
     this._setDefault();
 
-    const docs = this._generateDocs();
+    const docs = this._generateDocs(ev);
     this._docs.push(...docs);
   }
 
@@ -22,7 +21,7 @@ class Plugin {
     //if (!('coverage' in this._option)) this._option.coverage = true;
   }
 
-  _generateDocs() {
+  _generateDocs(ev) {
     const manual = this._option;
     const results = [];
 
@@ -38,7 +37,7 @@ class Plugin {
       results.push({
         kind: 'manualIndex',
         globalIndex: manual.globalIndex,
-        content: fs.readFileSync(manual.index).toString(),
+        content: ev.FileManager.loadFileContents(manual.index),
         longname: path.resolve(manual.index),
         name: manual.index,
         static: true,
@@ -71,7 +70,7 @@ class Plugin {
         kind: 'manual',
         longname: path.resolve(filePath),
         name: filePath,
-        content: fs.readFileSync(filePath).toString(),
+        content: ev.FileManager.loadFileContents(filePath),
         static: true,
         access: 'public'
       });

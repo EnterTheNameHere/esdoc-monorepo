@@ -1,5 +1,3 @@
-const fs = require('fs-extra');
-
 class Plugin {
   onHandleConfig(ev) {
     this._config = ev.data.config;
@@ -17,7 +15,7 @@ class Plugin {
     let packageName = '';
     let mainPath = '';
     try {
-      const packageJSON = fs.readFileSync(packagePath).toString();
+      const packageJSON = ev.FileManager.loadFileContents(packagePath);
       const packageObj = JSON.parse(packageJSON);
       packageName = packageObj.name;
       if(packageObj.main) mainPath = packageObj.main;
