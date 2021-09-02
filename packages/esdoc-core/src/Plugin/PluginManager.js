@@ -1,5 +1,6 @@
 import path from 'path';
 import { isDeepStrictEqual } from 'util';
+import { FileManager } from '../Util/FileManager';
 
 /**
  * Plugin system for your plugin.
@@ -129,6 +130,7 @@ class PluginManager {
       // We don't have control over handlerName
       const targetFunction = pluginEntry.instance[handlerName] || null;
       if( targetFunction && targetFunction instanceof Function ) {
+        if( !ev.FileManager ) ev.FileManager = FileManager;
         ev.data.option = pluginEntry.settings.option;
         ev.data.globalOption = this._globalOptions;
         targetFunction.call(pluginEntry.instance, ev);
@@ -258,6 +260,13 @@ export class PluginEvent {
    */
   constructor(data = {}) {
     this.data = copy(data);
+  }
+
+  /**
+   * @type {FileManager}
+   */
+  get FileManager() {
+      return FileManager;
   }
 }
 
