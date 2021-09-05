@@ -94,7 +94,7 @@ export default class ESDoc {
     let mainFilePath = null;
     if (config.package) {
       try {
-        const packageJSON = FileManager.loadFileContents(config.package);
+        const packageJSON = FileManager.readFileContents(config.package);
         const packageConfig = JSON.parse(packageJSON);
         packageName = packageConfig.name;
         mainFilePath = packageConfig.main;
@@ -314,7 +314,7 @@ export default class ESDoc {
     let indexContent = '';
 
     if (fs.existsSync(config.index)) {
-      indexContent = FileManager.loadFileContents(config.index);
+      indexContent = FileManager.readFileContents(config.index);
     } else {
       console.warn(`[31mwarning: ${config.index} is not found. Please check config.index.[0m`);
     }
@@ -341,7 +341,7 @@ export default class ESDoc {
     let packageJSON = '';
     let packagePath = '';
     try {
-      packageJSON = FileManager.loadFileContents(config.package);
+      packageJSON = FileManager.readFileContents(config.package);
       packagePath = path.resolve(config.package);
     } catch (e) {
       // ignore
@@ -416,7 +416,7 @@ export default class ESDoc {
 
       const read = (filePath) => {
         const _filePath = path.resolve(config.destination, filePath);
-        return FileManager.loadFileContents(_filePath);
+        return FileManager.readFileContents(_filePath);
       };
 
       PluginManager.onPublish(write, copy, read);

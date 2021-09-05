@@ -19,7 +19,7 @@ class InvalidCodeLogger {
       return;
     }
 
-    const lines = FileManager.loadFileContents(filePath).split('\n');
+    const lines = FileManager.readFileContents(filePath).split('\n');
     const targetLines = [];
     let start = -1;
     const end = node.loc.start.line;
@@ -58,7 +58,7 @@ class InvalidCodeLogger {
    * @param {Error} error - error object.
    */
   showFile(filePath, error) {
-    const lines = FileManager.loadFileContents(filePath).split('\n');
+    const lines = FileManager.readFileContents(filePath).split('\n');
     if (!Object.prototype.hasOwnProperty.call(error, 'loc')) {
       console.error(`In file '${filePath}':`);
       console.error('[31m');

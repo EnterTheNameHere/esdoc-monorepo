@@ -42,7 +42,7 @@ class Plugin {
         baseNames.set( baseName, baseNames.get(baseName) + 1 );
       }
       const outPath = `inject/script/${baseNames.get(baseName)}-${baseName}`;
-      const content = ev.FileManager.loadFileContents(script);
+      const content = ev.FileManager.readFileContents(script);
       ev.data.writeFile(outPath, content);
     }
   }

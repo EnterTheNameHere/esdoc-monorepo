@@ -15,7 +15,7 @@ export default class ESParser {
    * @returns {AST} AST of source code.
    */
   static parse(filePath) {
-    let code = FileManager.loadFileContents(filePath);
+    let code = FileManager.readFileContents(filePath);
     code = PluginManager.onHandleCode(code, filePath);
     if (code.charAt(0) === '#') code = code.replace(/^#!/u, '//');
 

@@ -40,7 +40,7 @@ class Plugin {
         baseNames.set( baseName, baseNames.get(baseName) + 1 );
       }
       const outPath = `inject/css/${baseNames.get(baseName)}-${baseName}`;
-      const content = ev.FileManager.loadFileContents(style);
+      const content = ev.FileManager.readFileContents(style);
       ev.data.writeFile(outPath, content);
     }
   }

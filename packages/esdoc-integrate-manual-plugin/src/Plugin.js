@@ -37,7 +37,7 @@ class Plugin {
       results.push({
         kind: 'manualIndex',
         globalIndex: manual.globalIndex,
-        content: ev.FileManager.loadFileContents(manual.index),
+        content: ev.FileManager.readFileContents(manual.index),
         longname: path.resolve(manual.index),
         name: manual.index,
         static: true,
@@ -70,7 +70,7 @@ class Plugin {
         kind: 'manual',
         longname: path.resolve(filePath),
         name: filePath,
-        content: ev.FileManager.loadFileContents(filePath),
+        content: ev.FileManager.readFileContents(filePath),
         static: true,
         access: 'public'
       });

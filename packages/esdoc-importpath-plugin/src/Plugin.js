@@ -15,7 +15,7 @@ class Plugin {
     let packageName = '';
     let mainPath = '';
     try {
-      const packageJSON = ev.FileManager.loadFileContents(packagePath);
+      const packageJSON = ev.FileManager.readFileContents(packagePath);
       const packageObj = JSON.parse(packageJSON);
       packageName = packageObj.name;
       if(packageObj.main) mainPath = packageObj.main;

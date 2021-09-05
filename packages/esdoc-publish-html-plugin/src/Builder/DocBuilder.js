@@ -143,7 +143,7 @@ export default class DocBuilder {
    */
   _readTemplate(fileName) {
     const filePath = path.resolve(this._template, `./${fileName}`);
-    return FileManager.loadFileContents(filePath);
+    return FileManager.readFileContents(filePath);
   }
 
 

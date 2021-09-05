@@ -202,7 +202,7 @@ export default class ESDocCLI {
       return require(configFilePath);
     }
     
-    const configJSON = FileManager.loadFileContents(configFilePath);
+    const configJSON = FileManager.readFileContents(configFilePath);
     const config = JSON.parse(configJSON);
     return config;
   }
@@ -215,7 +215,7 @@ export default class ESDocCLI {
   _createConfigFromPackageJSON() {
     try {
       const filePath = path.resolve('./package.json');
-      const packageJSON = FileManager.loadFileContents(filePath);
+      const packageJSON = FileManager.readFileContents(filePath);
       const packageObj = JSON.parse(packageJSON);
       return packageObj.esdoc;
     } catch (e) {

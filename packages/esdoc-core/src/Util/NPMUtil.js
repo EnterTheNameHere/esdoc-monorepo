@@ -13,11 +13,11 @@ export default class NPMUtil {
     let packageObj = null;
     try {
       const packageFilePath = path.resolve(__dirname, '../../package.json');
-      const json = FileManager.loadFileContents(packageFilePath);
+      const json = FileManager.readFileContents(packageFilePath);
       packageObj = JSON.parse(json);
     } catch (e) {
       const packageFilePath = path.resolve(__dirname, '../../../package.json');
-      const json = FileManager.loadFileContents(packageFilePath);
+      const json = FileManager.readFileContents(packageFilePath);
       packageObj = JSON.parse(json);
     }
 

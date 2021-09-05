@@ -61,7 +61,7 @@ class FileManager {
      * @throws {FileDoesNotExistOrNoPermissionError} when file does not exist or cannot be opened.
      * @throws {PathIsDirectoryError} when path is directory but we expect a file.
      */
-    loadFileContents( path, encoding = 'utf8' ) {
+    readFileContents( path, encoding = 'utf8' ) {
         if( typeof encoding !== 'string' ) encoding = 'utf8';
         if( encoding.toLowerCase() === 'buffer' ) encoding = 'utf8';
 

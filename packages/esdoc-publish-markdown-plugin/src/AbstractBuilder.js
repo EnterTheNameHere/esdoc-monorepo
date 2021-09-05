@@ -49,7 +49,7 @@ class AbstractBuilder {
 
   _readTemplate(fileName) {
     const filePath = path.resolve(__dirname, `./template/${fileName}`);
-    return FileManager.loadFileContents(filePath);
+    return FileManager.readFileContents(filePath);
   }
 }
 

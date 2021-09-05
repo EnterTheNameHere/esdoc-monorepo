@@ -52,7 +52,7 @@ class Plugin {
     }
 
     const filePath = path.resolve(__dirname, 'badge.svg');
-    let badge = ev.FileManager.loadFileContents(filePath);
+    let badge = ev.FileManager.readFileContents(filePath);
     badge = badge.replace(/@ratio@/gu, `${ratio}%`);
     badge = badge.replace(/@color@/gu, color);
 

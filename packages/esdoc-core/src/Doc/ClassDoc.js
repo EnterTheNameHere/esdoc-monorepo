@@ -129,7 +129,7 @@ export default class ClassDoc extends AbstractDoc {
    * @private
    */
   _readSelection(filePath, line, startColumn, endColumn) {
-    const code = FileManager.loadFileContents(filePath);
+    const code = FileManager.readFileContents(filePath);
     const lines = code.split('\n');
     const selectionLine = lines[line - 1];
     const tmp = [];

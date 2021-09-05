@@ -39,7 +39,7 @@ export default class FileDoc extends AbstractDoc {
     super._$content();
 
     const filePath = this._pathResolver.fileFullPath;
-    const content = FileManager.loadFileContents(filePath);
+    const content = FileManager.readFileContents(filePath);
     this._value.content = content;
   }
 }

@@ -10,7 +10,7 @@ class Plugin {
     let packageObj = {};
     try {
       const packagePath = config.package || './package.json';
-      const tmp = ev.FileManager.loadFileContents(packagePath);
+      const tmp = ev.FileManager.readFileContents(packagePath);
       packageObj = JSON.parse(tmp);
     } catch (e) {
       // ignore
