@@ -98,17 +98,18 @@ class FileManager {
     }
 
     /**
-     * Writes `contents` into `path`. If file already exist, it will be overwritten.
-     * @param {fs.PathOrFileDescriptor} path file to write to. Will be overwritten if it already exists.
+     * Writes `contents` into `path`. If file already exist, it will be overwritten. If parent directories do not exist, they will be created.
+     * @param {string} path file to write to. Will be overwritten if it already exists.
      * @param {string} contents contents to write into file.
      * @param {string} [encoding='utf8'] default is utf8. Can be one of {@link https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings}.
+     * @throws {UnableToWriteToFileError} when writing to file fails.
      */
     writeFileContents( path, contents, encoding = 'utf8' ) {
         if( typeof encoding !== 'string' || encoding.toLowerCase() === 'buffer' ) encoding = 'utf8';
 
         try {
             // We don't control path!
-            fs.writeFileSync( path, contents, { encoding: encoding } );
+            fs.outputFileSync( path, contents, { encoding: encoding } );
         } catch {
             throw new UnableToWriteToFileError(path);
         }
