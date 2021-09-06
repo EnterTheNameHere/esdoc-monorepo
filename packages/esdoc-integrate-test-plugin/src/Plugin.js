@@ -13,6 +13,7 @@ class Plugin {
     this._docs = ev.data.docs;
     this._option = ev.data.option;
     this._globalOption = ev.data.globalOption;
+    this._FileManager = ev.FileManager;
 
     this._exec();
   }
@@ -88,7 +89,7 @@ class Plugin {
 
     for (const entry of entries) {
       const entryPath = path.resolve(dirPath, entry);
-      const stat = fs.statSync(entryPath);
+      const stat = this._FileManager.getFileStat(entryPath);
 
       if (stat.isFile()) {
         callback(entryPath);
