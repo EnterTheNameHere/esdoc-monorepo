@@ -35,6 +35,13 @@ class PathIsDirectoryError extends Error {
     }
 }
 
+class UnableToCopyError extends Error {
+    constructor( srcPath, destPath ) {
+        super( `Error: Copying ${srcPath} to ${destPath} caused an error!` );
+        this.name = 'UnableToCopyError';
+    }
+}
+
 class FileManager {
     /**
      * Returns list of files inside the `path`, filtered out by `includes` and/or `excludes`.
@@ -126,7 +133,22 @@ class FileManager {
         // We do not control path!
         return fs.lstatSync( path );
     }
+
+    /**
+     * Copy a file or directory contents. @see {@link https://github.com/jprichardson/node-fs-extra/blob/HEAD/docs/copy-sync.md}
+     * @param {string} srcPath file or directory to copy.
+     * @param {string} destPath where to copy it.
+     * @throws {UnableToCopyError} when error happens during copying.
+     */
+    copy( srcPath, destPath ) {
+        try {
+            // We don't control srcPath or destPath!
+            fs.copySync( srcPath, destPath );
+        } catch {
+            throw new UnableToCopyError( srcPath, destPath );
+        }
+    }
 }
 
 const FileManagerInstance = new FileManager;
-export { FileManagerInstance as FileManager, PathIsDirectoryError, FileDoesNotExistOrNoPermissionError };
+export { FileManagerInstance as FileManager, PathIsDirectoryError, FileDoesNotExistOrNoPermissionError, UnableToWriteToFileError, UnableToCopyError };
