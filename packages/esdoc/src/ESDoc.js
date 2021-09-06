@@ -258,7 +258,7 @@ export default class ESDoc {
 
     for (const entry of entries) {
       const entryPath = path.resolve(dirPath, entry);
-      const stat = fs.statSync(entryPath);
+      const stat = FileManager.getFileStat(entryPath);
 
       if (stat.isFile()) {
         callback(entryPath);
@@ -405,13 +405,13 @@ export default class ESDoc {
         content = PluginManager.onHandleContent(content, _filePath);
 
         if( config.verbose ) console.info(`output: ${_filePath}`);
-        fs.outputFileSync(_filePath, content, option);
+        FileManager.writeFileContents(_filePath, content, option);
       };
 
       const copy = (srcPath, destPath) => {
         const _destPath = path.resolve(config.destination, destPath);
         if( config.verbose ) console.info(`output: ${_destPath}`);
-        fs.copySync(srcPath, _destPath);
+        FileManager.copy(srcPath, _destPath);
       };
 
       const read = (filePath) => {
