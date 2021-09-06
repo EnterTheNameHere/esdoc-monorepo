@@ -107,6 +107,7 @@ class FileManager {
         if( typeof encoding !== 'string' || encoding.toLowerCase() === 'buffer' ) encoding = 'utf8';
 
         try {
+            // We don't control path!
             fs.writeFileSync( path, contents, { encoding: encoding } );
         } catch {
             throw new UnableToWriteToFileError(path);
