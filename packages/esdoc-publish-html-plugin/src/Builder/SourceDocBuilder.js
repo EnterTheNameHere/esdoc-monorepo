@@ -1,7 +1,7 @@
-import fs from 'fs-extra';
 import IceCap from '@enterthenamehere/ice-cap';
 import DocBuilder from './DocBuilder.js';
 import {dateForUTC} from './util.js';
+import { FileManager } from '@enterthenamehere/esdoc-core/lib/Util/FileManager';
 
 /**
  * Source output html builder class.
@@ -46,7 +46,7 @@ export default class SourceDocBuilder extends DocBuilder {
       const filePath = doc.name;
       const content = doc.content;
       const lines = content.split('\n').length - 1;
-      const stat = fs.statSync(doc.longname);
+      const stat = FileManager.getFileStat(doc.longname);
       const date = dateForUTC(stat.ctime);
       let coverageRatio = '-';
       let coverageCount = -1;
