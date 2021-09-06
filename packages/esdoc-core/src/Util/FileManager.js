@@ -5,7 +5,7 @@ import rrdir from 'rrdir';
 class FileDoesNotExistOrNoPermissionError extends Error {
     /**
      * Custom Error with `path` parameter to indicate requested file does not exist.
-     * @param {fs.PathLike} path file to load
+     * @param {fs.PathLike} path file to load.
      */
     constructor( path ) {
         super( `Error: File '${path}' does not exist or ESDoc doesn't have permission to read!` );
@@ -13,7 +13,22 @@ class FileDoesNotExistOrNoPermissionError extends Error {
     }
 }
 
+class UnableToWriteToFileError extends Error {
+    /**
+     * Custom Error with `path` parameter to indicate writing into file was unsuccessful.
+     * @param {fs.PathLike} path file to write into.
+     */
+    constructor( path ) {
+        super( `Error: Unable to write into '${path}'!` );
+        this.name = 'UnableToWriteToFileError';
+    }
+}
+
 class PathIsDirectoryError extends Error {
+    /**
+     * Custom Error with `path` parameter to indicate a directory is received where file is expected instead.
+     * @param {fs.PathLike} path directory path.
+     */
     constructor( path ) {
         super( `Error: Path '${path}' points to a directory. File is expected!` );
         this.name = 'PathIsDirectoryError';
@@ -27,10 +42,10 @@ class FileManager {
      * If `includes` or `excludes` are something else than array like objects they are ignored.
      * If `path` is not a string or is empty, an empty array is returned.
      * 
-     * @param {string} path                        The path where to look for files
-     * @param {Array<string>|undefined} [includes] Array of glob patterns for files to explicitly include (empty by default)
-     * @param {Array<string>|undefined} [excludes] Array of glob patterns for files to explicitly exclude (empty by default)
-     * @returns {Array<string>} List of files (can be empty)
+     * @param {string} path                        The path where to look for files.
+     * @param {Array<string>|undefined} [includes] Array of glob patterns for files to explicitly include (empty by default).
+     * @param {Array<string>|undefined} [excludes] Array of glob patterns for files to explicitly exclude (empty by default).
+     * @returns {Array<string>} List of files (can be empty).
      */
     getListOfFiles( path, includes, excludes) {
         const files = [];
@@ -54,9 +69,9 @@ class FileManager {
     /**
      * Returns contents of file at `path` or throws Error.
      * 
-     * @param {fs.PathLike} path path of file to load contents of.
+     * @param {fs.PathOrFileDescriptor} path path of file to load contents of.
      * @param {string} [encoding='utf8'] default is utf8. Can be one of {@link https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings}.
-     * @returns {string} Contents of file at `path`
+     * @returns {string} Contents of file at `path`.
      * 
      * @throws {FileDoesNotExistOrNoPermissionError} when file does not exist or cannot be opened.
      * @throws {PathIsDirectoryError} when path is directory but we expect a file.
@@ -67,15 +82,47 @@ class FileManager {
 
         let stats = null;
         try {
-            stats = fs.accessSync(path,fs.constants.R_OK | fs.constants.F_OK);
+            stats = this.getFileStat(path);
+        } catch {
+            // Ignore
+        }
+        if( stats && stats.isDirectory() ) throw new PathIsDirectoryError(path);
+        
+        try {
+            // We don't control path!
+            const contents = fs.readFileSync( path, { encoding: encoding, flag: 'r' } );
+            return contents;
         } catch {
             throw new FileDoesNotExistOrNoPermissionError(path);
         }
+    }
 
-        if( stats && stats.isDirectory() ) throw new PathIsDirectoryError(path);
+    /**
+     * Writes `contents` into `path`. If file already exist, it will be overwritten.
+     * @param {fs.PathOrFileDescriptor} path file to write to. Will be overwritten if it already exists.
+     * @param {string} contents contents to write into file.
+     * @param {string} [encoding='utf8'] default is utf8. Can be one of {@link https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings}.
+     */
+    writeFileContents( path, contents, encoding = 'utf8' ) {
+        if( typeof encoding !== 'string' || encoding.toLowerCase() === 'buffer' ) encoding = 'utf8';
 
-        // We don't control path!
-        return fs.readFileSync( path, { encoding: encoding, flag: 'r' } );
+        try {
+            fs.writeFileSync( path, contents, { encoding: encoding } );
+        } catch {
+            throw new UnableToWriteToFileError(path);
+        }
+    }
+
+    /**
+     * Returns {fs.Stats} instance for `path` file system entry or throws Error if it does not exist.
+     * @param {fs.PathLike} path file system entry to get fs.Stats object of.
+     * @returns {fs.Stats}
+     * @throws {Error} when file system entry does not exist.
+     * @see {@link https://nodejs.org/docs/latest/api/fs.html#fs_class_fs_stats} for fs.Stats class.
+     */
+    getFileStat( path ) {
+        // We do not control path!
+        return fs.lstatSync( path );
     }
 }
 
