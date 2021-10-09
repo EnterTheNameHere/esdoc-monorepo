@@ -36,7 +36,7 @@
     "copy:template-css": "cpx \"src/html-template/css/**/*.*\" \"out/html-template/css\" --verbose",
     "copy:template-image": "cpx \"src/html-template/image/**/*.*\" \"out/html-template/image\" --verbose",
     "copy:template-dirfiles": "cpx \"src/html-template/*.*\" \"out/html-template\" --verbose",
-    "copy:highlight.js-css": "cpx \"../../node_modules/highlight.js/styles/tomorrow.css\" \"out/html-template/css\" --verbose",
+    "copy:highlight.js-css": "cpx \"../../node_modules/highlight.js/styles/base16/tomorrow.css\" \"out/html-template/css\" --verbose",
     "precoverage": "trash ./nyc_output && trash ./coverage",
     "coverage": "npm run coverage:build && nyc npm run test && npm run build",
     "coverage:build": "cross-env-shell NODE_ENV=coverage npm run build",
