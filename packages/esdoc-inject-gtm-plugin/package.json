@@ -1,6 +1,6 @@
 {
   "name": "@enterthenamehere/esdoc-inject-gtm-plugin",
-  "version": "2.1.0",
+  "version": "2.2.4",
   "description": "A inject google-tag-manager plugin for ESDoc",
   "author": "9renpoto",
   "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-inject-gtm-plugin",
