@@ -1,11 +1,224 @@
 import fsextra from 'fs-extra';
-import { assert } from '../../util'
+import { loadCheerio, assert } from '../../util';
 
-describe('TestSourceCodeHighlighting', function () {
-  describe('CSS', function () {
-    it('tomorrow.css is successfully copied from highlight.js to html-template', function () {
-      console.log('cwd', process.cwd())
-      assert.equal( fsextra.existsSync('./out/html-template/css/tomorrow.css'), true, 'tomorrow.css was not copied into html-template from highlight.js styles directory!' );
-    });
+describe('TestSourceCodeHighlightingCSS', function () {
+  it('tests tomorrow.css is successfully copied from highlight.js to html-template', function () {
+    assert.equal( fsextra.existsSync('./out/html-template/css/tomorrow.css'), true, 'tomorrow.css was not copied into html-template from highlight.js styles directory!' );
   });
-})
+
+  it('tests class import path is styled', function () {
+    const $ = loadCheerio('class/src/Abstract/Override.js~TestAbstractOverride.html');
+    const importPartCodeElement = $('div[class="import-path"] pre[class="prettyprint"] code');
+
+    assert.equal( $('span[class="hljs-keyword"]', importPartCodeElement).eq(0).html(), 'import' );
+    assert.equal( $('span[class="hljs-title class_"]', importPartCodeElement).html(), 'TestAbstractOverride' );
+    assert.equal( $('span[class="hljs-keyword"]', importPartCodeElement).eq(1).html(), 'from' );
+  });
+
+  it('tests class named import path is styled', function () {
+    // This is named import, so check { and } are around TestListensFunctionEvent
+    const $ = loadCheerio('class/src/Listens/Function.js~TestListensFunctionEvent.html');
+    const importPartCodeElement = $('div[class="import-path"] pre[class="prettyprint"] code');
+
+    assert.equal( $('span[class="hljs-keyword"]', importPartCodeElement).eq(0).html(), 'import' );
+    assert.equal( importPartCodeElement.contents().eq(1).text(), ' {' );
+    assert.equal( $('span[class="hljs-title class_"]', importPartCodeElement).html(), 'TestListensFunctionEvent' );
+    assert.equal( importPartCodeElement.contents().eq(3).text(), '} ' );
+    assert.equal( $('span[class="hljs-keyword"]', importPartCodeElement).eq(1).html(), 'from' );
+  });
+
+  it('tests interface import path is styled', function () {
+    let $ = loadCheerio('class/src/Interface/Definition.js~TestInterfaceDefinition.html');
+    let importPartCodeElement = $('div[class="import-path"] pre[class="prettyprint"] code');
+
+    assert.equal( $('span[class="hljs-keyword"]', importPartCodeElement).eq(0).html(), 'import' );
+    assert.equal( $('span[class="hljs-title class_"]', importPartCodeElement).html(), 'TestInterfaceDefinition' );
+    assert.equal( $('span[class="hljs-keyword"]', importPartCodeElement).eq(1).html(), 'from' );
+  });
+
+  it('tests interface named import path is styled', function () {
+    // This is named import, so check { and } are around TestInterfaceImplementsInner
+    const $ = loadCheerio('class/src/Interface/Implements.js~TestInterfaceImplementsInner.html');
+    const importPartCodeElement = $('div[class="import-path"] pre[class="prettyprint"] code');
+
+    assert.equal( $('span[class="hljs-keyword"]', importPartCodeElement).eq(0).html(), 'import' );
+    assert.equal( importPartCodeElement.contents().eq(1).text(), ' {' );
+    assert.equal( $('span[class="hljs-title class_"]', importPartCodeElement).html(), 'TestInterfaceImplementsInner' );
+    assert.equal( importPartCodeElement.contents().eq(3).text(), '} ' );
+    assert.equal( $('span[class="hljs-keyword"]', importPartCodeElement).eq(1).html(), 'from' );
+  });
+
+  it('tests function import path is styled', function () {
+    const $ = loadCheerio('function/index.html');
+    const h3Parent = $('h3[id="static-function-testLinkFunction"]').parent();
+    const importPartCodeElement = $('div[class="import-path"] pre[class="prettyprint"] code', h3Parent);
+
+    assert.equal( $('span[class="hljs-keyword"]', importPartCodeElement).eq(0).html(), 'import' );
+    assert.equal( $('span[class="hljs-title"]', importPartCodeElement).html(), 'testLinkFunction' );
+    assert.equal( $('span[class="hljs-keyword"]', importPartCodeElement).eq(1).html(), 'from' );
+  });
+
+  it('tests function named import path is styled', function () {
+    const $ = loadCheerio('function/index.html');
+    const h3Parent = $('h3[id="static-function-_testAccessFunctionAutoPrivate"]').parent();
+    const importPartCodeElement = $('div[class="import-path"] pre[class="prettyprint"] code', h3Parent);
+
+    assert.equal( $('span[class="hljs-keyword"]', importPartCodeElement).eq(0).html(), 'import' );
+    assert.equal( importPartCodeElement.contents().eq(1).text(), ' {' );
+    assert.equal( $('span[class="hljs-title"]', importPartCodeElement).html(), '_testAccessFunctionAutoPrivate' );
+    assert.equal( importPartCodeElement.contents().eq(3).text(), '} ' );
+    assert.equal( $('span[class="hljs-keyword"]', importPartCodeElement).eq(1).html(), 'from' );
+  });
+
+  it('tests variable import path is styled', function () {
+    const $ = loadCheerio('variable/index.html');
+    const h3Parent = $('h3[id="static-variable-testExportNewExpression"]').parent();
+    const importPartCodeElement = $('div[class="import-path"] pre[class="prettyprint"] code', h3Parent);
+
+    assert.equal( $('span[class="hljs-keyword"]', importPartCodeElement).eq(0).html(), 'import' );
+    assert.equal( $('span[class="hljs-title"]', importPartCodeElement).html(), 'testExportNewExpression' );
+    assert.equal( $('span[class="hljs-keyword"]', importPartCodeElement).eq(1).html(), 'from' );
+  });
+
+  it('tests variable named import path is styled', function () {
+    const $ = loadCheerio('variable/index.html');
+    const h3Parent = $('h3[id="static-variable-testAccessVariablePublic"]').parent();
+    const importPartCodeElement = $('div[class="import-path"] pre[class="prettyprint"] code', h3Parent);
+
+    assert.equal( $('span[class="hljs-keyword"]', importPartCodeElement).eq(0).html(), 'import' );
+    assert.equal( importPartCodeElement.contents().eq(1).text(), ' {' );
+    assert.equal( $('span[class="hljs-title"]', importPartCodeElement).html(), 'testAccessVariablePublic' );
+    assert.equal( importPartCodeElement.contents().eq(3).text(), '} ' );
+    assert.equal( $('span[class="hljs-keyword"]', importPartCodeElement).eq(1).html(), 'from' );
+  });
+
+  it('tests example code is styled', function () {
+    const $ = loadCheerio('function/index.html');
+    const h3Parent = $('h3[id="static-function-testExampleFunction"]').parent();
+    const exampleCodeElement = $('div[class="example-doc"] pre[class="prettyprint source-code"] code', h3Parent);
+
+    assert.equal( $('span[class="hljs-keyword"]', exampleCodeElement).eq(0).html(), 'const' );
+    assert.equal( exampleCodeElement.contents().eq(1).text(), ' foo = ' );
+    assert.equal( $('span[class="hljs-number"]', exampleCodeElement).eq(0).html(), '123' );
+    assert.equal( exampleCodeElement.contents().eq(3).text(), ';' );
+  });
+
+  it('tests example code with caption is styled', function () {
+    const $ = loadCheerio('class/src/Example/Caption.js~TestExampleCaption.html');
+    const divExampleDoc = $('div[class="example-doc"]');
+    const exampleCodeElement = $('pre[class="prettyprint source-code"] code', divExampleDoc);
+
+    assert.equal( $('div[class="example-caption"]', divExampleDoc).html(), 'this is caption' );
+    assert.equal( $('span[class="hljs-keyword"]', exampleCodeElement).eq(0).html(), 'const' );
+    assert.equal( exampleCodeElement.contents().eq(1).text(), ' foo = ' );
+    assert.equal( $('span[class="hljs-number"]', exampleCodeElement).eq(0).html(), '123' );
+    assert.equal( exampleCodeElement.contents().eq(3).text(), ";\n" );
+    assert.equal( $('span[class="hljs-variable language_"]', exampleCodeElement).html(), 'console' );
+    assert.equal( exampleCodeElement.contents().eq(5).text(), '.' );
+    assert.equal( $('span[class="hljs-title function_"]', exampleCodeElement).html(), 'log' );
+    assert.equal( exampleCodeElement.contents().eq(7).text(), '(foo);' );
+  });
+
+  it('tests multiple example codes are styled', function () {
+    const $ = loadCheerio('class/src/Example/Class.js~TestExampleClass.html');
+    const divExampleDoc = $('div[class="example-doc"]');
+    let exampleCodeElement = $('pre[class="prettyprint source-code"] code', divExampleDoc.eq(0));
+
+    assert.equal( $('span[class="hljs-keyword"]', exampleCodeElement).eq(0).html(), 'const' );
+    assert.equal( exampleCodeElement.contents().eq(1).text(), ' foo = ' );
+    assert.equal( $('span[class="hljs-number"]', exampleCodeElement).eq(0).html(), '123' );
+    assert.equal( exampleCodeElement.contents().eq(3).text(), ";\n" );
+    assert.equal( $('span[class="hljs-variable language_"]', exampleCodeElement).html(), 'console' );
+    assert.equal( exampleCodeElement.contents().eq(5).text(), '.' );
+    assert.equal( $('span[class="hljs-title function_"]', exampleCodeElement).html(), 'log' );
+    assert.equal( exampleCodeElement.contents().eq(7).text(), '(foo);' );
+
+    exampleCodeElement = $('pre[class="prettyprint source-code"] code', divExampleDoc.eq(1));
+
+    assert.equal( $('span[class="hljs-keyword"]', exampleCodeElement).eq(0).html(), 'const' );
+    assert.equal( exampleCodeElement.contents().eq(1).text(), ' bar = ' );
+    assert.equal( $('span[class="hljs-number"]', exampleCodeElement).eq(0).html(), '123' );
+    assert.equal( exampleCodeElement.contents().eq(3).text(), ";\n" );
+    assert.equal( $('span[class="hljs-variable language_"]', exampleCodeElement).html(), 'console' );
+    assert.equal( exampleCodeElement.contents().eq(5).text(), '.' );
+    assert.equal( $('span[class="hljs-title function_"]', exampleCodeElement).html(), 'log' );
+    assert.equal( exampleCodeElement.contents().eq(7).text(), '(bar);' );
+  });
+
+  it('tests whole source code file is properly styled and lines are numbered', function () {
+    const $ = loadCheerio('file/src/Export/Variable.js.html');
+    const divContent = $('div[class="content"]');
+    let olElement = $('pre[class="source-code line-number raw-source-code"] code[class="prettyprint linenums"] ol[class="linenums"]', divContent);
+
+    // Multiline comments first line contains two spans, fragment of adding line numbers to source code; Not really a bug, but can be fixed...
+    let index = 0;
+    let liElement = olElement.children().eq(index);
+    assert.equal( liElement.attr('id'), `lineNumber${index+1}` );
+    assert.equal( liElement.hasClass(`L${index}`), true );
+    assert.equal( $('span[class="hljs-comment"] span[class="hljs-comment"]', liElement).html(), '/**' );
+
+    // Inside comment, @type or @property and other doc-tags should be highlighted too...
+    // TODO: test more of doc-tags?
+    index = 2;
+    liElement = olElement.children().eq(index);
+    assert.equal( liElement.attr('id'), `lineNumber${index+1}` );
+    assert.equal( liElement.hasClass(`L${index}`), true );
+    assert.equal( $('span[class="hljs-comment"]', liElement).contents().eq(0).text(), ' * ' );
+    assert.equal( $('span[class="hljs-comment"] span[class="hljs-doctag"]', liElement).html(), '@type' );
+    assert.equal( $('span[class="hljs-comment"]', liElement).contents().eq(2).text(), ' {' );
+    assert.equal( $('span[class="hljs-comment"] span[class="hljs-type"]', liElement).html(), 'Object' );
+    assert.equal( $('span[class="hljs-comment"]', liElement).contents().eq(4).text(), '}' );
+
+    index = 3;
+    liElement = olElement.children().eq(index);
+    assert.equal( liElement.attr('id'), `lineNumber${index+1}` );
+    assert.equal( liElement.hasClass(`L${index}`), true );
+    assert.equal( $('span[class="hljs-comment"]', liElement).contents().eq(0).text(), ' * ' );
+    assert.equal( $('span[class="hljs-comment"] span[class="hljs-doctag"]', liElement).html(), '@property' );
+    assert.equal( $('span[class="hljs-comment"]', liElement).contents().eq(2).text(), ' {' );
+    assert.equal( $('span[class="hljs-comment"] span[class="hljs-type"]', liElement).html(), 'number' );
+    assert.equal( $('span[class="hljs-comment"]', liElement).contents().eq(4).text(), '} ' );
+    assert.equal( $('span[class="hljs-comment"] span[class="hljs-variable"]', liElement).html(), 'p1' );
+    assert.equal( $('span[class="hljs-comment"]', liElement).contents().eq(6).text(), ' - this is p1.' );
+
+    // More than one keyword
+    index = 6;
+    liElement = olElement.children().eq(index);
+    assert.equal( liElement.attr('id'), `lineNumber${index+1}` );
+    assert.equal( liElement.hasClass(`L${index}`), true );
+    assert.equal( $('span[class="hljs-keyword"]', liElement).eq(0).html(), 'export' );
+    assert.equal( $('span[class="hljs-keyword"]', liElement).eq(1).html(), 'default' );
+    assert.equal( liElement.contents().eq(3).text(), ' testExportVariable1 = {};' );
+
+    // More than one keyword plus number
+    index = 12;
+    liElement = olElement.children().eq(index);
+    assert.equal( liElement.attr('id'), `lineNumber${index+1}` );
+    assert.equal( liElement.hasClass(`L${index}`), true );
+    assert.equal( $('span[class="hljs-keyword"]', liElement).eq(0).html(), 'export' );
+    assert.equal( $('span[class="hljs-keyword"]', liElement).eq(1).html(), 'const' );
+    assert.equal( liElement.contents().eq(3).text(), ' testExportVariable2 = ' );
+    assert.equal( $('span[class="hljs-number"]', liElement).html(), '123' );
+    assert.equal( liElement.contents().eq(5).text(), ';' );
+
+    // Single line comment
+    index = 20;
+    liElement = olElement.children().eq(index);
+    assert.equal( liElement.attr('id'), `lineNumber${index+1}` );
+    assert.equal( liElement.hasClass(`L${index}`), true );
+    assert.equal( $('span[class="hljs-comment"]', liElement).html(), '// this is undocument' );
+
+    // More than one keyword plus dot operator
+    index = 37;
+    liElement = olElement.children().eq(index);
+    assert.equal( liElement.attr('id'), `lineNumber${index+1}` );
+    assert.equal( liElement.hasClass(`L${index}`), true );
+    assert.equal( $('span[class="hljs-keyword"]', liElement).eq(0).html(), 'export' );
+    assert.equal( $('span[class="hljs-keyword"]', liElement).eq(1).html(), 'const' );
+    assert.equal( liElement.contents().eq(3).text(), ' testExportVariable7 = ' );
+    assert.equal( $('span[class="hljs-keyword"]', liElement).eq(2).html(), 'new' );
+    assert.equal( liElement.contents().eq(5).text(), ' foo.' );
+    assert.equal( $('span[class="hljs-title class_"]', liElement).html(), 'Bar' );
+    assert.equal( liElement.contents().eq(7).text(), '();' );
+  });
+});
