@@ -20,9 +20,13 @@ import cheerio from 'cheerio';
 //   consoleLogSwitch(true);
 // }
 
-export function readDoc(fileName, dirName = './test/fixture/out') {
+export function loadCheerio(fileName, dirName = './test/fixture/out') {
   const html = fs.readFileSync(`${dirName}/${fileName}`, {encoding: 'utf-8'});
-  const $ = cheerio.load(html);
+  return cheerio.load(html);
+}
+
+export function readDoc(fileName, dirName = './test/fixture/out') {
+  const $ = loadCheerio(fileName, dirName);
   return $('html').first();
 }
 
