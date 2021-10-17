@@ -1,0 +1,219 @@
+/*!
+  Theme: Tomorrow
+  Author: Chris Kempson (http://chriskempson.com)
+  License: ~ MIT (or more permissive) [via base16-schemes-source]
+  Maintainer: @highlightjs/core-team
+  Version: 2021.05.0
+*/
+pre code.hljs{
+    display:block;
+    overflow-x:auto;
+    padding:1em
+}
+
+code.hljs{
+    padding:3px 5px
+}
+
+.hljs{
+    color:#4d4d4c;
+    background:#fff
+}
+
+.hljs ::selection{
+    color:#d6d6d6
+}
+
+.hljs-comment{
+    color:#8e908c
+}
+
+.hljs-tag{
+    color:#969896
+}
+
+.hljs-operator,.hljs-punctuation,.hljs-subst{
+    color:#4d4d4c
+}
+
+.hljs-operator{
+    opacity:.7
+}
+
+.hljs-bullet,.hljs-deletion,.hljs-name,.hljs-selector-tag,.hljs-template-variable,.hljs-variable{
+    color:#c82829
+}
+
+.hljs-attr,.hljs-link,.hljs-literal,.hljs-number,.hljs-symbol,.hljs-variable.constant_{
+    color:#f5871f
+}
+
+.hljs-class .hljs-title,.hljs-title,.hljs-title.class_{
+    color:#eab700
+}
+
+.hljs-strong{
+    font-weight:700;
+    color:#eab700
+}
+
+.hljs-addition,.hljs-code,.hljs-string,.hljs-title.class_.inherited__{
+    color:#718c00
+}
+
+.hljs-built_in,.hljs-doctag,.hljs-keyword.hljs-atrule,.hljs-quote,.hljs-regexp{
+    color:#3e999f
+}
+
+.hljs-attribute,.hljs-function .hljs-title,.hljs-section,.hljs-title.function_,.ruby .hljs-property{
+    color:#4271ae
+}
+
+.diff .hljs-meta,.hljs-keyword,.hljs-template-tag,.hljs-type{
+    color:#8959a8
+}
+
+.hljs-emphasis{
+    color:#8959a8;font-style:italic
+}
+
+.hljs-meta,.hljs-meta .hljs-keyword,.hljs-meta .hljs-string{
+    color:#a3685a
+}
+
+.hljs-meta .hljs-keyword,.hljs-meta-keyword{
+    font-weight:700
+}
+
+/**
+ * prism.js tomorrow night eighties for JavaScript, CoffeeScript, CSS and HTML
+ * Based on https://github.com/chriskempson/tomorrow-theme
+ * @author Rose Pritchard
+ */
+
+ code,
+ pre {
+   color: #4d4d4c;
+   background: #fff;
+   /*font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;*/
+   font-size: 1em;
+   text-align: left;
+   white-space: pre;
+   word-spacing: normal;
+   word-break: normal;
+   word-wrap: normal;
+   line-height: 1.5;
+ 
+   -moz-tab-size: 4;
+   -o-tab-size: 4;
+   tab-size: 4;
+ 
+   -webkit-hyphens: none;
+   -moz-hyphens: none;
+   -ms-hyphens: none;
+   hyphens: none;
+ 
+ }
+ 
+ /* Code blocks */
+ pre {
+   padding: 1em;
+   margin: .5em 0;
+   overflow: auto;
+ }
+ 
+ :not(pre) > code,
+ pre {
+   background: #2d2d2d;
+ }
+ 
+ /* Inline code */
+ :not(pre) > code {
+   padding: .1em;
+   border-radius: .3em;
+   white-space: normal;
+ }
+ 
+ .token.comment,
+ .token.block-comment,
+ .token.prolog,
+ .token.doctype,
+ .token.cdata {
+   color: #8e908c;
+ }
+ 
+ .token.punctuation {
+   color: #4d4d4c;
+ }
+ 
+ .token.tag,
+ .token.attr-name,
+ .token.namespace,
+ .token.deleted {
+   color: #c82829;
+ }
+ 
+ .token.function-name {
+   color: #4271ae;
+ }
+
+.token.imports,
+.token.exports {
+  color:#4271ae
+}
+ 
+ .token.boolean,
+ .token.number,
+ .token.function {
+   color: #f5871f;
+ }
+ 
+ .token.property,
+ .token.class-name,
+ .token.constant,
+ .token.symbol {
+   color: #f5871f;
+ }
+ 
+ .token.selector,
+ .token.important,
+ .token.atrule,
+ .token.keyword,
+ .token.builtin {
+   color: #8959a8;
+ }
+ 
+ .token.string,
+ .token.char,
+ .token.attr-value,
+ .token.regex,
+ .token.variable {
+   color: #718c00;
+ }
+
+ code > span > a {
+    color: #718c00;
+ }
+ 
+ .token.operator,
+ .token.entity,
+ .token.url {
+   color: #3e999f;
+ }
+ 
+ .token.important,
+ .token.bold {
+   font-weight: bold;
+ }
+ .token.italic {
+   font-style: italic;
+ }
+ 
+ .token.entity {
+   cursor: help;
+ }
+ 
+ .token.inserted {
+   color: green;
+ }
+ 
