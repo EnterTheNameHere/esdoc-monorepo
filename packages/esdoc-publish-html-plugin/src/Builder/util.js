@@ -1,19 +1,29 @@
 import marked from 'marked';
 import cheerio from 'cheerio';
-import highlightjs from 'highlight.js';
+import prismjs from 'prismjs';
+const loadLanguages = require('prismjs/components/');
 import sanitizeHtml from 'sanitize-html';
 
 /**
- * Highlights `code` as a source code of `language`, JavaScript as default, returning html representation.
+ * Highlights `code` as a source code of `language`, javascript as default, returning html.
+ * 
+ * If `language` is not recognized by highlighter, javascript will be chosen.
+ * 
  * @param  {string} code                    Source code to highlight.
- * @param  {string} [language='JavaScript'] Language of source code.
+ * @param  {string} [language='javascript'] Language of source code.
  * @return {string}                         Highlighted source code as html.
  */
-export function highlight(code, language = 'JavaScript') {
-    if(!code || code === '' || typeof code !== 'string') return '';
-    
-    const validLanguage = highlightjs.getLanguage(language) ? language : 'JavaScript';
-    return highlightjs.highlight( code, { language: validLanguage } ).value;
+export function highlight(code, language = 'javascript' ) {
+  if(!code || code === '' || typeof code !== 'string') return '';
+  if(!language || language === '' || typeof language !== 'string') language = 'javascript';
+  if( !Object.hasOwnProperty.call( prismjs.languages, language ) ) language = 'javascript';
+
+  if( language.toLowerCase() === 'javascript' ) {
+    // Load languages which can appear in javascript
+    loadLanguages(['flow', 'jsx', 'tsx', 'typescript', 'js-extras', 'jsdoc']);
+  }
+  
+  return prismjs.highlight( code, prismjs.languages[language], language );
 }
 
 /**
