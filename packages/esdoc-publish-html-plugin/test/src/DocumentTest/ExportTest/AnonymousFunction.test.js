@@ -1,23 +1,23 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import { expect } from 'chai';
+import {loadCheerio, assert, findParent} from './../../util.js';
 
 /** @test {FunctionDoc#@_name} */
 describe('testExportAnonymousFunction', function () {
-  const doc = readDoc('function/index.html');
+  const $ = loadCheerio('function/index.html');
+  const anonymousFunctions = $('[data-ice="summary"] [href*="#static-function-AnonymousFunction"]');
+  expect( anonymousFunctions.length ).to.equal(2);
 
-  describe('in summary', function () {
-    it('has desc', function () {
-      findParent(doc, '[data-ice="summary"] [href$="#static-function-AnonymousFunction"]', '[data-ice="target"]', (doc)=> {
-        assert.includes(doc, null, 'public AnonymousFunction()');
-      });
-    });
+  it('has first anonymous function', function () {
+    const firstParent = anonymousFunctions.eq(0).parents('[data-ice="target"]');
+    expect( $('[data-ice="access"]', firstParent).html() ).to.equal('public');
+    expect( $('[data-ice="name"] a', firstParent).html() ).to.equal('AnonymousFunction');
+    expect( $('[data-ice="description"] p', firstParent).html() ).to.equal('This is another anonymous function to test multiple anonymous default exports.');
   });
 
-  describe('in details', function () {
-    it('has desc.', function () {
-      findParent(doc, '[id="static-function-AnonymousFunction"]', '[data-ice="detail"]', (doc)=>{
-        assert.includes(doc, 'h3', 'public AnonymousFunction()');
-        assert.includes(doc, '[data-ice="importPath"]', `import AnonymousFunction from 'esdoc-test-fixture/src/Export/AnonymousFunction.js'`);
-      });
-    });
+  it('has second anonymous function', function () {
+    const secondParent = anonymousFunctions.eq(1).parents('[data-ice="target"]');
+    expect( $('[data-ice="access"]', secondParent).html() ).to.equal('public');
+    expect( $('[data-ice="name"] a', secondParent).html() ).to.equal('AnonymousFunction');
+    expect( $('[data-ice="description"] p', secondParent).html() ).to.equal('this is anonymous function.');
   });
 });
