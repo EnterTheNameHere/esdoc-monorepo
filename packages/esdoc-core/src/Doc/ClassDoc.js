@@ -1,6 +1,6 @@
 import AbstractDoc from './AbstractDoc.js';
 import ParamParser from '../Parser/ParamParser.js';
-import NamingUtil from '../Util/NamingUtil.js';
+import NamingUtil from '../Util/NamingUtil';
 import { FileManager } from '../Util/FileManager.js';
 
 /**
@@ -31,8 +31,12 @@ export default class ClassDoc extends AbstractDoc {
 
     if (this._node.id) {
       this._value.name = this._node.id.name;
+    }
+    else if (!this._node.id && this._node.parent && this._node.parent.type === 'ExportDefaultDeclaration') {
+      this._value.name = NamingUtil.filePathToName( this._pathResolver.filePath );
+      this._value.anonymous = true;
     } else {
-      this._value.name = NamingUtil.filePathToName(this._pathResolver.filePath);
+      this._value.name = NamingUtil.filePathToName( this._pathResolver.filePath );
     }
   }
 

@@ -1,6 +1,6 @@
 import babelGenerator from '@babel/generator';
 import AbstractDoc from './AbstractDoc.js';
-import NamingUtil from '../Util/NamingUtil.js';
+import NamingUtil from '../Util/NamingUtil';
 
 /**
  * Doc Class from Function declaration AST node.
@@ -24,8 +24,11 @@ export default class FunctionDoc extends AbstractDoc {
       } else {
         this._value.name = this._node.id.name;
       }
+    } else if (!this._node.id && this._node.parent && this._node.parent.type === 'ExportDefaultDeclaration') {
+      this._value.name = NamingUtil.filePathToName( this._pathResolver.filePath );
+      this._value.anonymous = true;
     } else {
-      this._value.name = NamingUtil.filePathToName(this._pathResolver.filePath);
+      this._value.name = NamingUtil.filePathToName( this._pathResolver.filePath );
     }
   }
 
