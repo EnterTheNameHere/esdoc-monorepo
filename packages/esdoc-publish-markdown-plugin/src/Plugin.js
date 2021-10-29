@@ -1,4 +1,5 @@
-const toMarkdown = require('to-markdown');
+const TurndownService = require('turndown');
+const GitHubFlavouredMarkdown = require('turndown-plugin-gfm').gfm;
 const ClassBuilder = require('./ClassBuilder');
 const FunctionBuilder = require('./FunctionBuilder');
 
@@ -27,15 +28,28 @@ class Plugin {
   }
 
   _toMarkdown(html) {
-    // div is using as wrapper. so remove self tag.
-    const converter = {
-      filter: 'div',
-      replacement: function (innerHTML/*, node*/) {
-        return innerHTML;
-      }
+    const turndownService = new TurndownService({
+      headingStyle: 'atx'
+    });
+
+    // We don't want to escape ` character, so unescape it
+    const originalEscape = turndownService.escape;
+    turndownService.escape = (str) => {
+      str = originalEscape(str);
+      str = str.replaceAll('\\`', '`');
+      return str;
     };
 
-    return toMarkdown(html, {gfm: true, converters: [converter]});
+    // div is using as wrapper. so remove self tag.
+    //turndownService.addRule( 'div', {
+    //  filter: ['div'],
+    //  replacement: function ( content ) {
+    //    return content;
+    //  }
+    //});
+
+    turndownService.use( GitHubFlavouredMarkdown );
+    return turndownService.turndown(html);
   }
 }
 

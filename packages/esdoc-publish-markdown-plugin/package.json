@@ -15,7 +15,8 @@
   },
   "dependencies": {
     "@enterthenamehere/ice-cap": "file:../ice-cap",
-    "to-markdown": "^3.1.1"
+    "turndown": "^7.1.1",
+    "turndown-plugin-gfm": "^1.0.2"
   },
   "engines": {
     "node": ">= 10.23.1"
