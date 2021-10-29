@@ -389,7 +389,8 @@ export default class DocBuilder {
 
     ice.loop('detail', docs, (_1, doc, ice4) => {
       const scope = doc.static ? 'static' : 'instance';
-      ice4.attr('anchor', 'id', `${scope}-${doc.kind}-${doc.name}`);
+      const anchorLink = `${scope}-${doc.kind}-${doc.name}${doc.anonymous ? `-${doc.__docId__}` : ''}`;
+      ice4.attr('anchor', 'id', anchorLink);
       ice4.text('generator', doc.generator ? '*' : '');
       ice4.text('async', doc.async ? 'async' : '');
       ice4.text('name', doc.name);
@@ -549,6 +550,9 @@ export default class DocBuilder {
     if (inner) {
       const scope = doc.static ? 'static' : 'instance';
       const fileName = this._getOutputFileName(doc);
+      if( doc.anonymous ) {
+        return `${fileName}#${scope}-${doc.kind}-${doc.name}-${doc.__docId__}`;
+      }
       return `${fileName}#${scope}-${doc.kind}-${doc.name}`;
     }
     
