@@ -100,10 +100,12 @@
     },
     "overrides": [
         {
-            "files": ["test/**"],
+            "files": ["**/test/**"],
             "rules": {
                 "arrow-spacing": "off",
-                "prefer-arrow-callback": "off"
+                "prefer-arrow-callback": "off",
+                "no-new": "off",
+                "no-new-wrappers": "off"
             },
             "env": {
                 "mocha": true

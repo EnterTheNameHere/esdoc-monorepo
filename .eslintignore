@@ -1,3 +1,4 @@
 **/Publisher/Builder/template
-**/test
-
+**/node_modules
+**/lib
+**/out
