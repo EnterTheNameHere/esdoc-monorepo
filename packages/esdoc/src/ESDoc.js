@@ -35,26 +35,27 @@ function _prepareFinalModuleRequiring(moduleName) {
         try {
             let finalPathOfModule = parallelPathOfESDocStandardPlugin + '/node_modules/' + moduleName;
             required = true;
-            return require(finalPathOfModule);
+            import(finalPathOfModule);
+            return finalPathOfModule;
         } catch (ex) {
             required = false;
-            return require(moduleName);
+            return moduleName;
         }
     }
     else {
-        return require(moduleName);
+        return moduleName;
     }
 
 }
 
 import logger from _prepareFinalModuleRequiring('@enterthenamehere/color-logger');
-import ASTUtil from '@enterthenamehere/esdoc-core/lib/Util/ASTUtil.js';
-import ESParser from '@enterthenamehere/esdoc-core/lib/Parser/ESParser.js';
-import PathResolver from '@enterthenamehere/esdoc-core/lib/Util/PathResolver.js';
-import DocFactory from '@enterthenamehere/esdoc-core/lib/Factory/DocFactory.js';
-import InvalidCodeLogger from '@enterthenamehere/esdoc-core/lib/Util/InvalidCodeLogger.js';
-import PluginManager from '@enterthenamehere/esdoc-core/lib/Plugin/PluginManager.js';
-import { FileManager } from '@enterthenamehere/esdoc-core/lib/Util/FileManager';
+import ASTUtil from _prepareFinalModuleRequiring('@enterthenamehere/esdoc-core/lib/Util/ASTUtil.js');
+import ESParser from _prepareFinalModuleRequiring('@enterthenamehere/esdoc-core/lib/Parser/ESParser.js');
+import PathResolver from _prepareFinalModuleRequiring('@enterthenamehere/esdoc-core/lib/Util/PathResolver.js');
+import DocFactory from _prepareFinalModuleRequiring('@enterthenamehere/esdoc-core/lib/Factory/DocFactory.js');
+import InvalidCodeLogger from _prepareFinalModuleRequiring('@enterthenamehere/esdoc-core/lib/Util/InvalidCodeLogger.js');
+import PluginManager from _prepareFinalModuleRequiring('@enterthenamehere/esdoc-core/lib/Plugin/PluginManager.js');
+import { FileManager } from _prepareFinalModuleRequiring('@enterthenamehere/esdoc-core/lib/Util/FileManager');
 
 /**
  * API Documentation Generator.
