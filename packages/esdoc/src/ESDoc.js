@@ -1,13 +1,5 @@
 import fs from 'fs-extra';
 import path from 'path';
-import logger from '@enterthenamehere/color-logger';
-import ASTUtil from '@enterthenamehere/esdoc-core/lib/Util/ASTUtil.js';
-import ESParser from '@enterthenamehere/esdoc-core/lib/Parser/ESParser.js';
-import PathResolver from '@enterthenamehere/esdoc-core/lib/Util/PathResolver.js';
-import DocFactory from '@enterthenamehere/esdoc-core/lib/Factory/DocFactory.js';
-import InvalidCodeLogger from '@enterthenamehere/esdoc-core/lib/Util/InvalidCodeLogger.js';
-import PluginManager from '@enterthenamehere/esdoc-core/lib/Plugin/PluginManager.js';
-import { FileManager } from '@enterthenamehere/esdoc-core/lib/Util/FileManager';
 
 /**
  * API Documentation Generator.
@@ -19,11 +11,70 @@ import { FileManager } from '@enterthenamehere/esdoc-core/lib/Util/FileManager';
  * });
  */
 export default class ESDoc {
+  static logger = null;
+    static ASTUtil = null;
+    static ESParser = null;
+    static ESParser = null;
+    static PathResolver = null;
+    static DocFactory = null;
+    static InvalidCodeLogger = null;
+    static PluginManager = null;
+
+    /**
+     * This function checks if a package "esdoc-standard-plugin" is installed in parallel with this instance of @enterthenamehere/esdoc.
+     * Normally this is so, if the actual node package instance of @enterthenamehere/esdoc is a global or global-style instance (installed with 'npm i -g ...').
+     * It is necessary to use the esdoc-core of this parallel instance (esdoc-standard-plugin) so that the plugins of esdoc-standard-plugin can use the same esdoc-core and thus works globaly in every project (without localy installing esdoc in the projects).
+     * So the Developer can use esdoc inside a project or as global installed node package ('npm i -g ...').
+     * Normally all global node packages will be installed in one node-folder (e.g. node_modules) in a os specific path (e.g. in Linux: '/usr/local/lib/node_modules').
+     *
+     * @return {Void}
+     */
+    static async preparation() {
+        let parallelPathOfESDocStandardPlugin = '../../../@enterthenamehere/esdoc-standard-plugin';
+        let isGlobalInstance = false;
+
+        try {
+            require(parallelPathOfESDocStandardPlugin);
+            isGlobalInstance = true;
+        } catch (ex) {
+            isGlobalInstance = false;
+        }
+
+        let absolutePath = (isGlobalInstance == true) ? parallelPathOfESDocStandardPlugin + '/node_modules/' : '';
+
+        this.logger = await import(absolutePath + '@enterthenamehere/color-logger').then(result => {
+            return result.default;
+        });
+        this.ASTUtil = await import(absolutePath + '@enterthenamehere/esdoc-core/lib/Util/ASTUtil.js').then(result => {
+            return result.default;
+        });
+        this.ESParser = await import(absolutePath + '@enterthenamehere/esdoc-core/lib/Parser/ESParser.js').then(result => {
+            return result.default;
+        });
+        this.PathResolver = await import(absolutePath + '@enterthenamehere/esdoc-core/lib/Util/PathResolver.js').then(result => {
+            return result.default;
+        });
+        this.DocFactory = await import(absolutePath + '@enterthenamehere/esdoc-core/lib/Factory/DocFactory.js').then(result => {
+            return result.default;
+        });
+        this.InvalidCodeLogger = await import(absolutePath + '@enterthenamehere/esdoc-core/lib/Util/InvalidCodeLogger.js').then(result => {
+            return result.default;
+        });
+        this.PluginManager = await import(absolutePath + '@enterthenamehere/esdoc-core/lib/Plugin/PluginManager.js').then(result => {
+            return result.default;
+        });
+        this.FileManager = await import(absolutePath + '@enterthenamehere/esdoc-core/lib/Util/FileManager').then(result => {
+
+            return result.FileManager;
+        });
+    }
+  
   /**
    * Generate documentation.
    * @param {ESDocConfig} config - config for generation.
    */
-  static generate(config) {
+  static async generate(config) {
+    await this.preparation();
     if( typeof(config) === 'undefined' || config === null ) {
         const message = `[31mError: config object is expected as an argument![0m`;
         console.error(`[31m${message}[0m`);

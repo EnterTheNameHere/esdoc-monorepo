@@ -41,7 +41,7 @@ export default class ESDocCLI {
   /**
    * execute to generate document.
    */
-  exec() {
+  async exec() {
     let config = null;
 
     const configPath = this._findConfigFilePath();
@@ -52,7 +52,7 @@ export default class ESDocCLI {
     }
 
     if (config) {
-      ESDoc.generate(config);
+      await ESDoc.generate(config);
     } else {
       this._showHelp();
       process.exit(1);
