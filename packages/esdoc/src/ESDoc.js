@@ -1,6 +1,53 @@
 import fs from 'fs-extra';
 import path from 'path';
-import logger from '@enterthenamehere/color-logger';
+
+const _useESDocStandardPlugin = _checkForESDocStandardPluginESDocCore();
+
+/**
+ * This function checks if a package "esdoc-standard-plugin" is installed in parallel with this instance.
+ * Normally this is so, if this instance is a global or global-style instance.
+ * It is necessary to use the esdoc-core of this parallel instance (esdoc-standard-plugin) so that the plugins of esdoc-standard-plugin can use the same esdoc-core and thus work.
+ *
+ * @return {Boolean}
+ */
+function _checkForESDocStandardPluginESDocCore() {
+    let parallelPathOfESDocStandardPlugin = '../../../@enterthenamehere/esdoc-standard-plugin';
+    try {
+        require(parallelPathOfESDocStandardPlugin);
+        return true;
+    } catch (ex) {
+        return false;
+    }
+}
+
+/**
+ * This function prepare the final module requiring.
+ *
+ * @param {String}  moduleName
+ *
+ * @return {Mixed}
+ */
+function _prepareFinalModuleRequiring(moduleName) {
+    let parallelPathOfESDocStandardPlugin = '../../../@enterthenamehere/esdoc-standard-plugin';
+    let required = false;
+
+    if (_useESDocStandardPlugin == true) {
+        try {
+            let finalPathOfModule = parallelPathOfESDocStandardPlugin + '/node_modules/' + moduleName;
+            required = true;
+            return require(finalPathOfModule);
+        } catch (ex) {
+            required = false;
+            return require(moduleName);
+        }
+    }
+    else {
+        return require(moduleName);
+    }
+
+}
+
+import logger from _prepareFinalModuleRequiring('@enterthenamehere/color-logger');
 import ASTUtil from '@enterthenamehere/esdoc-core/lib/Util/ASTUtil.js';
 import ESParser from '@enterthenamehere/esdoc-core/lib/Parser/ESParser.js';
 import PathResolver from '@enterthenamehere/esdoc-core/lib/Util/PathResolver.js';
