@@ -1,10 +1,12 @@
-## @enterthenamehere/esdoc-monorepo
+
+# @enterthenamehere/esdoc-monorepo
 
 Welcome to @enterthenamehere/esdoc-monorepo
 
 Original [ESDoc](https://github.com/esdoc/esdoc) is unfortunately no more mantained, so it will break generation of documentation if you use any ESNext feature in your code. That's why I've updated ESDoc and it's plugins and for ease of maintaining the whole suite put it into a single monorepository.
 
 ## What's new/different from ESDoc?
+
 * New scope: all my packages are under @enterthenamehere/ scope;
 * Moved "core" of ESDoc documentation generation functionality into it's own package: esdoc-core;
 * Updated to babel 7, enabling parsing of ESNext features;
@@ -14,16 +16,21 @@ Original [ESDoc](https://github.com/esdoc/esdoc) is unfortunately no more mantai
 * Monorepository is using [lerna](https://github.com/lerna/lerna);
 
 ## Install
+
 So how do I use your version of ESDoc?
+
 ```bash
 npm install @enterthenamehere/esdoc @enterthenamehere/esdoc-standard-plugin
 ```
 
 and you can run esdoc by
+
 ```bash
 npx esdoc
 ```
+
 or use it in npm "script"
+
 ```json
 {
     "scripts": {
@@ -33,7 +40,9 @@ or use it in npm "script"
 ```
 
 ## Config
+
 esdoc.json
+
 ```json
 {
     "source": "./src",
@@ -46,6 +55,7 @@ No need to use @enterthenamehere/esdoc-standard-plugin in config anymore! No nee
 You still need to use @enterthenamehere/ when installing packages with npm though.
 
 ## Plugins
+
 You probably want to install [esdoc-standard-plugin](https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-standard-plugin) pack.
 
 It contains these plugins:
@@ -66,13 +76,13 @@ Plugin | Description
 [esdoc-unexported-identifier-plugin](https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-unexported-identifier-plugin) | If you don't want to have unexported identifiers in docs.
 
 Just use
+
 ```bash
 npm install @enterthenamehere/esdoc-standard-plugin
 ```
- 
- 
- 
- 
+
+### Additional plugins
+
 ESDoc offers even more plugins, but you have to install these individually:
 
 Plugin | Description
@@ -172,7 +182,9 @@ You can also use `@param {number} [theAnswerToLifeTheUniverseAndEverything=42]` 
 Read more about [type syntax](packages/esdoc/manual/tags.md#type-syntax).
 
 ## LICENSE
+
 MIT
 
 ## Thank you goes to author of ESDoc
+
 [Ryo Maruyama@h13i32maru](https://github.com/h13i32maru)
