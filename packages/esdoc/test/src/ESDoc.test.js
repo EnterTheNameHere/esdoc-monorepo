@@ -21,7 +21,7 @@ describe('ESDoc test:', function () {
             console.error = function() {};
             try {
                 ESDoc.generate( null );
-                assert.fail('generate() didn\'t throw exception!')
+                assert.fail('generate() didn\'t throw exception!');
             } catch( err ) {
                 assert( err instanceof Error );
             }
@@ -32,7 +32,7 @@ describe('ESDoc test:', function () {
             console.error = function() {};
             try {
                 ESDoc.generate( {} );
-                assert.fail('generate() didn\'t throw exception!')
+                assert.fail('generate() didn\'t throw exception!');
             } catch( err ) {
                 assert( err instanceof Error );
             }
@@ -43,7 +43,7 @@ describe('ESDoc test:', function () {
             console.error = function() {};
             try {
                 ESDoc.generate( { source: 0 } );
-                assert.fail('generate() didn\'t throw exception!')
+                assert.fail('generate() didn\'t throw exception!');
             } catch( err ) {
                 assert( err instanceof Error );
             }
@@ -54,7 +54,7 @@ describe('ESDoc test:', function () {
             console.error = function() {};
             try {
                 ESDoc.generate( { source: '' } );
-                assert.fail('generate() didn\'t throw exception!')
+                assert.fail('generate() didn\'t throw exception!');
             } catch( err ) {
                 assert( err instanceof Error );
             }
@@ -65,7 +65,7 @@ describe('ESDoc test:', function () {
             console.error = function() {};
             try {
                 ESDoc.generate( { source: '.' } );
-                assert.fail('generate() didn\'t throw exception!')
+                assert.fail('generate() didn\'t throw exception!');
             } catch( err ) {
                 assert( err instanceof Error );
             }
@@ -76,7 +76,7 @@ describe('ESDoc test:', function () {
             console.error = function() {};
             try {
                 ESDoc.generate( { source: '.', destination: 0 } );
-                assert.fail('generate() didn\'t throw exception!')
+                assert.fail('generate() didn\'t throw exception!');
             } catch( err ) {
                 assert( err instanceof Error );
             }
@@ -87,7 +87,7 @@ describe('ESDoc test:', function () {
             console.error = function() {};
             try {
                 ESDoc.generate( { source: '.', destination: '' } );
-                assert.fail('generate() didn\'t throw exception!')
+                assert.fail('generate() didn\'t throw exception!');
             } catch( err ) {
                 assert( err instanceof Error );
             }

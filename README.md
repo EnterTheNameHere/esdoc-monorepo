@@ -51,7 +51,7 @@ esdoc.json
 }
 ```
 
-No need to use @enterthenamehere/esdoc-standard-plugin in config anymore! No need to change configs. 
+No need to use @enterthenamehere/esdoc-standard-plugin in config anymore! No need to change configs.
 You still need to use @enterthenamehere/ when installing packages with npm though.
 
 ## Plugins
