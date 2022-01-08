@@ -90,6 +90,87 @@ Plugin | Description
 [esdoc-jsx-plugin](https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-jsx-plugin) | Makes ESDoc parse JSX.
 [esdoc-typescript-plugin](https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-typescript-plugin) | Makes ESDoc parse TypeScript.
 
+## Tags
+
+ESDoc recognizes following tags:
+
+| Tags ||||||
+| ------------- | ----------- | ----------- | ----------- | ---------- | ------------ |
+| [@abstract](packages/esdoc/manual/tags.md#abstract) | [@access](packages/esdoc/manual/tags.md#access) | [@deprecated](packages/esdoc/manual/tags.md#deprecated) | [@desc](packages/esdoc/manual/tags.md#desc) | [@emits](packages/esdoc/manual/tags.md#emits) | [@example](packages/esdoc/manual/tags.md#example) |
+| [@experimental](packages/esdoc/manual/tags.md#experimental) | [@extends](packages/esdoc/manual/tags.md#extends) | [@ignore](packages/esdoc/manual/tags.md#ignore) | [@implements](packages/esdoc/manual/tags.md#implements) | [@interface](packages/esdoc/manual/tags.md#interface) | @lineNumber |
+| [@link](packages/esdoc/manual/tags.md#link) | [@listens](packages/esdoc/manual/tags.md#listens) | [@override](packages/esdoc/manual/tags.md#override)   | [@package](packages/esdoc/manual/tags.md#access) | [@param](packages/esdoc/manual/tags.md#param) | [@private](packages/esdoc/manual/tags.md#access) |
+| [@property](packages/esdoc/manual/tags.md#typedef) | [@protected](packages/esdoc/manual/tags.md#access) | [@public](packages/esdoc/manual/tags.md#access) | [@returns](packages/esdoc/manual/tags.md#return) | [@see](packages/esdoc/manual/tags.md#see) | [@since](packages/esdoc/manual/tags.md#since) |
+| [@test](packages/esdoc/manual/tags.md#test) | [@throws](packages/esdoc/manual/tags.md#throws) | [@todo](packages/esdoc/manual/tags.md#todo) | [@type](packages/esdoc/manual/tags.md#type) | [@typedef](packages/esdoc/manual/tags.md#typedef) | [@version](packages/esdoc/manual/tags.md#version) |
+
+```javascript
+/**
+ * A sentence someone said.
+ * @example
+ * const message = new Sentence('Dark Helmet', 'I knew it, I\'m surrounded by assholes!');
+ * 
+ * @see https://www.imdb.com/title/tt0094012/
+ */
+export class Sentence {
+  /**
+   * Stores name of person who said the sentence.
+   * @type {string}
+   * @private
+   */
+  User;
+  
+  /**
+   * Sentence that was said.
+   * No need to use @private if autoprivate is `on` (which is by default).
+   * If identifier starts with `_` it's private automagically.
+   * @type {string}
+   */
+  _Sentence;
+
+  /**
+   * Creates new instance of Message
+   * @param {string} user    - Who said said message.
+   * @param {string} message - said message.
+   * @throws {Error} - if `sentence` contains a naughty word.
+   */
+  constructor( user, sentence ) {
+    if( sentence.includes('fuck') ) throw new Error('No swearing!');
+    
+    this.User = user;
+    this._Sentence = message;
+  }
+  
+  /**
+   * Returns what was said.
+   * @returns {string} - the sentence
+   */
+  whatWasTheMessageAgain() {
+    return this._Sentence;
+  }
+  
+  /**
+   * @todo This function doesn't belong here... Move it to {@link Engine}.
+   * Use ignore tag so this function isn't in documentation until then...
+   * @ignore
+   */
+  engageLudicrousSpeed() {}
+  
+  /**
+   * @returns {Radar}
+   */
+  noBleepsNoSweepsNoCreeps() {
+    return new Radar({ jammed: true });
+  }
+}
+
+/**
+ * @typedef {object} Radar 
+ * @property {boolean} jammed - `true` if Radar appears to be jammed.
+ */
+```
+
+You can also use `@param {number} [theAnswerToLifeTheUniverseAndEverything=42]` to document the parameter is [optional] and it's default value is 42.
+Read more about [type syntax](packages/esdoc/manual/tags.md#type-syntax).
+
 ## LICENSE
 MIT
 
