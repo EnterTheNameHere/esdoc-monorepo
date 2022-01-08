@@ -96,7 +96,10 @@ describe('ESDoc test:', function () {
     });
     
     describe('package prefix', function () {
-        const testPackagePrefix = ( packageName, expectedPrefix ) => function() {
+        let packageName = '';
+        let expectedPrefix = '';
+        it( 'should return empty string 1', function() {
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
             fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
             fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
             
@@ -107,24 +110,198 @@ describe('ESDoc test:', function () {
             delete require.cache[require.resolve('../test_tmp/packagePrefixTest/out/ESDoc.js')];
             
             fs.removeSync('test/test_tmp');
-        }
+        });
         
-        it( 'should return empty string 1', testPackagePrefix('', '') );
-        it( 'should return empty string 1', testPackagePrefix('esdoc', '') );
-        it( 'should return empty string 2', testPackagePrefix(null, '') );
-        it( 'should return empty string 3', testPackagePrefix(undefined, '') );
-        it( 'should return empty string 4', testPackagePrefix(42, '') );
+        packageName = 'esdoc';
+        expectedPrefix = '';
+        it( 'should return empty string 1', function() {
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
+            fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
+            
+            const tmpESDOC = require('../test_tmp/packagePrefixTest/out/ESDoc.js');
+            assert.strictEqual(tmpESDOC.default._getPackagePrefix(), expectedPrefix);
+            // We need to delete the cached version from require, or next time we would get cached version with
+            // all data already set instead of freshly initialized
+            delete require.cache[require.resolve('../test_tmp/packagePrefixTest/out/ESDoc.js')];
+            
+            fs.removeSync('test/test_tmp');
+        });
+
+        packageName = null;
+        expectedPrefix = '';
+        it( 'should return empty string 2', function() {
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
+            fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
+            
+            const tmpESDOC = require('../test_tmp/packagePrefixTest/out/ESDoc.js');
+            assert.strictEqual(tmpESDOC.default._getPackagePrefix(), expectedPrefix);
+            // We need to delete the cached version from require, or next time we would get cached version with
+            // all data already set instead of freshly initialized
+            delete require.cache[require.resolve('../test_tmp/packagePrefixTest/out/ESDoc.js')];
+            
+            fs.removeSync('test/test_tmp');
+        });
+
+        packageName = undefined;
+        expectedPrefix = '';
+        it( 'should return empty string 3', function() {
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
+            fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
+            
+            const tmpESDOC = require('../test_tmp/packagePrefixTest/out/ESDoc.js');
+            assert.strictEqual(tmpESDOC.default._getPackagePrefix(), expectedPrefix);
+            // We need to delete the cached version from require, or next time we would get cached version with
+            // all data already set instead of freshly initialized
+            delete require.cache[require.resolve('../test_tmp/packagePrefixTest/out/ESDoc.js')];
+            
+            fs.removeSync('test/test_tmp');
+        });
+
+        packageName = 42;
+        expectedPrefix = '';
+        it( 'should return empty string 4', function() {
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
+            fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
+            
+            const tmpESDOC = require('../test_tmp/packagePrefixTest/out/ESDoc.js');
+            assert.strictEqual(tmpESDOC.default._getPackagePrefix(), expectedPrefix);
+            // We need to delete the cached version from require, or next time we would get cached version with
+            // all data already set instead of freshly initialized
+            delete require.cache[require.resolve('../test_tmp/packagePrefixTest/out/ESDoc.js')];
+            
+            fs.removeSync('test/test_tmp');
+        });
         
-        it( 'should return correct prefix 1', testPackagePrefix('@enterthenamehere/esdoc', '@enterthenamehere') );
-        it( 'should return correct prefix 2', testPackagePrefix('@otherprefix/esdoc', '@otherprefix') );
+        packageName = '@enterthenamehere/esdoc';
+        expectedPrefix = '@enterthenamehere';
+        it( 'should return correct prefix 1', function() {
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
+            fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
+            
+            const tmpESDOC = require('../test_tmp/packagePrefixTest/out/ESDoc.js');
+            assert.strictEqual(tmpESDOC.default._getPackagePrefix(), expectedPrefix);
+            // We need to delete the cached version from require, or next time we would get cached version with
+            // all data already set instead of freshly initialized
+            delete require.cache[require.resolve('../test_tmp/packagePrefixTest/out/ESDoc.js')];
+            
+            fs.removeSync('test/test_tmp');
+        });
         
-        it( 'should return probably incorrect prefix', testPackagePrefix('@this/@is/@probably/@incorrect/esdoc', '@this/@is/@probably/@incorrect') );
+        packageName = '@otherprefix/esdoc';
+        expectedPrefix = '@otherprefix';
+        it( 'should return correct prefix 2', function() {
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
+            fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
+            
+            const tmpESDOC = require('../test_tmp/packagePrefixTest/out/ESDoc.js');
+            assert.strictEqual(tmpESDOC.default._getPackagePrefix(), expectedPrefix);
+            // We need to delete the cached version from require, or next time we would get cached version with
+            // all data already set instead of freshly initialized
+            delete require.cache[require.resolve('../test_tmp/packagePrefixTest/out/ESDoc.js')];
+            
+            fs.removeSync('test/test_tmp');
+        });
         
-        it( 'should return empty with different name containing /esdoc', testPackagePrefix('@malformed/esdoc-plugin-name-for-some-reason', '') );
-        it( 'should return empty with malformed packaged name', testPackagePrefix('esdoc/esdoc', '') );
+        packageName = '@this/@is/@probably/@incorrect/esdoc';
+        expectedPrefix = '@this/@is/@probably/@incorrect';
+        it( 'should return probably incorrect prefix', function() {
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
+            fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
+            
+            const tmpESDOC = require('../test_tmp/packagePrefixTest/out/ESDoc.js');
+            assert.strictEqual(tmpESDOC.default._getPackagePrefix(), expectedPrefix);
+            // We need to delete the cached version from require, or next time we would get cached version with
+            // all data already set instead of freshly initialized
+            delete require.cache[require.resolve('../test_tmp/packagePrefixTest/out/ESDoc.js')];
+            
+            fs.removeSync('test/test_tmp');
+        });
         
-        it( 'should return empty string if package name is different 1', testPackagePrefix('esdoc/name', '') );
-        it( 'should return empty string if package name is different 2', testPackagePrefix('@differect/name', '') );
-        it( 'should return empty string if package name is different 3', testPackagePrefix('differentPackage', '') );
+        packageName = '@malformed/esdoc-plugin-name-for-some-reason';
+        expectedPrefix = '';
+        it( 'should return empty with different name containing /esdoc', function() {
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
+            fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
+            
+            const tmpESDOC = require('../test_tmp/packagePrefixTest/out/ESDoc.js');
+            assert.strictEqual(tmpESDOC.default._getPackagePrefix(), expectedPrefix);
+            // We need to delete the cached version from require, or next time we would get cached version with
+            // all data already set instead of freshly initialized
+            delete require.cache[require.resolve('../test_tmp/packagePrefixTest/out/ESDoc.js')];
+            
+            fs.removeSync('test/test_tmp');
+        });
+        
+        packageName = 'esdoc/esdoc';
+        expectedPrefix = '';
+        it( 'should return empty with malformed packaged name', function() {
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
+            fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
+            
+            const tmpESDOC = require('../test_tmp/packagePrefixTest/out/ESDoc.js');
+            assert.strictEqual(tmpESDOC.default._getPackagePrefix(), expectedPrefix);
+            // We need to delete the cached version from require, or next time we would get cached version with
+            // all data already set instead of freshly initialized
+            delete require.cache[require.resolve('../test_tmp/packagePrefixTest/out/ESDoc.js')];
+            
+            fs.removeSync('test/test_tmp');
+        });
+        
+        packageName = 'esdoc/name';
+        expectedPrefix = '';
+        it( 'should return empty string if package name is different 1', function() {
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
+            fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
+            
+            const tmpESDOC = require('../test_tmp/packagePrefixTest/out/ESDoc.js');
+            assert.strictEqual(tmpESDOC.default._getPackagePrefix(), expectedPrefix);
+            // We need to delete the cached version from require, or next time we would get cached version with
+            // all data already set instead of freshly initialized
+            delete require.cache[require.resolve('../test_tmp/packagePrefixTest/out/ESDoc.js')];
+            
+            fs.removeSync('test/test_tmp');
+        });
+        
+        packageName = '@differect/name';
+        expectedPrefix = '';
+        it( 'should return empty string if package name is different 2', function() {
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
+            fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
+            
+            const tmpESDOC = require('../test_tmp/packagePrefixTest/out/ESDoc.js');
+            assert.strictEqual(tmpESDOC.default._getPackagePrefix(), expectedPrefix);
+            // We need to delete the cached version from require, or next time we would get cached version with
+            // all data already set instead of freshly initialized
+            delete require.cache[require.resolve('../test_tmp/packagePrefixTest/out/ESDoc.js')];
+            
+            fs.removeSync('test/test_tmp');
+        });
+        
+        packageName = 'differentPackage';
+        expectedPrefix = '';
+        it( 'should return empty string if package name is different 3', function() {
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
+            fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
+            
+            const tmpESDOC = require('../test_tmp/packagePrefixTest/out/ESDoc.js');
+            assert.strictEqual(tmpESDOC.default._getPackagePrefix(), expectedPrefix);
+            // We need to delete the cached version from require, or next time we would get cached version with
+            // all data already set instead of freshly initialized
+            delete require.cache[require.resolve('../test_tmp/packagePrefixTest/out/ESDoc.js')];
+            
+            fs.removeSync('test/test_tmp');
+        });
     });
 });
