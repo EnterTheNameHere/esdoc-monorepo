@@ -99,6 +99,8 @@ describe('ESDoc test:', function () {
         let packageName = '';
         let expectedPrefix = '';
         it( 'should return empty string 1', function() {
+            console.log( 'process.cwd()', process.cwd() );
+            console.log( 'fs.readdirSync()', fs.readdirSync( process.cwd() ) );
             fs.ensureDirSync('test/test_tmp/packagePrefixTest');
             fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
             fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
