@@ -101,7 +101,9 @@ describe('ESDoc test:', function () {
         it( 'should return empty string 1', function() {
             console.log( 'process.cwd()', process.cwd() );
             console.log( 'fs.readdirSync()', fs.readdirSync( process.cwd() ) );
-            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            console.log( 'fs.readdirSync()', fs.readdirSync( process.cwd() + '/out' ) );
+            console.log( 'fs.readdirSync()', fs.readdirSync( process.cwd() + '/test' ) );
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest/out');
             fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
             fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
             
@@ -117,7 +119,7 @@ describe('ESDoc test:', function () {
         packageName = 'esdoc';
         expectedPrefix = '';
         it( 'should return empty string 1', function() {
-            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest/out');
             fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
             fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
             
@@ -133,7 +135,7 @@ describe('ESDoc test:', function () {
         packageName = null;
         expectedPrefix = '';
         it( 'should return empty string 2', function() {
-            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest/out');
             fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
             fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
             
@@ -149,7 +151,7 @@ describe('ESDoc test:', function () {
         packageName = undefined;
         expectedPrefix = '';
         it( 'should return empty string 3', function() {
-            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest/out');
             fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
             fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
             
@@ -165,7 +167,7 @@ describe('ESDoc test:', function () {
         packageName = 42;
         expectedPrefix = '';
         it( 'should return empty string 4', function() {
-            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest/out');
             fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
             fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
             
@@ -181,7 +183,7 @@ describe('ESDoc test:', function () {
         packageName = '@enterthenamehere/esdoc';
         expectedPrefix = '@enterthenamehere';
         it( 'should return correct prefix 1', function() {
-            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest/out');
             fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
             fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
             
@@ -197,7 +199,7 @@ describe('ESDoc test:', function () {
         packageName = '@otherprefix/esdoc';
         expectedPrefix = '@otherprefix';
         it( 'should return correct prefix 2', function() {
-            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest/out');
             fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
             fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
             
@@ -213,7 +215,7 @@ describe('ESDoc test:', function () {
         packageName = '@this/@is/@probably/@incorrect/esdoc';
         expectedPrefix = '@this/@is/@probably/@incorrect';
         it( 'should return probably incorrect prefix', function() {
-            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest/out');
             fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
             fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
             
@@ -229,7 +231,7 @@ describe('ESDoc test:', function () {
         packageName = '@malformed/esdoc-plugin-name-for-some-reason';
         expectedPrefix = '';
         it( 'should return empty with different name containing /esdoc', function() {
-            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest/out');
             fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
             fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
             
@@ -245,7 +247,7 @@ describe('ESDoc test:', function () {
         packageName = 'esdoc/esdoc';
         expectedPrefix = '';
         it( 'should return empty with malformed packaged name', function() {
-            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest/out');
             fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
             fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
             
@@ -261,7 +263,7 @@ describe('ESDoc test:', function () {
         packageName = 'esdoc/name';
         expectedPrefix = '';
         it( 'should return empty string if package name is different 1', function() {
-            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest/out');
             fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
             fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
             
@@ -277,7 +279,7 @@ describe('ESDoc test:', function () {
         packageName = '@differect/name';
         expectedPrefix = '';
         it( 'should return empty string if package name is different 2', function() {
-            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest/out');
             fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
             fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
             
@@ -293,7 +295,7 @@ describe('ESDoc test:', function () {
         packageName = 'differentPackage';
         expectedPrefix = '';
         it( 'should return empty string if package name is different 3', function() {
-            fs.ensureDirSync('test/test_tmp/packagePrefixTest');
+            fs.ensureDirSync('test/test_tmp/packagePrefixTest/out');
             fs.outputJsonSync( 'test/test_tmp/packagePrefixTest/package.json', { name: packageName }, { flag: 'w' } );
             fs.copySync('out/ESDOC.js', 'test/test_tmp/packagePrefixTest/out/ESDOC.js');
             
