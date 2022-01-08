@@ -19,8 +19,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    
     - name: "Install dependencies"
       run: |
-        npm i
+        npm i -g lerna
         npx lerna bootstrap
-    - run: npm run test
+
+    - name: "Run tests"
+      run: npm run test
