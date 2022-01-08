@@ -12,69 +12,20 @@ import path from 'path';
  */
 export default class ESDoc {
   static logger = null;
-    static ASTUtil = null;
-    static ESParser = null;
-    static ESParser = null;
-    static PathResolver = null;
-    static DocFactory = null;
-    static InvalidCodeLogger = null;
-    static PluginManager = null;
-
-    /**
-     * This function checks if a package "esdoc-standard-plugin" is installed in parallel with this instance of @enterthenamehere/esdoc.
-     * Normally this is so, if the actual node package instance of @enterthenamehere/esdoc is a global or global-style instance (installed with 'npm i -g ...').
-     * It is necessary to use the esdoc-core of this parallel instance (esdoc-standard-plugin) so that the plugins of esdoc-standard-plugin can use the same esdoc-core and thus works globaly in every project (without localy installing esdoc in the projects).
-     * So the Developer can use esdoc inside a project or as global installed node package ('npm i -g ...').
-     * Normally all global node packages will be installed in one node-folder (e.g. node_modules) in a os specific path (e.g. in Linux: '/usr/local/lib/node_modules').
-     *
-     * @return {Void}
-     */
-    static async preparation() {
-        let parallelPathOfESDocStandardPlugin = '../../../@enterthenamehere/esdoc-standard-plugin';
-        let isGlobalInstance = false;
-
-        try {
-            require(parallelPathOfESDocStandardPlugin);
-            isGlobalInstance = true;
-        } catch (ex) {
-            isGlobalInstance = false;
-        }
-
-        let absolutePath = (isGlobalInstance == true) ? parallelPathOfESDocStandardPlugin + '/node_modules/' : '';
-
-        this.logger = await import(absolutePath + '@enterthenamehere/color-logger').then(result => {
-            return result.default;
-        });
-        this.ASTUtil = await import(absolutePath + '@enterthenamehere/esdoc-core/lib/Util/ASTUtil.js').then(result => {
-            return result.default;
-        });
-        this.ESParser = await import(absolutePath + '@enterthenamehere/esdoc-core/lib/Parser/ESParser.js').then(result => {
-            return result.default;
-        });
-        this.PathResolver = await import(absolutePath + '@enterthenamehere/esdoc-core/lib/Util/PathResolver.js').then(result => {
-            return result.default;
-        });
-        this.DocFactory = await import(absolutePath + '@enterthenamehere/esdoc-core/lib/Factory/DocFactory.js').then(result => {
-            return result.default;
-        });
-        this.InvalidCodeLogger = await import(absolutePath + '@enterthenamehere/esdoc-core/lib/Util/InvalidCodeLogger.js').then(result => {
-            return result.default;
-        });
-        this.PluginManager = await import(absolutePath + '@enterthenamehere/esdoc-core/lib/Plugin/PluginManager.js').then(result => {
-            return result.default;
-        });
-        this.FileManager = await import(absolutePath + '@enterthenamehere/esdoc-core/lib/Util/FileManager').then(result => {
-
-            return result.FileManager;
-        });
-    }
+  static ASTUtil = null;
+  static ESParser = null;
+  static ESParser = null;
+  static PathResolver = null;
+  static DocFactory = null;
+  static InvalidCodeLogger = null;
+  static PluginManager = null;
   
   /**
    * Generate documentation.
    * @param {ESDocConfig} config - config for generation.
    */
-  static async generate(config) {
-    await this.preparation();
+  static generate(config) {
+    this._preparation();
     if( typeof(config) === 'undefined' || config === null ) {
         const message = `[31mError: config object is expected as an argument![0m`;
         console.error(`[31m${message}[0m`);
@@ -114,21 +65,21 @@ export default class ESDoc {
             }
         }
     }
-
+    
     this._setDefaultConfig(config, isRegExp);
     if( config.debug ) config.verbose = true;
 
-    PluginManager.setGlobalConfig( this._getGlobalConfig(config) );
+    this.PluginManager.setGlobalConfig( this._getGlobalConfig(config) );
 
     config.plugins.forEach((pluginSettings) => {
-      PluginManager.registerPlugin(pluginSettings);
+      this.PluginManager.registerPlugin(pluginSettings);
     });
 
-    PluginManager.onStart();
+    this.PluginManager.onStart();
     
-    config = PluginManager.onHandleConfig(config);
+    config = this.PluginManager.onHandleConfig(config);
 
-    logger.debug = Boolean(config.debug);
+    this.logger.debug = Boolean(config.debug);
 
     let includes = [];
     let excludes = [];
@@ -145,7 +96,7 @@ export default class ESDoc {
     let mainFilePath = null;
     if (config.package) {
       try {
-        const packageJSON = FileManager.readFileContents(config.package);
+        const packageJSON = this.FileManager.readFileContents(config.package);
         const packageConfig = JSON.parse(packageJSON);
         packageName = packageConfig.name;
         mainFilePath = packageConfig.main;
@@ -175,7 +126,7 @@ export default class ESDoc {
             }
         });
     } else {
-        fileList = FileManager.getListOfFiles( config.source, includes, excludes );
+        fileList = this.FileManager.getListOfFiles( config.source, includes, excludes );
     }
 
     fileList.forEach( (filePath) => {
@@ -202,7 +153,7 @@ export default class ESDoc {
 
     results = this._resolveDuplication(results);
 
-    results = PluginManager.onHandleDocs(results);
+    results = this.PluginManager.onHandleDocs(results);
 
     // index.json
     {
@@ -220,9 +171,41 @@ export default class ESDoc {
     // publish
     this._publish(config);
 
-    PluginManager.onComplete();
+    this.PluginManager.onComplete();
   }
 
+  /**
+   * This function checks if a package "esdoc-standard-plugin" is installed in parallel with this instance of @enterthenamehere/esdoc.
+   * Normally this is so, if the actual node package instance of @enterthenamehere/esdoc is a global or global-style instance (installed with 'npm i -g ...').
+   * It is necessary to use the esdoc-core of this parallel instance (esdoc-standard-plugin) so that the plugins of esdoc-standard-plugin can use the same esdoc-core and thus works globally in every project (without locally installing esdoc in the projects).
+   * So the Developer can use esdoc inside a project or as global installed node package ('npm i -g ...').
+   * Normally all global node packages will be installed in one node-folder (e.g. node_modules) in a os specific path (e.g. in Linux: '/usr/local/lib/node_modules').
+   *
+   * @return {void}
+   */
+   static async _preparation() {
+    const parallelPathOfESDocStandardPlugin = '../../../@enterthenamehere/esdoc-standard-plugin';
+    let isGlobalInstance = false;
+
+    try {
+        require(parallelPathOfESDocStandardPlugin);
+        isGlobalInstance = true;
+    } catch (ex) {
+        isGlobalInstance = false;
+    }
+    
+    const absolutePath = (isGlobalInstance === true) ? `${parallelPathOfESDocStandardPlugin}/node_modules/` : '';
+    
+    this.logger = require(`${absolutePath}@enterthenamehere/color-logger`).default;
+    this.ASTUtil = require(`${absolutePath}@enterthenamehere/esdoc-core/lib/Util/ASTUtil.js`).default;
+    this.ESParser = require(`${absolutePath}@enterthenamehere/esdoc-core/lib/Parser/ESParser.js`).default;
+    this.PathResolver = require(`${absolutePath}@enterthenamehere/esdoc-core/lib/Util/PathResolver.js`).default;
+    this.DocFactory = require(`${absolutePath}@enterthenamehere/esdoc-core/lib/Factory/DocFactory.js`).default;
+    this.InvalidCodeLogger = require(`${absolutePath}@enterthenamehere/esdoc-core/lib/Util/InvalidCodeLogger.js`).default;
+    this.PluginManager = require(`${absolutePath}@enterthenamehere/esdoc-core/lib/Plugin/PluginManager.js`).default;
+    this.FileManager = require(`${absolutePath}@enterthenamehere/esdoc-core/lib/Util/FileManager`).FileManager;
+  }
+  
   /**
    * check ESDoc config. and if it is old, exit with warning message.
    * @param {ESDocConfig} config - check config
@@ -288,7 +271,7 @@ export default class ESDoc {
 
   /**
    * Returns GlobalConfig object.
-   * @param {ESDocConfig} config 
+   * @param {ESDocConfig} config
    */
   static _getGlobalConfig(config) {
     return {
@@ -309,7 +292,7 @@ export default class ESDoc {
 
     for (const entry of entries) {
       const entryPath = path.resolve(dirPath, entry);
-      const stat = FileManager.getFileStat(entryPath);
+      const stat = this.FileManager.getFileStat(entryPath);
 
       if (stat.isFile()) {
         callback(entryPath);
@@ -331,23 +314,23 @@ export default class ESDoc {
    * @private
    */
   static _traverse(inDirPath, filePath, packageName, mainFilePath) {
-    logger.i(`parsing: ${filePath}`);
+    this.logger.i(`parsing: ${filePath}`);
     let ast = null;
     try {
-      ast = ESParser.parse(filePath);
+      ast = this.ESParser.parse(filePath);
     } catch (e) {
-      InvalidCodeLogger.showFile(filePath, e);
+      this.InvalidCodeLogger.showFile(filePath, e);
       return null;
     }
 
-    const pathResolver = new PathResolver(inDirPath, filePath, packageName, mainFilePath);
-    const factory = new DocFactory(ast, pathResolver);
+    const pathResolver = new this.PathResolver(inDirPath, filePath, packageName, mainFilePath);
+    const factory = new this.DocFactory(ast, pathResolver);
 
-    ASTUtil.traverse(ast, (node, parent) => {
+    this.ASTUtil.traverse(ast, (node, parent) => {
       try {
         factory.push(node, parent);
       } catch (e) {
-        InvalidCodeLogger.show(filePath, node);
+        this.InvalidCodeLogger.show(filePath, node);
         throw e;
       }
     });
@@ -365,7 +348,7 @@ export default class ESDoc {
     let indexContent = '';
 
     if (fs.existsSync(config.index)) {
-      indexContent = FileManager.readFileContents(config.index);
+      indexContent = this.FileManager.readFileContents(config.index);
     } else {
       console.warn(`[31mwarning: ${config.index} is not found. Please check config.index.[0m`);
     }
@@ -392,7 +375,7 @@ export default class ESDoc {
     let packageJSON = '';
     let packagePath = '';
     try {
-      packageJSON = FileManager.readFileContents(config.package);
+      packageJSON = this.FileManager.readFileContents(config.package);
       packagePath = path.resolve(config.package);
     } catch (e) {
       // ignore
@@ -453,26 +436,26 @@ export default class ESDoc {
     try {
       const write = (filePath, content, option) => {
         const _filePath = path.resolve(config.destination, filePath);
-        content = PluginManager.onHandleContent(content, _filePath);
+        content = this.PluginManager.onHandleContent(content, _filePath);
 
         if( config.verbose ) console.info(`output: ${_filePath}`);
-        FileManager.writeFileContents(_filePath, content, option);
+        this.FileManager.writeFileContents(_filePath, content, option);
       };
 
       const copy = (srcPath, destPath) => {
         const _destPath = path.resolve(config.destination, destPath);
         if( config.verbose ) console.info(`output: ${_destPath}`);
-        FileManager.copy(srcPath, _destPath);
+        this.FileManager.copy(srcPath, _destPath);
       };
 
       const read = (filePath) => {
         const _filePath = path.resolve(config.destination, filePath);
-        return FileManager.readFileContents(_filePath);
+        return this.FileManager.readFileContents(_filePath);
       };
 
-      PluginManager.onPublish(write, copy, read);
+      this.PluginManager.onPublish(write, copy, read);
     } catch (e) {
-      InvalidCodeLogger.showError(e);
+      this.InvalidCodeLogger.showError(e);
       process.exit(1);
     }
   }
