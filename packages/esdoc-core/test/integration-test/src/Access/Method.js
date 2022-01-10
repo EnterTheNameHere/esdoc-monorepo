@@ -18,4 +18,39 @@ export default class TestAccessMethod {
    * @private
    */
   methodPrivate(){}
+
+  /**
+   *  @access public
+   */
+   moreSpacesBetweenAsteriskAndAtSymbol1(){}
+
+   /**
+    *           @access public
+    */
+   moreSpacesBetweenAsteriskAndAtSymbol2(){}
+ 
+   /**
+    *                @access public
+    */
+   moreSpacesBetweenAsteriskAndAtSymbol3(){}
+   
+   /**
+    *            @public
+    */
+   moreSpacesBetweenAsteriskAndAtSymbol4(){}
+ 
+   /**
+    *                @private
+    */
+    moreSpacesBetweenAsteriskAndAtSymbol5(){}
+ 
+    /**
+    *       @protected
+    */
+   moreSpacesBetweenAsteriskAndAtSymbol6(){}
+ 
+   /**
+    *@access public
+    */
+    noSpacesBetweenAsteriskAndAtSymbol(){}
 }
