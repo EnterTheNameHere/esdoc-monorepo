@@ -2,8 +2,13 @@ name: Execute unit tests
 on:
   push:
     branches: [ main ]
+      paths:
+        - '**.js'
+        - '!**/test/**'
   pull_request:
     branches: [ main ]
+      paths:
+        - '**.js'
 jobs:
   build:
     runs-on: ubuntu-latest
