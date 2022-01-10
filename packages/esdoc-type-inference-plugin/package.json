@@ -1,6 +1,6 @@
 {
   "name": "@enterthenamehere/esdoc-type-inference-plugin",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "A type inference plugin for ESDoc [PoC]",
   "author": "h13i32maru",
   "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-type-inference-plugin",
