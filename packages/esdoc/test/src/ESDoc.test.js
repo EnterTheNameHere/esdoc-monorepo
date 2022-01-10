@@ -1,6 +1,5 @@
 import ESDoc from '../../out/ESDoc';
 import assert from 'assert';
-import fs from 'fs-extra';
 
 import { MockESDocTestEnvironment } from '../utils';
 
