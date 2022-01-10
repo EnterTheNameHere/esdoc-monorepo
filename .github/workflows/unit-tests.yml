@@ -1,12 +1,11 @@
 name: Execute unit tests
 on:
-  push:
-    branches: [ main ]
+  branches: [ main ]
+    push:
       paths:
         - '**.js'
         - '!**/test/**'
-  pull_request:
-    branches: [ main ]
+    pull_request:
       paths:
         - '**.js'
 jobs:
