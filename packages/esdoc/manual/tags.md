@@ -65,7 +65,7 @@ export default class MyClass {
 - [Identifier Syntax](#identifier-syntax)
 
 ## For Common
-### @access
+# @access
 syntax: ``@access <public|protected|package|private>``
 
 Alias are ``@public``, ``@protected``, ``@package``, and ``@private``.
