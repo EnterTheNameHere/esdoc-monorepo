@@ -103,9 +103,10 @@
             "files": ["**/test/**"],
             "rules": {
                 "arrow-spacing": "off",
-                "prefer-arrow-callback": "off",
+                "no-console": "off",
                 "no-new": "off",
-                "no-new-wrappers": "off"
+                "no-new-wrappers": "off",
+                "prefer-arrow-callback": "off"
             },
             "env": {
                 "mocha": true
