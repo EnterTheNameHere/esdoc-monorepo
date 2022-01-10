@@ -576,6 +576,7 @@ export default class AbstractDoc {
   _findAll(names) {
     const results = [];
     for (const tag of this._commentTags) {
+      tag.tagValue = tag.tagValue.trim()
       if (names.includes(tag.tagName)) results.push(tag);
     }
 
