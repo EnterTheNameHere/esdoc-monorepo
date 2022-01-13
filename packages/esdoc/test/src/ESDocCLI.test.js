@@ -8,7 +8,7 @@ import { fork } from 'child_process';
 function helperRunScript( filePath, args, responseCallback ) {
     let responseSent = false;
     if( typeof args === "string" ) args = [args];
-    let childProcess = fork( filePath, args, { stdio: 'pipe' } );
+    const childProcess = fork( filePath, args, { stdio: 'pipe' } );
 
     const stdoutOutput = [];
     childProcess.stdout.on( 'data', (output) => {
@@ -36,10 +36,11 @@ describe('test ESDocCLI:', function () {
                 assert.equal( response.error, null );
                 const versionOutput = [];
                 const origLog = console.log;
-                const mockedLog = (output) => { versionOutput.push( output + '\n' ) };
+                const mockedLog = (output) => { versionOutput.push(`${output}\n`); };
                 console.log = mockedLog;
                 new ESDocCLI([null, null])._showVersion();
                 console.log = origLog;
+                assert.notStrictEqual( versionOutput.length, 0 );
                 assert.deepEqual( response.stdoutOutput, versionOutput );
                 done();
             });
@@ -51,10 +52,11 @@ describe('test ESDocCLI:', function () {
                 assert.equal( response.error, null );
                 const versionOutput = [];
                 const origLog = console.log;
-                const mockedLog = (output) => { versionOutput.push( output + '\n' ) };
+                const mockedLog = (output) => { versionOutput.push(`${output}\n`); };
                 console.log = mockedLog;
                 new ESDocCLI([null, null])._showVersion();
                 console.log = origLog;
+                assert.notStrictEqual( versionOutput.length, 0 );
                 assert.deepEqual( response.stdoutOutput, versionOutput );
                 done();
             });
@@ -68,10 +70,11 @@ describe('test ESDocCLI:', function () {
                 assert.equal( response.error, null );
                 const helpOutput = [];
                 const origLog = console.log;
-                const mockedLog = (...output) => { helpOutput.push( output + '\n' ) };
+                const mockedLog = (...output) => { helpOutput.push(`${output}\n`); };
                 console.log = mockedLog;
                 new ESDocCLI([null, null])._showHelp();
                 console.log = origLog;
+                assert.notStrictEqual( helpOutput.length, 0 );
                 assert.deepEqual( response.stdoutOutput, helpOutput );
                 done();
             });
@@ -83,10 +86,11 @@ describe('test ESDocCLI:', function () {
                 assert.equal( response.error, null );
                 const helpOutput = [];
                 const origLog = console.log;
-                const mockedLog = (...output) => { helpOutput.push( output + '\n' ) };
+                const mockedLog = (...output) => { helpOutput.push(`${output}\n`); };
                 console.log = mockedLog;
                 new ESDocCLI([null, null])._showHelp();
                 console.log = origLog;
+                assert.notStrictEqual( helpOutput.length, 0 );
                 assert.deepEqual( response.stdoutOutput, helpOutput );
                 done();
             });
@@ -99,10 +103,11 @@ describe('test ESDocCLI:', function () {
                 assert.equal( response.error, null );
                 const versionOutput = [];
                 const origLog = console.log;
-                const mockedLog = (...output) => { versionOutput.push( output + '\n' ) };
+                const mockedLog = (...output) => { versionOutput.push(`${output}\n`); };
                 console.log = mockedLog;
                 new ESDocCLI([null, null])._showHelp();
                 console.log = origLog;
+                assert.notStrictEqual( versionOutput.length, 0 );
                 assert.deepEqual( response.stdoutOutput, versionOutput );
                 done();
             });
