@@ -159,10 +159,17 @@ export class MockESDocTestEnvironment {
  export async function helperRunScriptAsync( filePath, args, cwd ) {
     return new Promise( (resolve, reject) => {
         if( !Array.isArray( args ) ) args = [args];
+
+        const options = {
+            stdio: 'pipe',
+            timeout: 4000, // milliseconds
+        };
+        
+        if( typeof cwd === 'string' ) options.cwd = cwd;
         
         const stdoutOutput = [], stderrOutput = [];
-        const childProcess = fork( filePath, args, { stdio: 'pipe', cwd: cwd, timeout: 4000 } );
-
+        const childProcess = fork( filePath, args, options );
+        
         childProcess.stdout.on( 'data', (output) => {
             stdoutOutput.push( output.toString('utf-8') );
         });
