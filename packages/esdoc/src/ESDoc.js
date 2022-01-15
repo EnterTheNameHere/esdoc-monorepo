@@ -472,31 +472,42 @@ export default class ESDoc {
    * @return {string} prefix of package.
    */
   static _getPackagePrefix() {
+    try {
       if( ESDoc._prefix === null ) {
-          if( require.resolve('../package.json') in require.cache ) {
-              // Since require do cache of loaded modules/files, we need to reset the entry for the
-              // file we will require in case it was already required, which would get us cached version
-              // instead of live version.
-              delete require.cache[require.resolve('../package.json')];
-          }
-          ESDoc._prefix = require('../package.json').name;
-          // Since require do cache of loaded modules/files, we need to reset the entry for the
-          // file we just required, or on next time it would not load the file and instead just
-          // fetch it from cache.
-          delete require.cache[require.resolve('../package.json')];
-          if( typeof(ESDoc._prefix) !== 'string' ) {
-              ESDoc._prefix = '';
-          } else {
-              const regex = new RegExp('/esdoc$', 'u');
-              if( regex.test(ESDoc._prefix) && ESDoc._prefix.length > 1 && ESDoc._prefix.substr(0,1) === '@' ) {
-                  const length = ESDoc._prefix.length;
-                  ESDoc._prefix = ESDoc._prefix.substr(0, length - 6); // minus /esdoc
-              } else {
-                  ESDoc._prefix = '';
-              }
-          }
+        if( require.resolve('../package.json') in require.cache ) {
+            // Since require do cache of loaded modules/files, we need to reset the entry for the
+            // file we will require in case it was already required, which would get us cached version
+            // instead of live version.
+            delete require.cache[require.resolve('../package.json')];
+        }
+        ESDoc._prefix = require('../package.json').name;
+        // Since require do cache of loaded modules/files, we need to reset the entry for the
+        // file we just required, or on next time it would not load the file and instead just
+        // fetch it from cache.
+        delete require.cache[require.resolve('../package.json')];
+        if( typeof(ESDoc._prefix) !== 'string' ) {
+            ESDoc._prefix = '';
+        } else {
+            const regex = new RegExp('/esdoc$', 'u');
+            if( regex.test(ESDoc._prefix) && ESDoc._prefix.length > 1 && ESDoc._prefix.substr(0,1) === '@' ) {
+                const length = ESDoc._prefix.length;
+                ESDoc._prefix = ESDoc._prefix.substr(0, length - 6); // minus /esdoc
+            } else {
+                ESDoc._prefix = '';
+            }
+        }
       }
+    } catch( err ) {
+      if( err.code === 'MODULE_NOT_FOUND' ) {
+        console.error('Error: ESDoc package is missing package.json in it\'s root directory. This should not happen with correctly installed package!');
+        process.exit(1);
+      }
+      console.error( 'Unexpected Error occurred! ESDoc cannot continue safely.');
+      console.error( 'Try doing reinstall like `npm ci` to see if it helps with this error.' );
+      console.error( 'Error', err );
+      process.exit(1);
+    }
       
-      return ESDoc._prefix;
+    return ESDoc._prefix;
   }
 }
