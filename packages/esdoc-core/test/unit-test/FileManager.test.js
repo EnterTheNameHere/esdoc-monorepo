@@ -128,7 +128,7 @@ describe('test/Utils/FileManager', function () {
     after("Clean testing directory/file tree and return to original path", function () {
         process.chdir(originalPath);
         process.chdir('./test');
-        fs.rmdirSync( 'tree', { recursive: true, force: true } );
+        fs.rmSync( 'tree', { recursive: true, force: true } );
         process.chdir('..');
     });
 
