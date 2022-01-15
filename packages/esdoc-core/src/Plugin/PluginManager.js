@@ -98,9 +98,11 @@ class PluginManager {
         module.paths.pop();
       }
     } catch (err) {
-      console.error(`PluginManager::registerPlugin - ${savedPluginEntry.name} cannot be found!`);
+      console.error(`[31mError! Plugin named '[31;7m${savedPluginEntry.settings.name}[0m[31m' cannot be found!`);
+      console.error(`Try running '[37;7mnpm install --save-dev ${savedPluginEntry.settings.name}[0m[31m' to install the plugin.[0m`);
+      process.exit(1);
     }
-
+    
     savedPluginEntry.instance = pluginInstance;
 
     // If plugin have onInitialize function, call it with options as argument.
