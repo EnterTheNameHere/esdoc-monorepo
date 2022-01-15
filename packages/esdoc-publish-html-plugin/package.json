@@ -20,7 +20,7 @@
     "cheerio": "^1.0.0-rc.10",
     "cpx2": "^3.0.0",
     "escape-string-regexp": "^4.0.0",
-    "marked": "^2.0.1",
+    "marked": "^4.0.10",
     "prismjs": "^1.25.0",
     "sanitize-html": "^2.1.2",
     "taffydb": "^2.7.3",

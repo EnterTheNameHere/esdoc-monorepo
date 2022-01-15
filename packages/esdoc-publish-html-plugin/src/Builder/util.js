@@ -1,4 +1,4 @@
-import marked from 'marked';
+import { marked } from 'marked';
 import cheerio from 'cheerio';
 import prismjs from 'prismjs';
 const loadLanguages = require('prismjs/components/');
@@ -126,7 +126,7 @@ export function markdown(text, breaks = false) {
     const id = escapeURLHash(text2);
     return `<h${level} id="${id}">${text2}</h${level}>`;
   };
-
+  
   const compiled = marked(text, {
     renderer: renderer,
     gfm: true,
