@@ -3,115 +3,108 @@ import process from 'process';
 import fs from 'fs-extra';
 import assert from 'assert';
 import path from 'path';
-import { fork } from 'child_process';
 
-function helperRunScript( filePath, args, responseCallback ) {
-    let responseSent = false;
-    if( typeof args === "string" ) args = [args];
-    const childProcess = fork( filePath, args, { stdio: 'pipe' } );
-
-    const stdoutOutput = [];
-    childProcess.stdout.on( 'data', (output) => {
-        stdoutOutput.push( output.toString('utf-8') );
-    });
-
-    childProcess.on('error', function (err) {
-        if( responseSent ) return;
-        responseSent = true;
-        responseCallback( { error: err, code: err.code, stdoutOutput: stdoutOutput } );
-    });
-
-    childProcess.on('exit', function (code) {
-        if( responseSent ) return;
-        responseSent = true;
-        responseCallback( { error: null, code: code, stdoutOutput: stdoutOutput } );
-    });
-}
+import { helperRunScriptAsync } from '../../../../test/esdocMock';
 
 describe('test ESDocCLI:', function () {
     describe('display version', function () {
-        it('shows version on -v parameter', function (done) {
-            helperRunScript('./out/ESDocCLI.js', '-v', function ( response ) {
-                assert.equal( response.code, 0 );
-                assert.equal( response.error, null );
-                const versionOutput = [];
-                const origLog = console.log;
-                const mockedLog = (output) => { versionOutput.push(`${output}\n`); };
-                console.log = mockedLog;
-                new ESDocCLI([null, null])._showVersion();
-                console.log = origLog;
-                assert.notStrictEqual( versionOutput.length, 0 );
-                assert.deepEqual( response.stdoutOutput, versionOutput );
-                done();
-            });
+        it('shows version on -v parameter', async function () {
+            // First call it programmatically
+            const versionOutput = [];
+            const origLog = console.log;
+            const mockedLog = (output) => { versionOutput.push(`${output}\n`); };
+            console.log = mockedLog;
+            new ESDocCLI([null, null])._showVersion();
+            console.log = origLog;
+            
+            // Then run it as CLI
+            const response = await helperRunScriptAsync('./out/ESDocCLI.js', '-v');
+            assert.equal( response.code, 0 );
+            assert.equal( response.error, null );
+            
+            // Compare results
+            assert.notStrictEqual( versionOutput.length, 0 );
+            assert.deepEqual( response.std.out, versionOutput );
         });
 
-        it('shows version on --version parameter', function (done) {
-            helperRunScript('./out/ESDocCLI.js', '--version', function ( response ) {
-                assert.equal( response.code, 0 );
-                assert.equal( response.error, null );
-                const versionOutput = [];
-                const origLog = console.log;
-                const mockedLog = (output) => { versionOutput.push(`${output}\n`); };
-                console.log = mockedLog;
-                new ESDocCLI([null, null])._showVersion();
-                console.log = origLog;
-                assert.notStrictEqual( versionOutput.length, 0 );
-                assert.deepEqual( response.stdoutOutput, versionOutput );
-                done();
-            });
+        it('shows version on --version parameter', async function () {
+            // First call it programmatically
+            const versionOutput = [];
+            const origLog = console.log;
+            const mockedLog = (output) => { versionOutput.push(`${output}\n`); };
+            console.log = mockedLog;
+            new ESDocCLI([null, null])._showVersion();
+            console.log = origLog;
+            
+            // Then run it as CLI
+            const response = await helperRunScriptAsync('./out/ESDocCLI.js', '--version');
+            assert.equal( response.code, 0 );
+            assert.equal( response.error, null );
+            
+            // Compare results
+            assert.notStrictEqual( versionOutput.length, 0 );
+            assert.deepEqual( response.std.out, versionOutput );
         });
     });
 
     describe('display help', function () {
-        it('shows help on -h parameter', function (done) {
-            helperRunScript('./out/ESDocCLI.js', '-h', function ( response ) {
-                assert.equal( response.code, 0 );
-                assert.equal( response.error, null );
-                const helpOutput = [];
-                const origLog = console.log;
-                const mockedLog = (...output) => { helpOutput.push(`${output}\n`); };
-                console.log = mockedLog;
-                new ESDocCLI([null, null])._showHelp();
-                console.log = origLog;
-                assert.notStrictEqual( helpOutput.length, 0 );
-                assert.deepEqual( response.stdoutOutput, helpOutput );
-                done();
-            });
+        it('shows help on -h parameter', async function () {
+            // First call it programmatically
+            const helpOutput = [];
+            const origLog = console.log;
+            const mockedLog = (...output) => { helpOutput.push(`${output}\n`); };
+            console.log = mockedLog;
+            new ESDocCLI([null, null])._showHelp();
+            console.log = origLog;
+
+            // Then run it as CLI
+            const response = await helperRunScriptAsync('./out/ESDocCLI.js', '-h');
+            assert.equal( response.code, 0 );
+            assert.equal( response.error, null );
+            
+            // Compare results
+            assert.notStrictEqual( helpOutput.length, 0 );
+            assert.deepEqual( response.std.out, helpOutput );
         });
 
-        it('shows help on --help parameter', function (done) {
-            helperRunScript('./out/ESDocCLI.js', '--help', function ( response ) {
-                assert.equal( response.code, 0 );
-                assert.equal( response.error, null );
-                const helpOutput = [];
-                const origLog = console.log;
-                const mockedLog = (...output) => { helpOutput.push(`${output}\n`); };
-                console.log = mockedLog;
-                new ESDocCLI([null, null])._showHelp();
-                console.log = origLog;
-                assert.notStrictEqual( helpOutput.length, 0 );
-                assert.deepEqual( response.stdoutOutput, helpOutput );
-                done();
-            });
+        it('shows help on --help parameter', async function () {
+            // First call it programmatically
+            const helpOutput = [];
+            const origLog = console.log;
+            const mockedLog = (...output) => { helpOutput.push(`${output}\n`); };
+            console.log = mockedLog;
+            new ESDocCLI([null, null])._showHelp();
+            console.log = origLog;
+
+            // Then run it as CLI
+            const response = await helperRunScriptAsync('./out/ESDocCLI.js', '--help');
+            assert.equal( response.code, 0 );
+            assert.equal( response.error, null );
+            
+            // Compare results
+            assert.notStrictEqual( helpOutput.length, 0 );
+            assert.deepEqual( response.std.out, helpOutput );
         });
 
-        it('shows help if no config is found', function (done) {
+        it('shows help if no config is found', async function () {
+            // First call it programmatically
+            const versionOutput = [];
+            const origLog = console.log;
+            const mockedLog = (...output) => { versionOutput.push(`${output}\n`); };
+            console.log = mockedLog;
+            new ESDocCLI([null, null])._showHelp();
+            console.log = origLog;
+
+            // Then run it as CLI
             process.chdir('./test/');
-            helperRunScript('../out/ESDocCLI.js', '', function ( response ) {
-                assert.equal( response.code, 1 );
-                assert.equal( response.error, null );
-                const versionOutput = [];
-                const origLog = console.log;
-                const mockedLog = (...output) => { versionOutput.push(`${output}\n`); };
-                console.log = mockedLog;
-                new ESDocCLI([null, null])._showHelp();
-                console.log = origLog;
-                assert.notStrictEqual( versionOutput.length, 0 );
-                assert.deepEqual( response.stdoutOutput, versionOutput );
-                done();
-            });
+            const response = await helperRunScriptAsync('../out/ESDocCLI.js', '');
             process.chdir('../');
+            assert.equal( response.code, 1 );
+            assert.equal( response.error, null );
+            
+            // Compare results
+            assert.notStrictEqual( versionOutput.length, 0 );
+            assert.deepEqual( response.std.out, versionOutput );
         });
     });
 
