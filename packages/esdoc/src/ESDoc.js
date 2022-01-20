@@ -14,7 +14,6 @@ export default class ESDoc {
   static logger = null;
   static ASTUtil = null;
   static ESParser = null;
-  static ESParser = null;
   static PathResolver = null;
   static DocFactory = null;
   static InvalidCodeLogger = null;
