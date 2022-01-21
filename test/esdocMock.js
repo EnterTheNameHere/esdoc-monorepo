@@ -129,12 +129,39 @@ export class MockESDocTestEnvironment {
         delete require.cache[require.resolve( path_package.resolve(this._ESDocCLIPath) )];
     }
     
+    /**
+     * Writes `data` to file named `name` under ESDoc environment mock directory.
+     * `name` can contain directories, but @warning no check against misuse is done at all!
+     * 
+     * @param {string} name - Relative path of file, can contain directories.
+     * @param {string} data - Will be converted to string by toString().
+     */
     writeToFile( name, data ) {
-        fs.writeFileSync( path_package.join(this._directoryPath, name), data, { flag: 'w' } );
+        const path = path_package.join(this._directoryPath, name);
+        fs.ensureFileSync( path );
+        fs.writeFileSync( path, data.toString(), { flag: 'w' } );
     }
     
+    /**
+     * Writes `jsonData` as JSON to file named `name` under ESDoc environment mock directory.
+     * `name` can contain directories, but @warning no check against misuse is done at all!
+     * 
+     * @param {string} name - Relative path of file, can contain directories.
+     * @param {string} jsonData - Will be converted to JSON.
+     */
     writeToJSONFile( name, jsonData ) {
-        fs.outputJsonSync( path_package.join(this._directoryPath, name), jsonData, { flag: 'w' } );
+        const path = path_package.join(this._directoryPath, name);
+        fs.ensureFileSync( path );
+        fs.outputJsonSync( path, jsonData, { flag: 'w' } );
+    }
+    
+    /**
+     * Runs ESDoc CLI, like you would with `npx esdoc` or `esdoc` in npm scripts.
+     * @param {any} [args] - Arguments to pass to ESDoc CLI
+     * @returns {Promise} See {@link helperRunScriptAsync}
+     */
+    async run( args ) {
+        return helperRunScriptAsync( this._ESDocCLIPath, args, this._directoryPath );
     }
     
     /**
@@ -145,21 +172,19 @@ export class MockESDocTestEnvironment {
     };
 }
 
-
-
-
-
-
 /**
+ * Runs NodeJS file (application) on `filePath`, with `args` passed as arguments to the application.
+ * You can optionally set working directory as `cwd`. Received stdout and stderr are returned upon Promise completion.
  * 
- * @param {string} filePath 
- * @param {[]} args
- * @returns {Promise}
+ * @param {string} filePath - Application to run on NodeJS.
+ * @param {any} [args] - Arguments to pass to the Application.
+ * @param {string} [cwd] - Working directory for the Application.
+ * @returns {Promise<{ error: Error|null, code: number, std: { out: string[], err: string[] }>}}
  */
  export async function helperRunScriptAsync( filePath, args, cwd ) {
     return new Promise( (resolve, reject) => {
         if( !Array.isArray( args ) ) args = [args];
-
+        
         const options = {
             stdio: 'pipe',
             timeout: 4000, // milliseconds
