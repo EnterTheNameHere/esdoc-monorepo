@@ -10,7 +10,7 @@ class Plugin {
     if (!this._option.enable) return;
 
     const srcPath = path.resolve(__dirname, 'external-nodejs.js');
-    const outPath = path.resolve(this._config.source, '.external-nodejs.js');
+    const outPath = path.resolve(this._config.source[0], '.external-nodejs.js');
 
     fs.copySync(srcPath, outPath);
   }
@@ -18,10 +18,10 @@ class Plugin {
   onHandleDocs(ev) {
     if (!this._option.enable) return;
 
-    const outPath = path.resolve(this._config.source, '.external-nodejs.js');
+    const outPath = path.resolve(this._config.source[0], '.external-nodejs.js');
     fs.removeSync(outPath);
 
-    const name = `${path.basename(path.resolve(this._config.source))}/.external-nodejs.js`;
+    const name = `${path.basename(path.resolve(this._config.source[0]))}/.external-nodejs.js`;
     for (const doc of ev.data.docs) {
       if (doc.kind === 'external' && doc.memberof === name) doc.builtinExternal = true;
     }

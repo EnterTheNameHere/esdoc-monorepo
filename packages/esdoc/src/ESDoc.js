@@ -31,11 +31,45 @@ export default class ESDoc {
         throw new Error(message);
     }
     
-    if( typeof(config.source) !== 'string' || config.source === '' ) {
-        const message = `[31mError: config.source needs to be a directory where your source code resides![0m`;
+    // Let's allow multiple sources instead of just one directory
+    if( Object.prototype.hasOwnProperty.call(config, 'sources') ) {
+      config.source = config.sources;
+      delete config.sources;
+    }
+    
+    // To make it easier, if source is a single directory, make it array anyway.
+    if( Object.prototype.hasOwnProperty.call(config, 'source') ) {
+      if( typeof(config.source) === 'string' ) {
+        if( config.source.trim() === '' ) {
+          const message = `[31mError: config.source cannot be empty! This is a directory where you have your source code.[0m`;
+          console.error(`[31m${message}[0m`);
+          throw new Error(message);
+        }
+
+        config.source = [config.source];
+        
+        // Ok now we only expect an array, nothing else
+        if( !Array.isArray(config.source) ) {
+          const message = `[31mError: config.source must be either a string or an array of strings![0m`;
+          console.error(`[31m${message}[0m`);
+          throw new Error(message);
+        }
+
+        config.source.forEach( (value) => {
+          if( typeof(value) !== 'string' ) {
+            const message = `[31mError: config.source must contain only strings![0m`;
+            console.error(`[31m${message}[0m`);
+            throw new Error(message);
+          }
+          if( value.trim() === '' ) {
+            const message = `[31mError: config.source cannot contain empty string![0m`;
         console.error(`[31m${message}[0m`);
         throw new Error(message);
     }
+        });
+      }
+    }
+
     if( typeof(config.destination) !== 'string' || config.destination === '' ) {
         const message = `[31mError: config.destination needs to be a directory where to output generated documentation![0m`;
         console.error(`[31m${message}[0m`);
@@ -106,40 +140,51 @@ export default class ESDoc {
 
     let results = [];
     const asts = [];
-    const sourceDirPath = path.resolve(config.source);
-
-    let fileList = [];
     
-    if( isRegExp ) {
-        this._walk( config.source, (filePath) => {
-            const relativeFilePath = path.relative(sourceDirPath, filePath);
-            for( const pattern of excludes ) {
-                if( relativeFilePath.match(pattern) ) {
-                    return;
-                }
-            }
-            for( const pattern of includes ) {
-                if( relativeFilePath.match(pattern) ) {
-                    fileList.push(filePath);
-                }
-            }
+    const getResults = () => {
+      return results;
+    };
+    
+    const getAsts = () => {
+      return asts;
+    };
+    
+    for(const sourceDirectory of config.source) {
+      const sourceDirPath = path.resolve(sourceDirectory);
+
+      let fileList = [];
+      
+      if( isRegExp ) {
+        this._walk( sourceDirectory, (filePath) => {
+          const relativeFilePath = path.relative(sourceDirPath, filePath);
+          for( const pattern of excludes ) {
+              if( relativeFilePath.match(pattern) ) {
+                  return;
+              }
+          }
+          for( const pattern of includes ) {
+              if( relativeFilePath.match(pattern) ) {
+                  fileList.push(filePath);
+              }
+          }
         });
-    } else {
-        fileList = this.FileManager.getListOfFiles( config.source, includes, excludes );
-    }
-
-    fileList.forEach( (filePath) => {
-      const relativeFilePath = path.relative(sourceDirPath, filePath);
-
-      if( config.verbose ) console.info(`parse: ${filePath}`);
-      const temp = this._traverse(config.source, filePath, packageName, mainFilePath);
-      if (!temp) return;
-      results.push(...temp.results);
-      if (config.outputAST) {
-        asts.push({filePath: `source${path.sep}${relativeFilePath}`, ast: temp.ast});
+      } else {
+        fileList = this.FileManager.getListOfFiles( sourceDirectory, includes, excludes );
       }
-    });
-
+      
+      fileList.forEach( (filePath) => {
+        const relativeFilePath = path.relative(sourceDirPath, filePath);
+        
+        if( config.verbose ) console.info(`parse: ${filePath}`);
+        const temp = this._traverse(sourceDirectory, filePath, packageName, mainFilePath);
+        if (!temp) return;
+        getResults().push(...temp.results);
+        if (config.outputAST) {
+          getAsts().push({filePath: `source${path.sep}${relativeFilePath}`, ast: temp.ast});
+        }
+      });
+    }
+    
     // config.index
     if (config.index) {
       results.push(this._generateForIndex(config));
