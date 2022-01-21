@@ -1,6 +1,6 @@
 {
   "name": "@enterthenamehere/esdoc-lint-plugin",
-  "version": "2.3.1",
+  "version": "2.4.0",
   "description": "A lint plugin for ESDoc",
   "author": "h13i32maru",
   "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-lint-plugin",
