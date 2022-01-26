@@ -42,7 +42,7 @@
     "prepare": "npm run build",
     "test": "npm run test:clear && npm run test:mocha",
     "test:clear": "trash ./test/fixture/out",
-    "test:mocha": "mocha ./test/src --recursive --extension .test.js -t 10000 --require esm --require ./test/src/init.js",
+    "test:mocha": "mocha ./test/src --require ./test/src/init.js",
     "transpile": "babel ./src --out-dir ./out --root-mode upward"
   },
   "keywords": [

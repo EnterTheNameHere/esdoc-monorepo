@@ -34,7 +34,7 @@
     "precoverage": "trash ./nyc_output && trash ./coverage",
     "coverage": "nyc npm run test",
     "pretest": "trash ./test/out",
-    "test": "mocha --require ./test/init.js --recursive --extension .test.js"
+    "test": "mocha ./test/src --require ./test/init.js"
   },
   "keywords": [
     "esdoc",

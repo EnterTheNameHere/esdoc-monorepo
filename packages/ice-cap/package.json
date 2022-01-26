@@ -21,7 +21,7 @@
     "coverage:build": "cross-env NODE_ENV=coverage npm run build",
     "esdoc": "esdoc -c esdoc.json",
     "prepare": "npm run build",
-    "test": "mocha ./test/src --recursive --extension .test.js --require esm -t 5000",
+    "test": "mocha ./test/src",
     "transpile": "babel ./src --out-dir ./out --root-mode upward"
   },
   "dependencies": {

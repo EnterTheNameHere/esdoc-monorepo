@@ -29,7 +29,7 @@
     "coverage:build": "cross-env NODE_ENV=coverage npm run build",
     "prepare": "npm run build",
     "pretest": "npm run test:clear",
-    "test": "mocha ./test --recursive -t 5000 --require esm --require ./test/init.js --extension .test.js",
+    "test": "mocha ./test --require ./test/init.js",
     "test:clear": "trash ./test/integration-test/out"
   },
   "dependencies": {
