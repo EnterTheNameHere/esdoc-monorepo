@@ -1,8 +1,8 @@
-import fs from 'fs-extra';
-import path from 'path';
-import ESDocCLI from '@enterthenamehere/esdoc/out/ESDocCLI';
+const fs = require('fs-extra');
+const path = require('path');
+const ESDocCLI = require('@enterthenamehere/esdoc/out/ESDocCLI').default;
 
-export function run_esdoc_cli(configPath) {
+function run_esdoc_cli(configPath) {
     const cliPath = path.resolve('../node_modules/@enterthenamehere/esdoc/out');
     const argv = ['node', cliPath];
 
