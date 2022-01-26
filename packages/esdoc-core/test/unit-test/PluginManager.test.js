@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import {MockESDocTestEnvironment, helperRunScriptAsync} from '../../../../test/esdocMock';
+import {MockESDocTestEnvironment, helperRunScriptAsync} from '../esdocMock';
 
 describe( 'test/Plugin/PluginManager', function () {
     it('detects requested plugin cannot be found', async function () {

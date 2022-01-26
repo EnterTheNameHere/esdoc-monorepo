@@ -1,7 +1,7 @@
 import ESDoc from '../../out/ESDoc';
 import assert from 'assert';
 
-import { MockESDocTestEnvironment } from '../../../../test/esdocMock';
+import { MockESDocTestEnvironment } from '../esdocMock';
 import path from 'path';
 
 describe('ESDoc test:', function () {

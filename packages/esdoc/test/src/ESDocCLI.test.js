@@ -4,7 +4,7 @@ import fs from 'fs-extra';
 import assert from 'assert';
 import path from 'path';
 
-import { helperRunScriptAsync } from '../../../../test/esdocMock';
+import { helperRunScriptAsync } from '../esdocMock';
 
 describe('test ESDocCLI:', function () {
     describe('display version', function () {
@@ -26,7 +26,7 @@ describe('test ESDocCLI:', function () {
             assert.notStrictEqual( versionOutput.length, 0 );
             assert.deepEqual( response.std.out, versionOutput );
         });
-
+        
         it('shows version on --version parameter', async function () {
             // First call it programmatically
             const versionOutput = [];
