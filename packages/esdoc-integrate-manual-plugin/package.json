@@ -1,6 +1,6 @@
 {
   "name": "@enterthenamehere/esdoc-integrate-manual-plugin",
-  "version": "2.2.4",
+  "version": "2.5.0",
   "description": "A integrate manual plugin for ESDoc",
   "author": "h13i32maru",
   "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-integrate-manual-plugin",
