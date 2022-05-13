@@ -37,7 +37,7 @@
     "@enterthenamehere/color-logger": "file:../color-logger",
     "@enterthenamehere/esdoc-core": "file:../esdoc-core",
     "fs-extra": "^9.0.1",
-    "minimist": "^1.2.5"
+    "minimist": "^1.2.6"
   },
   "keywords": [
     "jsdoc",
