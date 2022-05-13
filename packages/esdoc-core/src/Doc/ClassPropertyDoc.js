@@ -20,17 +20,25 @@ export default class ClassPropertyDoc extends AbstractDoc {
   /** specify ``member`` to kind. */
   _$kind() {
     super._$kind();
+    
     this._value.kind = 'member';
   }
 
   /** take out self name from self node */
   _$name() {
     super._$name();
-    this._value.name = this._node.key.name;
+    
+    if ( this._node.type === 'ClassPrivateProperty' ) {
+      this._value.name = this._node.key.id.name;
+    } else {
+      this._value.name = this._node.key.name;
+    }
   }
 
   /** borrow {@link MethodDoc#@_memberof} */
   _$memberof() {
+    super._$memberof();
+
     Reflect.apply(MethodDoc.prototype._$memberof, this, []);
   }
 }

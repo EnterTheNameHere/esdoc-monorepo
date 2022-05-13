@@ -21,11 +21,14 @@ export default class MemberDoc extends AbstractDoc {
   /** specify ``member`` to kind. */
   _$kind() {
     super._$kind();
+    
     this._value.kind = 'member';
   }
 
   /** use static property in class */
   _$static() {
+    super._$static();
+
     let parent = this._node.parent;
     while (parent) {
       if (parent.type === 'ClassMethod') {
@@ -38,18 +41,22 @@ export default class MemberDoc extends AbstractDoc {
 
   /** take out self name from self node */
   _$name() {
-    let name = '';
+    super._$name();
+    
     if (this._node.left.computed) {
       const expression = babelGenerator(this._node.left.property).code.replace(/^this/u, '');
-      name = `[${expression}]`;
+      this._value.name = `[${expression}]`;
+    } else if ( this._node.type === 'ClassPrivateProperty' ) {
+      this._value.name = this._node.key.id.name;
     } else {
-      name = this._flattenMemberExpression(this._node.left).replace(/^this\./u, '');
+      this._value.name = this._flattenMemberExpression(this._node.left).replace(/^this\./u, '');
     }
-    this._value.name = name;
   }
 
   /** borrow {@link MethodDoc#@_memberof} */
   _$memberof() {
+    super._$memberof();
+
     Reflect.apply(MethodDoc.prototype._$memberof, this, []);
   }
 }

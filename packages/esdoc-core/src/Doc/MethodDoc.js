@@ -16,21 +16,25 @@ export default class MethodDoc extends AbstractDoc {
     Reflect.deleteProperty(this._value, 'importPath');
     Reflect.deleteProperty(this._value, 'importStyle');
   }
-
+  
   /** use kind property of self node. */
   _$kind() {
     super._$kind();
+    
     this._value.kind = this._node.kind;
   }
 
   /** take out self name from self node */
   _$name() {
     super._$name();
-
+    
     if (this._node.computed) {
       const expression = babelGenerator(this._node.key).code;
       this._value.name = `[${expression}]`;
-    } else {
+    } else if ( this._node.type === 'ClassPrivateMethod' ) {
+      this._value.name = this._node.key.id.name;
+    }
+    else {
       this._value.name = this._node.key.name;
     }
   }

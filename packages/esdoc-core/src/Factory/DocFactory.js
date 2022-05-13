@@ -453,9 +453,11 @@ export default class DocFactory {
     switch (node.type) {
       case 'ClassDeclaration':
         return this._decideClassDeclarationType(node);
-      case 'ClassMethod':
+      case 'ClassMethod': // intended fallthrough
+      case 'ClassPrivateMethod':
         return this._decideMethodDefinitionType(node);
-      case 'ClassProperty':
+      case 'ClassProperty': // intended fallthrough
+      case 'ClassPrivateProperty':
         return this._decideClassPropertyType(node);
       case 'ExpressionStatement':
         return this._decideExpressionStatementType(node);

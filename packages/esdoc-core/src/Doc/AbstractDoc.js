@@ -30,7 +30,7 @@ export default class AbstractDoc {
 
     this._apply();
   }
-
+  
   /** @type {DocObject[]} */
   get value() {
     return JSON.parse(JSON.stringify(this._value));
@@ -80,7 +80,7 @@ export default class AbstractDoc {
     this._$listens();
     this._$decorator();
   }
-
+  
   /**
    * decide `kind`.
    * @abstract
@@ -161,6 +161,13 @@ export default class AbstractDoc {
    * process also @public, @private, @protected and @package.
    */
   _$access() {
+    if( this._node.type === 'ClassPrivateMethod'
+      || this._node.type === 'ClassPrivateProperty' ) {
+      this._value.access = 'private';
+      // ClassPrivate* is always private, you cannot override it with @public, so leave right now
+      return;
+    }
+
     const tag = this._find(['@access', '@public', '@private', '@protected', '@package']);
     if (tag) {
       let access = '';
@@ -576,7 +583,7 @@ export default class AbstractDoc {
   _findAll(names) {
     const results = [];
     for (const tag of this._commentTags) {
-      tag.tagValue = tag.tagValue.trim()
+      tag.tagValue = tag.tagValue.trim();
       if (names.includes(tag.tagName)) results.push(tag);
     }
 
