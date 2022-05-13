@@ -31,6 +31,37 @@ export default class MyClass {
    * unnamed method.
    */
   function(){}
+  
+  // ES2022
+  /**
+   * ES2022 private method
+   */
+  #privateMethod(){}
+
+  /**
+   * ES2022 static private method
+   */
+  static #staticPrivateMethod(){}
+  
+  /**
+   * ES2022 private get
+   */
+  get #privateAccessor() { return 42; }
+  
+  /**
+   * ES2022 private set
+   */
+  set #privateAccessor( value ) {}
+  
+  /**
+   * ES2022 private field
+   */
+  #privateField = 42;
+  
+  /**
+   * ES2022 static private field
+   */
+  static #staticPrivateField = 42;
 }
 
 /**
@@ -38,11 +69,11 @@ export default class MyClass {
   */
 MyClass.prototype["@@iterator"] = function(){
   return this;
-}
+};
 
 /**
   * unnamed arrow method.
   */
 MyClass.prototype["@@asyncIterator"] = () => {
   return undefined;
-}
+};
