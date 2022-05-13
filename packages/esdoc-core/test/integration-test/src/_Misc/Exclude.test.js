@@ -1,9 +1,8 @@
-import assert from 'assert';
+import { expect } from 'chai';
 import {find} from '../../../util';
 
 describe('test/_Misc/Exclude:', function () {
   it('not exist', function () {
-    const doc = find('longname', 'src[\\|/]_Misc[\\|/]Exclude.js~TestExclude');
-    assert.equal(doc, null);
+    expect( () => { return find('longname', 'src[\\|/]_Misc[\\|/]Exclude.js~TestExclude'); } ).to.throw();
   });
 });
