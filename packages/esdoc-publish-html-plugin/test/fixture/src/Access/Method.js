@@ -68,4 +68,22 @@ export default class TestAccessMethod {
    * ES2022 private set
    */
   set #privateAccessor( value ) {}
+  
+  /* TODO: check the following methods are caught by linter */
+
+  #privateMethodWithoutCommentShouldBePickedUpByLint(){}
+   
+  static #staticPrivateMethodWithoutCommentShouldBePickedUpByLint(){}
+    
+  #privatePrivateMethodWithoutCommentShouldBePickedUpByLint(){}
+    
+  static #privateStaticPrivateMethodWithoutCommentShouldBePickedUpByLint(){}
+    
+  #publicPrivateMethodWithoutCommentShouldBePickedUpByLint(){}
+    
+  static #publicStaticPrivateMethodWithoutCommentShouldBePickedUpByLint(){}
+
+  get #privateAccessorWithoutCommentShouldBePickedUpByLint() { return 42; }
+  
+  set #privateAccessorWithoutCommentShouldBePickedUpByLint( value ) {}
 }

@@ -42,6 +42,20 @@ export default class TestAccessProperty {
    */
   static #publicStaticPrivateField = 42;
   
+  /* TODO: check the following properties are caught by linter */
+
+  #privateFieldWithoutCommentShouldBePickedUpByLint = 42;
+  
+  static #staticPrivateFieldWithoutCommentShouldBePickedUpByLint = 42;
+  
+  #privatePrivateFieldWithoutCommentShouldBePickedUpByLint = 42;
+   
+  static #privateStaticPrivateFieldWithoutCommentShouldBePickedUpByLint = 42;
+  
+  #publicPrivateFieldWithoutCommentShouldBePickedUpByLint = 42;
+    
+  static #publicStaticPrivateFieldWithoutCommentShouldBePickedUpByLint = 42;
+  
   constructor() {
     /**
      * this is p1.
