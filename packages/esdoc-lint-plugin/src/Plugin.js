@@ -57,6 +57,9 @@ class Plugin {
       case 'ClassMethod':
         params = node.params || [];
         break;
+      case 'ClassPrivateMethod':
+        params = node.params || [];
+        break;
       case 'ArrowFunctionExpression':
         params = node.params || [];
         break;
