@@ -27,7 +27,7 @@ export default class DocBuilder {
     if(!Object.prototype.hasOwnProperty.call(params, 'pluginInstance')) {
       const errorText = `Error: DocBuilder params.pluginInstance is expected to be PublishHtmlPlugin instance!`;
       console.error(errorText);
-      throw new TypeError(errorText)
+      throw new TypeError(errorText);
     }
 
     this._pluginInstance = params.pluginInstance;
