@@ -14,15 +14,27 @@ import { FileManager } from '@enterthenamehere/esdoc-core/lib/Util/FileManager.j
 export default class DocBuilder {
   /**
    * create instance.
-   * @param {String} template - template absolute path
-   * @param {Taffy} data - doc object database.
+   * @param {object}            params
+   * @param {PublishHtmlPlugin} params.pluginInstance Instance to PublishHtmlPlugin
    */
-  constructor(template, data, tags, globalOption) {
-    this._template = template;
-    this._data = data;
-    this._tags = tags;
-    this._globalOption = globalOption;
-    new DocResolver(this).resolve(globalOption);
+  constructor(params) {
+    if(!params || typeof params !== 'object') {
+      const errorText = `Error: DocBuilder constructor's params is expected to be an object!`;
+      console.error(errorText);
+      throw new TypeError(errorText);
+    }
+
+    if(!Object.prototype.hasOwnProperty.call(params, 'pluginInstance')) {
+      const errorText = `Error: DocBuilder params.pluginInstance is expected to be PublishHtmlPlugin instance!`;
+      console.error(errorText);
+      throw new TypeError(errorText)
+    }
+
+    this._pluginInstance = params.pluginInstance;
+    
+    this._data = this.Plugin.Data;
+    this._tags = this.Plugin.Tags;
+    new DocResolver(this).resolve();
   }
 
   /* eslint-disable no-unused-vars */
@@ -142,11 +154,11 @@ export default class DocBuilder {
    * @protected
    */
   _readTemplate(fileName) {
-    const filePath = path.resolve(this._template, `./${fileName}`);
+    const filePath = path.resolve(this.Plugin.TemplateDirectory, `./${fileName}`);
     return FileManager.readFileContents(filePath);
   }
 
-
+  
   /**
    * build common layout output.
    * @return {IceCap} layout output.
@@ -1048,4 +1060,16 @@ export default class DocBuilder {
   //
   //  return `<ul>${html.join(separator)}</ul>`;
   // }
+  
+  /**
+   * @private
+   */
+  _pluginInstance = null;
+
+  /**
+   * @returns {PublishHtmlPlugin}
+   */
+  get Plugin() {
+    return this._pluginInstance;
+  }
 }

@@ -11,31 +11,32 @@ export default class DocResolver {
    */
   constructor(builder) {
     this._builder = builder;
-    this._data = builder._data;
+    this._data = builder.Plugin.Data;
   }
 
   /**
    * resolve various properties.
    */
-  resolve(globalOption) {
+  resolve() {
+    const verbose = this?._builder?.Config?.verbose || false;
     if (this._data.__RESOLVED_ALL__) return;
 
-    if(globalOption && globalOption.verbose) console.info('resolve: extends chain');
+    if(verbose) console.info('resolve: extends chain');
     this._resolveExtendsChain();
 
-    if(globalOption && globalOption.verbose) console.info('resolve: necessary');
+    if(verbose) console.info('resolve: necessary');
     this._resolveNecessary();
-
-    if(globalOption && globalOption.verbose) console.info('resolve: ignore');
+    
+    if(verbose) console.info('resolve: ignore');
     this._resolveIgnore();
-
-    if(globalOption && globalOption.verbose) console.info('resolve: link');
+    
+    if(verbose) console.info('resolve: link');
     this._resolveLink();
 
-    if(globalOption && globalOption.verbose) console.info('resolve: markdown in description');
+    if(verbose) console.info('resolve: markdown in description');
     this._resolveMarkdown();
 
-    if(globalOption && globalOption.verbose) console.info('resolve: test relation');
+    if(verbose) console.info('resolve: test relation');
     this._resolveTestRelation();
 
     this._data.__RESOLVED_ALL__ = true;

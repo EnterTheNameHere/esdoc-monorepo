@@ -14,30 +14,160 @@ import TestDocBuilder from './Builder/TestDocBuilder.js';
 import TestFileDocBuilder from './Builder/TestFileDocBuilder.js';
 import ManualDocBuilder from './Builder/ManualDocBuilder.js';
 
-class Plugin {
+class PublishHtmlPlugin {
+  /**
+   * @type {string}
+   * @private
+   */
+  _defaultTemplateDirectory = path.resolve(__dirname, './html-template/ESDoc-v2');
+
+  /**
+   * @type {string}
+   * @private
+   */
+  _templateDirectory = '';
+  
+  /**
+   * Returns path to HTML template directory from which to load files.
+   * @type {string}
+   */
+  get TemplateDirectory() {
+    return this._templateDirectory;
+  }
+  
+  /**
+   * @type {object}
+   * @private
+   */
+  _templateConfig = {};
+
+  /**
+   * Returns object with settings loaded from HTML template's config.json file.
+   * @type {object}
+   */
+  get TemplateConfig() {
+    return this._templateConfig;
+  }
+  
+  /**
+   * @type {object}
+   * @private
+   */
+  _option = {};
+
+  /**
+   * Returns object with settings user provided to this plugin.
+   * @returns {object} PluginConfig
+   */
+  get Config() {
+    return this._option;
+  }
+  
+  /**
+   * @type {object}
+   * @private
+   */
+  _globalOption = {};
+
+  /**
+   * Returns object with settings user provided to ESDoc.
+   * @type {object} GlobalConfig
+   */
+  get GlobalConfig() {
+    return this._globalOption;
+  }
+  
+  /**
+   * @type {[DocObject]}
+   * @private
+   */
+  _docs = [];
+  
+  /**
+   * Returns array of DocObjects plugin receives from ESDoc.
+   * @returns {[DocObject]}
+   */
+  get Docs() {
+    return this._docs;
+  }
+  
+  /**
+   * Sets {@link this#Docs} and populates {@link this#Data}
+   */
+  set Docs(value) {
+    this._docs = value;
+    this._data = taffy(value);
+  }
+  
+  /**
+   * Alias for Docs
+   */
+  get Tags() {
+    return this.Docs;
+  }
+  
+  /**
+   * @type {taffydb|null}
+   * @private
+   */
+  _data = null;
+  
+  /**
+   * Returns taffydb object populated with {this#Docs}
+   * @returns {taffydb|null}
+   */
+  get Data() {
+    return this._data;
+  }
+  
+  /**
+   * Returns `true` if user want's verbose logging
+   */
+  get Verbose() {
+    return this.GlobalConfig?.Verbose || false;
+  }
+
   onHandleDocs(ev) {
-    this._docs = ev.data.docs;
+    this.Docs = ev.data.docs;
   }
 
   onPublish(ev) {
     this._option = ev.data.option || {};
-    this._globalOption = ev.data.globalOption;
-    this._template = typeof this._option.template === 'string'
-      ? path.resolve(process.cwd(), this._option.template)
-      : path.resolve(__dirname, './html-template');
-    this._exec(this._docs, ev.data.writeFile, ev.data.copyDir, ev.data.readFile);
+    this._globalOption = ev.data.globalOption || {};
+    
+    // Check for custom template
+    if(Object.prototype.hasOwnProperty.call(this._option, 'template')) {
+      if( typeof this._option.template !== 'string' ) {
+        const errorText = `Error: template option for esdoc-publish-html-plugin is expected to be string!`;
+        console.error(errorText);
+        throw new Error(errorText);
+      }
+      const templateDirectory = path.resolve(__dirname, this._option.template);
+      
+      if(!ev.FileManager.isDirectory(templateDirectory)) {
+        const errorText = `Error: Cannot find '${templateDirectory}' directory to load html template from! Please set esdoc-publish-html-plugin's template option to existing directory.`;
+        console.error(errorText);
+        throw new Error(errorText);
+      }
+
+      this._templateDirectory = templateDirectory;
+    } else {
+      this._templateDirectory = this._defaultTemplateDirectory;
+    }
+
+    this._templateConfig = ev.FileManager.readFileContents(path.join(this.TemplateDirectory,'config.json'));
+
+    this._exec(ev.data.writeFile, ev.data.copyDir, ev.data.readFile);
   }
 
-  _exec(tags, writeFile, copyDir, readFile) {
+  _exec(writeFile, copyDir, readFile) {
     IceCap.debug = Boolean(this._option.debug);
-
-    const data = taffy(tags);
-
+    
     //bad hack: for other plugin uses builder.
     DocBuilder.createDefaultBuilder = () => {
-      return new DocBuilder(this._template, data, tags, this._globalOption);
+      return new DocBuilder({pluginInstance: this});
     };
-
+    
     let coverage = null;
     try {
       coverage = JSON.parse(readFile('coverage.json'));
@@ -45,22 +175,22 @@ class Plugin {
       // nothing
     }
 
-    new IdentifiersDocBuilder(this._template, data, tags).exec(writeFile, copyDir);
-    new IndexDocBuilder(this._template, data, tags).exec(writeFile, copyDir);
-    new ClassDocBuilder(this._template, data, tags).exec(writeFile, copyDir);
-    new SingleDocBuilder(this._template, data, tags).exec(writeFile, copyDir);
-    new FileDocBuilder(this._template, data, tags).exec(writeFile, copyDir);
-    new StaticFileBuilder(this._template, data, tags).exec(writeFile, copyDir);
-    new SearchIndexBuilder(this._template, data, tags).exec(writeFile, copyDir);
-    new SourceDocBuilder(this._template, data, tags).exec(writeFile, copyDir, coverage);
-    new ManualDocBuilder(this._template, data, tags).exec(writeFile, copyDir, readFile);
+    new IdentifiersDocBuilder({pluginInstance: this}).exec(writeFile, copyDir);
+    new IndexDocBuilder({pluginInstance: this}).exec(writeFile, copyDir);
+    new ClassDocBuilder({pluginInstance: this}).exec(writeFile, copyDir);
+    new SingleDocBuilder({pluginInstance: this}).exec(writeFile, copyDir);
+    new FileDocBuilder({pluginInstance: this}).exec(writeFile, copyDir);
+    new StaticFileBuilder({pluginInstance: this}).exec(writeFile, copyDir);
+    new SearchIndexBuilder({pluginInstance: this}).exec(writeFile, copyDir);
+    new SourceDocBuilder({pluginInstance: this}).exec(writeFile, copyDir, coverage);
+    new ManualDocBuilder({pluginInstance: this}).exec(writeFile, copyDir, readFile);
 
-    const existTest = tags.find((tag) => { return tag.kind.indexOf('test') === 0; });
+    const existTest = this.Tags.find((tag) => { return tag.kind.indexOf('test') === 0; });
     if (existTest) {
-      new TestDocBuilder(this._template, data, tags).exec(writeFile, copyDir);
-      new TestFileDocBuilder(this._template, data, tags).exec(writeFile, copyDir);
+      new TestDocBuilder({pluginInstance: this}).exec(writeFile, copyDir);
+      new TestFileDocBuilder({pluginInstance: this}).exec(writeFile, copyDir);
     }
   }
 }
 
-module.exports = new Plugin();
+module.exports = new PublishHtmlPlugin();
