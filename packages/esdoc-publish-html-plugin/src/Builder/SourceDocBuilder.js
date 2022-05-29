@@ -46,7 +46,7 @@ export default class SourceDocBuilder extends DocBuilder {
       const filePath = doc.name;
       const content = doc.content;
       const lines = content.split('\n').length - 1;
-      const stat = FileManager.getFileStat(doc.longname);
+      const stat = FileManager.getStat(doc.longname);
       const date = dateForUTC(stat.ctime);
       let coverageRatio = '-';
       let coverageCount = -1;

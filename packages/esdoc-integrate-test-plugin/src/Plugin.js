@@ -89,7 +89,7 @@ class Plugin {
 
     for (const entry of entries) {
       const entryPath = path.resolve(dirPath, entry);
-      const stat = this._FileManager.getFileStat(entryPath);
+      const stat = this._FileManager.getStat(entryPath);
 
       if (stat.isFile()) {
         callback(entryPath);

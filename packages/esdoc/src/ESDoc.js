@@ -343,7 +343,7 @@ export default class ESDoc {
 
     for (const entry of entries) {
       const entryPath = path.resolve(dirPath, entry);
-      const stat = this.FileManager.getFileStat(entryPath);
+      const stat = this.FileManager.getStat(entryPath);
 
       if (stat.isFile()) {
         callback(entryPath);

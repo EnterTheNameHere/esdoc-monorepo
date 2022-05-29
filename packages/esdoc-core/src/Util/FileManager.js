@@ -89,7 +89,7 @@ class FileManager {
 
         let stats = null;
         try {
-            stats = this.getFileStat(path);
+            stats = this.getStat(path);
         } catch {
             // Ignore
         }
@@ -121,7 +121,21 @@ class FileManager {
             throw new UnableToWriteToFileError(path);
         }
     }
-
+    
+    /**
+     * Returns {fs.Stats} instance for symbolic link `symlink` or throws an Error.
+     * Note: The stats is for the symbolic link, not the target file system entry!
+     * Use {@link this#getFileStat} if you want to get {fs.Stats} object for target file system entry.
+     * @param {fs.PathLike} path symbolic link file system entry
+     * @returns {fs.Stats}
+     * @throws {Error} when file system entry does not exist.
+     * @see {@link https://nodejs.org/docs/latest/api/fs.html#fs_class_fs_stats} for fs.Stats class.
+     */
+    getLStat( symlink ) {
+      // We do not control path!
+      return fs.lstatSync( symlink );
+    }
+    
     /**
      * Returns {fs.Stats} instance for `path` file system entry or throws Error if it does not exist.
      * @param {fs.PathLike} path file system entry to get fs.Stats object of.
@@ -129,9 +143,28 @@ class FileManager {
      * @throws {Error} when file system entry does not exist.
      * @see {@link https://nodejs.org/docs/latest/api/fs.html#fs_class_fs_stats} for fs.Stats class.
      */
-    getFileStat( path ) {
+    getStat( path ) {
         // We do not control path!
-        return fs.lstatSync( path );
+        return fs.statSync( path );
+    }
+    
+    /**
+     * Returns `true` if `path` is directory, `false` otherwise.
+     * @param {fs.PathLike} path
+     * @returns {boolean}
+     */
+    isDirectory( path ) {
+        return this.getFileStat( path ).isDirectory();
+    }
+    
+    /**
+     * Returns `true` if `path` is directory, `false` otherwise.
+     * TODO: check if it works with symlink files as expected...
+     * @param {fs.PathLike} path
+     * @returns 
+     */
+    isFile( path ) {
+        return this.getFileStat( path ).isFile();
     }
 
     /**
