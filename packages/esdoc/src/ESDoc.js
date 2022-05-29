@@ -321,7 +321,14 @@ export default class ESDoc {
     return {
       debug: config.debug,
       verbose: config.verbose,
-      packageScopePrefix: this._getPackagePrefix()
+      packageScopePrefix: this._getPackagePrefix(),
+      source: config.source,
+      destination: config.destination,
+      includes: config.includes,
+      excludes: config.excludes,
+      outputAST: config.outputAST,
+      index: config.index,
+      package: config.package
     };
   }
 
