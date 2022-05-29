@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@enterthenamehere/esdoc-standard-plugin": "file:../esdoc-standard-plugin",
-    "cheerio": "^1.0.0-rc.10"
+    "cheerio": "1.0.0-rc.10"
   },
   "engines": {
     "node": ">= 10.23.1"
