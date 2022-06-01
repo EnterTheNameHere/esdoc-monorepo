@@ -7,6 +7,7 @@ import {shorten, parseExample, escapeURLHash, sanitize, highlight} from './util.
 import DocResolver from './DocResolver.js';
 import NPMUtil from '@enterthenamehere/esdoc-core/lib/Util/NPMUtil.js';
 import { FileManager } from '@enterthenamehere/esdoc-core/lib/Util/FileManager.js';
+import { HTMLTemplate } from './HTMLTemplate.js';
 
 /**
  * Builder base class.
@@ -157,7 +158,13 @@ export default class DocBuilder {
     const filePath = path.resolve(this.Plugin.TemplateDirectory, `./${fileName}`);
     return FileManager.readFileContents(filePath);
   }
-
+  
+  _renderTemplate(fileName, data) {
+    const filePath = path.resolve(path.join(this.Plugin.TemplateDirectory, fileName));
+    const contents = FileManager.readFileContents(filePath);
+    return HTMLTemplate.render(contents, data);
+  }
+  
   
   /**
    * build common layout output.
@@ -187,6 +194,57 @@ export default class DocBuilder {
 
     ice.load('nav', this._buildNavDoc());
     return ice;
+  }
+  
+  _buildLayoutEjs( nav='nav here', contents='contents here', esdocVersion='0.0.0', esdocLink='linkHere' ) {
+    const html = FileManager.readFileContents(path.join(this.Plugin.TemplateDirectory, 'layout.ejs'));
+    return HTMLTemplate.render(html, {nav, contents, esdocVersion, esdocLink});
+  }
+  
+  _generateNavData() {
+    const navData = { docs: [] };
+    
+    const kinds = ['class', 'function', 'variable', 'typedef', 'external'];
+    const allDocs = this._find({kind: kinds}).filter((v) => { return !v.builtinExternal; });
+    const kindOrder = {class: 0, interface: 1, function: 2, variable: 3, typedef: 4, external: 5};
+    
+    // see: IdentifiersDocBuilder#_buildIdentifierDoc
+    allDocs.sort((a, b) => {
+      const filePathA = a.longname.split('~')[0];
+      const filePathB = b.longname.split('~')[0];
+      const dirPathA = path.dirname(filePathA);
+      const dirPathB = path.dirname(filePathB);
+      const kindA = a.interface ? 'interface' : a.kind;
+      const kindB = b.interface ? 'interface' : b.kind;
+      if (dirPathA === dirPathB) {
+        if (kindA === kindB) {
+          return a.longname > b.longname ? 1 : -1;
+        }
+        
+        return kindOrder[kindA] > kindOrder[kindB] ? 1 : -1;
+      }
+    
+      return dirPathA > dirPathB ? 1 : -1;
+    });
+    
+    for( const doc of allDocs ) {
+      const filePath = doc.longname.split('~')[0].replace(/^.*?[/]/u, '');
+      const dirPath = path.dirname(filePath);
+      const kind = doc.interface ? 'interface' : doc.kind;
+      const kindText = kind.charAt(0).toUpperCase();
+      const kindClass = `kind-${kind}`;
+      const linkToIdentifierData = this._generateLinkToIdentifierData(doc.longname);
+      navData.docs.push({
+        name: linkToIdentifierData.name,
+        href: linkToIdentifierData.href || false,
+        kind: kindText,
+        kindClass: kindClass,
+        dirPath: dirPath,
+        dirPathHref: `identifiers.html#${escapeURLHash(dirPath)}`,
+      });
+    }
+    
+    return navData;
   }
 
   /**
@@ -276,7 +334,44 @@ export default class DocBuilder {
 
     return accessDocs;
   }
+  
+  _generateSummaryData(docs, title, innerLink = false, kindIcon = false) {
+    const summaryData = {
+      title: title,
+      docs: []
+    };
 
+    for( const doc of docs ) {
+      const docData = {};
+      docData.generator = doc.generator || false;
+      docData.async = doc.async || false;
+      docData.name = 'buildDocLinkHTML';
+      docData.signature = 'buildSignatureHTML';
+      docData.description = shorten(doc, true);
+      docData.abstract = doc.abstract || false;
+      docData.access = doc.access;
+      if(['get', 'set'].includes(doc.kind)) {
+        docData.kind = doc.kind || false;
+      }
+      if(['member', 'method', 'get', 'set'].includes(doc.kind)) {
+        docData.static = doc.static || false;
+      }
+      if(kindIcon) {
+        docData.kindIcon = doc.interface ? 'interface' : doc.kind;
+      } else {
+        docData.kindIcon = false;
+      }
+      docData.since = doc.since || false;
+      docData.deprecated = 'buildDeprecatedHTML';
+      docData.experimental = 'buildExperimentalHTML';
+      docData.version = doc.version || false;
+      
+      summaryData.docs.push(docData);
+    }
+
+    return summaryData;
+  }
+  
   /**
    * build summary output html by parent doc.
    * @param {DocObject} doc - parent doc object.
@@ -762,6 +857,30 @@ export default class DocBuilder {
     }
     
     return this._buildDocLinkHTML(typeName);
+  }
+  
+  _generateLinkToIdentifierData(longname, text = null, inner = false, kind = null) {
+    if(!longname) return {name:''};
+    if(typeof longname !== 'string') {
+      const errorText = `Error: _generateLinkToIdentifier longname parameter is expected to be string!`;
+      console.error(errorText);
+      throw new Error(errorText);
+    }
+
+    const doc = this._findByName(longname, kind)[0];
+    if(!doc) {
+      return {name: sanitize(text || longname)};
+    }
+    
+    if(doc.kind === 'external') {
+      return {name: sanitize(doc.name), href: doc.externalLink};
+    }
+    
+    const url = this._getURL(doc, inner);
+    if( url ) {
+      return {name: sanitize(text || doc.name), href: url};
+    }
+    return {name: sanitize(text)};
   }
 
   /**

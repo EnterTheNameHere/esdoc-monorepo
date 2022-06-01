@@ -14,7 +14,67 @@ export default class IdentifiersDocBuilder extends DocBuilder {
     ice.text('title', title, IceCap.MODE_WRITE);
     writeFile('identifiers.html', ice.html);
   }
+  
+  _generateIdentifiersData() {
+    const identifiersData = {};
 
+    // traverse docs and create Map<dirPath, doc[]>
+    const dirDocs = new Map();
+    const kinds = ['class', 'interface', 'function', 'variable', 'typedef', 'external'];
+    for (const doc of this._tags) {
+      if (!kinds.includes(doc.kind)) continue;
+      if (doc.builtinExternal) continue;
+      if (doc.ignore) continue;
+
+      const filePath = doc.memberof.replace(/^.*?[/]/u, '');
+      const dirPath = path.dirname(filePath);
+      if (!dirDocs.has(dirPath)) dirDocs.set(dirPath, []);
+      dirDocs.get(dirPath).push(doc);
+    }
+    
+    // create a summary of dir
+    const dirPaths = Array.from(dirDocs.keys()).sort((a, b) => { return a > b ? 1 : -1; });
+    const kindOrder = {class: 0, interface: 1, function: 2, variable: 3, typedef: 4, external: 5};
+    identifiersData.dirSummaryWrap = [];
+    identifiersData.dirTree = [];
+    for( const dirPath of dirPaths ) {
+      const padding = dirPath.split('/').length - 1;
+      const dirName = path.basename(dirPath);
+      if( dirName !== '.' ) {
+        const hash = escapeURLHash(dirPath);
+        const dir = {
+          paddingLeft: padding,
+          hash: hash,
+          dirName: dirName
+        };
+        identifiersData.dirTree.push(dir);
+      }
+      
+      const docs = dirDocs.get(dirPath);
+      
+      // see: DocBuilder#_buildNavDoc
+      docs.sort((a, b) =>  {
+        const kindA = a.interface ? 'interface' : a.kind;
+        const kindB = b.interface ? 'interface' : b.kind;
+        if (kindA === kindB) {
+          return a.longname > b.longname ? 1 : -1;
+        }
+        
+        return kindOrder[kindA] > kindOrder[kindB] ? 1 : -1;
+      });
+      
+      const dirPathLabel = dirPath === '.' ? '' : dirPath;
+      const summaryData = this._generateSummaryData(docs, 'summary', false, true);
+      identifiersData.dirSummaryWrap.push({
+        dirPath: dirPathLabel,
+        dirPathId: escapeURLHash(dirPath),
+        dirSummary: this._renderTemplate('summary.ejs', summaryData),
+      });
+    }
+    
+    return identifiersData;
+  }
+  
   /**
    * build identifier output.
    * @return {IceCap} built output.
