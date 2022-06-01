@@ -33,7 +33,7 @@
   "scripts": {
     "build": "npm run clear && npm run transpile && npm run copy-template",
     "clear": "trash ./out",
-    "copy-template": "cpx \"src/html-template/**/*.*\" \"out/html-template\" --verbose",
+    "copy-template": "cpx \"src/html-template/**/*\" \"out/html-template\" --verbose --include-empty-dirs",
     "precoverage": "trash ./nyc_output && trash ./coverage",
     "coverage": "npm run coverage:build && nyc npm run test && npm run build",
     "coverage:build": "cross-env-shell NODE_ENV=coverage npm run build",
