@@ -155,7 +155,9 @@ class PublishHtmlPlugin {
       this._templateDirectory = this._defaultTemplateDirectory;
     }
 
-    this._templateConfig = ev.FileManager.readFileContents(path.join(this.TemplateDirectory,'config.json'));
+    this._templateConfig = JSON.parse(
+      ev.FileManager.readFileContents(path.join(this.TemplateDirectory,'config.json'))
+    );
 
     this._exec(ev.data.writeFile, ev.data.copyDir, ev.data.readFile);
   }
