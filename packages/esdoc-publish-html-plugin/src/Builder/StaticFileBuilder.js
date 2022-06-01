@@ -19,6 +19,7 @@ export default class StaticFileBuilder extends DocBuilder {
       }
       
       for( const directoryName of this.Plugin.TemplateConfig.staticDirectories ) {
+        if(this.Plugin.Verbose) console.info('Copying ', directoryName);
         copyDir(path.resolve(this.Plugin.TemplateDirectory, directoryName), directoryName);
       }
     }
