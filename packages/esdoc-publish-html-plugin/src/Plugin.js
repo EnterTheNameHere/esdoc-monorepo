@@ -124,7 +124,7 @@ class PublishHtmlPlugin {
    * Returns `true` if user want's verbose logging
    */
   get Verbose() {
-    return this.GlobalConfig?.Verbose || false;
+    return this.GlobalConfig?.verbose || false;
   }
 
   onHandleDocs(ev) {
