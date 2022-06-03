@@ -196,9 +196,9 @@ export default class DocBuilder {
     return ice;
   }
   
-  _buildLayoutEjs( nav='nav here', contents='contents here', esdocVersion='0.0.0', esdocLink='linkHere' ) {
+  _buildLayoutEjs( nav='nav here', title='title here', baseUrl='', contents='contents here', esdocVersion='0.0.0', esdocLink='linkHere' ) {
     const html = FileManager.readFileContents(path.join(this.Plugin.TemplateDirectory, 'layout.ejs'));
-    return HTMLTemplate.render(html, {nav, contents, esdocVersion, esdocLink});
+    return HTMLTemplate.render(html, {nav, title, baseUrl, contents, esdocVersion, esdocLink});
   }
   
   _generateNavData() {
@@ -233,7 +233,7 @@ export default class DocBuilder {
       const kind = doc.interface ? 'interface' : doc.kind;
       const kindText = kind.charAt(0).toUpperCase();
       const kindClass = `kind-${kind}`;
-      const linkToIdentifierData = this._generateLinkToIdentifierData(doc.longname);
+      const linkToIdentifierData = this._generateDocLinkData(doc.longname);
       navData.docs.push({
         name: linkToIdentifierData.name,
         href: linkToIdentifierData.href || false,
@@ -345,11 +345,16 @@ export default class DocBuilder {
       const docData = {};
       docData.generator = doc.generator || false;
       docData.async = doc.async || false;
-      docData.name = 'buildDocLinkHTML';
-      docData.signature = 'buildSignatureHTML';
-      docData.description = shorten(doc, true);
+      docData.signature = {
+        ...this._generateDocLinkData(doc.longname, null, innerLink, doc.kind),
+        ...this._generateSignatureData(doc),
+      };
+      docData.shortDescription = shorten(doc, true);
       docData.abstract = doc.abstract || false;
       docData.access = doc.access;
+      // TODO: Needed for experimental; in template docData.kind is not same as doc.kind here, 
+      //       so this is hack to provide doc.kind in template - we need to unify it
+      docData.kindString = doc.kind;
       if(['get', 'set'].includes(doc.kind)) {
         docData.kind = doc.kind || false;
       }
@@ -362,8 +367,8 @@ export default class DocBuilder {
         docData.kindIcon = false;
       }
       docData.since = doc.since || false;
-      docData.deprecated = 'buildDeprecatedHTML';
-      docData.experimental = 'buildExperimentalHTML';
+      docData.deprecated = this._generateDeprecatedData(doc);
+      docData.experimental = this._generateExperimentalData(doc);
       docData.version = doc.version || false;
       
       summaryData.docs.push(docData);
@@ -703,7 +708,33 @@ export default class DocBuilder {
         throw new Error('DocBuilder: can not resolve file name.');
     }
   }
+  
+  /**
+   * @param {*} doc 
+   * @param {*} [text=null] 
+   * @returns {false|{text:string, href:string}} 
+   */
+  _generateFileDocLinkData(doc, text = null) {
+    if(!doc) return false;
+    
+    let fileDoc = null;
+    if(doc.kind === 'file' || doc.kind === 'testFile') {
+      fileDoc = doc;
+    } else {
+      const filePath = doc.longname.split('~')[0];
+      fileDoc = this._find({kind: ['file', 'testFile'], name: filePath})[0];
+    }
 
+    if(!fileDoc) return false;
+    if(!text) text = fileDoc.name;
+    
+    if(doc.kind === 'file' || doc.kind === 'testFile') {
+      return {text: text, href: this._getURL(fileDoc)};
+    }
+
+    return {text: text, href: `${this._getURL(fileDoc)}#lineNumber${doc.lineNumber}`};
+  }
+  
   /**
    * build html link to file page.
    * @param {DocObject} doc - target doc object.
@@ -733,6 +764,49 @@ export default class DocBuilder {
     return `<span><a href="${this._getURL(fileDoc)}#lineNumber${doc.lineNumber}">${text}</a></span>`;
   }
 
+  _generateTypeDocLinkData(typeName) {
+    console.log('\x1b[38;5;73m','_generateTypeDocLinkData typeName', typeName, '\x1b[0m');
+    let typeDocLinkData = {};
+
+    // e.g. number[]
+    let matched = typeName.match(/^(.*?)\[\]$/u);
+    if(matched) {
+      return {
+        ...this._generateDocLinkData(matched[1], matched[1]),
+      };
+    }
+    
+    // e.g. function(a: number, b: string): boolean
+    matched = typeName.match(/function *\((.*?)\)(.*)/u);
+    if(matched) {
+      if(!matched[1] && !matched[2]) return this._generateDocLinkData('function');
+      console.log('\x1b[38;5;83m','    matched[1]', (matched[1]) ? matched[1] : 'false', '\x1b[0m');
+      console.log('\x1b[38;5;83m','    matched[2]', (matched[2]) ? matched[2] : 'false', '\x1b[0m');
+      return {text: typeName};
+    }
+    
+    // e.g. {a: number, b: string}
+    matched = typeName.match(/^\{(.*?)\}$/u);
+    if(matched) {
+      if(!matched[1]) return this._generateDocLinkData('{}');
+      console.log('\x1b[38;5;83m','    matched[1]', (matched[1]) ? matched[1] : 'false', '\x1b[0m');
+      console.log('\x1b[38;5;83m','    matched[2]', (matched[2]) ? matched[2] : 'false', '\x1b[0m');
+      return {text: typeName};
+    }
+
+    // e.g. Map<number, string>
+    matched = typeName.match(/^(.*?)\.?<(.*?)>$/u);
+    if(matched) {
+      console.log('\x1b[38;5;83m','    matched[1]', (matched[1]) ? matched[1] : 'false', '\x1b[0m');
+      console.log('\x1b[38;5;83m','    matched[2]', (matched[2]) ? matched[2] : 'false', '\x1b[0m');
+      return {text: typeName};
+    }
+    
+    console.log('\x1b[38;5;83m','    typeName', typeName, '\x1b[0m');
+    
+    return {text: typeName};
+  }
+  
   /**
    * build html link of type.
    * @param {string} typeName - type name(e.g. ``number[]``, ``Map<number, string>``)
@@ -859,17 +933,24 @@ export default class DocBuilder {
     return this._buildDocLinkHTML(typeName);
   }
   
-  _generateLinkToIdentifierData(longname, text = null, inner = false, kind = null) {
-    if(!longname) return {name:''};
-    if(typeof longname !== 'string') {
-      const errorText = `Error: _generateLinkToIdentifier longname parameter is expected to be string!`;
+  /**
+   * @param {string} longName 
+   * @param {*} [text=null] 
+   * @param {*} [inner=false] 
+   * @param {*} [kind=null] 
+   * @returns {{name:string,href:string|false}}
+   */
+  _generateDocLinkData(longName, text = null, inner = false, kind = null) {
+    if(!longName) return {name:'', href: false};
+    if(typeof longName !== 'string') {
+      const errorText = `Error: _generateDocLinkData longName parameter is expected to be string!`;
       console.error(errorText);
       throw new Error(errorText);
     }
 
-    const doc = this._findByName(longname, kind)[0];
+    const doc = this._findByName(longName, kind)[0];
     if(!doc) {
-      return {name: sanitize(text || longname)};
+      return {name: sanitize(text || longName), href:false};
     }
     
     if(doc.kind === 'external') {
@@ -880,9 +961,9 @@ export default class DocBuilder {
     if( url ) {
       return {name: sanitize(text || doc.name), href: url};
     }
-    return {name: sanitize(text)};
+    return {name: sanitize(text), href: false};
   }
-
+  
   /**
    * build html link to identifier.
    * @param {string} longname - link to this.
@@ -946,7 +1027,71 @@ export default class DocBuilder {
 
     return `<ul>${links.join(separator)}</ul>`;
   }
+  
+  _generateSignatureData(doc) {
+    if(!doc) {
+      const errorText = 'Error: doc is a required parameter!';
+      console.error(errorText);
+      throw new TypeError(errorText);
+    }
 
+    const signatureData = { params: [], returns: [], types: [] };
+    if(doc.params) {
+      // Parameters
+      for(const param of doc.params) {
+        if(param.name.indexOf('.') !== -1) {
+          // for object property
+          console.log('\x1b[38;5;40m', 'param.name', param.name, '\x1b[0m');
+          console.log('\x1b[38;5;40m', 'continuing with next', '\x1b[0m');
+          continue;
+        }
+        if(param.name.indexOf('[') !== -1) {
+          // for array property
+          console.log('\x1b[38;5;40m', 'param.name', param.name, '\x1b[0m');
+          console.log('\x1b[38;5;40m', 'continuing with next', '\x1b[0m');
+          continue;
+        }
+        
+        const types = [];
+        for( const typeName of param.types ) {
+          types.push(this._generateTypeDocLinkData(typeName));
+        }
+
+        signatureData.params.push(types);
+      }
+    } else {
+      signatureData.params = false;
+    }
+    
+
+    // return signature
+    if(doc.return) {
+      for(const typeName of doc.return.types) {
+        signatureData.returns.push(this._generateTypeDocLinkData(typeName));
+      }
+    } else {
+      signatureData.returns = false;
+    }
+
+    // type signature
+    if(doc.type) {
+      console.log('\x1b[38;5;22m', 'doc.type', doc.type, '\x1b[0m');
+      for(const typeName of doc.type.types) {
+        signatureData.types.push(this._generateTypeDocLinkData(typeName));
+      }
+    } else {
+      signatureData.types = false;
+    }
+
+    // callback does not need types, because it has type of function?
+    if(doc.kind === 'function') {
+      console.log('\x1b[38;5;125m', 'kind is function, resetting types', '\x1b[0m');
+      signatureData.types = false;
+    }
+
+    return signatureData;
+  }
+  
   /**
    * build identifier signature html.
    * @param {DocObject} doc - target doc object.
@@ -1057,7 +1202,15 @@ export default class DocBuilder {
 
     return ice;
   }
-
+  
+  // TODO: Do we need this? It could be checked in template.
+  _generateDeprecatedData(doc) {
+    if(doc.deprecated) {
+      return doc.deprecated;
+    }
+    return false;
+  }
+  
   /**
    * build deprecated html.
    * @param {DocObject} doc - target doc object.
@@ -1072,6 +1225,14 @@ export default class DocBuilder {
     }
     
     return '';
+  }
+  
+  // TODO: Do we need this? It could be checked in template.
+  _generateExperimentalData(doc) {
+    if(doc && doc.experimental) {
+      return doc.experimental;
+    }
+    return false;
   }
 
   /**

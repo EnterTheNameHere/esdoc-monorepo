@@ -21,6 +21,13 @@ export default class TestFileDocBuilder extends DocBuilder {
     }
   }
 
+  _generateFileData(doc) {
+    return {
+      contents: addLineNumbersToSourceCode(doc.content) || false,
+      title: doc.name,
+    };
+  }
+
   /**
    * build file output html.
    * @param {DocObject} doc - target file doc object.

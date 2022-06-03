@@ -20,6 +20,13 @@ export default class FileDocBuilder extends DocBuilder {
       writeFile(fileName, ice.html);
     }
   }
+  
+  _generateFileData(doc) {
+    return {
+      contents: addLineNumbersToSourceCode(doc.content) || false,
+      title: doc.name,
+    };
+  }
 
   /**
    * build file output html.

@@ -14,10 +14,44 @@ export default class TestDocBuilder extends DocBuilder {
     const baseUrl = this._getBaseUrl(fileName);
     const title = this._getTitle('Test');
 
-    ice.load('content', this._buildTestDocHTML());
-    ice.attr('baseUrl', 'href', baseUrl);
-    ice.text('title', title);
-    writeFile(fileName, ice.html);
+  }
+  
+  /**
+   * @typedef {object} TestDocData
+   * @property {{text: string, href: string} | false}   description
+   * @property {[{name: string, href: string | false}]} targets
+   * @property {[TestDocData]}                  children
+   */
+  /**
+   * @param {number}      [depth=0] 
+   * @param {string|null} [memberof=null]
+   * @returns {TestDocData}
+   */
+  _generateTestDocData(depth = 0, memberof = null) {
+    const tests = [];
+    
+    const cond = {kind: 'test', testDepth: depth};
+    if(memberof) cond.memberof = memberof;
+    const docs = this._orderedFind('testId asec', cond);
+    
+    for(const doc of docs) {
+      const test = {
+        description: this._generateFileDocLinkData(doc, doc.descriptionRaw),
+        /**
+         * @type {[{name: string, href: string | false}]}
+         */
+        targets: [],
+        children: this._generateTestDocData(depth + 1, doc.longname),
+      };
+      
+      for(const testTarget of doc._custom_test_targets) {
+        test.targets.push( this._generateDocLinkData(testTarget[0], testTarget[1]) );
+      }
+
+      tests.push(test);
+    }
+    
+    return (tests.length > 0) ? tests : false;
   }
 
   /**
