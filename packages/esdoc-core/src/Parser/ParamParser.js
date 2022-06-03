@@ -133,9 +133,11 @@ export default class ParamParser {
     } else {
       result.types = [''];
     }
-
+    
     if (result.types.some((t) => { return !t; })) {
-      throw new Error(`Empty Type found name=${paramName} desc=${paramDesc}`);
+      // TODO: Can happen on 'function()' @param
+      console.error('Empty Type found', typeText, paramName, paramDesc);
+      //throw new Error(`Empty Type found name=${paramName} desc=${paramDesc}`);
     }
 
     if (paramName) {
