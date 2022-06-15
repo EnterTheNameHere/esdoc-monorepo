@@ -1,6 +1,6 @@
 import IceCap from '@enterthenamehere/ice-cap';
 import DocBuilder from './DocBuilder.js';
-import {parseExample, highlight} from './util.js';
+import {parseExample, highlight, isIterable} from './util.js';
 
 /**
  * Class Output Builder class.
@@ -19,6 +19,88 @@ export default class ClassDocBuilder extends DocBuilder {
       ice.text('title', title, IceCap.MODE_WRITE);
       writeFile(fileName, ice.html);
     }
+  
+  _generateClassDocData(doc) {
+    if(!doc) {
+      const errorText = `Error: _generateClassDocData 'doc' param is required!`;
+      console.error(errorText);
+      throw new Error(errorText);
+    }
+    
+    const classData = {
+      extendsData: this._generateExpressionExtendsData(doc),
+      mixinExtendsData: this._generateMixinClassesData(doc),
+      extendsChainData: this._generateExtendsChainData(doc),
+      directSubclassData: this._generateDirectSubclassData(doc),
+      indirectSubclassData: this._generateIndirectSubclassData(doc),
+    };
+    if(doc.export && doc.importPath && doc.importStyle) {
+      classData.sourceLink = this._generateFileDocLinkData(doc, doc.importPath);
+      classData.importStringRaw = `import ${doc.importStyle} from`;
+      classData.importStringStyled = highlight(classData.importStringRaw);
+    }
+    classData.access = doc.access || false;
+    classData.kind = doc.interface ? 'interface' : 'class';
+    classData.source = this._generateFileDocLinkData(doc, 'source');
+    classData.since = doc.since || false;
+    classData.version = doc.version || false;
+    classData.variation = this._generateVariationData(doc);
+
+    classData.implementsData = this._generateDocsLinkData(doc.implements, null, false, ', ');
+    classData.indirectImplementsData = this._generateDocsLinkData(doc._custom_indirect_implements, null, false, ', ');
+    classData.directImplementedData = this._generateDocsLinkData(doc._custom_direct_implemented, null, false, ', ');
+    classData.indirectImplementedData = this._generateDocsLinkData(doc._custom_indirect_implemented, null, false, ', ');
+
+    classData.name = doc.name || false;
+    classData.description = doc.description || false;
+    classData.deprecated = this._generateDeprecatedData(doc);
+    classData.experimental = this._generateExperimentalData(doc);
+    classData.seeData = this._generateDocsLinkData(doc.see);
+    classData.todoData = this._generateDocsLinkData(doc.todo);
+    classData.decoratorData = this._generateDecoratorData(doc);
+
+    const instanceDocs = this._find({kind: 'variable'}).filter((variable) => {
+      return variable?.type?.types?.includes(doc.longname) || false;
+    });
+    
+    classData.instancesData = [];
+    if(isIterable(instanceDocs)) {
+      for(const instanceDoc of instanceDocs) {
+        classData.instancesData.push(this._generateDocLinkData(instanceDoc.longname));
+      }
+    }
+
+    classData.examplesData = [];
+    if(isIterable(doc.examples)) {
+      for(const example of doc.examples) {
+        const parsed = parseExample(example);
+        classData.examplesData.push({code: parsed.body, caption: parsed.caption});
+      }
+    }
+
+    classData.testsData = [];
+    if(isIterable(doc._custom_tests)) {
+      for(const test of doc._custom_tests) {
+        const testDoc = this._find({longname: test})[0];
+        classData.testsData.push(this._generateFileDocLinkData(testDoc, testDoc.testFullDescription));
+      }
+    }
+    
+    classData.staticMemberSummaryData = this._generateSummaryData(doc, 'members', 'Members', true);
+    classData.staticMethodSummaryData = this._generateSummaryData(doc, 'methods', 'Methods', true);
+    classData.constructorSummaryData = this._generateSummaryData(doc, 'constructor', 'Constructor', false);
+    classData.membersSummaryData = this._generateSummaryData(doc, 'members', 'Members', false);
+    classData.methodsSummaryData = this._generateSummaryData(doc, 'methods', 'Methods', false);
+    
+    classData.inheritedSummaryData = this._generateInheritedSummaryData(doc);
+    
+    classData.staticMemberDetailsData = this._generateDetailsData(doc, 'members', 'Members', true);
+    classData.staticMethodDetailsData = this._generateDetailsData(doc, 'methods', 'Methods', true);
+    classData.constructorDetailsData = this._generateDetailsData(doc, 'constructor', 'Constructor', false);
+    classData.membersDetailsData = this._generateDetailsData(doc, 'members', 'Members', false);
+    classData.methodsDetailsData = this._generateDetailsData(doc, 'methods', 'Methods', false);
+
+    return classData;
   }
 
   /**
@@ -111,6 +193,16 @@ export default class ClassDocBuilder extends DocBuilder {
 
     return ice;
   }
+  
+  _generateVariationData(doc) {
+    const links = [];
+    const variationDocs = this._find({memberof: doc.memberof, name: doc.name});
+    for(const variationDoc of variationDocs) {
+      if(variationDoc.variation === doc.variation) continue;
+      links.push(this._generateDocLinkData(variationDoc.longname, `(${variationDoc.variation || 1})`));
+    }
+    return links;
+  }
 
   /**
    * build variation of doc.
@@ -130,6 +222,18 @@ export default class ClassDocBuilder extends DocBuilder {
 
     return html.join(', ');
   }
+  
+  _generateMixinClassesData(doc) {
+    if(!doc.extends) return false;
+    if(doc.extends.length <= 1) return false;
+    
+    const links = [];
+    for(const longname of doc.extends) {
+      links.push(this._generateDocLinkData(longname));
+    }
+
+    return links;
+  }
 
   /**
    * build mixin extends html.
@@ -148,6 +252,17 @@ export default class ClassDocBuilder extends DocBuilder {
     return `<div>${links.join(', ')}</div>`;
   }
 
+  _generateExpressionExtendsData(doc) {
+    if(!doc.expressionExtends) return false;
+    return doc.expressionExtends;
+    //const links = doc.expressionExtends.replace(/[A-Z_$][a-zA-Z09-_$]*/gu, (v) => {
+    //  return this._generateDocLinkData(v);
+    //});
+    //links.push(doc.name);
+    //
+    //return links;
+  }
+
   /**
    * build expression extends html.
    * @param {DocObject} doc - target class doc.
@@ -161,6 +276,19 @@ export default class ClassDocBuilder extends DocBuilder {
     });
 
     return `class ${doc.name} extends ${html}`;
+  }
+
+  _generateExtendsChainData(doc) {
+    if(!doc._custom_extends_chains) return false;
+    if(doc.extends.length > 1) return false;
+
+    const links = [];
+    for(const longname of doc._custom_extends_chains) {
+      links.push(this._generateDocLinkData(longname));
+    }
+    links.push(doc.name);
+
+    return links;
   }
 
   /**
@@ -183,6 +311,17 @@ export default class ClassDocBuilder extends DocBuilder {
     return `<div>${links.join(' → ')}</div>`;
   }
 
+  _generateIndirectSubclassData(doc) {
+    if(!doc._custom_indirect_subclasses) return false;
+    
+    const links = [];
+    for(const longname of doc._custom_indirect_subclasses) {
+      links.push(this._generateDocLinkData(longname));
+    }
+    
+    return links;
+  }
+
   /**
    * build in-direct subclass list.
    * @param {DocObject} doc - target class doc.
@@ -200,6 +339,17 @@ export default class ClassDocBuilder extends DocBuilder {
     return `<div>${links.join(', ')}</div>`;
   }
 
+  _generateDirectSubclassData(doc) {
+    if(!doc._custom_direct_subclasses) return false;
+
+    const links = [];
+    for(const longname of doc._custom_direct_subclasses) {
+      links.push(this._generateDocLinkData(longname));
+    }
+    
+    return links;
+  }
+
   /**
    * build direct subclass list.
    * @param {DocObject} doc - target class doc.
@@ -215,6 +365,53 @@ export default class ClassDocBuilder extends DocBuilder {
     }
 
     return `<div>${links.join(', ')}</div>`;
+  }
+  
+  _generateInheritedSummaryData(doc) {
+    if(['class', 'interface'].indexOf(doc.kind) === -1) return false;
+    const results = [];
+
+    const longnames = [
+      ...doc._custom_extends_chains || []
+    ];
+
+    for(const longname of longnames) {
+      const superDoc = this._find({longname})[0];
+      if(!superDoc) continue;
+      const targetDocs = this._find({memberof: longname, kind: ['member', 'method', 'get', 'set']});
+      
+      // TODO: allow custom sorting in HTML template
+      targetDocs.sort((a, b) => {
+        if(a.static !== b.static) {
+          return -(a.static - b.static);
+        }
+
+        let order = {get: 0, set: 0, member: 1, method: 2};
+        if(order[a.kind] !== order[b.kind]) {
+          return order[a.kind] - order[b.kind];
+        }
+
+        order = {public: 0, protected: 1, private: 2};
+        if(a.access !== b.access) {
+          return order[a.access] - order[b.access];
+        }
+        
+        if(a.name !== b.name) {
+          return a.name < b.name ? -1 : 1;
+        }
+        
+        order = {get: 0, set: 1, member: 2};
+        return order[a.kind] - order[b.kind];
+      });
+      
+      results.push({
+        kind: superDoc.kind,
+        link: this._generateDocLinkData(longname, superDoc.name),
+        summary: this._generateSummaryDocData(targetDocs, '----------'),
+      });
+    }
+    
+    return results;
   }
 
   /**

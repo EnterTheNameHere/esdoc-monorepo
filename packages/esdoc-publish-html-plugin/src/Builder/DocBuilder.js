@@ -458,6 +458,21 @@ export default class DocBuilder {
     return ice;
   }
 
+  _generateDetailsData(doc, kind, title, isStatic = true) {
+    const accessDocs = this._findAccessDocs(doc, kind, isStatic);
+    const results = [];
+    for(const accessDoc of accessDocs) {
+      const docs = accessDoc[1];
+      if(!docs.length) continue;
+      let prefix = '';
+      if(docs[0].static) prefix = 'Static ';
+      const _title = `${prefix}${accessDoc[0]} ${title}`;
+      const result = this._generateDetailsDocsData(docs, _title);
+      results.push(result);
+    }
+    return results;
+  }
+
   /**
    * build detail output html by parent doc.
    * @param {DocObject} doc - parent doc object.
@@ -483,6 +498,13 @@ export default class DocBuilder {
     }
 
     return html;
+  }
+
+  _generateDetailsDocsData(docs, title) {
+    const detailsData = {};
+    detailsData.title = (!docs.length) ? false : title;
+    
+    return detailsData;
   }
 
   /* eslint-disable max-statements */
@@ -1002,6 +1024,22 @@ export default class DocBuilder {
     
     return `<span>${text}</span>`;
   }
+  
+  _generateDocsLinkData(longnames, text = null, inner = false) {
+    if(!longnames) return false;
+    if(!longnames.length) return false;
+
+    const links = [];
+    for(const longname of longnames) {
+      // TODO: this is weird check... maybe check if longname can be found should be here?
+      if(!longname) continue;
+      links.push(this._generateDocLinkData(longname, text, inner));
+    }
+    
+    if(!links.length) return false;
+    
+    return links;
+  }
 
   /**
    * build html links to identifiers
@@ -1275,6 +1313,23 @@ export default class DocBuilder {
 
     return '';
   }
+  
+  _generateOverrideMethodData(doc) {
+    const parentDoc = this._findByName(doc.memberof)[0];
+    if(!parentDoc) return false;
+    if(!parentDoc._custom_extends_chains) return '';
+
+    const chains = [...parentDoc._custom_extends_chains].reverse();
+    for(const longname of chains) {
+      const superClassDoc = this._findByName(longname)[0];
+      if(!superClassDoc) continue;
+
+      const superMethodDoc = this._find({name: doc.name, memberof: superClassDoc.longname});
+      if(!superMethodDoc) continue;
+      return this._generateDocLinkData(superMethodDoc.longname, `${superClassDoc.name}#${superMethodDoc.name}`, true);
+    }
+    return '_generateOverrideMethodData';
+  }
 
   /**
    * build method of ancestor class description.
@@ -1300,6 +1355,25 @@ export default class DocBuilder {
 
     return '';
   }
+  
+  _generateOverrideMethodDescriptionData(doc) {
+    const parentDoc = this._findByName(doc.memberof)[0];
+    if(!parentDoc) return false;
+    if(!parentDoc._custom_extends_chains) return false;
+
+    const chains = [...parentDoc._custom_extends_chains].reverse();
+    for(const longname of chains) {
+      const superClassDoc = this._findByName(longname)[0];
+      if(!superClassDoc) continue;
+
+      const superMethodDoc = this._find({name: doc.name, memberof: superClassDoc.longname})[0];
+      if(!superMethodDoc) continue;
+
+      if(superMethodDoc.description) return superMethodDoc.description;
+    }
+
+    return false;
+  }
 
   _buildDecoratorHTML(doc) {
     if (!doc.decorators) return '';
@@ -1317,6 +1391,20 @@ export default class DocBuilder {
     if (!links.length) return '';
 
     return `<ul>${links.join('\n')}</ul>`;
+  }
+  
+  _generateDecoratorData(doc) {
+    if(!doc.decorators) return false;
+
+    const links = [];
+    for(const decorator of doc.decorators) {
+      links.push({
+        link: this._generateDocLinkData(decorator.name, decorator.name, false, 'function'),
+        arguments: decorator.arguments,
+      });
+    }
+
+    return links;
   }
 
   // _buildAuthorHTML(doc, separator = '\n') {
