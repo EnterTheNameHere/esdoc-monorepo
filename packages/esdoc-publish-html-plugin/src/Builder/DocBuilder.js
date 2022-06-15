@@ -335,13 +335,32 @@ export default class DocBuilder {
     return accessDocs;
   }
   
-  _generateSummaryData(docs, title, innerLink = false, kindIcon = false) {
+  _generateSummaryData(doc, kind, title, isStatic = true) {
+    const summaryData = [];
+
+    const accessDocs = this._findAccessDocs(doc, kind, isStatic);
+    for(const accessDoc of accessDocs) {
+      const docs = accessDoc[1];
+      if(!docs.length) continue;
+      
+      let prefix = '';
+      if(docs[0].static) prefix = 'Static ';
+      const _title = `${prefix}${accessDoc[0]} ${title}`;
+      const result = this._generateSummaryDocData(docs, _title);
+      if(result) {
+        summaryData.push(result);
+      }
+    }
+    return summaryData;
+  }
+  
+  _generateSummaryDocData(docs, title, innerLink = false, kindIcon = false) {
     const summaryData = {
       title: title,
       docs: []
     };
 
-    for( const doc of docs ) {
+    for(const doc of docs) {
       const docData = {};
       docData.generator = doc.generator || false;
       docData.async = doc.async || false;
