@@ -5,6 +5,18 @@ const loadLanguages = require('prismjs/components/');
 import sanitizeHtml from 'sanitize-html';
 
 /**
+ * Returns `true` if passed object is iterable, false otherwise. Strings are iterable!
+ * @param {object} obj 
+ * @returns {boolean}
+ */
+export function isIterable(obj) {
+  if(obj === null || obj === undefined) {
+    return false;
+  }
+  return typeof obj[Symbol.iterator] === 'function';
+}
+
+/**
  * Highlights `code` as a source code of `language`, javascript as default, returning html.
  * 
  * If `language` is not recognized by highlighter, javascript will be chosen.
