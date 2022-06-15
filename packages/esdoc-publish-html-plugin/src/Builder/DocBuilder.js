@@ -235,7 +235,7 @@ export default class DocBuilder {
       const kindClass = `kind-${kind}`;
       const linkToIdentifierData = this._generateDocLinkData(doc.longname);
       navData.docs.push({
-        name: linkToIdentifierData.name,
+        text: linkToIdentifierData.text,
         href: linkToIdentifierData.href || false,
         kind: kindText,
         kindClass: kindClass,
@@ -960,10 +960,10 @@ export default class DocBuilder {
    * @param {*} [text=null] 
    * @param {*} [inner=false] 
    * @param {*} [kind=null] 
-   * @returns {{name:string,href:string|false}}
+   * @returns {{text:string,href:string|false}}
    */
   _generateDocLinkData(longName, text = null, inner = false, kind = null) {
-    if(!longName) return {name:'', href: false};
+    if(!longName) return {text:'', href: false};
     if(typeof longName !== 'string') {
       const errorText = `Error: _generateDocLinkData longName parameter is expected to be string!`;
       console.error(errorText);
@@ -972,18 +972,18 @@ export default class DocBuilder {
 
     const doc = this._findByName(longName, kind)[0];
     if(!doc) {
-      return {name: sanitize(text || longName), href:false};
+      return {text: sanitize(text || longName), href:false};
     }
     
     if(doc.kind === 'external') {
-      return {name: sanitize(doc.name), href: doc.externalLink};
+      return {text: sanitize(doc.name), href: doc.externalLink};
     }
     
     const url = this._getURL(doc, inner);
     if( url ) {
-      return {name: sanitize(text || doc.name), href: url};
+      return {text: sanitize(text || doc.name), href: url};
     }
-    return {name: sanitize(text), href: false};
+    return {text: sanitize(text), href: false};
   }
   
   /**
