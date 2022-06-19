@@ -29,7 +29,7 @@ export function highlight(code, language = 'javascript') {
   if(!code || code === '' || typeof code !== 'string') return '';
   if(!language || language === '' || typeof language !== 'string') language = 'javascript';
   if( !Object.hasOwnProperty.call( prismjs.languages, language ) ) language = 'javascript';
-
+  
   if( language.toLowerCase() === 'javascript' ) {
     // Load languages which can appear in javascript
     loadLanguages(['flow', 'jsx', 'tsx', 'typescript', 'js-extras', 'jsdoc']);
@@ -47,29 +47,10 @@ export function highlight(code, language = 'javascript') {
 export function sanitize(html) {
     if(!html || typeof html !== 'string') return '';
     
-    const allowedTags = [
-        'a',
-        'br',
-        'code',
-        'div', 'details', 'del',
-        'h1', 'h2', 'h3', 'h4', 'h5', 'hr',
-        'img',
-        'kbd',
-        'li', 'ul', 'ol',
-        'p', 'pre',
-        'span', 'strong', 'summary',
-        'table', 'thead', 'tbody', 'th', 'td', 'tr'
-    ];
-    const allowedAttributes = {
-        '*': ['src', 'href', 'title', 'class', 'id', 'name', 'width', 'height', 'target', 'style'],
-        'td': ['align']
-    };
     const sanitized = sanitizeHtml( html, {
-        allowedTags: allowedTags,
-        allowedAttributes: allowedAttributes,
         disallowedTagsMode: 'escape'
     }).trim();
-    
+
     return sanitized;
 }
 
