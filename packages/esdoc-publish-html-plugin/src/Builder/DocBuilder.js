@@ -159,6 +159,43 @@ export default class DocBuilder {
     return FileManager.readFileContents(filePath);
   }
   
+  _var_dump(variable, level = 10, firstRun = true) {
+    if(level === 0) return `<level ${level}>`;
+    let text = `<table ${(firstRun) ? 'class="ejs-table-var-dump"' : ''}>`;
+    if(typeof variable !== 'object') {
+      text += `<tr><td>[${typeof variable}]</td><td>${variable}</td></tr>`;
+    } else {
+      for(const property in variable) {
+        if(typeof property === 'string'
+        && property !== '__proto__'
+        && property !== '__count__'
+        && property !== '__parent__'
+        && property !== '__defineGetter__'
+        && property !== '__defineSetter__'
+        && property !== '__lookupGetter__'
+        && property !== '__lookupSetter__') {
+          text += `<tr><td>${property}</td><td>`;
+          if(typeof variable[property] === 'function') {
+            text += '[Function]';
+          } else if( typeof variable[property] === 'string' ) {
+            text += `${variable[property]}`;
+          } else if( Array.isArray(variable[property]) && variable[property].length > 0 ) {
+            text += `${this._var_dump(variable[property], level - 1, false)}`;
+          } else if( Array.isArray(variable[property]) && variable[property].length === 0 ) {
+            text += `[empty]`;
+          } else if( typeof variable[property] === 'object' ) {
+            text += `${this._var_dump(variable[property], level - 1, false)}`;
+          } else {
+            text += `${variable[property]}`;
+          }
+          text += '</td></tr>';
+        }
+      }
+    }
+    text += '</table>';
+    return text;
+  }
+  
   _renderTemplate(fileName, data) {
     const filePath = path.resolve(path.join(this.Plugin.TemplateDirectory, fileName));
     const contents = FileManager.readFileContents(filePath);
