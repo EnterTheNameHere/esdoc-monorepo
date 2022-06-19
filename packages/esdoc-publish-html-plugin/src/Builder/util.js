@@ -25,7 +25,7 @@ export function isIterable(obj) {
  * @param  {string} [language='javascript'] Language of source code.
  * @return {string}                         Highlighted source code as html.
  */
-export function highlight(code, language = 'javascript' ) {
+export function highlight(code, language = 'javascript') {
   if(!code || code === '' || typeof code !== 'string') return '';
   if(!language || language === '' || typeof language !== 'string') language = 'javascript';
   if( !Object.hasOwnProperty.call( prismjs.languages, language ) ) language = 'javascript';
