@@ -68,7 +68,7 @@ export function sanitize(html) {
         allowedTags: allowedTags,
         allowedAttributes: allowedAttributes,
         disallowedTagsMode: 'escape'
-    });
+    }).trim();
     
     return sanitized;
 }
