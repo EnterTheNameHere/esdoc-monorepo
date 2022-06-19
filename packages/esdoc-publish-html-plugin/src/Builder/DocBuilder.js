@@ -199,7 +199,21 @@ export default class DocBuilder {
   _renderTemplate(fileName, data) {
     const filePath = path.resolve(path.join(this.Plugin.TemplateDirectory, fileName));
     const contents = FileManager.readFileContents(filePath);
-    return HTMLTemplate.render(contents, data);
+    return HTMLTemplate.render(
+      contents,
+      {
+        ...data,
+        template: {
+          rootDirectory: this.Plugin.TemplateDirectory,
+          config: this.Plugin.TemplateConfig,
+        },
+        utils: {
+          highlight: highlight,
+          sanitize: sanitize,
+          var_dump: this._var_dump.bind(this),
+        },
+      }
+    );
   }
   
   
