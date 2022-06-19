@@ -392,6 +392,7 @@ export default class DocBuilder {
   }
   
   _generateSummaryDocData(docs, title, innerLink = false, kindIcon = false) {
+    if(docs.length === 0) return false;
     const summaryData = {
       title: title,
       docs: []
