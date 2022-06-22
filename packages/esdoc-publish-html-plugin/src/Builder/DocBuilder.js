@@ -386,10 +386,21 @@ export default class DocBuilder {
     return accessDocs;
   }
   
+  /**
+   * 
+   * @param {ESDoc} doc 
+   * @param {string} kind 
+   * @param {string} title 
+   * @param {boolean} [isStatic=true] 
+   * @returns 
+   */
   _generateSummaryData(doc, kind, title, isStatic = true) {
     const summaryData = [];
 
     const accessDocs = this._findAccessDocs(doc, kind, isStatic);
+    if(!accessDocs[0][1].length || !accessDocs[1][1].length || !accessDocs[2][1].length) {
+      return false;
+    }
     for(const accessDoc of accessDocs) {
       const docs = accessDoc[1];
       if(!docs.length) continue;
@@ -529,8 +540,20 @@ export default class DocBuilder {
     return ice;
   }
 
+  /**
+   * 
+   * @param {ESDoc} doc 
+   * @param {string} kind 
+   * @param {string} title 
+   * @param {boolean} [isStatic=false] 
+   * @returns {false|[title: string, details: [*]]}
+   */
   _generateDetailsData(doc, kind, title, isStatic = true) {
     const accessDocs = this._findAccessDocs(doc, kind, isStatic);
+    // Check there are any docs to which we can generate data and return false if nothing is found...
+    if(!accessDocs[0][1].length && !accessDocs[1][1].length && !accessDocs[2][1].length) {
+      return false;
+    }
     const results = [];
     for(const accessDoc of accessDocs) {
       const docs = accessDoc[1];
@@ -571,9 +594,125 @@ export default class DocBuilder {
     return html;
   }
 
+  /**
+   * 
+   * @param {ESDoc} docs 
+   * @param {string} title 
+   * @returns {false|{title: string, details: [*]}}
+   */
   _generateDetailsDocsData(docs, title) {
     const detailsData = {};
-    detailsData.title = (!docs.length) ? false : title;
+    if(!docs?.length) return false;
+    detailsData.title = title || '';
+    detailsData.details = [];
+    for(const doc of docs) {
+      const detail = {};
+      const scope = doc.static ? 'static' : 'instance';
+      detail.anchor = `${scope}-${doc.kind}-${doc.name}${doc.anonymous ? `-${doc.__docId__}` : ''}`;
+      detail.access = doc.access;
+      if(['member', 'method', 'get', 'set'].includes(doc.kind)) {
+        detail.static = (doc.static) ? 'static' : false;
+      } else {
+        detail.static = false;
+      }
+      if(['get', 'set'].includes(doc.kind)) {
+        detail.kind = doc.kind;
+      } else {
+        detail.kind = false;
+      }
+      detail.abstract = (doc.abstract) ? 'abstract' : false;
+      detail.async = (doc.async) ? 'async' : false;
+      detail.name = doc.name;
+      if(doc.export && doc.importPath && doc.importStyle) {
+        detail.sourceLink = this._generateFileDocLinkData(doc, doc.importPath);
+        detail.importString = `import ${doc.importStyle} from`;
+      }
+      detail.generator = (doc.generator) ? '*' : false;
+      detail.signatureData = this._generateSignatureData(doc);
+      detail.sourceFileLink = this._generateFileDocLinkData(doc, 'source');
+      detail.since = doc.since || false;
+      detail.deprecated = this._generateDeprecatedData(doc);
+      detail.experimental = this._generateExperimentalData(doc);
+      detail.version = doc.version || false;
+      // TODO: For some reason (probably being markdowned...) links are already in <a ...>...</a> format. Investigate what is happening.
+      detail.seeLinks = this._generateDocsLinkData(doc.see);
+      detail.todoLinks = this._generateDocsLinkData(doc.todo);
+      detail.override = this._generateOverrideMethodData(doc);
+      detail.decorators = this._generateDecoratorData(doc);
+
+      let isFunction = false;
+      if(['method', 'constructor', 'function'].indexOf(doc.kind) !== -1) isFunction = true;
+      if(doc.kind === 'typedef' && doc.params && doc.type.types[0] === 'function') isFunction = true;
+      if(isFunction) {
+        detail.properties = this._generatePropertiesData(doc.params, 'Params:');
+      } else {
+        detail.properties = this._generatePropertiesData(doc.properties, 'Properties:');
+      }
+      
+      if(doc.return) {
+        detail.return = {};
+        detail.return.description = doc.return.description;
+        detail.return.types = [];
+        for(const typeName of doc.return.types) {
+          detail.return.types.push(this._generateTypeDocLinkData(typeName));
+        }
+        if(typeof doc.return.nullable === 'boolean') {
+          detail.return.nullable = doc.nullable;
+        }
+        detail.return.properties = this._generatePropertiesData(doc.properties, 'Return Properties:');
+      } else {
+        doc.return = false;
+      }
+      
+      if(doc.throws) {
+        detail.throws = [];
+        for(const throwDoc of doc.throws) {
+          detail.throws.push({link: this._generateDocLinkData(throwDoc.types[0]), description: throwDoc.description});
+        }
+      } else {
+        detail.throws = false;
+      }
+
+      if(doc.emits) {
+        detail.emits = [];
+        for(const emitDoc of doc.emits) {
+          detail.emits.push({link: this._generateDocLinkData(emitDoc.types[0]), description: emitDoc.description});
+        }
+      } else {
+        detail.emits = false;
+      }
+
+      if(doc.listens) {
+        detail.listens = [];
+        for(const listenDoc of doc.listens) {
+          detail.listens.push({link: this._generateDocLinkData(listenDoc.types[0]), description: listenDoc.description});
+        }
+      } else {
+        detail.listens = false;
+      }
+      
+      if(doc.examples) {
+        detail.examples = [];
+        for(const exampleDoc of doc.examples) {
+          const parsed = parseExample(exampleDoc);
+          detail.examples.push({body: parsed.body, caption: parsed.caption});
+        }
+      } else {
+        detail.examples = false;
+      }
+
+      if(doc._custom_tests) {
+        detail.tests = [];
+        for(const testName of doc._custom_tests) {
+          const testDoc = this._find({longname: testName})[0];
+          detail.tests.push({link: this._generateFileDocLinkData(testDoc, testDoc.testFullDescription)});
+        }
+      } else {
+        detail.tests = false;
+      }
+
+      detailsData.details.push(detail);
+    }
     
     return detailsData;
   }
@@ -803,8 +942,8 @@ export default class DocBuilder {
   }
   
   /**
-   * @param {*} doc 
-   * @param {*} [text=null] 
+   * @param {ESDoc} doc 
+   * @param {string|null} [text=null] 
    * @returns {false|{text:string, href:string}} 
    */
   _generateFileDocLinkData(doc, text = null) {
@@ -1257,6 +1396,35 @@ export default class DocBuilder {
 
     return html;
   }
+  
+  /**
+   * 
+   * @param {[*]} properties 
+   * @param {string} title 
+   * @returns 
+   */
+  _generatePropertiesData(properties = [], title = 'Properties:') {
+    if(!properties || properties.length === 0) return false;
+
+    const propertiesData = {};
+    propertiesData.title = title;
+    propertiesData.properties = [];
+    for(const prop of properties) {
+      const propData = {
+        name: prop.name,
+        description: prop.description,
+        typesLinks: prop.types.forEach((typeName) => { return this._generateTypeDocLinkData(typeName); }),
+        optional: prop.optional || false,
+        nullable: prop.nullable || false,
+        hasDefaultValue: Object.prototype.hasOwnProperty.call(prop, 'defaultValue'),
+      };
+      if(propData.hasDefaultValue) {
+        propData.defaultValue = prop.defaultValue;
+      }
+    }
+
+    return propertiesData;
+  }
 
   /**
    * build properties output.
@@ -1385,21 +1553,26 @@ export default class DocBuilder {
     return '';
   }
   
+  /**
+   * 
+   * @param {ESDoc} doc 
+   * @returns {false|{name: string, href: string}}
+   */
   _generateOverrideMethodData(doc) {
     const parentDoc = this._findByName(doc.memberof)[0];
     if(!parentDoc) return false;
-    if(!parentDoc._custom_extends_chains) return '';
+    if(!parentDoc._custom_extends_chains) return false;
 
     const chains = [...parentDoc._custom_extends_chains].reverse();
     for(const longname of chains) {
       const superClassDoc = this._findByName(longname)[0];
       if(!superClassDoc) continue;
 
-      const superMethodDoc = this._find({name: doc.name, memberof: superClassDoc.longname});
+      const superMethodDoc = this._find({name: doc.name, memberof: superClassDoc.longname})[0];
       if(!superMethodDoc) continue;
       return this._generateDocLinkData(superMethodDoc.longname, `${superClassDoc.name}#${superMethodDoc.name}`, true);
     }
-    return '_generateOverrideMethodData';
+    return false;
   }
 
   /**
@@ -1427,6 +1600,11 @@ export default class DocBuilder {
     return '';
   }
   
+  /**
+   * 
+   * @param {ESDoc} doc 
+   * @returns {false|string}
+   */
   _generateOverrideMethodDescriptionData(doc) {
     const parentDoc = this._findByName(doc.memberof)[0];
     if(!parentDoc) return false;
@@ -1464,6 +1642,11 @@ export default class DocBuilder {
     return `<ul>${links.join('\n')}</ul>`;
   }
   
+  /**
+   * 
+   * @param {ESDoc} doc 
+   * @returns {false|[{link: {text: string, href: string}, arguments: *}]}
+   */
   _generateDecoratorData(doc) {
     if(!doc.decorators) return false;
 

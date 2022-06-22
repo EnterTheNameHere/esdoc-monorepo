@@ -64,7 +64,7 @@ export default class IdentifiersDocBuilder extends DocBuilder {
       });
       
       const dirPathLabel = dirPath === '.' ? '' : dirPath;
-      const summaryData = this._generateSummaryData(docs, 'summary', false, true);
+      const summaryData = this._generateSummaryDocData(docs, 'summary', false, true);
       identifiersData.dirSummaryWrap.push({
         dirPath: dirPathLabel,
         dirPathId: escapeURLHash(dirPath),

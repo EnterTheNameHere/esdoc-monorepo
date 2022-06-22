@@ -25,6 +25,20 @@ export default class SingleDocBuilder extends DocBuilder {
       writeFile(fileName, ice.html);
     }
   }
+  
+  /**
+   * 
+   * @param {string} kind 
+   * @returns {string}
+   */
+  _generateSingleDoc(kind) {
+    const title = kind.replace(/^(\w)/u, (char) => { return char.toUpperCase(); });
+    return this._renderTemplate('single.ejs', {
+      title: title,
+      summariesData: this._generateSummaryData(null, kind, 'Summary'),
+      detailsData: this._generateDetailsData(null, kind, ''),
+    });
+  }
 
   /**
    * build single output.
