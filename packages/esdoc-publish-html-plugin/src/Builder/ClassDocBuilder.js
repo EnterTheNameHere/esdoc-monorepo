@@ -1,6 +1,6 @@
 import IceCap from '@enterthenamehere/ice-cap';
 import DocBuilder from './DocBuilder.js';
-import {parseExample, highlight, isIterable} from './util.js';
+import {parseExample, highlight, isIterable, jsIdentifierRegExp} from './util.js';
 
 /**
  * Class Output Builder class.
@@ -29,22 +29,22 @@ export default class ClassDocBuilder extends DocBuilder {
     
     const classData = {
       extendsData: this._generateExpressionExtendsData(doc),
-      mixinExtendsData: this._generateMixinClassesData(doc),
+      mixinClassesData: this._generateMixinClassesData(doc),
       extendsChainData: this._generateExtendsChainData(doc),
       directSubclassData: this._generateDirectSubclassData(doc),
       indirectSubclassData: this._generateIndirectSubclassData(doc),
     };
     if(doc.export && doc.importPath && doc.importStyle) {
       classData.sourceLink = this._generateFileDocLinkData(doc, doc.importPath);
-      classData.importStringRaw = `import ${doc.importStyle} from`;
-      classData.importStringStyled = highlight(classData.importStringRaw);
+      classData.importString = `import ${doc.importStyle} from`;
     }
     classData.access = doc.access || false;
     classData.kind = doc.interface ? 'interface' : 'class';
-    classData.source = this._generateFileDocLinkData(doc, 'source');
+    classData.sourceFileLink = this._generateFileDocLinkData(doc, 'source');
     classData.since = doc.since || false;
     classData.version = doc.version || false;
     classData.variation = this._generateVariationData(doc);
+    if(classData.variation) console.log('\x1b[38;5;17m', 'classData.variation', classData.variation, '\x1b[0m');
 
     classData.implementsData = this._generateDocsLinkData(doc.implements, null, false, ', ');
     classData.indirectImplementsData = this._generateDocsLinkData(doc._custom_indirect_implements, null, false, ', ');
@@ -86,19 +86,19 @@ export default class ClassDocBuilder extends DocBuilder {
       }
     }
     
-    classData.staticMemberSummaryData = this._generateSummaryData(doc, 'members', 'Members', true);
-    classData.staticMethodSummaryData = this._generateSummaryData(doc, 'methods', 'Methods', true);
+    classData.staticMemberSummaryData = this._generateSummaryData(doc, 'member', 'Members', true);
+    classData.staticMethodSummaryData = this._generateSummaryData(doc, 'method', 'Methods', true);
     classData.constructorSummaryData = this._generateSummaryData(doc, 'constructor', 'Constructor', false);
-    classData.membersSummaryData = this._generateSummaryData(doc, 'members', 'Members', false);
-    classData.methodsSummaryData = this._generateSummaryData(doc, 'methods', 'Methods', false);
+    classData.membersSummaryData = this._generateSummaryData(doc, 'member', 'Members', false);
+    classData.methodsSummaryData = this._generateSummaryData(doc, 'method', 'Methods', false);
     
     classData.inheritedSummaryData = this._generateInheritedSummaryData(doc);
     
-    classData.staticMemberDetailsData = this._generateDetailsData(doc, 'members', 'Members', true);
-    classData.staticMethodDetailsData = this._generateDetailsData(doc, 'methods', 'Methods', true);
+    classData.staticMemberDetailsData = this._generateDetailsData(doc, 'member', 'Members', true);
+    classData.staticMethodDetailsData = this._generateDetailsData(doc, 'method', 'Methods', true);
     classData.constructorDetailsData = this._generateDetailsData(doc, 'constructor', 'Constructor', false);
-    classData.membersDetailsData = this._generateDetailsData(doc, 'members', 'Members', false);
-    classData.methodsDetailsData = this._generateDetailsData(doc, 'methods', 'Methods', false);
+    classData.membersDetailsData = this._generateDetailsData(doc, 'member', 'Members', false);
+    classData.methodsDetailsData = this._generateDetailsData(doc, 'method', 'Methods', false);
 
     return classData;
   }
@@ -201,6 +201,7 @@ export default class ClassDocBuilder extends DocBuilder {
       if(variationDoc.variation === doc.variation) continue;
       links.push(this._generateDocLinkData(variationDoc.longname, `(${variationDoc.variation || 1})`));
     }
+    if(links.length === 0) return false;
     return links;
   }
 
@@ -254,13 +255,14 @@ export default class ClassDocBuilder extends DocBuilder {
 
   _generateExpressionExtendsData(doc) {
     if(!doc.expressionExtends) return false;
-    return doc.expressionExtends;
-    //const links = doc.expressionExtends.replace(/[A-Z_$][a-zA-Z09-_$]*/gu, (v) => {
-    //  return this._generateDocLinkData(v);
-    //});
-    //links.push(doc.name);
-    //
-    //return links;
+    
+    const links = [];
+    
+    for(const match of doc.expressionExtends.match(jsIdentifierRegExp)) {
+      links.push(this._generateDocLinkData(match));
+    }
+    
+    return {expression: doc.expressionExtends, links: links};
   }
 
   /**
