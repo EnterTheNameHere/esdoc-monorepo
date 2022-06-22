@@ -21,6 +21,60 @@ export default class SourceDocBuilder extends DocBuilder {
     writeFile(fileName, ice.html);
   }
 
+  _generateSourceData() {
+    const sourceData = {};
+    sourceData.files = [];
+
+    const docs = this._find({kind: 'file'});
+    const coverage = (this._coverage) ? this._coverage.files : false;
+    
+    if(coverage) {
+      sourceData.coverage = { expected: this._coverage.expectCount, actual: this._coverage.actualCount };
+    } else {
+      sourceData.coverage = false;
+    }
+    
+    for(const doc of docs) {
+      const sourceFileData = {};
+      sourceFileData.filePath = doc.name;
+      sourceFileData.numLines = doc.content.split('\n').length - 1;
+      
+      const stat = FileManager.getStat(doc.longname);
+      sourceFileData.size = stat.size;
+      sourceFileData.updated = dateForUTC(stat.ctime);
+      
+      const identifierDocs = this._find({
+        longname: {left: `${doc.name}~`},
+        kind: ['class', 'function', 'variable'],
+      });
+
+      sourceFileData.identifiers = identifierDocs.map((identifierDoc) => {
+        return this._generateDocLinkData(identifierDoc.longname);
+      });
+
+      if(coverage && coverage[doc.name]) {
+        const expected = coverage[doc.name].expectCount;
+        const actual = coverage[doc.name].actualCount;
+        sourceFileData.coverage = {
+          expected: expected,
+          actual: actual,
+        };
+        
+        const undocumentedLinesString = coverage[doc.name].undocumentLines.sort().join(',');
+
+        sourceFileData.fileLink = this._generateFileDocLinkData(doc);
+        sourceFileData.fileLink.href = sourceFileData.fileLink.href.replace(/href=".*\.html"/u, `href="${this._getURL(doc)}#errorLines=${undocumentedLinesString}"`);
+      } else {
+        sourceFileData.coverage = false;
+        sourceFileData.fileLink = this._generateFileDocLinkData(doc);
+      }
+
+      sourceData.files.push(sourceFileData);
+    }
+
+    return sourceData;
+  }
+  
   /**
    * build source list output html.
    * @returns {string} html of source list.
