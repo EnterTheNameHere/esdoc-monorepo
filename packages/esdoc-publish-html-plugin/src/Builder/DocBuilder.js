@@ -8,6 +8,11 @@ import DocResolver from './DocResolver.js';
 import NPMUtil from '@enterthenamehere/esdoc-core/lib/Util/NPMUtil.js';
 import { FileManager } from '@enterthenamehere/esdoc-core/lib/Util/FileManager.js';
 import { HTMLTemplate } from './HTMLTemplate.js';
+import * as peggy from 'peggy';
+
+const grammarFileName = `${__dirname}\\..\\..\\src\\JSDocGrammar\\JSDocTypeExpression.pegjs`;
+const grammarSource = FileManager.readFileContents(`${__dirname}\\..\\..\\src\\JSDocGrammar\\JSDocTypeExpression.pegjs`);
+const JSDocTypeExpressionParser = peggy.generate(grammarSource, {grammarSource: grammarFileName});
 
 /**
  * Builder base class.
@@ -243,13 +248,24 @@ export default class DocBuilder {
       ice.drop('manualHeaderLink');
     }
 
-    ice.load('nav', this._buildNavDoc());
+    ice.load('nav', this._generateNavData());
     return ice;
   }
   
-  _buildLayoutEjs( nav='nav here', title='title here', baseUrl='', contents='contents here', esdocVersion='0.0.0', esdocLink='linkHere' ) {
+  // TODO: esdocLink have link in name, but it's a url, not <a href>text</a> link. We use link objects with href and text properties, so user might expect this format - rename to esdocURL
+  _buildLayoutEjs( nav='Navigation is missing.', title='No title provided.', baseUrl='', contents='No contents provided.', esdocVersion=null, esdocLink=null ) {
+    const esdocCorePackage = NPMUtil.findPackage();
+    
+    const esdocVersionString = (!esdocVersion)
+      ? esdocCorePackage?.version || null
+      : esdocVersion?.toString() || null;
+
+    const esdocLinkString = (!esdocLink)
+      ? esdocCorePackage?.homepage || esdocCorePackage?.repository?.url || null
+      : esdocLink?.toString() || null;
+    
     const html = FileManager.readFileContents(path.join(this.Plugin.TemplateDirectory, 'layout.ejs'));
-    return HTMLTemplate.render(html, {nav, title, baseUrl, contents, esdocVersion, esdocLink});
+    return HTMLTemplate.render(html, {nav, title, baseUrl, contents, esdocVersion: esdocVersionString, esdocLink: esdocLinkString});
   }
   
   _generateNavData() {
@@ -650,12 +666,24 @@ export default class DocBuilder {
       }
       
       if(doc.return) {
-        detail.return = {};
-        detail.return.description = doc.return.description;
-        detail.return.types = [];
-        for(const typeName of doc.return.types) {
-          detail.return.types.push(this._generateTypeDocLinkData(typeName));
+        //del detail.return = {};
+        // HACK: Since Core package doesn't do good job, we can end up with doc.return.types having length of
+        //       zero (no return), one (may need another parsing) or more (might be union)
+        //       Until it's fixed in Core package, let's make more than one elements union...
+        let returnType = doc.return.types[0];
+        if(doc.return.types.length > 1) {
+          const returnTypes = [];
+          for(const typeName of doc.return.types) {
+            returnTypes.push(typeName);
+          }
+          returnType = `(${returnTypes.join(',')})`;
         }
+        detail.return = this._generateTypeDocLinkData(returnType);
+        //del for(const typeName of doc.return.types) {
+        //del  detail.return.types.push(this._generateTypeDocLinkData(typeName));
+        //del }
+        
+        detail.return.description = doc.return.description;
         if(typeof doc.return.nullable === 'boolean') {
           detail.return.nullable = doc.nullable;
         }
@@ -995,48 +1023,95 @@ export default class DocBuilder {
     
     return `<span><a href="${this._getURL(fileDoc)}#lineNumber${doc.lineNumber}">${text}</a></span>`;
   }
-
+    
+  /**
+   * Returns link to doc with `name`. If doc with this name is not found, href of link will be false.
+   * @param {string} docName 
+   * @returns {{href:(string|null), text: string}}
+   */
+  tryGetDocByNameFromDB(docName) {
+    const doc = this._findByName(docName);
+    if(doc.length > 1) {
+      console.warn('_generateTypeDocLinkData: More than one docOfType type found!');
+    }
+    return this._generateDocLinkData(docName, docName);
+  }
+  
   _generateTypeDocLinkData(typeName) {
-    console.log('\x1b[38;5;73m','_generateTypeDocLinkData typeName', typeName, '\x1b[0m');
-    let typeDocLinkData = {};
+    //console.log(`${Colors.c1}_generateTypeDocLinkData typeName:`, typeName, Colors.clear);
+    
+    if(typeof typeName !== 'string') {
+      const errorText = 'Error: _generateTypeDocLinkData typeName parameter must be string!';
+      console.error(errorText);
+      throw new TypeError(errorText);
+    }
+    
+    try {
+      //console.log(`Parsing JSDocTypeExpression: ${inspect(typeName,false, 10, true)}`);
+      
+      const parsedExpression = JSDocTypeExpressionParser.parse(typeName, {grammarSource: grammarFileName});
+      
+      //console.log(`${Colors.c2}     >> `, inspect(parsedExpression, false, 10, true) , Colors.clear);
+      return this._addLinksToJSIdentifiers(parsedExpression).result;
+    } catch (ex) {
+      if(ex.location) {
+        console.log('Cannot parse JSDocTypeExpression:');
+        console.log(`${typeName}`);
+        console.log(`${Array(ex.location.start.offset).fill('-').join('').toString()}^`);
+      } else {
+        console.log('Caught exception:', ex);
+      }
+    }
+    return {type: 'Text', text: typeName};
+  }
+  
+  _addLinksToJSIdentifiers(typeDocLinkData) {
+    const returnData = typeDocLinkData;
 
-    // e.g. number[]
-    let matched = typeName.match(/^(.*?)\[\]$/u);
-    if(matched) {
-      return {
-        ...this._generateDocLinkData(matched[1], matched[1]),
-      };
-    }
-    
-    // e.g. function(a: number, b: string): boolean
-    matched = typeName.match(/function *\((.*?)\)(.*)/u);
-    if(matched) {
-      if(!matched[1] && !matched[2]) return this._generateDocLinkData('function');
-      console.log('\x1b[38;5;83m','    matched[1]', (matched[1]) ? matched[1] : 'false', '\x1b[0m');
-      console.log('\x1b[38;5;83m','    matched[2]', (matched[2]) ? matched[2] : 'false', '\x1b[0m');
-      return {text: typeName};
-    }
-    
-    // e.g. {a: number, b: string}
-    matched = typeName.match(/^\{(.*?)\}$/u);
-    if(matched) {
-      if(!matched[1]) return this._generateDocLinkData('{}');
-      console.log('\x1b[38;5;83m','    matched[1]', (matched[1]) ? matched[1] : 'false', '\x1b[0m');
-      console.log('\x1b[38;5;83m','    matched[2]', (matched[2]) ? matched[2] : 'false', '\x1b[0m');
-      return {text: typeName};
-    }
+    // Just go through every node { type: 'node type', ... } recursively and if JSIdentifier is found, add link to it...
+    const recursivelyAddLinks = (currentNode) => {
+      if(!currentNode) return;
 
-    // e.g. Map<number, string>
-    matched = typeName.match(/^(.*?)\.?<(.*?)>$/u);
-    if(matched) {
-      console.log('\x1b[38;5;83m','    matched[1]', (matched[1]) ? matched[1] : 'false', '\x1b[0m');
-      console.log('\x1b[38;5;83m','    matched[2]', (matched[2]) ? matched[2] : 'false', '\x1b[0m');
-      return {text: typeName};
-    }
+      if(currentNode.type === 'JSIdentifier') {
+        currentNode.link = this.tryGetDocByNameFromDB(currentNode.text);
+      } else {
+        if(currentNode?.identifier) {
+          recursivelyAddLinks(currentNode.identifier);
+        }
+        if(currentNode?.parameters && Array.isArray(currentNode?.parameters)) {
+          currentNode.parameters.forEach( (parameter) => { recursivelyAddLinks(parameter); } );
+        }
+        if(currentNode?.returnTypes) {
+          recursivelyAddLinks(currentNode.returnTypes);
+        }
+        if(currentNode?.generic) {
+          recursivelyAddLinks(currentNode.generic);
+        }
+        if(currentNode?.parameterName) {
+          recursivelyAddLinks(currentNode.parameterName);
+        }
+        if(currentNode?.parameterType) {
+          recursivelyAddLinks(currentNode.parameterType);
+        }
+        if(currentNode?.generic) {
+          recursivelyAddLinks(currentNode.generic);
+        }
+        if(currentNode?.properties && Array.isArray(currentNode?.properties)) {
+          currentNode.properties.forEach( (prop) => { recursivelyAddLinks(prop); } );
+        }
+        if(currentNode?.identifierName) {
+          recursivelyAddLinks(currentNode.identifierName);
+        }
+        if(currentNode?.identifierType) {
+          recursivelyAddLinks(currentNode.identifierType);
+        }
+      }
+    };
     
-    console.log('\x1b[38;5;83m','    typeName', typeName, '\x1b[0m');
-    
-    return {text: typeName};
+    recursivelyAddLinks(returnData.result);
+    //console.log(`${Colors.c2}     >> `, inspect(returnData.result, false, 10, true) , Colors.clear);
+
+    return returnData;
   }
   
   /**
@@ -1166,10 +1241,33 @@ export default class DocBuilder {
   }
   
   /**
-   * @param {string} longName 
-   * @param {*} [text=null] 
+   * Generates link object for doc object identified by given longname. Link's href will point to URL 
+   * of doc's documentation. If doc with given `longname` is not found, href will be set as `false`. 
+   * If parameter `text` is not set, the text of link will be `longname`. Since that can be non-human
+   * readable, you can override the text of link by passing a string as `text`. You can narrow search
+   * for doc by specifying `kind` of the doc.
+   * 
+   * @example
+     let link = _generateDocLinkData('some string');
+     // Doc doesn't exist, href is false
+     // Returns {text:"some string", href: false}
+     
+     link = _generateDocLinkData('JSIdentifier');
+     // Doc is found, href points to its documentation.
+     // {text:"JSIdentifier", href: "class/src/Export/JSIdentifier.js~JSIdentifier.html"}
+     
+     link = _generateDocLinkData('src/Builder/DocBuilder.js~_generateDocLinkData');
+     // Doc is found, but the longName is not human-reading friendly.
+     // {text:"src/Builder/DocBuilder.js~_generateDocLinkData", href: "src/Builder/DocBuilder.js~_generateDocLinkData"}
+     
+     link = _generateDocLinkData('src/Builder/DocBuilder.js~_generateDocLinkData', '_generateDocLinkData');
+     // We can override the text of link to be easily readable.
+     // {text:"_generateDocLinkData", href: "src/Builder/DocBuilder.js~_generateDocLinkData"}
+   * 
+   * @param {string} longName - the longname of doc we want to generate link to.
+   * @param {string} [text=null] - overrides text of the link.
    * @param {*} [inner=false] 
-   * @param {*} [kind=null] 
+   * @param {string} [kind=null] - search doc of specific kind.
    * @returns {{text:string,href:string|false}}
    */
   _generateDocLinkData(longName, text = null, inner = false, kind = null) {
@@ -1276,68 +1374,92 @@ export default class DocBuilder {
     return `<ul>${links.join(separator)}</ul>`;
   }
   
+  // TODO: detail and summary use same signature property, as well as return property - try to make it better organized and standardized
   _generateSignatureData(doc) {
     if(!doc) {
       const errorText = 'Error: doc is a required parameter!';
       console.error(errorText);
       throw new TypeError(errorText);
     }
+    
+    const data = {};
+    
+    // HACK: Let's "create" jsdoc string from data we have about parameters, types and return and have it parsed
 
-    const signatureData = { params: [], returns: [], types: [] };
+    //console.log(`${Colors.c2}_generateSignatureData doc:`, doc?.longname, Colors.clear);
     if(doc.params) {
-      // Parameters
+      // We want to create function jsdoc notation with parameter list
+      let jsdocFunctionString = 'function(';
+      const jsdocParams = [];
       for(const param of doc.params) {
-        if(param.name.indexOf('.') !== -1) {
-          // for object property
-          console.log('\x1b[38;5;40m', 'param.name', param.name, '\x1b[0m');
-          console.log('\x1b[38;5;40m', 'continuing with next', '\x1b[0m');
-          continue;
-        }
-        if(param.name.indexOf('[') !== -1) {
-          // for array property
-          console.log('\x1b[38;5;40m', 'param.name', param.name, '\x1b[0m');
-          console.log('\x1b[38;5;40m', 'continuing with next', '\x1b[0m');
-          continue;
-        }
+        if(param.name.indexOf('.') !== -1) continue;
+        if(param.name.indexOf('[') !== -1) continue;
         
+        let jsdocParamString = param.name;
         const types = [];
-        for( const typeName of param.types ) {
-          types.push(this._generateTypeDocLinkData(typeName));
+        for(const typeName of param.types) {
+          types.push(typeName);
+        }
+        if(types.length > 0) {
+          jsdocParamString += ': ';
+          jsdocParamString += types.join('|');
         }
 
-        signatureData.params.push(types);
+        jsdocParams.push(jsdocParamString);
       }
-    } else {
-      signatureData.params = false;
+      
+      if(jsdocParams.length) {
+        jsdocFunctionString += jsdocParams.join(',');
+      }
+      jsdocFunctionString += ')';
+      
+      data.params = this._generateTypeDocLinkData(jsdocFunctionString);
+      data.params.type = 'JSDocFunction';
+      data.params.identifier = {type: 'Text', text: ''};
+      
+      /*
+      data.params = [];
+      for(const param of doc.params) {
+        //console.log(`${Colors.c3}_generateSignatureData param:`, param, Colors.clear);
+        if(param.name.indexOf('.') !== -1) continue;
+        if(param.name.indexOf('[') !== -1) continue;
+        
+        for(const typeName of param.types) {
+          //console.log(`${Colors.c3}_generateSignatureData param.types:`, typeName, Colors.clear);
+          data.params.push(
+            this._generateTypeDocLinkData(typeName)
+          );
+        }
+      }
+      */
     }
     
-
-    // return signature
     if(doc.return) {
-      for(const typeName of doc.return.types) {
-        signatureData.returns.push(this._generateTypeDocLinkData(typeName));
+      // HACK: Since Core package doesn't do good job, we can end up with doc.return.types having length of
+      //       zero (no return), one (may need another parsing) or more (might be union)
+      //       Until it's fixed in Core package, let's make more than one elements union...
+      let returnType = doc.return.types[0];
+      if(doc.return.types.length > 1) {
+        const returnTypes = [];
+        for(const typeName of doc.return.types) {
+          returnTypes.push(typeName);
+        }
+        returnType = `(${returnTypes.join('|')})`;
       }
-    } else {
-      signatureData.returns = false;
+      data.return = this._generateTypeDocLinkData(returnType);
     }
-
-    // type signature
-    if(doc.type) {
-      console.log('\x1b[38;5;22m', 'doc.type', doc.type, '\x1b[0m');
+    
+    if(doc.type && doc.kind !== 'function') {
+      data.type = [];
       for(const typeName of doc.type.types) {
-        signatureData.types.push(this._generateTypeDocLinkData(typeName));
+        //console.log(`${Colors.c5}_generateSignatureData type.types:`, typeName, Colors.clear);
+        data.type.push(
+          this._generateTypeDocLinkData(typeName)
+        );
       }
-    } else {
-      signatureData.types = false;
     }
-
-    // callback does not need types, because it has type of function?
-    if(doc.kind === 'function') {
-      console.log('\x1b[38;5;125m', 'kind is function, resetting types', '\x1b[0m');
-      signatureData.types = false;
-    }
-
-    return signatureData;
+    
+    return data;
   }
   
   /**
