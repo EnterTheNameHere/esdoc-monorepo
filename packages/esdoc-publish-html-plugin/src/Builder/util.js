@@ -48,6 +48,7 @@ export function sanitize(html) {
     if(!html || typeof html !== 'string') return '';
     
     const sanitized = sanitizeHtml( html, {
+        allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
         disallowedTagsMode: 'escape'
     }).trim();
 
