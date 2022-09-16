@@ -7,6 +7,22 @@ import DocBuilder from './DocBuilder.js';
  */
 export default class SingleDocBuilder extends DocBuilder {
   exec(writeFile/*, copyDir*/) {
+    const nav = this._renderTemplate('nav.ejs', this._generateNavData());
+    
+    const kinds = ['function', 'variable', 'typedef'];
+    for(const kind of kinds) {
+      const docs = this._find({kind: kind});
+      if(!docs.length) continue;
+      const fileName = this._getOutputFileName(docs[0]);
+      const baseUrl = this._getBaseUrl(fileName);
+      const title = kind.replace(/^(\w)/u, (c) => { return c.toUpperCase(); });
+      
+      const contents = this._generateSingleDoc(kind);
+      writeFile(fileName, this._renderTemplate('layout.ejs',{nav, title, baseUrl, contents, esdocVersion:null, esdocLink:null}));
+    }
+  }
+
+  exec_old(writeFile/*, copyDir*/) {
     const ice = this._buildLayoutDoc();
     ice.autoClose = false;
 

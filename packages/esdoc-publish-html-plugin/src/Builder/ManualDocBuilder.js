@@ -1,6 +1,6 @@
 import IceCap from '@enterthenamehere/ice-cap';
 import path from 'path';
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import DocBuilder from './DocBuilder.js';
 import {markdown} from './util.js';
 
@@ -9,7 +9,41 @@ import {markdown} from './util.js';
  */
 export default class ManualDocBuilder extends DocBuilder {
   exec(writeFile, copyDir/*, readFile*/) {
+    const manuals = this._tags.filter((tag) => { return tag.kind === 'manual'; });
+    if(manuals && manuals.length === 0) return;
+    
+    const manualIndex = this._tags.find((tag) => { return tag.kind === 'manualIndex'; });
+    
+    const badge = this._writeBadge(manuals, writeFile);
+    const contents = this._generateManualCardsContents(manuals, manualIndex, badge);
+    
+    const fileName = 'manual/index.html';
+    const baseUrl = this._getBaseUrl(fileName);
+    
+    const nav = this._renderTemplate('manualIndex.ejs', { navData: this._generateManualNavData(manuals) });
+    const title = 'Manual';
+    
+    writeFile(fileName, this._renderTemplate('layout.ejs', {nav, title, baseUrl, contents, esdocVersion:null, esdocLink:null}));
+    
+    for(const manual of manuals) {
+      const manualFileName = this._getManualOutputFileName(manual.name);
+      const manualBaseUrl = this._getBaseUrl(fileName);
+      const manualContents = this._generateManualContents(manual);
+      const manualNav = this._renderTemplate('manualIndex.ejs', { navData: this._generateManualNavData(manuals) });
+      writeFile(manualFileName, this._renderTemplate('layout.ejs', {nav: manualNav, title, baseUrl: manualBaseUrl, contents: manualContents, esdocVersion:null, esdocLink:null}));
+    }
+    
+    if(manualIndex && manualIndex.globalIndex) {
+      writeFile('index.html', this._renderTemplate('layout.ejs', {nav, title, baseUrl: './', contents, esdocVersion:null, esdocLink:null}));
+    }
+  
+    const manualAssets = this._tags.find((tag) => { return tag.kind === 'manualAsset'; });
+    if(manualAssets && manualAssets.name) {
+      copyDir(manualAssets.name, 'manual/asset');
+    }
+  }
 
+  exec_old(writeFile, copyDir/*, readFile*/) {
     const manuals = this._tags.filter((tag) => { return tag.kind === 'manual'; });
     const manualIndex = this._tags.find((tag) => { return tag.kind === 'manualIndex'; });
     const manualAsset = this._tags.find((tag) => { return tag.kind === 'manualAsset'; });
@@ -52,7 +86,118 @@ export default class ManualDocBuilder extends DocBuilder {
       copyDir(manualAsset.name, 'manual/asset');
     }
   }
+  
+  // TODO: What is the meaning of having all these names as files in manual to receive "perfect" badge? We shouldn't "rate" that. Remove it...
+  _writeBadge(manuals, writeFile) {
+    const specialFileNamePatterns = [
+      'overview',
+      'design',
+      'install',
+      'usage',
+      'config',
+      'example',
+      'faq',
+      'changelog',
+    ];
 
+    let count = 0;
+    for(const pattern of specialFileNamePatterns) {
+      for(const manual of manuals) {
+        const fileName = path.parse(manual.name).name;
+        if(fileName.toLowerCase().indexOf(pattern) !== -1) {
+          count++;
+          break;
+        }
+      }
+    }
+    
+    if(count !== specialFileNamePatterns.length) return false;
+    
+    let badge = this._readTemplate('image/manual-badge.svg');
+    badge = badge.replace(/@value@/gu, 'perfect');
+    badge = badge.replace(/@color@/gu, '#4fc921');
+    writeFile('manual-badge.svg', badge);
+
+    return true;
+  }
+  
+  _generateManualContents(manual) {
+    const markdowned = markdown(manual.content);
+    const contents = this._renderTemplate('manual.ejs', {contents: markdowned});
+    
+    return contents;
+  }
+  
+  _generateManualCardsContents(manuals, manualIndex, badgeFlag) {
+    const cards = [];
+    for(const manual of manuals) {
+      const fileName = this._getManualOutputFileName(manual.name);
+      const manualContents = this._generateManualContents(manual);
+      const $ = cheerio.load(manualContents);
+      const h1Count = $('h1').length;
+
+      $('h1').each((index, el) => {
+        const label = $(el).text();
+        const link = (h1Count === 1) ? fileName : `${fileName}#${$('id', el)}`;
+        let card = `<h1>${label}</h1>`;
+        const nextAll = $(el).nextAll();
+
+        for(let ii = 0; ii < nextAll.length; ii+=1) {
+          const next = nextAll.get(ii);
+          const tagName = next.tagName.toLowerCase();
+          if(tagName === 'h1') return;
+          card += `<${tagName}>${$(next).html()}</${tagName}>`;
+        }
+
+        cards.push({label, link: {href: link, text: ''}, card});
+      });
+    }
+    
+    const manualUserIndex = (manualIndex && manualIndex.content) ? markdown(manualIndex.content) : false;
+    const manualBadge = (!manualIndex.coverage || !badgeFlag) ? false : true; // TODO: It doesn't even work as it should...
+    const contents = this._renderTemplate('manualCardIndex.ejs', {manualUserIndex, cards, manualBadge});
+    
+    return contents;
+  }
+  
+  _generateManualNavData(manuals) {
+    const navLinks = [];
+
+    for(const manual of manuals) {
+      const tableOfContents = [];
+      const fileName = this._getManualOutputFileName(manual.name);
+      const contents = markdown(manual.content);
+
+      const $ = cheerio.load(contents);
+      const h1Count = $('h1').length;
+      
+      // For each header on page (...)
+      $('h1,h2,h3,h4,h5').each((index, el) => {
+        const indent = `indent-${el.tagName.toLowerCase()}`;
+        const label = $(el).text();
+        let link = `${fileName}#${$('id', el)}`;
+        if(el.tagName.toLowerCase() === 'h1' && h1Count === 1) link = fileName;
+        
+        // (...) create link in table of contents
+        tableOfContents.push({label, link, indent});
+      });
+    
+      for(const item of tableOfContents) {
+        // Transform table of contents to data which can be used by html template...
+        navLinks.push({
+          link:{
+            href: item.link,
+            text: item.label
+          },
+          cssClass: item.indent,
+          dataLink: item.link.split('#')[0]
+        });
+      }
+    }
+    
+    return navLinks;
+  }
+  
   /**
    * this is
    * @param {manual[]} manuals
@@ -60,7 +205,7 @@ export default class ManualDocBuilder extends DocBuilder {
    * @returns {boolean}
    * @private
    */
-  _writeBadge(manuals, writeFile) {
+  _writeBadge_old(manuals, writeFile) {
     const specialFileNamePatterns = [
       '(overview.*)',
       '(design.*)',

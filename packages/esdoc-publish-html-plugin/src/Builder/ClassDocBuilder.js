@@ -7,6 +7,19 @@ import {parseExample, highlight, isIterable, jsIdentifierRegExp} from './util.js
  */
 export default class ClassDocBuilder extends DocBuilder {
   exec(writeFile) {
+    const nav = this._renderTemplate('nav.ejs', this._generateNavData());
+
+    const docs = this._find({kind: ['class']});
+    for(const doc of docs) {
+      const fileName = this._getOutputFileName(doc);
+      const baseUrl = this._getBaseUrl(fileName);
+      const title = this._getTitle(doc);
+      const contents = this._renderTemplate('class.ejs', {cls: this._generateClassDocData(doc)});
+      writeFile(fileName, this._renderTemplate('layout.ejs', {nav, title, baseUrl, contents, esdocVersion:null, esdocLink:null}));
+    }
+  }
+
+  exec_old(writeFile) {
     const ice = this._buildLayoutDoc();
     ice.autoDrop = false;
     const docs = this._find({kind: ['class']});
@@ -19,6 +32,7 @@ export default class ClassDocBuilder extends DocBuilder {
       ice.text('title', title, IceCap.MODE_WRITE);
       writeFile(fileName, ice.html);
     }
+  }
   
   _generateClassDocData(doc) {
     if(!doc) {

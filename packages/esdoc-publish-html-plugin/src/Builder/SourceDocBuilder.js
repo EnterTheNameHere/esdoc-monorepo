@@ -9,6 +9,18 @@ import { FileManager } from '@enterthenamehere/esdoc-core/lib/Util/FileManager';
 export default class SourceDocBuilder extends DocBuilder {
   exec(writeFile, copyDir, coverage) {
     this._coverage = coverage;
+    
+    const nav = this._renderTemplate('nav.ejs', this._generateNavData());
+    
+    const fileName = 'source.html';
+    const baseUrl = this._getBaseUrl(fileName);
+    const title = 'Source';
+    const contents = this._renderTemplate('source.ejs', this._generateSourceData());
+    writeFile(fileName, this._renderTemplate('layout.ejs', {nav, title, baseUrl, contents, esdocVersion: null, esdocLink: null}));
+  }
+
+  exec_old(writeFile, copyDir, coverage) {
+    this._coverage = coverage;
     const ice = this._buildLayoutDoc();
     const fileName = 'source.html';
     const baseUrl = this._getBaseUrl(fileName);

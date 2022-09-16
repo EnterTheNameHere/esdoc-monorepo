@@ -6,14 +6,32 @@ import DocBuilder from './DocBuilder.js';
  */
 export default class TestDocBuilder extends DocBuilder {
   exec(writeFile/*, copyDir*/) {
+    const testDoc = this._find({kind: ['test']})[0];
+    if(!testDoc) return;
+    
+    const nav = this._renderTemplate('nav.ejs', this._generateNavData());
+
+    const fileName = this._getOutputFileName(testDoc);
+    const baseUrl = this._getBaseUrl(fileName);
+    const title = this._getTitle('Test');
+    
+    const contents = this._renderTemplate('test.ejs', {tests: this._generateTestDocData()});
+    writeFile(fileName, this._renderTemplate('layout.ejs', {nav, title, baseUrl, contents, esdocVersion:null, esdocLink:null}));
+  }
+  
+  exec_old(writeFile/*, copyDir*/) {
     const testDoc = this._find({kind: 'test'})[0];
     if (!testDoc) return;
-
+    
     const ice = this._buildLayoutDoc();
     const fileName = this._getOutputFileName(testDoc);
     const baseUrl = this._getBaseUrl(fileName);
     const title = this._getTitle('Test');
-
+    
+    ice.load('content', this._buildTestDocHTML());
+    ice.attr('baseUrl', 'href', baseUrl);
+    ice.text('title', title);
+    writeFile(fileName, ice.html);
   }
   
   /**

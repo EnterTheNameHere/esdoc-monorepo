@@ -8,6 +8,14 @@ import {escapeURLHash} from './util';
  */
 export default class IdentifiersDocBuilder extends DocBuilder {
   exec(writeFile/*, copyDir*/) {
+    const title = 'Reference';
+    const baseUrl = '';
+    const contents = this._renderTemplate('identifiers.ejs', this._generateIdentifiersData());
+    const nav = this._renderTemplate('nav.ejs', this._generateNavData());
+    writeFile('identifiers.html', this._renderTemplate('layout.ejs', {nav, title, baseUrl, contents, esdocVersion:null, esdocLink:null}));
+  }
+
+  exec_old(writeFile/*, copyDir*/) {
     const ice = this._buildLayoutDoc();
     const title = this._getTitle('Reference');
     ice.load('content', this._buildIdentifierDoc());

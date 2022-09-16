@@ -8,11 +8,23 @@ import {markdown} from './util.js';
  */
 export default class IndexDocBuilder extends DocBuilder {
   exec(writeFile/*, copyDir*/) {
+    const nav = this._renderTemplate('nav.ejs', this._generateNavData());
+    const title = 'Home';
+    const contents = this._generateIndexData();
+
+    writeFile('index.html', this._renderTemplate('layout.ejs',{nav, title, baseUrl: '../', contents, esdocVersion:null, esdocLink:null}));
+  }
+
+  exec_old(writeFile/*, copyDir*/) {
     const ice = this._buildLayoutDoc();
     const title = this._getTitle('Home');
     ice.load('content', this._buildIndexDoc());
     ice.text('title', title, IceCap.MODE_WRITE);
     writeFile('index.html', ice.html);
+  }
+  
+  _generateIndexData() {
+    return 'index doc contents here';
   }
 
   /**

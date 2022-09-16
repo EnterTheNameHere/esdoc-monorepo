@@ -7,6 +7,19 @@ import { addLineNumbersToSourceCode } from './util.js';
  */
 export default class TestFileDocBuilder extends DocBuilder {
   exec(writeFile/*, copyDir*/) {
+    const nav = this._renderTemplate('nav.ejs', this._generateNavData());
+
+    const docs = this._find({kind: ['testFile']});
+    for(const doc of docs) {
+      const fileName = this._getOutputFileName(doc);
+      const baseUrl = this._getBaseUrl(fileName);
+      const title = this._getTitle(doc);
+      const contents = this._renderTemplate('file.ejs', this._generateFileData(doc));
+      writeFile(fileName, this._renderTemplate('layout.ejs', {nav, title, baseUrl, contents, esdocVersion:null, esdocLink:null}));
+    }
+  }
+
+  exec_old(writeFile/*, copyDir*/) {
     const ice = this._buildLayoutDoc();
 
     const docs = this._find({kind: 'testFile'});
