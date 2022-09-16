@@ -1,0 +1,55 @@
+<% include(`${template.rootDirectory}/utils`); _%>
+<!-- summary.ejs -->
+<table class="summary" data-ice="summary">
+  <thead>
+    <tr><td data-ice="title" colspan="3"><%= title || '' -%></td></tr>
+  </thead>
+  <tbody>
+    <%_ if(docs?.length > 0) { -%>
+      <%_ for( const doc of docs ) { -%>
+        <%#- utils.var_dump(doc); %>
+        <tr data-ice="target">
+          <td><%_ if(doc.access) {-%><span class="access" data-ice="access"><%= doc.access -%></span><%_
+            }//if
+            if(doc.static) {-%><span data-ice="static">static</span><%
+            }//if
+            if(doc.kind) {-%><span class="kind" data-ice="kind"><%= doc.kind -%></span><% 
+            }//if
+            if(doc.abstract) {-%><span class="abstract" data-ice="abstract">abstract</span><%
+            }//if
+            if(doc.override) {-%><span class="override" data-ice="override"><%= doc.override -%></span><%
+            }//if 
+            -%></td>
+          <td>
+            <div>
+              <p><%_ if( doc.kindIcon ) { _%><span class="kind-<%= doc.kindIcon -%>" data-ice="kind-icon"><%= doc.kindIcon.charAt(0).toUpperCase() -%></span><% }//if
+                if( doc.async ) { _%><span data-ice="async">async</span><%_ }//if
+                if( doc.generator ) { _%><span data-ice="generator">*</span><%_ }//if -%>
+                <span class="code" data-ice="name"><%- renderLink(doc.signature) %></span><%_
+             _%><span class="code" data-ice="signature"><% if(doc?.signature?.params) {
+                    // HACK: doc.signature.params is hacked to contain jsdoc notation object with all parameters, so just pass it along; return types must be added separately though
+                    const tempFunc = {...doc.signature.params}
+                    if(doc?.signature?.return) { tempFunc.returnTypes = doc.signature.return; }
+                    %><%- include(`${template.rootDirectory}/signature`, {root: tempFunc}); %><%
+                  }
+              %></span>
+              </p>
+            </div>
+            <div>
+              <%_ if(doc.deprecated)       { -%><div class="deprecated" data-ice="deprecated">This <%= doc.kindString -%> is deprecated.<%= (typeof doc.deprecated === 'string') ? ` ${doc.deprecated}` : '' %></div><%_ }//if -%>
+              <%_ if(doc.experimental)     { -%><div class="experimental" data-ice="experimental">This <%= doc.kindString -%> is experimental.<%= (typeof doc.experimental === 'string') ? ` ${doc.experimental}` : '' %></div><%_ }//if -%>
+              <%_ if(doc.shortDescription) { -%><div data-ice="description"><%- doc.shortDescription -%></div><%_ }//if -%>
+            </div>
+          </td>
+          <td>
+            <%_ if(doc.version) { %><span class="version" data-ice="version">version <%= doc.version -%></span><% }//if -%>
+            <%_ if(doc.since) { %><span class="since" data-ice="since">since <%= doc.since -%></span><% }//if -%>
+          </td>
+        </tr>
+      <%_ }//for -%>
+    <%_ } else { -%>
+      <tr><td>No summary.</td></tr>
+    <%_ }//if-else -%> 
+  </tbody>
+</table>
+<!-- summary.ejs end -->

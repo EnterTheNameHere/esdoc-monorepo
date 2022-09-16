@@ -1,0 +1,32 @@
+<% include(`${template.rootDirectory}/utils`); _%>
+<!-- properties.ejs -->
+<div data-ice="properties">
+  <%_ if(title) { _%><h4 data-ice="title"><%= title %></h4><%_ }//if(title) _%>
+  <table class="params">
+    <thead>
+      <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    <%_ for(const prop of properties) { _%>
+      <tr data-ice="property" data-depth="<%= (prop.name.split('.') - 1) %>">
+        <td data-ice="name" class="code" data-depth="<%= (prop.name.split('.') - 1) %>"><%= prop.name %></td>
+        <td data-ice="type" class="code"><%_
+          for(const typeLink of prop.typesLinks) { %>
+            <%- renderLink(cls.typeLink) %>
+          <% }//for
+        _%></td>
+        <td data-ice="appendix"><%_
+          if(prop.optional || prop.hasDefaultValue || prop.nullable) {
+            _%><ul><%_ if(prop.optional) { _%><li>optional</li><%_ }//if(prop.optional)
+             if(prop.hasDefaultValue) { _%><li>default: <%= prop.defaultValue %></li><%_ }//if(prop.hasDefaultValue)
+             if(prop.nullable) { _%><li>nullable: true</li><%_ }//if(prop.nullable)
+            _%></ul><%_
+          }//if(prop.optional || prop.hasDefaultValue || prop.nullable)
+        _%></td>
+        <td data-ice="description"><%= prop.description %></td>
+      </tr>
+    <%_ }//for _%>
+    </tbody>
+  </table>
+</div>
+<!-- properties.ejs end -->

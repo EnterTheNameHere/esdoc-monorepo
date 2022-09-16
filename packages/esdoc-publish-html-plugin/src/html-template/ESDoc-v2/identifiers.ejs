@@ -1,0 +1,34 @@
+<% include(`${template.rootDirectory}/utils`); _%>
+<!-- identifiers.ejs -->
+<h1>References</h1>
+<div class="identifiers-wrap">
+  <div>
+    <% if(dirSummaryWrap && dirSummaryWrap.length) { %> 
+      <div data-ice="dirSummaryWrap">
+        <% for(const dir of dirSummaryWrap) { %>
+          <%# Do not add header for empty dir name (root) %> 
+          <% if(dir.dirPath !== '') { %> 
+            <h2 id="<%- dir.dirPathId -%>" data-ice="dirPath"><%- dir.dirPath -%></h2>
+          <% }//if %>
+          <div data-ice="dirSummary"><%- dir.dirSummary -%></div>
+        <% }//for %>
+      </div>
+    <% } else { %>
+      <div>-</div>
+    <% }//if else %>
+  </div>
+  
+  <% if( dirTree ) { %> 
+    <div class="identifier-dir-tree" data-ice="dirTreeWrap">
+      <div class="identifier-dir-tree-header">Directories</div>
+      <div class="identifier-dir-tree-content" data-ice="dirTree">
+        <% if( dirTree.length > 0 ) for( const dir of dirTree ) { %>
+          <div style="padding-left: <%- dir.paddingLeft -%>em"><%- renderLink({href: dir.hash, text: dir.dirName}) %></div>
+        <% } else { %>
+          <div>-</div>
+        <% }//if else %>
+      </div>
+    </div>
+  <% }//if %>
+</div>
+<!-- identifiers.ejs end -->

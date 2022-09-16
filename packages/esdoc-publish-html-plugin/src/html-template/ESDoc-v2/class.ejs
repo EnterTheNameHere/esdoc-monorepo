@@ -1,0 +1,159 @@
+<% include(`${template.rootDirectory}/utils`); _%>
+<%_ function addSeparatorIfNotZero(num, separator=', ') {
+  if(num) return separator;
+}//function addSeparatorIfNotZero
+_%>
+<!-- class.ejs -->
+<div class="header-notice">
+  <div data-ice="importPath" class="import-path">
+    <pre class="prettyprint"><code data-ice="importPathCode"><%- utils.highlight(cls.importString || '') -%> '<%- renderLink(cls.sourceLink) %>'</code></pre>
+  </div>
+  <%_ if(cls.access) { _%><span data-ice="access"><%= cls.access %></span><%_ }//if _%>
+  <%_ if(cls.kind) { _%><span data-ice="kind"><%= cls.kind %></span><%_ }//if _%>
+  <%#<span data-ice="variation">| variation </span>%>
+  <%_ if(cls.version) { _%><span data-ice="version">| version <%= cls.version %></span><%_ }//if _%>
+  <%_ if(cls.since) { _%><span data-ice="since">| since <%= cls.since %></span><%_ }//if _%>
+  <%_ if(cls.sourceFileLink) { _%><span data-ice="source">| <%- renderLink(cls.sourceFileLink) %></span><%_ }//if _%>
+</div>
+
+<div class="self-detail detail">
+  <%_ if(cls.name) { _%><h1 data-ice="name"><%= cls.name %></h1><%_ }//if _%>
+  <%_ if(cls?.instancesData?.length > 0) { _%>
+    <div data-ice="instanceDocs" class="instance-docs">
+      <span>You can directly use an instance of this class.</span>
+      <span data-ice="instanceDoc">InstancesData:<% utils.var_dump(cls.instancesData) %></span>
+    </div>
+  <%_ }//if _%>
+  
+  <%_ if(cls.extendsData) { _%>
+    <div class="expression-extends" data-ice="expressionExtends">
+      <%_
+        let extendsExpression = utils.highlight(`class ${cls.name} extends ${cls.extendsData.expression}`);
+        for(const link of cls.extendsData.links) {
+          if(link.href) {
+            extendsExpression = extendsExpression.replace(link.text, `<a href="${link.href}">${link.text}</a>`);
+          }
+          //extendsExpression = utils.highlight(extendsExpression);
+        }
+      _%>
+      <h4>Expression Extends:</h4>
+      <code data-ice="expressionExtendsCode"><%- extendsExpression _%></code>
+    </div>
+  <%_ }//if _%>
+  <%_ if(cls?.mixinClassesData?.length > 0) { %>
+    <div class="flat-list" data-ice="mixinExtends"><h4>Mixin Extends:</h4></div>
+    <div><%_ let num = cls.mixinClassesData.length - 1; for(const link of cls.mixinClassesData) { _%><%- renderLink(link) %><%= addSeparatorIfNotZero(--num) _%><%_ }//for _%></div>
+  <%_ }//if _%>
+  <%_ if(cls?.extendsChainData?.length) { _%>
+    <div class="flat-list" data-ice="extendsChain"><h4>Extends:</h4></div>
+    <%- utils.var_dump(cls.extendsChainData) _%>
+  <%_ }//if _%>
+  <%_ if(cls?.directSubclassData?.length) { _%>
+    <div class="flat-list" data-ice="directSubclass"><h4>Direct Subclass:</h4></div>
+    <%- utils.var_dump(cls.directSubclassData) _%>
+  <%_ }//if _%>
+  <%_ if(cls?.indirectSubclassData?.length) { _%>
+    <div class="flat-list" data-ice="indirectSubclass"><h4>Indirect Subclass:</h4></div>
+    <%- utils.var_dump(cls.indirectSubclassData) _%>
+  <%_ }//if _%>
+  <%_ if(cls?.implementsData?.length) { _%>
+    <div class="flat-list" data-ice="implements"><h4>Implements:</h4></div>
+    <%- utils.var_dump(cls.implementsData) _%>
+  <%_ }//if _%>
+  <%_ if(cls?.indirectImplementsData?.length) { _%>
+    <div class="flat-list" data-ice="indirectImplements"><h4>Indirect Implements:</h4></div>
+    <%- utils.var_dump(cls.indirectImplementsData) _%>
+  <%_ }//if _%>
+  <%_ if(cls?.directImplementedData?.length) { _%>
+    <div class="flat-list" data-ice="directImplemented"><h4>Direct Implemented:</h4></div>
+    <%- utils.var_dump(cls.directImplementedData) _%>
+  <%_ }//if _%>
+  <%_ if(cls?.indirectImplementedData?.length) { _%>
+    <div class="flat-list" data-ice="indirectImplemented"><h4>Indirect Implemented:</h4></div>
+    <%- utils.var_dump(cls.indirectImplementedData) _%>
+  <%_ }//if _%>
+  
+  <%_ if(cls?.deprecated) { _%><div class="deprecated" data-ice="deprecated"><%= cls.deprecated %></div><%_ }//if _%>
+  <%_ if(cls?.experimental) { _%><div class="experimental" data-ice="experimental"><%= cls.experimental %></div><%_ }//if _%>
+  <%_ if(cls?.description) { _%><div class="description" data-ice="description"><%- cls.description %></div><%_ }//if _%>
+  <%_ if(cls?.decoratorData) { _%><div class="decorator" data-ice="decorator"><h4>Decorators:</h4></div><%- utils.var_dump(cls.decoratorData) %><%_ }//if _%>
+  
+  <%_ if(cls?.seeData) { %><div data-ice="see"><h4>See:</h4></div><%= utils.var_dump(cls.seeData) %><% }//if _%>
+  
+  <%_ if(cls?.examplesData?.length > 0) { _%>
+    <%- utils.var_dump(cls.examplesData) _%>
+    <div data-ice="exampleDocs">
+      <h4>Example:</h4>
+      <div class="example-doc" data-ice="exampleDoc">
+        <div class="example-caption" data-ice="exampleCaption"></div>
+        <pre class="prettyprint source-code"><code data-ice="exampleCode"></code></pre>
+      </div>
+    </div>
+  <%_ }//if _%>
+  
+  <%_ if(cls?.testsData?.length) { _%>
+    <%- utils.var_dump(cls.testsData) _%>
+    <div data-ice="tests">
+      <h4>Test:</h4>
+      <ul>
+        <li data-ice="test"></li>
+      </ul>
+    </div>
+  <%_ }//if _%>
+  
+  <%_ if(cls?.todoData?.length) { _%>
+    <%- utils.var_dump(cls.todoData) _%>
+    <div data-ice="todo"><h4>TODO:</h4></div>
+  <%_ }//if _%>
+</div>
+
+<% if(cls?.staticMemberSummaryData?.length > 0) { %>
+  <div data-ice="staticMemberSummary"><h2>Static Member Summary</h2></div>
+  <%- utils.var_dump(cls.staticMemberSummaryData); %>
+<% }//if %>
+<% if(cls?.staticMethodSummaryData?.length > 0) { %>
+  <div data-ice="staticMethodSummary"><h2>Static Method Summary</h2></div>
+  <%- utils.var_dump(cls.staticMethodSummaryData); %>
+<% }//if %>
+<% if(cls?.constructorSummaryData?.length > 0) { %>
+  <div data-ice="constructorSummary"><h2>Constructor Summary</h2></div>
+  <%- utils.var_dump(cls.constructorSummaryData); %>
+<% }//if %>
+<% if(cls?.membersSummaryData?.length > 0) { %>
+  <div data-ice="memberSummary"><h2>Member Summary</h2></div>
+  <%- utils.var_dump(cls.membersSummaryData); %>
+<% }//if %>
+<% if(cls?.methodsSummaryData?.length > 0) { %>
+  <div data-ice="methodSummary"><h2>Method Summary</h2></div>
+  <%- utils.var_dump(cls.methodsSummaryData); %>
+<% }//if %>
+<% if(cls?.inheritedSummaryData?.length > 0) { %>
+  <div class="inherited-summary" data-ice="inheritedSummary"><h2>Inherited Summary</h2></div>
+  <%- utils.var_dump(cls.inheritedSummaryData); %>
+<% } %>
+<% if(cls?.staticMemberDetailsData?.length > 0) { %>
+  <div data-ice="staticMemberDetails">
+    <% for(const member of cls.staticMemberDetailsData) { %><%- include(`${template.rootDirectory}/details.ejs`, {data: member}) %><% }//for %>
+  </div>
+<% }//if %>
+<% if(cls?.staticMethodDetailsData?.length > 0) { %>
+  <div data-ice="staticMethodDetails">
+    <% for(const method of cls.staticMethodDetailsData) { %><%- include(`${template.rootDirectory}/details.ejs`, {data: method}) %><% }//for %>
+  </div>
+<% }//if %>
+<% if(cls?.constructorDetailsData?.length > 0) { %>
+  <div data-ice="constructorDetails">
+    <% for(const constr of cls.constructorDetailsData) { %><%- include(`${template.rootDirectory}/details.ejs`, {data: constr}) %><% }//for %>
+  </div>
+<% }//if %>
+<% if(cls?.memberDetailsData?.length > 0) { %>
+  <div data-ice="memberDetails">
+    <% for(const member of cls.memberDetailsData) { %><%- include(`${template.rootDirectory}/details.ejs`, {data: member}) %><% }//for %>
+  </div>
+<% }//if %>
+<% if(cls?.methodDetailsData?.length > 0) { %>
+  <div data-ice="methodDetails">
+    <% for(const method of cls.methodDetailsData) { %><%- include(`${template.rootDirectory}/details.ejs`, {data: method}) %><% }//for %>
+  </div>
+<% }//if %>
+<!-- class.ejs ends -->

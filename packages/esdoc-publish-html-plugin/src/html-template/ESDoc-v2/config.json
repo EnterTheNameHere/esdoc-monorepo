@@ -1,0 +1,21 @@
+{
+  "layout": "./ejs-layout.html",
+  "class": "./ejs-class.html",
+  "details": "./ejs-details.html",
+  "file": "./ejs-file.html",
+  "identifiers": "./ejs-identifiers.html",
+  "index": "./ejs-index.html",
+  "manual": "./ejs-manual.html",
+  "manual-badge": "./image/manual-badge.svg",
+  "manualIndex": "./ejs-manualIndex.html",
+  "manualCardIndex": "./ejs-manualCardIndex.html",
+  "nav": "./ejs-nav.html",
+  "properties": "./ejs-properties.html",
+  "single": "./ejs-single.html",
+  "signature": "./ejs-signature.html",
+  "source": "./ejs-source.html",
+  "summary": "./ejs-summary.html",
+  "test": "./ejs-test.html",
+  "testInterface": "./ejs-testInterface.html",
+  "staticDirectories": ["css", "image", "script", "fonts"]
+}

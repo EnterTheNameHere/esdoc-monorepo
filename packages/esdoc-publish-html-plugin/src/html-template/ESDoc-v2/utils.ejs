@@ -1,0 +1,21 @@
+<%
+
+renderLink = function(link, options = { useSpan: false }) {
+  if(typeof link === 'undefined' || link === undefined) {
+    return `<span style="background-color: red; color: white;">Link should be here but it's undefined.</span>`;
+  }
+  if(link === null) {
+    return `<span style="background-color: red; color: white;">Link should be here but it's null.</span>`;
+  }
+  let htmlOutput = '';
+  htmlOutput += (options.useSpan) ? '<span>' : '';
+  htmlOutput += (link.href) ? `<a href="${link.href}"` : '';
+  htmlOutput += (Array.isArray(link.classes)) ? ` class=${link.classes.join(',')}` : '';
+  htmlOutput += (link.href) ? `>` : '';
+  htmlOutput += link.text || '';
+  htmlOutput += (link.href) ? '</a>' : '';
+  htmlOutput += (options.useSpan) ? '</span>' : '';
+  return htmlOutput;
+}
+
+%>

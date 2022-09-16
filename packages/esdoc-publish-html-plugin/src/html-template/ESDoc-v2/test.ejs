@@ -1,0 +1,35 @@
+<% include(`${template.rootDirectory}/utils`); _%>
+<!-- test.ejs -->
+<%_ function renderTestCase(test, depth = 0) { _%>
+  <tr class="test-interface" data-ice="testInterface" data-test-depth="<%= depth %>">
+    <td data-ice="testDescription" style="padding-left: <%- 10 * (depth + 1) %>px"><% if(test.children && test.children.length > 0) { %><span data-ice="testInterfaceToggle" class="toggle closed"></span><% }//if %><span><%- renderLink(test.description) %></span></td>
+    <td data-ice="testTarget" class="test-target">
+      <%_ for(const target of test.targets) { _%>
+        <span><% renderLink(target) %></span>
+      <%_ }//for _%>
+    </td>
+  </tr>
+  <%_ if(test.children && test.children.length > 0) { _%>
+    <%_ for(const child of test.children) { _%>
+      <%- renderTestCase(child, depth+1); _%>
+    <%_ }//for %>
+  <%_ }//if _%>
+<%_ }//renderTestCase _%>
+<h1>Test</h1>
+<table class="test-summary">
+  <thead>
+    <tr>
+      <td class="test-description">Description</td>
+      <td class="test-target">Identifier</td>
+    </tr>
+  </thead>
+  
+  <tbody data-ice="tests">
+    <%_ if(tests && tests.length > 1) { _%>
+      <%_ for(const test of tests) { _%>
+        <%_ renderTestCase(test); _%>
+      <%_ }//for _%>
+    <%_ }//if _%>
+  </tbody>
+</table>
+<!-- test.ejs end -->

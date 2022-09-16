@@ -1,0 +1,25 @@
+<% include(`${template.rootDirectory}/utils`); _%>
+<!-- nav.ejs -->
+<div>
+  <ul>
+    <% if( docs && docs.length > 0 ) { %>
+      <%# Should replace sorting by client javascript - by directory, kind etc. %>
+      <% lastDir = '.'; %>
+      <% for( const doc of docs ) { %>
+        <li data-ice="doc">
+        <% if( doc.dirPath !== lastDir ) { %>
+          <%- renderLink({href: doc.dirPathHref, text: doc.dirPath, classes: ['nav-dir-path']}) %>
+        <% }//if %>
+        <span class="<%= doc.kindClass -%>" data-ice="kind"><%= doc.kind -%></span>
+        <span data-ice="name"><%- renderLink(doc) %></a></span>
+        <% lastDir = doc.dirPath; %>
+        </li>
+      <% }//for %>
+    <% } else { %>
+    <li>
+      <span>No identifiers</span>
+    </li>
+    <% }//if-else %>
+  </ul>
+</div>
+<!-- nav.ejs end -->

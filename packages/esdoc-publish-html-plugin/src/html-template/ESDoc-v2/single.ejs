@@ -1,0 +1,11 @@
+<!-- single.ejs -->
+<h1 data-ice="title"><%= title || '' %></h1>
+<%_ if(summariesData?.length > 0) { -%>
+  <%_ for(const summaryData of summariesData) { -%><div data-ice="summaries"><%- include(`${template.rootDirectory}/summary.ejs`, summaryData); %></div><% }//for -%>
+<%_ }//if -%>
+<% if(detailsData?.length > 0) { %>
+  <div data-ice="details">
+    <% for(const detailData of detailsData) { %><%- include(`${template.rootDirectory}/details.ejs`, {data: detailData}) %><% }//for -%>
+  </div>
+<% }//if -%>
+<!-- single.ejs end -->

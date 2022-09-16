@@ -1,0 +1,120 @@
+<%
+function renderTextIdentifier(textIdentifier) {
+  %><span class="signature identifier text"><%- renderLink({href: false, text: textIdentifier.text}) %></span><%
+}
+
+function renderJSIdentifier(jsIdentifier) {
+  %><span class="signature identifier"><% if(jsIdentifier.isSpread) { %><span class="signature identifier spread threedots">...</span><% } %><%- renderLink(jsIdentifier.link) %><% if(jsIdentifier.isArray) { %><span class="signature identifier array lbracket">[</span><span class="signature array rbracket">]</span><% } %></span><%
+}
+
+function renderSpecialIdentifier(specialIdentifier) {
+  %><span class="signature identifier special"><%= specialIdentifier.text %></span><%
+}
+
+function renderFunctionTypedParameter(jsdocFunctionTypedParameter) {
+  %><span class="signature function parameter-list parameter-identifier"><%- renderSignature(jsdocFunctionTypedParameter.parameterName) %></span><span class="signature function parameter-list parameter-identifier-type-colon">:</span><span class="signature function parameter-list parameter-type"><%- renderSignature(jsdocFunctionTypedParameter.parameterType) %></span><%
+}
+
+function renderObject(jsdocObject) {
+  %><span class="signature object lbracket">{</span><%
+  const length = jsdocObject.properties.length-1;
+  jsdocObject.properties.forEach((prop, index) => {
+    renderSignature(prop);
+    if(index < length) { %><span class="signature object parameter-list comma">,</span><% }
+  });
+  %><span class="signature object rbracket">}</span><%
+}
+
+function renderObjectTypedProperty(jsdocObjectTypedProperty) {
+  %><span class="signature object property-list property-identifier"><%- renderSignature(jsdocObjectTypedProperty.identifierName) %></span><span class="signature object property-list property-identifier-type-colon">:</span><span class="signature object property-list property-type"><%- renderSignature(jsdocObjectTypedProperty.identifierType) %></span><%
+}
+
+function renderUnion(jsdocUnion) {
+  %><span class="signature union"><span class="lbracket">(</span><%- renderUnionParameterList(jsdocUnion.parameters) %><span class="rbracket">)</span></span><%
+}
+
+function renderUnionParameterList(jsdocUnionParameters) {
+  if(jsdocUnionParameters) {
+    %><span class="parameter-list"><%
+    try {
+      const length = jsdocUnionParameters.length-1;
+      jsdocUnionParameters.forEach((param, index) => {
+        %><span class="parameter"></span><%- renderSignature(param); %></span><%
+        if(index < length) { %><span class="vline">|</span><% }
+      })
+    } catch(error) {
+      console.warn('Error occurred when rendering union parameter list', error);
+      console.info('params:', jsdocUnionParameters);
+    }
+    %></span><%
+  }
+}
+
+function renderSignature(current) {
+  if(typeof current === 'undefined') {
+    %><span style="background-color: red; color: white;">Attempt to render a signature failed. Given parameter was empty.</span><%
+    console.log('Attempt to render a signature failed. Given parameter was empty.');
+    return;
+  }
+  
+  switch(current.type) {
+    case 'Text':
+      renderTextIdentifier(current);
+      break;
+    case 'JSIdentifier':
+      renderJSIdentifier(current);
+      break;
+    case 'JSDocTypeIdentifier':
+      renderSignature(current.identifier);
+      break;
+    case 'JSDocFunctionTypedParameter':
+      renderFunctionTypedParameter(current);
+      break;
+    case 'JSDocIdentifierWithGeneric':
+      renderSignature(current.identifier);
+      %><span class="signature generic lbracket">&lt;</span><%
+      const length = current.generic.parameters.length-1;
+      current.generic.parameters.forEach((parameter,index)=>{
+        renderSignature(parameter);
+        if(index < length) { %><span class="signature generic list comma">,</span><% }
+      });
+      %><span class="signature generic rbracket">&gt;</span><%
+      break;
+    case 'JSDocFunction':
+      if(current.identifier) {
+        renderSignature(current.identifier);
+      }
+      %><span class="signature function parameter lbracket">(</span><%
+      if(current.parameters?.length) {
+        const length = current.parameters.length-1;
+        current.parameters.forEach((parameter,index)=>{
+          renderSignature(parameter);
+          if(index < length) { %><span class="signature function parameter list comma">,</span><% }
+        });
+      }
+      %><span class="signature function parameter rbracket">)</span><%
+      if(current?.returnTypes) {
+        %><span class="signature function return colon">:</span><%
+        renderSignature(current.returnTypes);
+      }
+      break;
+    case 'JSDocUnion':
+      renderUnion(current);
+      break;
+    case 'JSDocObject':
+      renderObject(current);
+      break;
+    case 'JSDocObjectTypedProperty':
+      renderObjectTypedProperty(current);
+      break;
+    case 'JSDocSpecialIdentifier':
+      renderSpecialIdentifier(current);
+      break;
+  
+    default:
+      %><span>Attempt to render a signature failed. Type of parameter was "<%= current.type %>", which is not recognized.</span><%
+      console.log(`Attempt to render a signature failed. Type of parameter was "${current.type}" [${typeof current}], which is not recognized.`, current);
+      break;
+  }
+}
+-%><%#- utils.var_dump(root); %><%- renderSignature(root); -%>

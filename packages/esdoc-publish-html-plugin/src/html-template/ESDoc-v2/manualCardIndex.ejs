@@ -1,0 +1,19 @@
+<!-- manualCardIndex.ejs -->
+<div>
+  <% if(manualUserIndex) { %><div data-ice="manualUserIndex"><%- manualUserIndex %></div><% }//if %>
+  
+  <% if(manualBadge) { %><p data-ice="manualBadge"><img src="./manual-badge.svg"/></p><% }//if %>
+
+  <div>
+    <div data-ice="cards">
+      <% for(const card of cards) { %>
+      <div>
+        <%#- utils.var_dump(card) %>
+        <div data-ice="card"><%- card.card %></div>
+        <a href="<%= card.link.href %>" data-ice="link"></a>
+      </div>
+      <% }//for %>
+    </div>
+  </div>
+</div>
+<!-- manualCardIndex.ejs end -->
