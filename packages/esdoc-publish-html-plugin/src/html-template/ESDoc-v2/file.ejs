@@ -1,8 +1,14 @@
 <!-- file.ejs -->
 <h1 data-ice="title"><%= title %></h1>
-<% if(contents) { %>
-  <pre class="source-code line-number"><code class="prettyprint linenums"><ol class="linenums" data-ice="content"><%- contents %></ol></code></pre>
-<% } else { %>
-  <p data-ice="emptySourceCode">Sorry, this documentation does not provide source code.</p>
-<% }//if else %>
+<%
+if(contents)
+{
+  %><pre class="source-code line-number"><code class="prettyprint linenums"><ol class="linenums" data-ice="content"><%- contents %></ol></code></pre>
+<%
+}
+else
+{
+  %><p data-ice="emptySourceCode">Sorry, this documentation does not provide source code.</p><%
+}//if else
+%>
 <!-- file.ejs end -->
