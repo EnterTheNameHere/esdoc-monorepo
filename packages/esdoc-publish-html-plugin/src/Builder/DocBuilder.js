@@ -1393,53 +1393,42 @@ export default class DocBuilder {
     const data = {};
     
     // HACK: Let's "create" jsdoc string from data we have about parameters, types and return and have it parsed
-
+    
     //console.log(`${Colors.c2}_generateSignatureData doc:`, doc?.longname, Colors.clear);
     if(doc.params) {
-      // We want to create function jsdoc notation with parameter list
-      let jsdocFunctionString = 'function(';
-      const jsdocParams = [];
-      for(const param of doc.params) {
-        if(param.name.indexOf('.') !== -1) continue;
-        if(param.name.indexOf('[') !== -1) continue;
-        
-        let jsdocParamString = param.name;
-        const types = [];
-        for(const typeName of param.types) {
-          types.push(typeName);
-        }
-        if(types.length > 0) {
-          jsdocParamString += ': ';
-          jsdocParamString += types.join('|');
-        }
+      if(doc.kind === 'function' || doc.kind === 'method' || doc.kind === 'constructor')
+      {
+        // We want to create function jsdoc notation with parameter list
+        let jsdocFunctionString = 'function(';
+        const jsdocParams = [];
+        for(const param of doc.params) {
+          if(param.name.indexOf('.') !== -1) continue;
+          if(param.name.indexOf('[') !== -1) continue;
+          
+          let jsdocParamString = param.name;
+          const types = [];
+          for(const typeName of param.types) {
+            types.push(typeName);
+          }
+          if(types.length > 0) {
+            jsdocParamString += ': ';
+            jsdocParamString += types.join('|');
+          }
 
-        jsdocParams.push(jsdocParamString);
-      }
-      
-      if(jsdocParams.length) {
-        jsdocFunctionString += jsdocParams.join(',');
-      }
-      jsdocFunctionString += ')';
-      
-      data.params = this._generateTypeDocLinkData(jsdocFunctionString);
-      data.params.type = 'JSDocFunction';
-      data.params.identifier = {type: 'Text', text: ''};
-      
-      /*
-      data.params = [];
-      for(const param of doc.params) {
-        //console.log(`${Colors.c3}_generateSignatureData param:`, param, Colors.clear);
-        if(param.name.indexOf('.') !== -1) continue;
-        if(param.name.indexOf('[') !== -1) continue;
-        
-        for(const typeName of param.types) {
-          //console.log(`${Colors.c3}_generateSignatureData param.types:`, typeName, Colors.clear);
-          data.params.push(
-            this._generateTypeDocLinkData(typeName)
-          );
+          jsdocParams.push(jsdocParamString);
         }
+        
+        if(jsdocParams.length) {
+          jsdocFunctionString += jsdocParams.join(',');
+        }
+        jsdocFunctionString += ')';
+        
+        data.params = this._generateTypeDocLinkData(jsdocFunctionString);
+        data.params.type = 'JSDocFunction';
+        data.params.identifier = {type: 'Text', text: ''};
+      } else {
+        console.log(`doc.name = '${doc.name}'; doc.kind = '${doc.kind}'`);
       }
-      */
     }
     
     if(doc.return) {
