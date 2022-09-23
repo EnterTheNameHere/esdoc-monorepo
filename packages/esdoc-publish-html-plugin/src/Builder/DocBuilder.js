@@ -412,11 +412,8 @@ export default class DocBuilder {
    */
   _generateSummaryData(doc, kind, title, isStatic = true) {
     const summaryData = [];
-
+    
     const accessDocs = this._findAccessDocs(doc, kind, isStatic);
-    if(!accessDocs[0][1].length || !accessDocs[1][1].length || !accessDocs[2][1].length) {
-      return false;
-    }
     for(const accessDoc of accessDocs) {
       const docs = accessDoc[1];
       if(!docs.length) continue;
