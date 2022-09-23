@@ -1,4 +1,8 @@
 <%
+function renderESDocURI(uriIdentifier) {
+  %><span class="signature identifier uri"><%- renderLink(uriIdentifier.link); %></span><%
+}
+
 function renderTextIdentifier(textIdentifier) {
   %><span class="signature identifier text"><%- renderLink({href: false, text: textIdentifier.text}) %></span><%
 }
@@ -58,6 +62,9 @@ function renderSignature(current) {
   }
   
   switch(current.type) {
+    case 'ESDocURI':
+      renderESDocURI(current);
+      break;
     case 'Text':
       renderTextIdentifier(current);
       break;
