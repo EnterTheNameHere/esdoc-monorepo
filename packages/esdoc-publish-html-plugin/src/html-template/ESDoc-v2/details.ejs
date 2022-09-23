@@ -1,208 +1,232 @@
-<% include(`${template.rootDirectory}/utils`); _%>
+<% include(`${template.rootDirectory}/utils`); -%><%#- utils.var_dump(locals); -%>
 <!-- details.ejs -->
-<%_ if(data?.details?.length > 0) { _%>
-  <%_ if(data.title) { _%>
-    <h2 data-ice="title"><%= data.title %></h2>
-  <%_ }//if _%>
-  <%_ for(const detail of data.details) { _%>
-    <%#- utils.var_dump(detail) %>
-    <div class="detail" data-ice="detail">
-      <h3 data-ice="anchor" id="<%= detail.anchor %>">
-        <%_ if(detail.access) { _%>
-          <span class="access" data-ice="access"><%= detail.access %></span>
-        <%_ }//if _%>
-        <%_ if(detail.static) { _%>
-          <span data-ice="static">static</span>
-        <%_ }//if _%>
-        <%_ if(detail.kind) { _%>
-          <span class="kind" data-ice="kind"><%= detail.kind %></span>
-        <%_ }//if _%>
-        <%_ if(detail.abstract) { _%>
-          <span class="abstract" data-ice="abstract">abstract</span>
-        <%_ }//if _%>
-        <%_ if(detail.async) { _%>
-          <span data-ice="async">async</span>
-        <%_ }//if _%>
-        <%_ if(detail.generator) { %>
-          <span data-ice="generator">*</span>
-        <%_ }//if _%>
-        <%_ if(detail.name) { _%>
-          <span class="code" data-ice="name"><%= detail.name %></span>
-        <%_ }//if _%>
-        <%_ if(detail.signatureData) { -%>
-          <span class="code" data-ice="signature">
-            <%_
-              // render params
-              if(detail?.signatureData?.params) { %><span class="signature-params"><%- include(`${template.rootDirectory}/signature`, {
-                // HACK: detail.signatureData.params is already hacked to be single jsdoc notation object, so pass it
-                root: detail.signatureData.params }); %></span><%
-              }
-              // render return types
-              if(detail?.signatureData?.return) { %>
-                <span class="signature-return-part"><span class="signature-return-colon">:&nbsp;</span><%- include(`${template.rootDirectory}/signature`, {root: detail.signatureData.return}); %></span>
-              <% }
-              // render type data
-              if(detail?.signatureData?.type?.length > 0) { %><span>detail.signatureData.type</span><% }
-              %>
-          </span>
-        <%_ }//if _%>
-        <%_ if(detail.version || detail.since || detail.sourceFileLink) { _%>
-          <span class="right-info">
-            <%_ if(detail.version) { _%>
-              <span class="version" data-ice="version">version <%= detail.version %></span>
-            <%_ }//if _%>
-            <%_ if(detail.since) { _%>
-              <span class="since" data-ice="since">since <%= detail.since %></span>
-            <% }//if %>
-            <%_ if(detail.sourceFileLink) { _%>
-              <span data-ice="source"><%- renderLink(detail.sourceFileLink) %></span>
-            <%_ }//if _%>
-          </span>
-        <%_ }//if _%>
-      </h3>
-      <%_ if(detail.sourceLink && detail.importString) { _%>
-        <div data-ice="importPath" class="import-path">
-          <pre class="prettyprint"><code data-ice="importPathCode"><%- utils.highlight(detail.importString) -%> '<%- renderLink(detail.sourceLink) %>'</code></pre>
+<%
+if(data?.details?.length > 0)
+{
+  if(data?.title)
+  {
+    %><h2 data-ice="title"><%= data.title %></h2><%
+  }
+  
+  for(const detail of data?.details) { -%><%#- utils.var_dump(detail); -%><%
+    %><div class="detail" data-ice="detail">
+      <h3 data-ice="anchor" id="<%= detail.anchor %>"><%
+        if(detail?.access)         { %><span class="access" data-ice="access"><%= detail.access %></span> <% }
+        if(detail?.static)         { %><span data-ice="static">static</span> <% }
+        if(detail?.kind)           { %><span class="kind" data-ice="kind"><%= detail.kind %></span> <% }
+        if(detail?.abstract)       { %><span class="abstract" data-ice="abstract">abstract</span> <% }
+        if(detail?.async)          { %><span data-ice="async">async</span> <% }
+        if(detail?.generator)      { %><span data-ice="generator">*</span><% }
+        if(detail?.name)           { %><span class="code" data-ice="name"><%= detail.name %></span><% }
+        if(detail?.signatureData)
+        {
+          %><span class="code" data-ice="signature"><%
+          // render params
+          if(detail?.signatureData?.params)
+          {
+            %><span class="signature-params"><%- include(`${template.rootDirectory}/signature`, {
+            // HACK: detail.signatureData.params is already hacked to be single jsdoc notation object, so pass it
+            root: detail.signatureData.params }); %></span><%
+          }
+          // render return types
+          if(detail?.signatureData?.return)
+          {
+            %><span class="signature-return-part"><span class="signature-return-colon">:</span><%- include(`${template.rootDirectory}/signature`, {root: detail.signatureData.return}); %></span><%
+          }
+          // render type data
+          if(detail?.signatureData?.type?.length > 0) {
+            %><span class="signature type colon">:</span><%- include(`${template.rootDirectory}/signature`, {root: detail.signatureData.type[0]}); %><%
+          }
+        %></span><%
+        }//if(detail.signatureData)
+
+        if(detail.version || detail.since || detail.sourceFileLink)
+        { %><span class="right-info"><%
+          if(detail.version) { %><span class="version" data-ice="version">version <%= detail.version %></span><% }//if 
+          if(detail.since) { %><span class="since" data-ice="since">since <%= detail.since %></span><% }//if 
+          if(detail.sourceFileLink) { %><span data-ice="source"><%- renderLink(detail.sourceFileLink) %></span><% }//if
+          %></span><%
+        }//if
+      %></h3>
+      <%
+      if(detail?.sourceLink && detail?.importString)
+      {
+        %><div data-ice="importPath" class="import-path">
+          <pre class="prettyprint"><code data-ice="importPathCode"><%- utils.highlight(detail.importString) %> '<%- renderLink(detail.sourceLink) %>'</code></pre>
         </div>
-      <%_ }//if _%>
-      <%_ if(detail.deprecated) { _%>
-        <div class="deprecated" data-ice="deprecated">
-          <%= detail.deprecated %>
-        </div>
-      <%_ }//if _%>
-      <%_ if(detail.experimental) { _%>
-        <div class="experimental" data-ice="experimental">
-          <%= detail.experimental %>
-        </div>
-      <%_ }//if _%>
-      <%_ if(detail.description) { _%>
-        <div data-ice="description">
-          <%= detail.description _%>
-        </div>
-      <%_ }//if _%>
-      <%_ if(detail.override) { _%>
-        <div data-ice="override">
-          <h4>Override:</h4>
-          <%= detail.override _%>
-        </div>
-      <%_ }//if _%>
-      <%_ if(detail.properties) { _%>
-        <div data-ice="properties">
-        </div>
-      <%_ }//if _%>
-      <%_ if(detail.return) { _%>
-        <div class="return-params" data-ice="returnParams">
-          <h4>Return:</h4>
+      <%
+      }//if(detail.sourceLink && detail.importString)
+      if(detail?.deprecated)         { %><div class="deprecated" data-ice="deprecated"><%= detail.deprecated %></div><% }
+      if(detail?.experimental)       { %><div class="experimental" data-ice="experimental"><%= detail.experimental %></div><% }
+      if(detail?.description)        { %><div data-ice="description"><%- detail.description // Description can use markdown, so render it with html enabled %></div><% }
+      if(detail?.override)           { %><div data-ice="override"><h4>Override:</h4><%- renderLink(detail.override) %></div><% }
+      if(detail?.properties)         { %><div data-ice="properties"></div><% }
+      
+      if(detail?.return)
+      { %><div class="return-params" data-ice="returnParams">
+        <h4>Return:</h4>
+        <table>
+          <tbody>
+            <tr>
+              <td class="return-type code" data-ice="returnType"><%- include(`${template.rootDirectory}/signature`, {root: detail.return}); %></td>
+              <td class="return-desc" data-ice="returnDescription"><%
+                if(detail.return.description)
+                {
+                  %><%- detail.return.description // Description can use markdown, so render it with html enabled %><%
+                }
+                %>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div data-ice="returnProperties"></div>
+      </div>
+      <%
+      }//if(detail.return)
+      
+      if(detail?.emits?.length)
+      {
+        %><div data-ice="emitWrap">
+          <h4>Emits:</h4>
           <table>
             <tbody>
-              <tr>
-                <td class="return-type code" data-ice="returnType">
-                  <%- include(`${template.rootDirectory}/signature`, {root: detail.return}); %>
-                </td>
-                <td class="return-desc" data-ice="returnDescription">
-                  <% if(detail.return.description) {%><%= detail.return.description %><%} %>
-                </td>
+              <%
+              for(const emit of detail.emits)
+              { %><tr class="emit" data-ice="emit">
+                <td><p data-ice="emitName"><%- renderLink(emit.link) %></p></td>
+                <td data-ice="emitDesc"><%- emit.description // Description can use markdown, so render it with html enabled %></td>
               </tr>
+              <%
+              }//for 
+              -%>
             </tbody>
           </table>
-          <div data-ice="returnProperties"></div>
         </div>
-      <%_ }//if _%>
-      <%_ if(detail.emits) { _%>
-        <div data-ice="emitWrap">
-          <h4>Emit:</h4>
+      <%
+      }//if(detail.emits)
+      
+      if(detail?.listens?.length)
+      {
+        %><div data-ice="listenWrap">
+          <h4>Listens:</h4>
           <table>
             <tbody>
-              <%_ for(const emit of detail.emits) { _%>
-                <tr class="emit" data-ice="emit">
-                  <td><p data-ice="emitName"><%- renderLink(emit.link) %></p></td>
-                  <td data-ice="emitDesc"><%= emit.description %></td>
-                </tr>
-              <%_ }//for _%>
+              <%
+              for(const listen of detail.listens)
+              { %><tr class="listen" data-ice="listen">
+                <td><p data-ice="listenName"><%- renderLink(listen.link); %></p></td>
+                <td data-ice="listenDesc"><%- listen.description // Description can use markdown, so render it with html enabled %></td>
+              </tr>
+              <%
+              }//for
+              -%>
             </tbody>
           </table>
         </div>
-      <%_ }//if _%>
-      <%_ if(detail.listens?.length) { _%>
-        <div data-ice="listenWrap">
-          <h4>Listen:</h4>
+      <%
+      }//if(detail.listens)
+      
+      if(detail?.throws?.length)
+      {
+        %><div data-ice="throwWrap">
+          <h4>Throws:</h4>
           <table>
             <tbody>
-              <%_ for(const listen of detail.listens) { _%>
-                <tr class="listen" data-ice="listen">
-                  <td><p data-ice="listenName"><span><%- renderLink(listen.link) %></span></p></td>
-                  <td data-ice="listenDesc"><%= listen.description %></td>
+              <%
+              for(const oThrow of detail.throws)
+              { %><tr class="throw" data-ice="throw">
+                <td><p data-ice="throwName"><%- renderLink(oThrow.link); %></p></td><%
+                  %><td data-ice="throwDesc"><%- oThrow.description // Description can use markdown, so render it with html enabled %></td>
                 </tr>
-              <%_ }//for _%>
+              <%
+              }//for
+              -%>
             </tbody>
           </table>
+        </div><%
+      }//if(detail.throws)
+
+      if(detail?.decorators)
+      {
+        %><div data-ice="decorator">
+          <h4>Decorators:</h4><% console.log('\nHey asshole, implement Decorators in details.ejs!\n'); -%>
+          <div style="background-color: red; color: white">Decorators: Tell lazy self to implement this!</div>
         </div>
-      <%_ }//if _%>
-      <%_ if(detail.throws) { _%>
-        <div data-ice="throwWrap">
-          <h4>Throw:</h4>
-          <table>
-            <tbody>
-              <%_ for(const oThrow of detail.throws) { _%>
-                <tr class="throw" data-ice="throw">
-                  <td><p data-ice="throwName"><%- renderLink(oThrow.link) %></p></td>
-                  <td data-ice="throwDesc"><%= oThrow.description %></td>
-                </tr>
-              <%_ }//for _%>
-            </tbody>
-          </table>
-        </div>
-      <%_ }//if _%>
-      <%_ if(detail.decorators) { _%>
-        <div data-ice="decorator">
-          <h4>Decorators:</h4>
-        </div>
-      <%_ }//if _%>
-      <%_ if(detail.examples) { _%>
-        <div data-ice="example">
-          <h4>Example:</h4>
-          <%_ for(const example of detail.examples) { _%>
-            <div class="example-doc" data-ice="exampleDoc">
-              <div class="example-caption" data-ice="exampleCaption"><%= example.caption %></div>
-              <pre class="prettyprint source-code"><code class="example-code" data-ice="exampleCode"><%- example.body %></code></pre>
-            </div>
-          <%_ }//for _%>
-        </div>
-      <%_ }//if _%>
-      <%_ if(detail.tests) { _%>
-        <div data-ice="tests">
-          <h4>Test:</h4>
-          <ul>
-            <%_ for(const test of detail.tests) { _%>
-            <li data-ice="test"><%- renderLink(test.link) %></li>
-            <%_ }//for _%>
-          </ul>
-        </div>
-      <%_ }//if _%>
-      <%_ if(detail.seeLinks?.length) { _%>
-        <div data-ice="see">
-          <h4>See:</h4>
-          <ul>
-            <%_ for(const link of detail.seeLinks) { _%>
-              <%_ detail.seeLinks.forEach((link) => {
-                %><li><span><% if(link.href) { %><a href="<%= link.href %>"><% }//if %><% // link.text might already be in <a ...>...</a> format with href false, so check for it
-                  if(link.text.startsWith('<a ')) { %><%- link.text %><% } else { %><%= link.text %><% }//if %><% if(link.href) { %></a><% }//if %></span></li><%
-              });_%>
-            <% }//for _%>
-          </ul>
-        </div>
-      <%_ }//if _%>
-      <%_ if(detail.todoLinks?.length) { _%>
-        <div data-ice="todo">
+      <% }//if(detail.decorators)
+
+      if(detail?.examples?.length)
+      { %><div data-ice="example">
+        <h4>Examples:</h4>
+        <%
+        for(const example of detail.examples)
+        { %><div class="example-doc" data-ice="exampleDoc">
+          <div class="example-caption" data-ice="exampleCaption"><%= example.caption %></div>
+          <pre class="prettyprint source-code"><code class="example-code" data-ice="exampleCode"><%- example.body %></code></pre>
+        </div><%
+        }//for
+        %>
+      </div>
+      <%
+      }//if(detail.examples)
+
+      if(detail?.tests?.length)
+      { %><div data-ice="tests">
+        <h4>Tests:</h4>
+        <ul>
+          <%
+          for(const test of detail.tests)
+          {
+            %><li data-ice="test"><%- renderLink(test.link) %></li><%
+          }//for
+          %>
+        </ul>
+      </div>
+      <%
+      }//if(detail.tests)
+      
+      if(detail?.seeLinks?.length)
+      { %><div data-ice="see">
+        <h4>See:</h4>
+        <ul>
+          <%
+          for(const link of detail.seeLinks)
+          {
+            detail.seeLinks.forEach((link) =>
+            {
+              %><li><span><%
+                if(link.href) { %><a href="<%= link.href %>"><% }//if
+                // link.text might already be in <a ...>...</a> format with href false, so check for it
+                if(link.text.startsWith('<a ')) { %><%- link.text %><% } else { %><%= link.text %><% }//if
+                if(link.href) { %></a><% }//if
+                %></span></li>
+                <%
+              });
+          }//for
+          %>
+        </ul>
+      </div>
+      <%
+      }//if(detail.seeLinks)
+
+      if(detail.todoLinks?.length)
+      {
+        %><div data-ice="todo">
           <h4>TODO:</h4>
           <ul>
-            <%_ detail.todoLinks.forEach((link) => {
-              %><li><span><%- renderLink(link) %></span></li><%
-            });_%>
+            <%
+            detail.todoLinks.forEach((link) =>
+            {
+              %><li><span><%- renderLink(link); %></span></li>
+              <%
+            }); %>
           </ul>
         </div>
-      <%_ }//if _%>
+      <%
+      }//if(detail.todoLinks)
+      %>
     </div>
-  <%_ }//for _%>
-<%_ }//if(details) _%>
+    <%
+  }//for(const detail of data.details)
+}//if(data.details)
+%>
 <!-- details.ejs end -->
