@@ -1024,13 +1024,19 @@ export default class DocBuilder {
     
   /**
    * Returns link to doc with `name`. If doc with this name is not found, href of link will be false.
-   * @param {string} docName 
+   * If `loadNameFromDoc` is set to true, the name loaded from doc will be used (if doc is found).
+   * @param {string} docName
+   * @param {boolean} loadNameFromDoc Use name from loaded doc, assuming it exists.
    * @returns {{href:(string|null), text: string}}
    */
-  tryGetDocByNameFromDB(docName) {
+  tryGetDocByNameFromDB(docName, loadNameFromDoc=false) {
     const doc = this._findByName(docName);
     if(doc.length > 1) {
       console.warn('_generateTypeDocLinkData: More than one docOfType type found!');
+      //console.log('doc', doc);
+    }
+    if(loadNameFromDoc && doc.length > 0) {
+      return this._generateDocLinkData(docName, doc.name);
     }
     return this._generateDocLinkData(docName, docName);
   }
