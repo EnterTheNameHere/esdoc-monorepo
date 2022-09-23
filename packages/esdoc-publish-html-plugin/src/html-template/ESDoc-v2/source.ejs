@@ -1,6 +1,12 @@
-<% include(`${template.rootDirectory}/utils`); _%>
+<% include(`${template.rootDirectory}/utils`); -%>
 <!-- source.ejs -->
-<h1>Source <img data-ice="coverageBadge" src="./badge.svg"><% if(coverage) { %><span data-ice="totalCoverageCount" class="total-coverage-count"><%= coverage.actual %>/<%= coverage.expected %></span><% }//if %></h1>
+<h1>Source <img data-ice="coverageBadge" src="./badge.svg"><%
+  if(coverage)
+  {
+    %><span data-ice="totalCoverageCount" class="total-coverage-count"><%= coverage.actual %>/<%= coverage.expected %></span><%
+  }
+  %>
+</h1>
 <table class="files-summary" data-ice="files">
   <thead>
     <tr>
@@ -13,16 +19,32 @@
     </tr>
   </thead>
   <tbody>
-    <% for(const file of files) { %>
-    <tr data-ice="file">
-      <td data-ice="filePath"><%- renderLink(file.fileLink) %></td>
-      <td data-ice="identifier" class="identifiers"><% for(const identifierLink of file.identifiers) { %><%- renderLink(identifierLink, {useSpan: true}) %><% } %></td>
-      <td class="coverage"><% if(file.coverage) { %><span data-ice="coverage"><%= Math.floor((file.coverage.actual/file.coverage.expected)*100) %>%</span><span data-ice="coverageCount" class="coverage-count"><%= file.coverage.actual %>/<%= file.coverage.expected %></span><% }//if %></td>
+    <%
+    for(const file of files)
+    { %><tr data-ice="file">
+      <td data-ice="filePath">
+        <%- renderLink(file.fileLink) %>
+      </td>
+      <td data-ice="identifier" class="identifiers">
+        <%
+        for(const identifierLink of file.identifiers)
+        {
+          %><%- renderLink(identifierLink, {useSpan: true}) %><%
+        } %>
+      </td>
+      <td class="coverage"><%
+        if(file.coverage)
+        {
+          %><span data-ice="coverage"><%= Math.floor((file.coverage.actual/file.coverage.expected)*100) %>%</span><%
+          %><span data-ice="coverageCount" class="coverage-count"><%= file.coverage.actual %>/<%= file.coverage.expected %></span><%
+        } %>
+      </td>
       <td style="display: none;" data-ice="size"><%= (file.size/1000) %>kB</td>
       <td style="display: none;" data-ice="lines"><%= file.numLines %></td>
       <td style="display: none;" data-ice="updated"><%= file.updated %></td>
     </tr>
-    <% }//for %>
+    <%
+    }//for %>
   </tbody>
 </table>
 <!-- source.ejs end -->
