@@ -1,11 +1,15 @@
+<% include(`${template.rootDirectory}/utils`); -%>
 <!-- manualIndex.ejs -->
 <div>
   <div data-ice="manual">
-    <% for(const navItem of navData) { %>
-    <ul>
-      <li class="<%= navItem.cssClass %>" data-link="<%= navItem.dataLink %>" data-ice="manualNav"><a href="<%= navItem.link.href %>" data-ice="link"><%= navItem.link.text %></a></li>
-    </ul>
-    <% }//for %>
-  </div>
+    <%
+    for(const navItem of navData)
+    {
+      %><ul>
+        <li class="<%= navItem.cssClass %>" data-link="<%= navItem.dataLink %>" data-ice="manualNav"><%- renderLink(navItem.link); %></li>
+      </ul>
+    <%
+    }//for
+    %></div>
 </div>
 <!-- manualIndex.ejs end -->
