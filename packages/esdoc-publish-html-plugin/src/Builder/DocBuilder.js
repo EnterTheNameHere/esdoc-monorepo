@@ -623,6 +623,7 @@ export default class DocBuilder {
       const scope = doc.static ? 'static' : 'instance';
       detail.anchor = `${scope}-${doc.kind}-${doc.name}${doc.anonymous ? `-${doc.__docId__}` : ''}`;
       detail.access = doc.access;
+      detail.description = doc.description || this._generateOverrideMethodDescriptionData(doc);
       if(['member', 'method', 'get', 'set'].includes(doc.kind)) {
         detail.static = (doc.static) ? 'static' : false;
       } else {
