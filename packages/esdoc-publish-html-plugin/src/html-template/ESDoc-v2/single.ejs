@@ -6,7 +6,7 @@ if(summariesData?.length > 0)
   for(const summaryData of summariesData)
   {
     %><div data-ice="summaries">
-      <%- include(`${template.rootDirectory}/summary.ejs`, summaryData); %>
+      <%- include('summary.ejs', summaryData); %>
     </div><%
   }//for
 }//if
@@ -15,7 +15,7 @@ if(detailsData?.length > 0)
   %><div data-ice="details">
     <% for(const detailData of detailsData)
     {
-      %><%- include(`${template.rootDirectory}/details.ejs`, {data: detailData}) %><%
+      %><%- include('details.ejs', {data: detailData}) %><%
     }//for
     %>
   </div>

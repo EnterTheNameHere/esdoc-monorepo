@@ -1,4 +1,4 @@
-<% include(`${template.rootDirectory}/utils`); -%><%#- utils.var_dump(locals); -%>
+<% include('utils'); -%><%#- utils.var_dump(locals); -%>
 <!-- details.ejs -->
 <%
 if(data?.details?.length > 0)
@@ -24,18 +24,18 @@ if(data?.details?.length > 0)
           // render params
           if(detail?.signatureData?.params)
           {
-            %><span class="signature-params"><%- include(`${template.rootDirectory}/signature`, {
+            %><span class="signature-params"><%- include('signature.ejs', {
             // HACK: detail.signatureData.params is already hacked to be single jsdoc notation object, so pass it
             root: detail.signatureData.params }); %></span><%
           }
           // render return types
           if(detail?.signatureData?.return)
           {
-            %><span class="signature-return-part"><span class="signature-return-colon">:</span><%- include(`${template.rootDirectory}/signature`, {root: detail.signatureData.return}); %></span><%
+            %><span class="signature-return-part"><span class="signature-return-colon">:</span><%- include('signature.ejs', {root: detail.signatureData.return}); %></span><%
           }
           // render type data
           if(detail?.signatureData?.type?.length > 0) {
-            %><span class="signature type colon">:</span><%- include(`${template.rootDirectory}/signature`, {root: detail.signatureData.type[0]}); %><%
+            %><span class="signature type colon">:</span><%- include('signature.ejs', {root: detail.signatureData.type[0]}); %><%
           }
         %></span><%
         }//if(detail.signatureData)
@@ -68,7 +68,7 @@ if(data?.details?.length > 0)
         <table>
           <tbody>
             <tr>
-              <td class="return-type code" data-ice="returnType"><%- include(`${template.rootDirectory}/signature`, {root: detail.return}); %></td>
+              <td class="return-type code" data-ice="returnType"><%- include('signature.ejs', {root: detail.return}); %></td>
               <td class="return-desc" data-ice="returnDescription"><%
                 if(detail.return.description)
                 {

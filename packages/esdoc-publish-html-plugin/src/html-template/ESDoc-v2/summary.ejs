@@ -1,4 +1,4 @@
-<% include(`${template.rootDirectory}/utils`); -%>
+<% include('utils.ejs'); -%>
 <!-- summary.ejs -->
 <table class="summary" data-ice="summary">
   <thead>
@@ -67,7 +67,7 @@
                 {
                   %><span data-ice="generator">*</span><%
                 }
-                %><span class="code" data-ice="name"><%- renderLink(doc.signature) %></span><%
+                %><span class="code" data-ice="name"><%- renderLink(doc.signature); %></span><%
                 %><span class="code" data-ice="signature"><%
                   if(doc?.signature?.params)
                   {
@@ -77,12 +77,12 @@
                     {
                       tempFunc.returnTypes = doc.signature.return;
                     }
-                    %><%- include(`${template.rootDirectory}/signature`, {root: tempFunc});
+                    %><%- include('signature.ejs', {root: tempFunc}); %><%
                   }
                   if(doc?.signature?.type)
                   {
                     %><span class="signature type colon">:</span><%
-                    %><%- include(`${template.rootDirectory}/signature`, {root: doc.signature.type[0]});
+                    %><%- include('signature.ejs', {root: doc.signature.type[0]}); %><%
                   }
                 %></span></p>
             </div>

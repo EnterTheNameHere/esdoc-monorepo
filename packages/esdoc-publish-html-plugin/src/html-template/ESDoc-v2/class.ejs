@@ -1,4 +1,4 @@
-<% include(`${template.rootDirectory}/utils`); -%><%#- utils.var_dump(locals) -%>
+<% include('utils'); -%><%#- utils.var_dump(locals) -%>
 <!-- class.ejs -->
 <div class="header-notice">
   <%
@@ -247,7 +247,7 @@ if(cls?.staticMemberSummaryData?.length > 0)
   <%
   for(const data of cls.staticMemberSummaryData)
   {
-    %><%- include(`${template.rootDirectory}/summary.ejs`, {...data}); %>
+    %><%- include('summary.ejs', {...data}); %>
     <%
   }//for
 }//if
@@ -260,7 +260,7 @@ if(cls?.staticMethodSummaryData?.length > 0)
   <%
   for(const data of cls.staticMethodSummaryData)
   {
-    %><%- include(`${template.rootDirectory}/summary.ejs`, {...data}); %>
+    %><%- include('summary.ejs', {...data}); %>
     <%
   }//for
 }//if
@@ -272,7 +272,7 @@ if(cls?.constructorSummaryData?.length > 0)
   </div>
   <% for(const data of cls.constructorSummaryData)
   {
-    %><%- include(`${template.rootDirectory}/summary.ejs`, {...data}); %>
+    %><%- include('summary.ejs', {...data}); %>
     <%
   }//for
 }//if
@@ -284,7 +284,7 @@ if(cls?.membersSummaryData?.length > 0)
   </div>
   <% for(const data of cls.membersSummaryData)
   {
-    %><%- include(`${template.rootDirectory}/summary.ejs`, {...data}); %>
+    %><%- include('summary.ejs', {...data}); %>
     <%
   }//for
 }//if
@@ -297,7 +297,7 @@ if(cls?.methodsSummaryData?.length > 0)
   <%
   for(const data of cls.methodsSummaryData)
   {
-    %><%- include(`${template.rootDirectory}/summary.ejs`, {...data}); %>
+    %><%- include('summary.ejs', {...data}); %>
     <%
   }//for
 }//if
@@ -315,7 +315,7 @@ if(cls?.inheritedSummaryData?.length > 0 && cls.inheritedSummaryData.some((inher
     if(inheritedFromCls.summary) {
       // HACK: make title an object, so summary can render it as toggleable element
       const title = {kind: inheritedFromCls.kind, link: inheritedFromCls.link}
-      %><%- include(`${template.rootDirectory}/summary.ejs`, {...inheritedFromCls.summary, title: title}); %>
+      %><%- include('summary.ejs', {...inheritedFromCls.summary, title: title}); %>
       <%
     }//if
   }//for
@@ -326,7 +326,7 @@ if(cls?.staticMemberDetailsData?.length > 0)
   %><div data-ice="staticMemberDetails"><%
     for(const member of cls.staticMemberDetailsData)
     {
-      %><%- include(`${template.rootDirectory}/details.ejs`, {data: member}); %>
+      %><%- include('details.ejs', {data: member}); %>
       <%
     }//for
     %>
@@ -340,7 +340,7 @@ if(cls?.staticMethodDetailsData?.length > 0)
     <%
     for(const method of cls.staticMethodDetailsData)
     {
-      %><%- include(`${template.rootDirectory}/details.ejs`, {data: method}); %>
+      %><%- include('details.ejs', {data: method}); %>
       <%
     }//for
     %>
@@ -354,7 +354,7 @@ if(cls?.constructorDetailsData?.length > 0)
     <%
     for(const constr of cls.constructorDetailsData)
     {
-      %><%- include(`${template.rootDirectory}/details.ejs`, {data: constr}); %>
+      %><%- include('details.ejs', {data: constr}); %>
       <%
     }//for
     %>
@@ -368,7 +368,7 @@ if(cls?.membersDetailsData?.length > 0)
     <%
     for(const member of cls.membersDetailsData)
     {
-      %><%- include(`${template.rootDirectory}/details.ejs`, {data: member}); %>
+      %><%- include('details.ejs', {data: member}); %>
       <%
     }//for
     %>
@@ -382,7 +382,7 @@ if(cls?.methodsDetailsData?.length > 0)
     <%
     for(const method of cls.methodsDetailsData)
     {
-      %><%- include(`${template.rootDirectory}/details.ejs`, {data: method}); %>
+      %><%- include('details.ejs', {data: method}); %>
       <%
     }//for
     %>
