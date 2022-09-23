@@ -204,6 +204,7 @@ export default class DocBuilder {
   _renderTemplate(fileName, data) {
     const filePath = path.resolve(path.join(this.Plugin.TemplateDirectory, fileName));
     const contents = FileManager.readFileContents(filePath);
+    HTMLTemplate.templateRootDir = this.Plugin.TemplateDirectory;
     return HTMLTemplate.render(
       contents,
       {
@@ -217,7 +218,8 @@ export default class DocBuilder {
           sanitize: sanitize,
           var_dump: this._var_dump.bind(this),
         },
-      }
+      },
+      filePath
     );
   }
   
@@ -264,8 +266,7 @@ export default class DocBuilder {
       ? esdocCorePackage?.homepage || esdocCorePackage?.repository?.url || null
       : esdocLink?.toString() || null;
     
-    const html = FileManager.readFileContents(path.join(this.Plugin.TemplateDirectory, 'layout.ejs'));
-    return HTMLTemplate.render(html, {nav, title, baseUrl, contents, esdocVersion: esdocVersionString, esdocLink: esdocLinkString});
+    return this._renderTemplate('layout.ejs', {nav, title, baseUrl, contents, esdocVersion: esdocVersionString, esdocLink: esdocLinkString});
   }
   
   _generateNavData() {
