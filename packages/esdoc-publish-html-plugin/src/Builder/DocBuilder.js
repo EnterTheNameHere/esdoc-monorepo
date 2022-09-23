@@ -1053,6 +1053,10 @@ export default class DocBuilder {
     try {
       //console.log(`Parsing JSDocTypeExpression: ${inspect(typeName,false, 10, true)}`);
       
+      // Name can be relative URI to documented object, so let's try that first
+      const link = this.tryGetDocByNameFromDB(typeName, true);
+      if(link.href) { return {type: 'ESDocURI', link: link}; }
+
       const parsedExpression = JSDocTypeExpressionParser.parse(typeName, {grammarSource: grammarFileName});
       
       //console.log(`${Colors.c2}     >> `, inspect(parsedExpression, false, 10, true) , Colors.clear);
