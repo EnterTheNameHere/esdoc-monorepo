@@ -275,7 +275,9 @@ export default class ClassDocBuilder extends DocBuilder {
     
     const links = [];
     
-    for(const match of doc.expressionExtends.match(jsIdentifierRegExp)) {
+    // Unicode is already included in jsIdentifierRegExp
+    // eslint-disable-next-line require-unicode-regexp
+    for(const match of doc.expressionExtends.match(new RegExp(jsIdentifierRegExp, 'g'))) {
       links.push(this._generateDocLinkData(match));
     }
     
