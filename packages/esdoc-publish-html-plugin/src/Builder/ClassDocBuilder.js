@@ -51,6 +51,9 @@ export default class ClassDocBuilder extends DocBuilder {
     if(doc.export && doc.importPath && doc.importStyle) {
       classData.sourceLink = this._generateFileDocLinkData(doc, doc.importPath);
       classData.importString = `import ${doc.importStyle} from`;
+    } else {
+      classData.sourceLink = false;
+      classData.importString = false;
     }
     classData.access = doc.access || false;
     classData.kind = doc.interface ? 'interface' : 'class';
