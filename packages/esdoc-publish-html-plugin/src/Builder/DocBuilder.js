@@ -9,6 +9,21 @@ import NPMUtil from '@enterthenamehere/esdoc-core/lib/Util/NPMUtil.js';
 import { FileManager } from '@enterthenamehere/esdoc-core/lib/Util/FileManager.js';
 import { HTMLTemplate } from './HTMLTemplate.js';
 import * as peggy from 'peggy';
+import {inspect} from 'node:util';
+
+class Colors {
+  static clear  = '\x1b[0m';
+  static b1 = '\x1b[48;5;208m';
+  static b2 = '\x1b[48;5;38m';
+  static b3 = '\x1b[48;5;52m';
+  static b4 = '\x1b[48;5;17m';
+  static b5 = '\x1b[48;5;53m';
+  static c1 = this.b1;
+  static c2 = this.b2;
+  static c3 = this.b3;
+  static c4 = this.b4;
+  static c5 = this.b5;
+}
 
 const grammarFileName = `${__dirname}\\..\\..\\src\\JSDocGrammar\\JSDocTypeExpression.pegjs`;
 const grammarSource = FileManager.readFileContents(`${__dirname}\\..\\..\\src\\JSDocGrammar\\JSDocTypeExpression.pegjs`);
@@ -145,7 +160,7 @@ export default class DocBuilder {
    */
   _orderedFind(order, ...cond) {
     const data = this._data(...cond);
-
+    
     if (order) {
       return data.order(`${order}, name asec`).map((v) => { return v; });
     }
@@ -238,7 +253,7 @@ export default class DocBuilder {
     } else {
       ice.drop('esdocVersion');
     }
-
+    
     const existTest = this._tags.find((tag) => { return tag.kind.indexOf('test') === 0; });
     ice.drop('testLink', !existTest);
 
@@ -515,7 +530,7 @@ export default class DocBuilder {
     if (docs.length === 0) return null;
 
     const ice = new IceCap(this._readTemplate('summary.html'));
-
+    
     ice.text('title', title);
     ice.loop('target', docs, (i, doc, ice2) => {
       ice2.text('generator', doc.generator ? '*' : '');
@@ -654,7 +669,7 @@ export default class DocBuilder {
       detail.todoLinks = this._generateDocsLinkData(doc.todo);
       detail.override = this._generateOverrideMethodData(doc);
       detail.decorators = this._generateDecoratorData(doc);
-
+      
       let isFunction = false;
       if(['method', 'constructor', 'function'].indexOf(doc.kind) !== -1) isFunction = true;
       if(doc.kind === 'typedef' && doc.params && doc.type.types[0] === 'function') isFunction = true;
@@ -1013,7 +1028,7 @@ export default class DocBuilder {
     }
 
     if (!fileDoc) return '';
-
+    
     if (!text) text = fileDoc.name;
 
     if (doc.kind === 'file' || doc.kind === 'testFile') {
@@ -1080,7 +1095,7 @@ export default class DocBuilder {
     // Just go through every node { type: 'node type', ... } recursively and if JSIdentifier is found, add link to it...
     const recursivelyAddLinks = (currentNode) => {
       if(!currentNode) return;
-
+      
       if(currentNode.type === 'JSIdentifier') {
         currentNode.link = this.tryGetDocByNameFromDB(currentNode.text);
       } else {
@@ -1525,7 +1540,7 @@ export default class DocBuilder {
    */
   _generatePropertiesData(properties = [], title = 'Properties:') {
     if(!properties || properties.length === 0) return false;
-
+    
     const propertiesData = {};
     propertiesData.title = title;
     propertiesData.properties = [];
@@ -1533,7 +1548,7 @@ export default class DocBuilder {
       const propData = {
         name: prop.name,
         description: prop.description,
-        typesLinks: prop.types.forEach((typeName) => { return this._generateTypeDocLinkData(typeName); }),
+        typesLinks: prop.types.map((typeName) => { return this._generateTypeDocLinkData(typeName); }),
         optional: prop.optional || false,
         nullable: prop.nullable || false,
         hasDefaultValue: Object.prototype.hasOwnProperty.call(prop, 'defaultValue'),
@@ -1541,6 +1556,7 @@ export default class DocBuilder {
       if(propData.hasDefaultValue) {
         propData.defaultValue = prop.defaultValue;
       }
+      propertiesData.properties.push(propData);
     }
 
     return propertiesData;
@@ -1631,7 +1647,7 @@ export default class DocBuilder {
     }
     return false;
   }
-
+  
   /**
    * build experimental html.
    * @param {DocObject} doc - target doc object.

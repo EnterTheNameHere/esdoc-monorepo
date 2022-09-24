@@ -60,7 +60,13 @@ if(data?.details?.length > 0)
       if(detail?.experimental)       { %><div class="experimental" data-ice="experimental"><%= detail.experimental %></div><% }
       if(detail?.description)        { %><div data-ice="description"><%- detail.description // Description can use markdown, so render it with html enabled %></div><% }
       if(detail?.override)           { %><div data-ice="override"><h4>Override:</h4><%- renderLink(detail.override) %></div><% }
-      if(detail?.properties)         { %><div data-ice="properties"></div><% }
+      if(detail?.properties)
+      {
+        %><div data-ice="properties">
+          <%- include('properties.ejs', detail.properties); %>
+        </div>
+        <%
+      }
       
       if(detail?.return)
       { %><div class="return-params" data-ice="returnParams">

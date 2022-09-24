@@ -1,4 +1,4 @@
-<% include('utils'); -%>
+<% include('utils'); -%><%#- utils.var_dump(properties); -%>
 <!-- properties.ejs -->
 <div data-ice="properties">
   <%
@@ -21,8 +21,9 @@
       { %><tr data-ice="property" data-depth="<%= (prop.name.split('.') - 1) %>">
         <td data-ice="name" class="code" data-depth="<%= (prop.name.split('.') - 1) %>"><%= prop.name %></td>
         <td data-ice="type" class="code"><%
-          for(const typeLink of prop.typesLinks)
-          { %><%- renderLink(cls.typeLink) %><%
+          // HACK: typesLinks is hacked to be an array with one element - an JSDoc object for use with signature, so pass it in.
+          if(prop.typesLinks)
+          { %><%- include('signature.ejs', {root: prop.typesLinks[0]}); %><%
           } %>
         </td>
         <td data-ice="appendix"><%
@@ -46,7 +47,7 @@
           }//if %>
           </ul>
         </td>
-        <td data-ice="description"><%= prop.description %></td>
+        <td data-ice="description"><%- prop.description // Description can use markdown, so render it with html enabled %></td>
       </tr><%
       }//for %>
     </tbody>
