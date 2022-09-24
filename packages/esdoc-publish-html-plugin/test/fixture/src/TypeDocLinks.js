@@ -1,33 +1,25 @@
 export function FunctionNoParamsNoReturn() {
-  return '';
 }
 
 export function FunctionOneParamNoReturn( paramOne ) {
-  return '';
 }
 
 export function FunctionOneParamDefaultNoReturn( paramOne = 42 ) {
-  return '';
 }
 
 export function FunctionTwoParamsNoReturn( paramOne, paramTwo ) {
-  return '';
 }
 
 export function FunctionThreeParamsNoReturn( paramOne, paramTwo, paramThree ) {
-  return '';
 }
 
 export function FunctionThreeParamsOneDefaultNoReturn( paramOne, paramTwo, paramThree = 42 ) {
-  return '';
 }
 
 export function FunctionOneParamObjectNoReturn( paramOne = {first: '', second: 42} ) {
-  return '';
 }
 
 export function FunctionOneParamArrayNoReturn( paramOne = ['first', 42] ) {
-  return '';
 }
 
 /**
