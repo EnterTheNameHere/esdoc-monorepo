@@ -88,12 +88,16 @@
       <h4>Direct Subclass:</h4>
     </div>
     <div>
-      <%
-      const length = cls.directSubclassData.length-1;
-      cls.directSubclassData.forEach((link, index) => {
-        %><%- renderLink(link); %><%
-        if(index < length) { %>, <% }
-      }); %>
+      <ul><%
+        const length = cls.directSubclassData.length-1;
+        cls.directSubclassData.forEach((link, index) =>
+        {
+        %>
+        <li><span><%- renderLink(link); %></span></li><%
+          if(index < length) { %>, <% }
+        });
+        %>
+      </ul>
     </div><%
   }//if(cls.directSubclassData)
 
