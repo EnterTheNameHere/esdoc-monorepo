@@ -181,12 +181,7 @@ if(data?.details?.length > 0)
       { %><div data-ice="tests">
         <h4>Tests:</h4>
         <ul>
-          <%
-          for(const test of detail.tests)
-          {
-            %><li data-ice="test"><%- renderLink(test.link) %></li><%
-          }//for
-          %>
+          <% detail.tests.forEach((test) => { %><li><span><%- renderLink(test.link); %></span></li><% }); %>
         </ul>
       </div>
       <%

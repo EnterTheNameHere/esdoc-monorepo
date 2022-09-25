@@ -226,11 +226,11 @@
   {
     %><div data-ice="tests">
       <h4>Test:</h4>
-      <div><%
-        console.log('\nHey asshole, implement cls.testsData in class.ejs\n');
-        %>
-        <span style="background-color: red; color: white;">Tell myself to implement this!</span>
-      </div>
+      <ul>
+        <% cls.testsData.forEach((testLink) => {
+          %><li><span><%- renderLink(testLink); %></span></li><%
+        }); %>
+      </ul>
     </div>
   <%
   }//if
