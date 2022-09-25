@@ -151,10 +151,10 @@
   { %><div class="flat-list" data-ice="directImplemented">
     <h4>Direct Implemented:</h4>
   </div>
-  <div><%
-    console.log('\nHey asshole, implement cls.directImplementedData in class.ejs\n');
-    %>
-    <span style="background-color: red; color: white;">Tell myself to implement this!</span>
+  <div>
+    <ul>
+      <% cls.directImplementedData.forEach((link) => { %><li><span><%- renderLink(link); %></span></li><% }); %>
+    </ul>
   </div>
   <%
   }//if(cls.directImplementedData)
