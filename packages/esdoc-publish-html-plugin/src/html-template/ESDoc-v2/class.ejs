@@ -238,10 +238,12 @@
   {
     %><div data-ice="todo">
       <h4>TODO:</h4>
-      <div><%
-        console.log('\nHey asshole, implement cls.todoData in class.ejs\n');
-        %>
-        <span style="background-color: red; color: white;">Tell myself to implement this!</span>
+      <div>
+        <ul><% cls.todoData.forEach((value) =>
+          {
+            %><li><span><%- renderLink(value); %></span></li><%
+          }); %>
+        </ul>
       </div>
     </div>
   <%
