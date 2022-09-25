@@ -118,13 +118,19 @@
 
   if(cls?.implementsData?.length)
   {
-    %><div class="flat-list" data-ice="implements">
+    %>
+    <div class="flat-list" data-ice="implements">
       <h4>Implements:</h4>
-    </div>
-    <div><%
-      console.log('\nHey asshole, implement cls.implementsData in class.ejs\n');
-      %>
-      <span style="background-color: red; color: white;">Tell myself to implement this!</span>
+      <ul><%
+        const length = cls.implementsData.length-1;
+        cls.implementsData.forEach((link, index) =>
+        {
+        %>
+        <li><span><%- renderLink(link); %></span></li><%
+          if(index < length) { %>, <% }
+        });
+        %>
+      </ul>
     </div>
   <%
   }//if(cls.implementsData)
