@@ -200,10 +200,10 @@
     %><div data-ice="see">
       <h4>See:</h4>
     </div>
-    <div><%
-      console.log('\nHey asshole, implement cls.seeData in class.ejs\n');
-      %>
-      <span style="background-color: red; color: white;">Tell myself to implement this!</span>
+    <div>
+      <ul>
+        <% cls.seeData.forEach((seeLink) => { %><li><span><%- renderLink(seeLink); %></span></li><% }); %>
+      </ul>
     </div>
   <%
   }//if

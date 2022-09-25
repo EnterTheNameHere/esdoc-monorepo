@@ -196,21 +196,7 @@ if(data?.details?.length > 0)
       { %><div data-ice="see">
         <h4>See:</h4>
         <ul>
-          <%
-          for(const link of detail.seeLinks)
-          {
-            detail.seeLinks.forEach((link) =>
-            {
-              %><li><span><%
-                if(link.href) { %><a href="<%= link.href %>"><% }//if
-                // link.text might already be in <a ...>...</a> format with href false, so check for it
-                if(link.text.startsWith('<a ')) { %><%- link.text %><% } else { %><%= link.text %><% }//if
-                if(link.href) { %></a><% }//if
-                %></span></li>
-                <%
-              });
-          }//for
-          %>
+          <% detail.seeLinks.forEach((seeLink) => { %><li><span><%- renderLink(seeLink); %></span></li><% }); %>
         </ul>
       </div>
       <%
