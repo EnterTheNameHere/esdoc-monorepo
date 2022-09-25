@@ -210,13 +210,14 @@
   
   if(cls?.examplesData?.length > 0)
   {
-    %><div data-ice="exampleDocs">
+    %><div class="example-doc" data-ice="exampleDocs">
       <h4>Example:</h4>
-      <div><%
-        console.log('\nHey asshole, implement cls.examplesData in class.ejs\n');
-        %>
-        <span style="background-color: red; color: white;">Tell myself to implement this!</span>
-      </div>
+      <% cls.examplesData.forEach((exampleDoc) => {
+        %><div class="example-caption">
+          <div><%= exampleDoc.caption %></div>
+          <pre class="prettyprint source-code"><code><%- exampleDoc.code %></code></pre>
+        </div><%
+      }); %>
     </div>
   <%
   }//if
