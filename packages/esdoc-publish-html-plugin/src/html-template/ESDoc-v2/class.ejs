@@ -187,10 +187,10 @@
     %><div class="decorator" data-ice="decorator">
       <h4>Decorators:</h4>
     </div>
-    <div><%
-      console.log('\nHey asshole, implement cls.decoratorData in class.ejs\n');
-      %>
-      <span style="background-color: red; color: white;">Tell myself to implement this!</span>
+    <div>
+      <ul>
+        <% cls.decoratorData.forEach((decorator) => { %><li><span><%- renderLink(decorator.link); %><% if(decorator.arguments) { %><%= decorator.arguments %><% } %></span></li><% }); %>
+      </ul>
     </div>
   <%
   }//if

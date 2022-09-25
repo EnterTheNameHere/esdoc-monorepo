@@ -155,8 +155,10 @@ if(data?.details?.length > 0)
       if(detail?.decorators)
       {
         %><div data-ice="decorator">
-          <h4>Decorators:</h4><% console.log('\nHey asshole, implement Decorators in details.ejs!\n'); -%>
-          <div style="background-color: red; color: white">Decorators: Tell lazy self to implement this!</div>
+          <h4>Decorators:</h4>
+          <ul>
+            <% detail.decorators.forEach((decorator) => { %><li><span><%- renderLink(decorator.link); %><% if(decorator.arguments) { %><%= decorator.arguments %><% } %></span></li><% }); %>
+          </ul>
         </div>
       <% }//if(detail.decorators)
 
