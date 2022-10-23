@@ -1,0 +1,24 @@
+name: Test global installation
+author: EnterTheNameHere Bohemian
+description: Test installing packages globally "npm -g"
+on:
+  workflow_dispatch:
+    inputs:
+      dummy:
+        default: 'main'
+
+jobs:
+  build:
+    strategy:
+      node-version: [10, 12, 14, 16, 18, latest]
+      os: [ubuntu-latest, macos-latest, windows-latest]
+    
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: "Use Node.js ${{ matrix.node-version }} on ${{ matrix.os }}"
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.version }}
+
+      run:
+        echo "do work here"
