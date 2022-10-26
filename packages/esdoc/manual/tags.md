@@ -517,17 +517,17 @@ function myFunc(param){...}
 ### Object
 ```javascript
 /**
- * @param {Object} param - this is object param.
- * @param {number} param.foo - this is property param.
- * @param {string} param.bar - this is property param.
+ * @param     {Object} param - this is object param.
+ * @property  {number} param.foo - this is property param.
+ * @property  {string} param.bar - this is property param.
  */
 function myFunc(param){...}
 
 /**
  * this is object destructuring.
  * @param {Object} param - this is object param.
- * @param {number} param.foo - this is property param.
- * @param {string} param.bar - this is property param.
+ * @property  {number} param.foo - this is property param.
+ * @property  {string} param.bar - this is property param.
  */
 function myFunc({foo, bar}){...}
 ```
