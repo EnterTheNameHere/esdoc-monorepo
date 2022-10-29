@@ -50,5 +50,6 @@
   ],
   "directories": {
     "test": "test"
-  }
+  },
+  "main": "./lib/index.js"
 }
