@@ -1,6 +1,6 @@
 {
   "name": "@enterthenamehere/esdoc-jsx-plugin",
-  "version": "2.5.0",
+  "version": "2.5.3-dev.1",
   "description": "A JSX plugin for ESDoc",
   "author": "h13i32maru",
   "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-jsx-plugin",
