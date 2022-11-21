@@ -22,6 +22,9 @@ export default class ESDocCLI {
     /** @type {ESDocCLIArgv} */
     this._argv = minimist(argv.slice(2));
 
+    console.log('this._argv:');
+    console.log(this._argv);
+    
     if (this._argv.h || this._argv.help) {
       this._showHelp();
       process.exit(0);
@@ -52,6 +55,8 @@ export default class ESDocCLI {
     }
 
     if (config) {
+      console.log('config:');
+      console.log(config);
       ESDoc.generate(config);
     } else {
       this._showHelp();
