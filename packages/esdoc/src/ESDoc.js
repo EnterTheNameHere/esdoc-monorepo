@@ -26,7 +26,9 @@ export default class ESDoc {
    * @param {ESDocConfig} config - config for generation.
    */
   static generate(config) {
-    //this._preparation();
+    console.log('ESDoc::generate');
+    console.log('config', config);
+    
     if( typeof(config) === 'undefined' || config === null ) {
         const message = `[31mError: config object is expected as an argument![0m`;
         console.error(`[31m${message}[0m`);
@@ -103,10 +105,12 @@ export default class ESDoc {
     
     this._setDefaultConfig(config, isRegExp);
     if( config.debug ) config.verbose = true;
-
+    
+    console.log('ESDoc::generate', 'Setting global config');
     PluginManager.setGlobalConfig( this._getGlobalConfig(config) );
 
     config.plugins.forEach((pluginSettings) => {
+      console.log('ESDoc::generate', 'Registering plugin', pluginSettings);
       PluginManager.registerPlugin(pluginSettings);
     });
 

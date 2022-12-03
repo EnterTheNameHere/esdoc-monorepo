@@ -19,9 +19,11 @@ export default class ESDocCLI {
    * @param {Object} argv - this is node.js argv(``process.argv``)
    */
   constructor(argv) {
+    console.log('ESDocCLI::constructor');
+    
     /** @type {ESDocCLIArgv} */
     this._argv = minimist(argv.slice(2));
-
+    
     console.log('this._argv:');
     console.log(this._argv);
     
@@ -45,6 +47,8 @@ export default class ESDocCLI {
    * execute to generate document.
    */
   exec() {
+    console.log('ESDocCLI::exec');
+
     let config = null;
 
     const configPath = this._findConfigFilePath();
