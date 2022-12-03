@@ -109,6 +109,7 @@ export default class ESDoc {
     console.log('ESDoc::generate', 'Setting global config');
     console.log('config', this._getGlobalConfig(config));
     PluginManager.setGlobalConfig( this._getGlobalConfig(config) );
+    console.log('getGlobalOptions', PluginManager.getGlobalOptions());
 
     config.plugins.forEach((pluginSettings) => {
       console.log('ESDoc::generate', 'Registering plugin', pluginSettings);
