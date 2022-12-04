@@ -34,8 +34,8 @@
     "transpile": "babel ./src --out-dir ./out --root-mode upward"
   },
   "dependencies": {
-    "@enterthenamehere/color-logger": "file:../color-logger",
-    "@enterthenamehere/esdoc-core": "file:../esdoc-core",
+    "@enterthenamehere/color-logger": "*",
+    "@enterthenamehere/esdoc-core": "*",
     "fs-extra": "^9.0.1",
     "minimist": "^1.2.6"
   },

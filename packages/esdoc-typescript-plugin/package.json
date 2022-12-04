@@ -14,7 +14,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@enterthenamehere/esdoc-core": "file:../esdoc-core",
+    "@enterthenamehere/esdoc-core": "*",
     "typescript": "^4.0.5"
   },
   "engines": {

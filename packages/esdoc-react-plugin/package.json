@@ -14,7 +14,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@enterthenamehere/esdoc-standard-plugin": "file:../esdoc-standard-plugin",
+    "@enterthenamehere/esdoc-standard-plugin": "*",
     "cheerio": "1.0.0-rc.10"
   },
   "engines": {
