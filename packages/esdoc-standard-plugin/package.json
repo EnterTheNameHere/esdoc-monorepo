@@ -28,7 +28,7 @@
     "@enterthenamehere/esdoc-unexported-identifier-plugin": "*"
   },
   "engines": {
-    "node": ">= 10.23.1"
+    "node": ">=14.21.1"
   },
   "scripts": {
     "precoverage": "trash ./nyc_output && trash ./coverage",

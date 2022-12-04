@@ -27,7 +27,7 @@
     "trash-cli": "^4.0.0"
   },
   "engines": {
-    "node": ">= 10.23.1"
+    "node": ">=14.21.1"
   },
   "scripts": {
     "build": "npm run clear && npm run transpile && npm run copy:template",
