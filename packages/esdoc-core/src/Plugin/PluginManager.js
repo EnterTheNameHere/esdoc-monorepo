@@ -262,7 +262,7 @@ export class PluginEvent {
    */
   constructor(data = {}, pluginManager) {
     this.data = copy(data);
-    this.PluginManager = pluginManager;
+    this._PluginManager = pluginManager;
   }
 
   /**
@@ -277,7 +277,7 @@ export class PluginEvent {
    * PluginManager instance to access ESDoc's plugin configuration.
    */
   get PluginManager() {
-    return this.PluginManager;
+    return this._PluginManager;
   }
 }
 
