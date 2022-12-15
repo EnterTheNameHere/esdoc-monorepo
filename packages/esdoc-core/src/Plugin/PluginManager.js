@@ -107,7 +107,7 @@ class PluginManager {
 
     // If plugin have onInitialize function, call it with options as argument.
     if(pluginInstance.onInitialize && pluginInstance.onInitialize instanceof Function) {
-      pluginInstance.onInitialize(savedPluginEntry.settings.option, this._globalOptions);
+      pluginInstance.onInitialize(new PluginEvent({}, this), savedPluginEntry.settings.option, this._globalOptions);
     }
   }
 
@@ -143,7 +143,7 @@ class PluginManager {
    * handle start.
    */
   onStart() {
-    const ev = new PluginEvent();
+    const ev = new PluginEvent({}, this);
     this._execHandler('onStart', ev);
   }
 
@@ -153,7 +153,7 @@ class PluginManager {
    * @returns {ESDocConfig} handled config.
    */
   onHandleConfig(config) {
-    const ev = new PluginEvent({config});
+    const ev = new PluginEvent({config}, this);
     this._execHandler('onHandleConfig', ev);
     return ev.data.config;
   }
@@ -165,7 +165,7 @@ class PluginManager {
    * @returns {string} handled code.
    */
   onHandleCode(code, filePath) {
-    const ev = new PluginEvent({code});
+    const ev = new PluginEvent({code}, this);
     ev.data.filePath = filePath;
     this._execHandler('onHandleCode', ev);
     return ev.data.code;
@@ -180,7 +180,7 @@ class PluginManager {
    * @returns {{parser: function(code: string), parserOption: Object}} handled parser.
    */
   onHandleCodeParser(parser, parserOption, filePath, code) {
-    const ev = new PluginEvent();
+    const ev = new PluginEvent({}, this);
     ev.data = {parser, parserOption, filePath, code};
     this._execHandler('onHandleCodeParser', ev);
     return {parser: ev.data.parser, parserOption: ev.data.parserOption};
@@ -194,7 +194,7 @@ class PluginManager {
    * @returns {AST} handled AST.
    */
   onHandleAST(ast, filePath, code) {
-    const ev = new PluginEvent({ast});
+    const ev = new PluginEvent({ast}, this);
     ev.data.filePath = filePath;
     ev.data.code = code;
     this._execHandler('onHandleAST', ev);
@@ -207,7 +207,7 @@ class PluginManager {
    * @returns {Object[]} handled docs.
    */
   onHandleDocs(docs) {
-    const ev = new PluginEvent({docs});
+    const ev = new PluginEvent({docs}, this);
     this._execHandler('onHandleDocs', ev);
     return ev.data.docs;
   }
@@ -219,7 +219,7 @@ class PluginManager {
    * @param {function(filePath: string):string} readFile - read content.
    */
   onPublish(writeFile, copyDir, readFile) {
-    const ev = new PluginEvent({});
+    const ev = new PluginEvent({}, this);
 
     // hack: fixme
     ev.data.writeFile = writeFile;
@@ -237,7 +237,7 @@ class PluginManager {
    * @returns {string} handled HTML.
    */
   onHandleContent(content, fileName) {
-    const ev = new PluginEvent({content, fileName});
+    const ev = new PluginEvent({content, fileName}, this);
     this._execHandler('onHandleContent', ev);
     return ev.data.content;
   }
@@ -246,7 +246,7 @@ class PluginManager {
    * handle complete
    */
   onComplete() {
-    const ev = new PluginEvent();
+    const ev = new PluginEvent({}, this);
     this._execHandler('onComplete', ev);
   }
 }
@@ -258,9 +258,11 @@ export class PluginEvent {
   /**
    * create instance.
    * @param {Object} data - event content.
+   * @param {PluginManager} pluginManager - instance of PluginManager plugin can access.
    */
-  constructor(data = {}) {
+  constructor(data = {}, pluginManager) {
     this.data = copy(data);
+    this.PluginManager = pluginManager;
   }
 
   /**
@@ -268,6 +270,14 @@ export class PluginEvent {
    */
   get FileManager() {
       return FileManager;
+  }
+  
+  /**
+   * @type {PluginManager}
+   * PluginManager instance to access ESDoc's plugin configuration.
+   */
+  get PluginManager() {
+    return this.PluginManager;
   }
 }
 
