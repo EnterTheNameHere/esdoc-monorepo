@@ -4,6 +4,9 @@
   "description": "A undocumented identifier plugin for ESDoc",
   "author": "h13i32maru",
   "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-undocumented-identifier-plugin",
+  "bugs": {
+    "url": "https://github.com/EnterTheNameHere/esdoc-monorepo/issues"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
