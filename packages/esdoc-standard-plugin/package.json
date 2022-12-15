@@ -3,6 +3,12 @@
   "version": "2.5.4-dev.2",
   "description": "A standard plugin for ESDoc",
   "author": "h13i32maru",
+  "contributors": [
+    {
+      "name": "EnterTheNameHere Bohemian",
+      "email": "email@enterthenamehere.com"
+    }
+  ],
   "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-standard-plugin",
   "bugs": {
     "url": "https://github.com/EnterTheNameHere/esdoc-monorepo/issues"

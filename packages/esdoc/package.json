@@ -6,6 +6,12 @@
     "name": "h13i32maru",
     "url": "https://h13i32maru.jp"
   },
+  "contributors": [
+    {
+      "name": "EnterTheNameHere Bohemian",
+      "email": "email@enterthenamehere.com"
+    }
+  ],
   "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc",
   "bugs": {
     "url": "https://github.com/EnterTheNameHere/esdoc-monorepo/issues"
