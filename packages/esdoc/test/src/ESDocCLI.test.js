@@ -11,11 +11,11 @@ describe('test ESDocCLI:', function () {
         it('shows version on -v parameter', async function () {
             // First call it programmatically
             const versionOutput = [];
-            const origLog = console.log;
+            const origLog = console.info;
             const mockedLog = (output) => { versionOutput.push(`${output}\n`); };
-            console.log = mockedLog;
+            console.info = mockedLog;
             new ESDocCLI([null, null])._showVersion();
-            console.log = origLog;
+            console.info = origLog;
             
             // Then run it as CLI
             const response = await helperRunScriptAsync('./out/ESDocCLI.js', '-v');
@@ -30,11 +30,11 @@ describe('test ESDocCLI:', function () {
         it('shows version on --version parameter', async function () {
             // First call it programmatically
             const versionOutput = [];
-            const origLog = console.log;
+            const origLog = console.info;
             const mockedLog = (output) => { versionOutput.push(`${output}\n`); };
-            console.log = mockedLog;
+            console.info = mockedLog;
             new ESDocCLI([null, null])._showVersion();
-            console.log = origLog;
+            console.info = origLog;
             
             // Then run it as CLI
             const response = await helperRunScriptAsync('./out/ESDocCLI.js', '--version');
@@ -46,16 +46,16 @@ describe('test ESDocCLI:', function () {
             assert.deepEqual( response.std.out, versionOutput );
         });
     });
-
+    
     describe('display help', function () {
         it('shows help on -h parameter', async function () {
             // First call it programmatically
             const helpOutput = [];
-            const origLog = console.log;
+            const origLog = console.info;
             const mockedLog = (...output) => { helpOutput.push(`${output}\n`); };
-            console.log = mockedLog;
+            console.info = mockedLog;
             new ESDocCLI([null, null])._showHelp();
-            console.log = origLog;
+            console.info = origLog;
 
             // Then run it as CLI
             const response = await helperRunScriptAsync('./out/ESDocCLI.js', '-h');
@@ -70,11 +70,11 @@ describe('test ESDocCLI:', function () {
         it('shows help on --help parameter', async function () {
             // First call it programmatically
             const helpOutput = [];
-            const origLog = console.log;
+            const origLog = console.info;
             const mockedLog = (...output) => { helpOutput.push(`${output}\n`); };
-            console.log = mockedLog;
+            console.info = mockedLog;
             new ESDocCLI([null, null])._showHelp();
-            console.log = origLog;
+            console.info = origLog;
 
             // Then run it as CLI
             const response = await helperRunScriptAsync('./out/ESDocCLI.js', '--help');
@@ -89,11 +89,11 @@ describe('test ESDocCLI:', function () {
         it('shows help if no config is found', async function () {
             // First call it programmatically
             const versionOutput = [];
-            const origLog = console.log;
+            const origLog = console.info;
             const mockedLog = (...output) => { versionOutput.push(`${output}\n`); };
-            console.log = mockedLog;
+            console.info = mockedLog;
             new ESDocCLI([null, null])._showHelp();
-            console.log = origLog;
+            console.info = origLog;
 
             // Then run it as CLI
             process.chdir('./test/');

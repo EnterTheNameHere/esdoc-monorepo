@@ -6,6 +6,21 @@ import ESDoc from './ESDoc.js';
 import NPMUtil from '@enterthenamehere/esdoc-core/lib/Util/NPMUtil.js';
 import { FileManager } from '@enterthenamehere/esdoc-core/lib/Util/FileManager';
 
+/** @type {minimist.Opts} */
+const minimistOpts = {
+  string: [ 'config' ],
+  boolean: [ 'help', 'version', 'init', 'debug', 'verbose' ],
+  alias: { 'help': 'h', 'version': 'v', 'config': 'c' },
+  default: { 'help': false, 'version': false, 'init': false, 'debug': false, 'verbose': false, 'config': null },
+  '--': true,
+  stopEarly: true,
+  unknown: function ( arg ) {
+    if(typeof(arg) === 'string' && arg === '') return false; // Special case to make unit test for no config file found situation work.
+    console.info(`Unknown argument '${arg}'.`);
+    return false;
+  }
+};
+
 /**
  * Command Line Interface for ESDoc.
  *
@@ -14,30 +29,32 @@ import { FileManager } from '@enterthenamehere/esdoc-core/lib/Util/FileManager';
  * cli.exec();
  */
 export default class ESDocCLI {
+  /** @type {minimist.ParsedArgs | null} */
+  #argv = null;
+
   /**
    * Create instance.
    * @param {Object} argv - this is node.js argv(``process.argv``)
    */
   constructor(argv) {
-    console.log('ESDocCLI::constructor');
+    this.#argv = minimist(argv.slice(2), minimistOpts);
     
-    /** @type {ESDocCLIArgv} */
-    this._argv = minimist(argv.slice(2));
-    
-    console.log('this._argv:');
-    console.log(this._argv);
-    
-    if (this._argv.h || this._argv.help) {
+    if(this.#argv?.debug) {
+      console.info('Received arguments:');
+      console.info(this.#argv);
+    }
+
+    if(this.#argv?.help) {
       this._showHelp();
       process.exit(0);
     }
 
-    if (this._argv.v || this._argv.version) {
+    if(this.#argv?.version) {
       this._showVersion();
       process.exit(0);
     }
 
-    if (this._argv.init) {
+    if(this.#argv?.init) {
       this._createConfigFileForUser();
       process.exit(0);
     }
@@ -47,20 +64,33 @@ export default class ESDocCLI {
    * execute to generate document.
    */
   exec() {
-    console.log('ESDocCLI::exec');
-
     let config = null;
 
     const configPath = this._findConfigFilePath();
-    if (configPath) {
+
+    if(this.#argv?.debug) {
+      console.info('Checking for configuration file in:');
+      console.info(configPath);
+    }
+
+    if(configPath) {
       config = this._createConfigFromJSONFile(configPath);
     } else {
       config = this._createConfigFromPackageJSON();
     }
+    
+    if(this.#argv?.debug) {
+      console.info('Config:');
+      console.info(config);
+    }
 
-    if (config) {
-      console.log('config:');
-      console.log(config);
+    if(config) {
+      if(this.#argv?.debug) {
+        config.debug = true;
+      }
+      if(this.#argv?.verbose) {
+        config.verbose = true;
+      }
       ESDoc.generate(config);
     } else {
       this._showHelp();
@@ -72,8 +102,8 @@ export default class ESDocCLI {
    * show help of ESDoc
    * @private
    */
-  _showHelp() { /* eslint-disable no-console */
-    console.log(
+  _showHelp() {
+    console.info(
         `${String('Usage: esdoc [-c or --config esdoc.json]\n' +
         '\n' +
         'Options:\n' +
@@ -87,7 +117,7 @@ export default class ESDocCLI {
         '    3. `[.]esdoc.js` in current directory\n' +
         '    4. `esdoc` property in package.json')}`
     );
-  } /* eslint-enable no-console */
+  }
 
   /**
    * show version of ESDoc
@@ -96,9 +126,9 @@ export default class ESDocCLI {
   _showVersion() {
     const packageObj = NPMUtil.findPackage();
     if (packageObj) {
-      console.log(packageObj.version); // eslint-disable-line no-console
+      console.info(packageObj.version);
     } else {
-      console.log('0.0.0'); // eslint-disable-line no-console
+      console.info('0.0.0');
     }
   }
 
@@ -156,17 +186,17 @@ export default class ESDocCLI {
    * @private
    */
   _findConfigFilePath() {
-    if( this._argv.c ) {
+    if( this.#argv?.c ) {
       // We DO NOT control this._argv.c
-      if( fs.existsSync(this._argv.c) ) {
-        return this._argv.c;
+      if( fs.existsSync(this.#argv.c) ) {
+        return this.#argv.c;
       }
     }
 
-    if( this._argv.config ) {
+    if( this.#argv?.config ) {
       // We DO NOT control this._argv.config
-      if( fs.existsSync(this._argv.config) ) {
-        return this._argv.config;
+      if( fs.existsSync(this.#argv.config) ) {
+        return this.#argv.config;
       }
     }
 

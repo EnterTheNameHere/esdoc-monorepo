@@ -26,13 +26,15 @@ export default class ESDoc {
    * @param {ESDocConfig} config - config for generation.
    */
   static generate(config) {
-    console.log('ESDoc::generate');
-    console.log('config', config);
-    
     if( typeof(config) === 'undefined' || config === null ) {
         const message = `[31mError: config object is expected as an argument![0m`;
         console.error(`[31m${message}[0m`);
         throw new Error(message);
+    }
+
+    if(config.debug) {
+      console.info('Executing ESDoc with following config:');
+      console.info(config);
     }
     
     // Let's allow multiple sources instead of just one directory
@@ -67,9 +69,9 @@ export default class ESDoc {
           }
           if( value.trim() === '' ) {
             const message = `[31mError: config.source cannot contain empty string![0m`;
-        console.error(`[31m${message}[0m`);
-        throw new Error(message);
-    }
+            console.error(`[31m${message}[0m`);
+            throw new Error(message);
+          }
         });
       }
     }
@@ -106,13 +108,13 @@ export default class ESDoc {
     this._setDefaultConfig(config, isRegExp);
     if( config.debug ) config.verbose = true;
     
-    console.log('ESDoc::generate', 'Setting global config');
-    console.log('config', this._getGlobalConfig(config));
     PluginManager.setGlobalConfig( this._getGlobalConfig(config) );
-    console.log('getGlobalOptions', PluginManager.getGlobalOptions());
     
     config.plugins.forEach((pluginSettings) => {
-      console.log('ESDoc::generate', 'Registering plugin', pluginSettings);
+      if(config.debug) {
+        console.info('Registering plugin:');
+        console.info(pluginSettings);
+      }
       PluginManager.registerPlugin(pluginSettings);
     });
     
@@ -184,7 +186,7 @@ export default class ESDoc {
         const relativeFilePath = path.relative(sourceDirPath, filePath);
         
         if( config.verbose ) console.info(`parse: ${filePath}`);
-        const temp = this._traverse(sourceDirectory, filePath, packageName, mainFilePath);
+        const temp = this._traverse(sourceDirectory, filePath, packageName, mainFilePath, config.verbose);
         if (!temp) return;
         getResults().push(...temp.results);
         if (config.outputAST) {
@@ -328,13 +330,17 @@ export default class ESDoc {
    * @param {string} filePath - target JavaScript file path.
    * @param {string} [packageName] - npm package name of target.
    * @param {string} [mainFilePath] - npm main file path of target.
+   * @param {boolean} [verbose=false] - Should we print name of file to console?
    * @returns {Object} - return document that is traversed.
    * @property {DocObject[]} results - this is contained JavaScript file.
    * @property {AST} ast - this is AST of JavaScript file.
    * @private
    */
-  static _traverse(inDirPath, filePath, packageName, mainFilePath) {
-    logger.i(`parsing: ${filePath}`);
+  static _traverse(inDirPath, filePath, packageName, mainFilePath, verbose = false) {
+    if(verbose) {
+      console.info(`Parsing: ${filePath}`);
+    }
+    
     let ast = null;
     try {
       ast = ESParser.parse(filePath);
