@@ -4,7 +4,7 @@
     "**/.git/subtree-cache/**": true,
     "**/node_modules/*/**": true,
     "**/.hg/store/**": true,
-    "**/lib/**": true,
-    "**/out/**": true
+    "**/lib/*/**": true,
+    "**/out/*/**": true
   }
 }
