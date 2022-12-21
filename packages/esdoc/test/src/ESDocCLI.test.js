@@ -88,9 +88,9 @@ describe('test ESDocCLI:', function () {
 
         it('shows help if no config is found', async function () {
             // First call it programmatically
-            const versionOutput = [];
+            const helpOutput = [];
             const origLog = console.info;
-            const mockedLog = (...output) => { versionOutput.push(`${output}\n`); };
+            const mockedLog = (...output) => { helpOutput.push(`${output}\n`); };
             console.info = mockedLog;
             new ESDocCLI([null, null])._showHelp();
             console.info = origLog;
@@ -103,8 +103,8 @@ describe('test ESDocCLI:', function () {
             assert.equal( response.error, null );
             
             // Compare results
-            assert.notStrictEqual( versionOutput.length, 0 );
-            assert.deepEqual( response.std.out, versionOutput );
+            assert.notStrictEqual( helpOutput.length, 0 );
+            assert.deepEqual( response.std.out, helpOutput );
         });
     });
 
