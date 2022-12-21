@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import fs from 'fs-extra';
-import path from 'path';
+import upath from 'upath';
 import minimist from 'minimist';
 import ESDoc from './ESDoc.js';
 import NPMUtil from '@enterthenamehere/esdoc-core/lib/Util/NPMUtil.js';
@@ -193,25 +193,25 @@ export default class ESDocCLI {
       }
     }
 
-    let filePath = path.resolve('./.esdoc.json');
+    let filePath = upath.resolve('./.esdoc.json');
     // We control filePath
     if( fs.existsSync( filePath ) ) {
       return filePath;
     }
 
-    filePath = path.resolve('./esdoc.json');
+    filePath = upath.resolve('./esdoc.json');
     // We control filePath
     if( fs.existsSync( filePath ) ) {
       return filePath;
     }
     
-    filePath = path.resolve('./.esdoc.js');
+    filePath = upath.resolve('./.esdoc.js');
     // We control filePath
     if( fs.existsSync( filePath ) ) {
       return filePath;
     }
     
-    filePath = path.resolve('./esdoc.js');
+    filePath = upath.resolve('./esdoc.js');
     // We control filePath
     if( fs.existsSync( filePath ) ) {
       return filePath;
@@ -227,8 +227,8 @@ export default class ESDocCLI {
    * @private
    */
   _createConfigFromJSONFile(configFilePath) {
-    configFilePath = path.resolve(configFilePath);
-    const ext = path.extname(configFilePath);
+    configFilePath = upath.resolve(configFilePath);
+    const ext = upath.extname(configFilePath);
     if (ext === '.js') {
       /* eslint-disable global-require */
       return require(configFilePath);
@@ -246,7 +246,7 @@ export default class ESDocCLI {
    */
   _createConfigFromPackageJSON() {
     try {
-      const filePath = path.resolve('./package.json');
+      const filePath = upath.resolve('./package.json');
       const packageJSON = FileManager.readFileContents(filePath);
       const packageObj = JSON.parse(packageJSON);
       return packageObj.esdoc;

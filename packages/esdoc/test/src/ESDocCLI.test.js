@@ -2,7 +2,7 @@ import ESDocCLI from '../../out/ESDocCLI';
 import process from 'process';
 import fs from 'fs-extra';
 import assert from 'assert';
-import path from 'path';
+import upath from 'upath';
 
 import { helperRunScriptAsync } from '../esdocMock';
 
@@ -149,7 +149,7 @@ describe('test ESDocCLI:', function () {
                 process.chdir('./test/');
                 fs.writeFileSync('.esdoc.json', 'dummy');
                 const cli = new ESDocCLI([null, null, '-c', 'thisFileDoesNotExist.json']);
-                assert.equal(cli._findConfigFilePath(), path.resolve('.esdoc.json'));
+                assert.equal(cli._findConfigFilePath(), upath.resolve('.esdoc.json'));
                 fs.unlinkSync('.esdoc.json');
                 process.chdir('../');
             });
@@ -176,7 +176,7 @@ describe('test ESDocCLI:', function () {
                 process.chdir('./test/');
                 fs.writeFileSync('.esdoc.json', 'dummy');
                 const cli = new ESDocCLI([null, null, '--config', 'thisFileDoesNotExist.json']);
-                assert.equal(cli._findConfigFilePath(), path.resolve('.esdoc.json'));
+                assert.equal(cli._findConfigFilePath(), upath.resolve('.esdoc.json'));
                 fs.unlinkSync('.esdoc.json');
                 process.chdir('../');
             });
@@ -187,7 +187,7 @@ describe('test ESDocCLI:', function () {
                 process.chdir('./test/');
                 fs.writeFileSync('.esdoc.json', 'dummy');
                 const cli = new ESDocCLI([null, null]);
-                assert.equal(cli._findConfigFilePath(), path.resolve('.esdoc.json'));
+                assert.equal(cli._findConfigFilePath(), upath.resolve('.esdoc.json'));
                 fs.unlinkSync('.esdoc.json');
                 process.chdir('../');
             });
@@ -196,7 +196,7 @@ describe('test ESDocCLI:', function () {
                 process.chdir('./test/');
                 fs.writeFileSync('esdoc.json', 'dummy');
                 const cli = new ESDocCLI([null, null]);
-                assert.equal(cli._findConfigFilePath(), path.resolve('esdoc.json'));
+                assert.equal(cli._findConfigFilePath(), upath.resolve('esdoc.json'));
                 fs.unlinkSync('esdoc.json');
                 process.chdir('../');
             });
@@ -205,7 +205,7 @@ describe('test ESDocCLI:', function () {
                 process.chdir('./test/');
                 fs.writeFileSync('.esdoc.js', 'dummy');
                 const cli = new ESDocCLI([null, null]);
-                assert.equal(cli._findConfigFilePath(), path.resolve('.esdoc.js'));
+                assert.equal(cli._findConfigFilePath(), upath.resolve('.esdoc.js'));
                 fs.unlinkSync('.esdoc.js');
                 process.chdir('../');
             });
@@ -214,7 +214,7 @@ describe('test ESDocCLI:', function () {
                 process.chdir('./test/');
                 fs.writeFileSync('esdoc.js', 'dummy');
                 const cli = new ESDocCLI([null, null]);
-                assert.equal(cli._findConfigFilePath(), path.resolve('esdoc.js'));
+                assert.equal(cli._findConfigFilePath(), upath.resolve('esdoc.js'));
                 fs.unlinkSync('esdoc.js');
                 process.chdir('../');
             });
@@ -230,13 +230,13 @@ describe('test ESDocCLI:', function () {
             const cli = new ESDocCLI([null, null, '-c', 'custom.js']);
             assert.equal(cli._findConfigFilePath(), 'custom.js');
             fs.unlinkSync('custom.js');
-            assert.equal(cli._findConfigFilePath(), path.resolve('.esdoc.json'));
+            assert.equal(cli._findConfigFilePath(), upath.resolve('.esdoc.json'));
             fs.unlinkSync('.esdoc.json');
-            assert.equal(cli._findConfigFilePath(), path.resolve('esdoc.json'));
+            assert.equal(cli._findConfigFilePath(), upath.resolve('esdoc.json'));
             fs.unlinkSync('esdoc.json');
-            assert.equal(cli._findConfigFilePath(), path.resolve('.esdoc.js'));
+            assert.equal(cli._findConfigFilePath(), upath.resolve('.esdoc.js'));
             fs.unlinkSync('.esdoc.js');
-            assert.equal(cli._findConfigFilePath(), path.resolve('esdoc.js'));
+            assert.equal(cli._findConfigFilePath(), upath.resolve('esdoc.js'));
             fs.unlinkSync('esdoc.js');
             process.chdir('../');
         });
