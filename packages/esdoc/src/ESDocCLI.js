@@ -186,13 +186,6 @@ export default class ESDocCLI {
    * @private
    */
   _findConfigFilePath() {
-    if( this.#argv?.c ) {
-      // We DO NOT control this._argv.c
-      if( fs.existsSync(this.#argv.c) ) {
-        return this.#argv.c;
-      }
-    }
-
     if( this.#argv?.config ) {
       // We DO NOT control this._argv.config
       if( fs.existsSync(this.#argv.config) ) {
