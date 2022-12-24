@@ -2,7 +2,7 @@ import path from 'path';
 import { isDeepStrictEqual } from 'util';
 import { FileManager } from '../Util/FileManager';
 
-console.log('__filename', __filename, '__dirname', __dirname);
+console.log('>>>> __filename', __filename);
 
 /**
  * Plugin system for your plugin.

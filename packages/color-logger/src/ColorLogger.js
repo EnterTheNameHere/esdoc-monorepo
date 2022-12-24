@@ -1,4 +1,4 @@
-console.log('__filename', __filename, '__dirname', __dirname);
+console.log('>>>> __filename', __filename);
 
 // ASCII ESCAPE SEQUENCE http://www5c.biglobe.ne.jp/~ecb/assembler2/b_2.html
 const levelToColor = {

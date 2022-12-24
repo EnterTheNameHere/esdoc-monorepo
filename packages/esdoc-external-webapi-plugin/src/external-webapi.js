@@ -1,4 +1,4 @@
-console.log('__filename', __filename, '__dirname', __dirname);
+console.log('>>>> __filename', __filename);
 
 // https://developer.mozilla.org/en-US/docs/Web/API
 

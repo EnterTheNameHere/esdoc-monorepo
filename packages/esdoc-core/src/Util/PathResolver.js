@@ -1,7 +1,7 @@
 import path from 'path';
 import os from 'os';
 
-console.log('__filename', __filename, '__dirname', __dirname);
+console.log('>>>> __filename', __filename);
 
 /**
  * file path resolver.

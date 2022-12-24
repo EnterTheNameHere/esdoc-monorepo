@@ -1,7 +1,7 @@
 const AbstractBuilder = require('./AbstractBuilder');
 const IceCap = require('@enterthenamehere/ice-cap').default;
 
-console.log('__filename', __filename, '__dirname', __dirname);
+console.log('>>>> __filename', __filename);
 
 class FunctionBuilder extends AbstractBuilder {
   makeHTML() {

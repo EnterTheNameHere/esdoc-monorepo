@@ -1,6 +1,6 @@
 import AbstractDoc from './AbstractDoc.js';
 
-console.log('__filename', __filename, '__dirname', __dirname);
+console.log('>>>> __filename', __filename);
 
 /**
  * Doc Class for Assignment AST node.

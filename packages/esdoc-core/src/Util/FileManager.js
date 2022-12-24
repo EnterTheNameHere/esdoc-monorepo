@@ -2,7 +2,7 @@ import fs from 'fs-extra';
 import path_package from 'path';
 import rrdir from 'rrdir';
 
-console.log('__filename', __filename, '__dirname', __dirname);
+console.log('>>>> __filename', __filename);
 
 class FileDoesNotExistOrNoPermissionError extends Error {
     /**

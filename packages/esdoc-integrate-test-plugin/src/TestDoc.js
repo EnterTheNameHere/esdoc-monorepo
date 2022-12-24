@@ -1,4 +1,4 @@
-console.log('__filename', __filename, '__dirname', __dirname);
+console.log('>>>> __filename', __filename);
 
 // hack: depends on esdoc internal class
 const AbstractDoc = require('@enterthenamehere/esdoc-core/lib/Doc/AbstractDoc').default;

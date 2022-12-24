@@ -2,7 +2,7 @@ const logger = require('@enterthenamehere/color-logger');
 const ASTNodeContainer = require('@enterthenamehere/esdoc-core/lib/Util/ASTNodeContainer.js').default;
 const ASTUtil = require('@enterthenamehere/esdoc-core/lib/Util/ASTUtil').default;
 
-console.log('__filename', __filename, '__dirname', __dirname);
+console.log('>>>> __filename', __filename);
 
 class Plugin {
   onHandleDocs(ev) {

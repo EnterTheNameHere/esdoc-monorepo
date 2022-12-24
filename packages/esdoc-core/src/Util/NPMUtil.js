@@ -1,7 +1,7 @@
 import path from 'path';
 import { FileManager } from './FileManager';
 
-console.log('__filename', __filename, '__dirname', __dirname);
+console.log('>>>> __filename', __filename);
 
 /**
  * Node Package Manager(npm) util class.

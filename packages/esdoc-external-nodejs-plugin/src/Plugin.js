@@ -1,7 +1,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 
-console.log('__filename', __filename, '__dirname', __dirname);
+console.log('>>>> __filename', __filename);
 
 class Plugin {
   onHandleConfig(ev) {

@@ -1,7 +1,7 @@
 const path = require("path");
 const cheerio = require("cheerio");
 
-console.log('__filename', __filename, '__dirname', __dirname);
+console.log('>>>> __filename', __filename);
 
 const toSnippet = (id) => {
   return `<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

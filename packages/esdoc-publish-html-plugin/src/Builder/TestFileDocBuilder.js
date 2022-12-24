@@ -2,7 +2,7 @@ import IceCap from '@enterthenamehere/ice-cap';
 import DocBuilder from './DocBuilder.js';
 import { addLineNumbersToSourceCode } from './util.js';
 
-console.log('__filename', __filename, '__dirname', __dirname);
+console.log('>>>> __filename', __filename);
 
 /**
  * File output html builder class.

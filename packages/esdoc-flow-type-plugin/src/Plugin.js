@@ -2,7 +2,7 @@ const ASTUtil = require('@enterthenamehere/esdoc-core/lib/Util/ASTUtil').default
 const CommentParser = require('@enterthenamehere/esdoc-core/lib/Parser/CommentParser').default;
 const InvalidCodeLogger = require('@enterthenamehere/esdoc-core/lib/Util/InvalidCodeLogger').default;
 
-console.log('__filename', __filename, '__dirname', __dirname);
+console.log('>>>> __filename', __filename);
 
 function formatExpression(expr) {
   switch (expr.type) {
