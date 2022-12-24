@@ -1,6 +1,6 @@
 {
   "name": "@enterthenamehere/esdoc-exclude-source-plugin",
-  "version": "2.5.4-dev.4",
+  "version": "2.5.4-dev.5",
   "description": "A exclude source plugin for ESDoc",
   "author": "h13i32maru",
   "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-exclude-source-plugin",

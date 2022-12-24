@@ -1,6 +1,6 @@
 {
   "name": "@enterthenamehere/esdoc-publish-html-plugin",
-  "version": "2.5.4-dev.4",
+  "version": "2.5.4-dev.5",
   "description": "A publish HTML plugin for ESDoc",
   "author": "h13i32maru",
   "contributors": [
@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@babel/generator": "^7.12.5",
-    "@enterthenamehere/ice-cap": "^2.5.4-dev.4",
+    "@enterthenamehere/ice-cap": "^2.5.4-dev.5",
     "cheerio": "1.0.0-rc.10",
     "cpx2": "^3.0.0",
     "escape-string-regexp": "^4.0.0",

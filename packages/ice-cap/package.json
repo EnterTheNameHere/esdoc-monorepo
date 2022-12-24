@@ -1,6 +1,6 @@
 {
   "name": "@enterthenamehere/ice-cap",
-  "version": "2.5.4-dev.4",
+  "version": "2.5.4-dev.5",
   "description": "Programmable DOM-based HTML template library.",
   "author": "h13i32maru",
   "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/ice-cap",
@@ -17,7 +17,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@enterthenamehere/color-logger": "^2.5.4-dev.4",
+    "@enterthenamehere/color-logger": "^2.5.4-dev.5",
     "cheerio": "1.0.0-rc.10"
   },
   "scripts": {
