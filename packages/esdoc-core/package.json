@@ -47,7 +47,7 @@
     "@babel/parser": "^7.12.5",
     "@babel/preset-env": "^7.12.1",
     "@babel/traverse": "^7.12.5",
-    "@enterthenamehere/color-logger": "*",
+    "@enterthenamehere/color-logger": "^2.5.4-dev.3",
     "fs-extra": "^9.0.1",
     "rrdir": "^8.2.2",
     "upath": "^2.0.1"

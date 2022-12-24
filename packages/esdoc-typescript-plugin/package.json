@@ -17,8 +17,10 @@
     "access": "public"
   },
   "dependencies": {
-    "@enterthenamehere/esdoc-core": "*",
     "typescript": "^4.0.5"
+  },
+  "peerDependencies": {
+    "@enterthenamehere/esdoc-core": "^2.5.4-dev.3"
   },
   "engines": {
     "node": ">=14.21.1"

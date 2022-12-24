@@ -16,6 +16,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "@enterthenamehere/color-logger": "^2.5.4-dev.3",
+    "cheerio": "1.0.0-rc.10"
+  },
   "scripts": {
     "build": "npm run clear && npm run transpile",
     "clear": "trash ./out",
@@ -26,10 +30,6 @@
     "prepare": "npm run build",
     "test": "mocha ./test/src",
     "transpile": "babel ./src --out-dir ./out --root-mode upward"
-  },
-  "dependencies": {
-    "@enterthenamehere/color-logger": "*",
-    "cheerio": "1.0.0-rc.10"
   },
   "keywords": [
     "html",

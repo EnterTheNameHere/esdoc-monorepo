@@ -43,8 +43,8 @@
     "transpile": "babel ./src --out-dir ./out --root-mode upward"
   },
   "dependencies": {
-    "@enterthenamehere/color-logger": "*",
-    "@enterthenamehere/esdoc-core": "*",
+    "@enterthenamehere/color-logger": "^2.5.4-dev.3",
+    "@enterthenamehere/esdoc-core": "^2.5.4-dev.3",
     "fs-extra": "^9.0.1",
     "minimist": "^1.2.6",
     "upath": "^2.0.1"

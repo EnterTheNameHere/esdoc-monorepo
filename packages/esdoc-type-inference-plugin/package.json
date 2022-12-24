@@ -17,8 +17,10 @@
     "access": "public"
   },
   "dependencies": {
-    "@enterthenamehere/color-logger": "*",
-    "@enterthenamehere/esdoc-core": "*"
+    "@enterthenamehere/color-logger": "^2.5.4-dev.3"
+  },
+  "peerDependencies": {
+    "@enterthenamehere/esdoc-core": "^2.5.4-dev.3"
   },
   "engines": {
     "node": ">=14.21.1"

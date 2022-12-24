@@ -22,19 +22,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@babel/generator": "^7.12.5",
-    "@enterthenamehere/esdoc-core": "*",
-    "@enterthenamehere/ice-cap": "*",
-    "cheerio": "1.0.0-rc.10",
-    "cpx2": "^3.0.0",
-    "escape-string-regexp": "^4.0.0",
-    "marked": "^4.0.10",
-    "prismjs": "^1.27.0",
-    "sanitize-html": "^2.1.2",
-    "taffydb": "^2.7.3",
-    "trash-cli": "^4.0.0"
-  },
   "engines": {
     "node": ">=14.21.1"
   },
@@ -53,6 +40,21 @@
     "test:clear": "trash ./test/fixture/out",
     "test:mocha": "mocha ./test/src --require ./test/src/init.js",
     "transpile": "babel ./src --out-dir ./out --root-mode upward"
+  },
+  "dependencies": {
+    "@babel/generator": "^7.12.5",
+    "@enterthenamehere/ice-cap": "^2.5.4-dev.3",
+    "cheerio": "1.0.0-rc.10",
+    "cpx2": "^3.0.0",
+    "escape-string-regexp": "^4.0.0",
+    "marked": "^4.0.10",
+    "prismjs": "^1.27.0",
+    "sanitize-html": "^2.1.2",
+    "taffydb": "^2.7.3",
+    "trash-cli": "^4.0.0"
+  },
+  "peerDependencies": {
+    "@enterthenamehere/esdoc-core": "^2.5.4-dev.3"
   },
   "keywords": [
     "esdoc",

@@ -16,8 +16,8 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@enterthenamehere/esdoc-core": "*"
+  "peerDependencies": {
+    "@enterthenamehere/esdoc-core": "^2.5.4-dev.3"
   },
   "engines": {
     "node": ">=14.21.1"
