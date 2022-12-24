@@ -2,6 +2,8 @@ import logger from '@enterthenamehere/color-logger';
 import AbstractDoc from './AbstractDoc.js';
 import ParamParser from '../Parser/ParamParser.js';
 
+console.log('__filename', __filename, '__dirname', __dirname);
+
 /**
  * Doc Class from virtual comment node of external.
  */

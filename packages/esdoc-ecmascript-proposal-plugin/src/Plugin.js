@@ -1,3 +1,5 @@
+console.log('__filename', __filename, '__dirname', __dirname);
+
 class Plugin {
   onHandleCodeParser(ev) {
     const option = ev.data.option || { all: true };

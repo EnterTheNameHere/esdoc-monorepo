@@ -1,6 +1,8 @@
 const path = require('path');
 const cheerio = require('cheerio');
 
+console.log('__filename', __filename, '__dirname', __dirname);
+
 class Plugin {
   onStart(ev) {
     this._option = ev.data.option || {};

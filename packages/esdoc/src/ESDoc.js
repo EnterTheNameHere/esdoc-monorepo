@@ -11,6 +11,8 @@ import InvalidCodeLogger from '@enterthenamehere/esdoc-core/lib/Util/InvalidCode
 import PathResolver from '@enterthenamehere/esdoc-core/lib/Util/PathResolver';
 import PluginManager from '@enterthenamehere/esdoc-core/lib/Plugin/PluginManager';
 
+console.log('__filename', __filename, '__dirname', __dirname);
+
 /**
  * API Documentation Generator.
  *

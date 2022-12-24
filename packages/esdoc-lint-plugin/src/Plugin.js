@@ -1,3 +1,5 @@
+console.log('__filename', __filename, '__dirname', __dirname);
+
 // hack: using a internal code of esdoc.
 const ASTNodeContainer = require('@enterthenamehere/esdoc-core/lib/Util/ASTNodeContainer.js').default;
 

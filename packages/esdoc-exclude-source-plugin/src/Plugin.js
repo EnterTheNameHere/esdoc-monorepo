@@ -1,3 +1,5 @@
+console.log('__filename', __filename, '__dirname', __dirname);
+
 class Plugin {
   onHandleDocs(ev) {
     for (const doc of ev.data.docs) {

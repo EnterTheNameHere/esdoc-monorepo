@@ -1,6 +1,8 @@
 const AbstractBuilder = require('./AbstractBuilder');
 const IceCap = require('@enterthenamehere/ice-cap').default;
 
+console.log('__filename', __filename, '__dirname', __dirname);
+
 class ClassBuilder extends AbstractBuilder {
   makeHTML() {
     const docs = this._findAll({kind: 'class'});

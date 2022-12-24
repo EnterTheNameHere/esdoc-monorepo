@@ -2,6 +2,8 @@ const path = require('path');
 const ts = require('typescript');
 const CommentParser = require('@enterthenamehere/esdoc-core/lib/Parser/CommentParser').default;
 
+console.log('__filename', __filename, '__dirname', __dirname);
+
 class Plugin {
   constructor() {
     this._enable = true;

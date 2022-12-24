@@ -6,6 +6,8 @@ import ESDoc from './ESDoc.js';
 import NPMUtil from '@enterthenamehere/esdoc-core/lib/Util/NPMUtil.js';
 import { FileManager } from '@enterthenamehere/esdoc-core/lib/Util/FileManager';
 
+console.log('__filename', __filename, '__dirname', __dirname);
+
 /** @type {minimist.Opts} */
 const minimistOpts = {
   string: [ 'config' ],

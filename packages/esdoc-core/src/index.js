@@ -25,6 +25,8 @@ import NamingUtil from './Util/NamingUtil';
 import NPMUtil from './Util/NPMUtil';
 import PathResolver from './Util/PathResolver';
 
+console.log('__filename', __filename, '__dirname', __dirname);
+
 export {
   AssignmentDoc,
   ClassDoc,

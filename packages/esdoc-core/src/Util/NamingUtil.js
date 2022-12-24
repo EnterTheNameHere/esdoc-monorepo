@@ -2,6 +2,8 @@ import path from 'path';
 
 //const filePathMap = {};
 
+console.log('__filename', __filename, '__dirname', __dirname);
+
 /**
  * Identifier Naming Util class.
  */

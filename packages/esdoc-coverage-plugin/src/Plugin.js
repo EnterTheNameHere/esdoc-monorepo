@@ -1,5 +1,7 @@
 const path = require('path');
 
+console.log('__filename', __filename, '__dirname', __dirname);
+
 class Plugin {
   onHandleDocs(ev) {
     this._docs = ev.data.docs;

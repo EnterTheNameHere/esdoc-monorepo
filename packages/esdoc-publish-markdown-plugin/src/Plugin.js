@@ -3,6 +3,8 @@ const GitHubFlavouredMarkdown = require('turndown-plugin-gfm').gfm;
 const ClassBuilder = require('./ClassBuilder');
 const FunctionBuilder = require('./FunctionBuilder');
 
+console.log('__filename', __filename, '__dirname', __dirname);
+
 class Plugin {
   onHandleDocs(ev) {
     this._docs = ev.data.docs;

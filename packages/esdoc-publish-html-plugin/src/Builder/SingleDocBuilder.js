@@ -1,6 +1,8 @@
 import IceCap from '@enterthenamehere/ice-cap';
 import DocBuilder from './DocBuilder.js';
 
+console.log('__filename', __filename, '__dirname', __dirname);
+
 /**
  * Single output builder class.
  * "single" means function, variable, typedef, external, etc...

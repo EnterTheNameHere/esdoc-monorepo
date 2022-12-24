@@ -1,3 +1,5 @@
+console.log('__filename', __filename, '__dirname', __dirname);
+
 // hack: depends on esdoc internal class
 const FileDoc = require('@enterthenamehere/esdoc-core/lib/Doc/FileDoc').default;
 

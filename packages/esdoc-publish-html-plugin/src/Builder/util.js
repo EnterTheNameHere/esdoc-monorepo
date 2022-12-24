@@ -4,6 +4,8 @@ import prismjs from 'prismjs';
 const loadLanguages = require('prismjs/components/');
 import sanitizeHtml from 'sanitize-html';
 
+console.log('__filename', __filename, '__dirname', __dirname);
+
 /**
  * Highlights `code` as a source code of `language`, javascript as default, returning html.
  * 

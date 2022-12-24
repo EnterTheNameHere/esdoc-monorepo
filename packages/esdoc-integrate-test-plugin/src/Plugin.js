@@ -2,6 +2,8 @@ const path = require('path');
 const fs = require('fs-extra');
 const TestDocFactory = require('./TestDocFactory');
 
+console.log('__filename', __filename, '__dirname', __dirname);
+
 // hack
 const ESParser = require('@enterthenamehere/esdoc-core/lib/Parser/ESParser').default;
 const InvalidCodeLogger = require('@enterthenamehere/esdoc-core/lib/Util/InvalidCodeLogger').default;

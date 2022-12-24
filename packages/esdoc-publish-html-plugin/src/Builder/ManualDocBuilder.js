@@ -4,6 +4,8 @@ import cheerio from 'cheerio';
 import DocBuilder from './DocBuilder.js';
 import {markdown} from './util.js';
 
+console.log('__filename', __filename, '__dirname', __dirname);
+
 /**
  * Manual Output Builder class.
  */

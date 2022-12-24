@@ -2,6 +2,8 @@ import PluginManager from '../Plugin/PluginManager.js';
 import { FileManager } from '../Util/FileManager';
 const BabelParser = require('@babel/parser');
 
+console.log('__filename', __filename, '__dirname', __dirname);
+
 /**
  * ECMAScript Parser class.
  *

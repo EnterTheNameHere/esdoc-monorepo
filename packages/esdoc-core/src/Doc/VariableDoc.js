@@ -1,5 +1,7 @@
 import AbstractDoc from './AbstractDoc.js';
 
+console.log('__filename', __filename, '__dirname', __dirname);
+
 /**
  * Doc Class from Variable Declaration AST node.
  */

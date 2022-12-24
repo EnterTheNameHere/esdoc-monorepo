@@ -14,6 +14,8 @@ import ASTUtil from '../Util/ASTUtil.js';
 
 const already = Symbol('already');
 
+console.log('__filename', __filename, '__dirname', __dirname);
+
 /**
  * Doc factory class.
  *

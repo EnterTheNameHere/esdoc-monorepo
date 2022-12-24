@@ -8,6 +8,8 @@ import DocResolver from './DocResolver.js';
 import NPMUtil from '@enterthenamehere/esdoc-core/lib/Util/NPMUtil.js';
 import { FileManager } from '@enterthenamehere/esdoc-core/lib/Util/FileManager.js';
 
+console.log('__filename', __filename, '__dirname', __dirname);
+
 /**
  * Builder base class.
  */

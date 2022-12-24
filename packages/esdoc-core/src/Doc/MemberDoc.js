@@ -2,6 +2,8 @@ import AbstractDoc from './AbstractDoc.js';
 import MethodDoc from './MethodDoc.js';
 import babelGenerator from '@babel/generator';
 
+console.log('__filename', __filename, '__dirname', __dirname);
+
 /**
  * Doc Class from Member Expression AST node.
  */

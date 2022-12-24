@@ -1,5 +1,7 @@
 import { FileManager } from './FileManager';
 
+console.log('__filename', __filename, '__dirname', __dirname);
+
 /**
  * logger for invalid code which can not be parsed with ESDoc.
  */
