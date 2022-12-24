@@ -13,7 +13,8 @@
     "postcoverage": "npm run coverage:remove_nyc_output",
     "test": "npm run build && npm run test:execute",
     "test:execute": "lerna run test",
-    "test:latest": "lerna run --since main build && lerna run --since main test"
+    "test:latest": "lerna run --since main build && lerna run --since main test",
+    "lerna:publish_dev": "lerna publish from-package --dist-tag dev"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.8",
