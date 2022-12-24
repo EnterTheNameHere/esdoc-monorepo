@@ -1,6 +1,6 @@
 {
   "name": "@enterthenamehere/esdoc-publish-markdown-plugin",
-  "version": "2.5.4-dev.3",
+  "version": "2.5.4-dev.4",
   "description": "A publish markdown plugin for ESDoc [PoC]",
   "author": "h13i32maru",
   "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-publish-markdown-plugin",
@@ -17,7 +17,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@enterthenamehere/ice-cap": "^2.5.4-dev.3",
+    "@enterthenamehere/ice-cap": "^2.5.4-dev.4",
     "turndown": "^7.1.1",
     "turndown-plugin-gfm": "^1.0.2"
   },

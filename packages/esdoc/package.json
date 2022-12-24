@@ -1,6 +1,6 @@
 {
   "name": "@enterthenamehere/esdoc",
-  "version": "2.5.4-dev.3",
+  "version": "2.5.4-dev.4",
   "description": "Good Documentation Generator For JavaScript, updated for new decade",
   "author": {
     "name": "h13i32maru",
@@ -43,8 +43,8 @@
     "transpile": "babel ./src --out-dir ./out --root-mode upward"
   },
   "dependencies": {
-    "@enterthenamehere/color-logger": "^2.5.4-dev.3",
-    "@enterthenamehere/esdoc-core": "^2.5.4-dev.3",
+    "@enterthenamehere/color-logger": "^2.5.4-dev.4",
+    "@enterthenamehere/esdoc-core": "^2.5.4-dev.4",
     "fs-extra": "^9.0.1",
     "minimist": "^1.2.6",
     "upath": "^2.0.1"

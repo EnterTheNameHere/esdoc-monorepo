@@ -1,6 +1,6 @@
 {
   "name": "@enterthenamehere/esdoc-external-webapi-plugin",
-  "version": "2.5.4-dev.3",
+  "version": "2.5.4-dev.4",
   "description": "A external Web API plugin for ESDoc",
   "author": "h13i32maru",
   "homepage": "https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-external-webapi-plugin",

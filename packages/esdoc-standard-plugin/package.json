@@ -1,6 +1,6 @@
 {
   "name": "@enterthenamehere/esdoc-standard-plugin",
-  "version": "2.5.4-dev.3",
+  "version": "2.5.4-dev.4",
   "description": "A standard plugin for ESDoc",
   "author": "h13i32maru",
   "contributors": [
@@ -23,18 +23,18 @@
     "access": "public"
   },
   "dependencies": {
-    "@enterthenamehere/esdoc-accessor-plugin": "^2.5.4-dev.3",
-    "@enterthenamehere/esdoc-brand-plugin": "^2.5.4-dev.3",
-    "@enterthenamehere/esdoc-coverage-plugin": "^2.5.4-dev.3",
-    "@enterthenamehere/esdoc-ecmascript-proposal-plugin": "^2.5.4-dev.3",
-    "@enterthenamehere/esdoc-external-ecmascript-plugin": "^2.5.4-dev.3",
-    "@enterthenamehere/esdoc-integrate-manual-plugin": "^2.5.4-dev.3",
-    "@enterthenamehere/esdoc-integrate-test-plugin": "^2.5.4-dev.3",
-    "@enterthenamehere/esdoc-lint-plugin": "^2.5.4-dev.3",
-    "@enterthenamehere/esdoc-publish-html-plugin": "^2.5.4-dev.3",
-    "@enterthenamehere/esdoc-type-inference-plugin": "^2.5.4-dev.3",
-    "@enterthenamehere/esdoc-undocumented-identifier-plugin": "^2.5.4-dev.3",
-    "@enterthenamehere/esdoc-unexported-identifier-plugin": "^2.5.4-dev.3"
+    "@enterthenamehere/esdoc-accessor-plugin": "^2.5.4-dev.4",
+    "@enterthenamehere/esdoc-brand-plugin": "^2.5.4-dev.4",
+    "@enterthenamehere/esdoc-coverage-plugin": "^2.5.4-dev.4",
+    "@enterthenamehere/esdoc-ecmascript-proposal-plugin": "^2.5.4-dev.4",
+    "@enterthenamehere/esdoc-external-ecmascript-plugin": "^2.5.4-dev.4",
+    "@enterthenamehere/esdoc-integrate-manual-plugin": "^2.5.4-dev.4",
+    "@enterthenamehere/esdoc-integrate-test-plugin": "^2.5.4-dev.4",
+    "@enterthenamehere/esdoc-lint-plugin": "^2.5.4-dev.4",
+    "@enterthenamehere/esdoc-publish-html-plugin": "^2.5.4-dev.4",
+    "@enterthenamehere/esdoc-type-inference-plugin": "^2.5.4-dev.4",
+    "@enterthenamehere/esdoc-undocumented-identifier-plugin": "^2.5.4-dev.4",
+    "@enterthenamehere/esdoc-unexported-identifier-plugin": "^2.5.4-dev.4"
   },
   "engines": {
     "node": ">=14.21.1"
