@@ -54,7 +54,7 @@
     "trash-cli": "^4.0.0"
   },
   "peerDependencies": {
-    "@enterthenamehere/esdoc-core": "^2.5.4-dev.3"
+    "@enterthenamehere/esdoc": "^2.5.4-dev.3"
   },
   "keywords": [
     "esdoc",
