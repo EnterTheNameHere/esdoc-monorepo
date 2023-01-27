@@ -3,8 +3,8 @@ import fs from 'fs-extra';
 import upath from 'upath';
 import minimist from 'minimist';
 import ESDoc from './ESDoc.js';
-import NPMUtil from '@enterthenamehere/esdoc-core/lib/Util/NPMUtil.js';
-import { FileManager } from '@enterthenamehere/esdoc-core/lib/Util/FileManager';
+import NPMUtil from '@enterthenamehere/esdoc/out/Util/NPMUtil.js';
+import { FileManager } from '@enterthenamehere/esdoc/out/Util/FileManager';
 
 console.log('>>>> __filename', __filename);
 

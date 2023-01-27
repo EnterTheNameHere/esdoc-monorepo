@@ -1,4 +1,4 @@
-const { default: PluginManager } = require("@enterthenamehere/esdoc-core/lib/Plugin/PluginManager");
+const { default: PluginManager } = require("@enterthenamehere/esdoc/out/Plugin/PluginManager");
 
 class SpyingPlugin {
   onStart() {

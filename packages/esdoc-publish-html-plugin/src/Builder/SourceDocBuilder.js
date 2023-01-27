@@ -1,7 +1,7 @@
 import IceCap from '@enterthenamehere/ice-cap';
 import DocBuilder from './DocBuilder.js';
 import {dateForUTC} from './util.js';
-import { FileManager } from '@enterthenamehere/esdoc-core/lib/Util/FileManager';
+import { FileManager } from '@enterthenamehere/esdoc/out/Util/FileManager';
 
 console.log('>>>> __filename', __filename);
 

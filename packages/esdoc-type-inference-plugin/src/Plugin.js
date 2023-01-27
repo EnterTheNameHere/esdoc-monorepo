@@ -1,6 +1,6 @@
 const logger = require('@enterthenamehere/color-logger');
-const ASTNodeContainer = require('@enterthenamehere/esdoc-core/lib/Util/ASTNodeContainer.js').default;
-const ASTUtil = require('@enterthenamehere/esdoc-core/lib/Util/ASTUtil').default;
+const ASTNodeContainer = require('@enterthenamehere/esdoc/out/Util/ASTNodeContainer.js').default;
+const ASTUtil = require('@enterthenamehere/esdoc/out/Util/ASTUtil').default;
 
 console.log('>>>> __filename', __filename);
 

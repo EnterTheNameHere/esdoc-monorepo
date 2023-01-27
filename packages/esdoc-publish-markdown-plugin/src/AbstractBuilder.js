@@ -1,5 +1,5 @@
 const path = require('path');
-const { FileManager } = require('@enterthenamehere/esdoc-core/lib/Util/FileManager');
+const { FileManager } = require('@enterthenamehere/esdoc/out/Util/FileManager');
 
 console.log('>>>> __filename', __filename);
 

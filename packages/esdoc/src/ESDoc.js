@@ -3,13 +3,13 @@ import path from 'path';
 
 import logger from '@enterthenamehere/color-logger';
 
-import ASTUtil from '@enterthenamehere/esdoc-core/lib/Util/ASTUtil';
-import DocFactory from '@enterthenamehere/esdoc-core/lib/Factory/DocFactory';
-import ESParser from '@enterthenamehere/esdoc-core/lib/Parser/ESParser';
-import { FileManager } from '@enterthenamehere/esdoc-core/lib/Util/FileManager';
-import InvalidCodeLogger from '@enterthenamehere/esdoc-core/lib/Util/InvalidCodeLogger';
-import PathResolver from '@enterthenamehere/esdoc-core/lib/Util/PathResolver';
-import PluginManager from '@enterthenamehere/esdoc-core/lib/Plugin/PluginManager';
+import ASTUtil from '@enterthenamehere/esdoc/out/Util/ASTUtil';
+import DocFactory from '@enterthenamehere/esdoc/out/Factory/DocFactory';
+import ESParser from '@enterthenamehere/esdoc/out/Parser/ESParser';
+import { FileManager } from '@enterthenamehere/esdoc/out/Util/FileManager';
+import InvalidCodeLogger from '@enterthenamehere/esdoc/out/Util/InvalidCodeLogger';
+import PathResolver from '@enterthenamehere/esdoc/out/Util/PathResolver';
+import PluginManager from '@enterthenamehere/esdoc/out/Plugin/PluginManager';
 
 console.log('>>>> __filename', __filename);
 

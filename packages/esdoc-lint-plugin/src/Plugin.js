@@ -1,7 +1,7 @@
 console.log('>>>> __filename', __filename);
 
 // hack: using a internal code of esdoc.
-const ASTNodeContainer = require('@enterthenamehere/esdoc-core/lib/Util/ASTNodeContainer.js').default;
+const ASTNodeContainer = require('@enterthenamehere/esdoc/out/Util/ASTNodeContainer.js').default;
 
 /**
  * Lint Output Builder class.

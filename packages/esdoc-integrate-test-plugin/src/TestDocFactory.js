@@ -1,7 +1,7 @@
 const TestDoc = require('./TestDoc');
 const TestFileDoc = require('./TestFileDoc');
 // hack: depends on ESDoc internal class
-const CommentParser = require('@enterthenamehere/esdoc-core/lib/Parser/CommentParser').default;
+const CommentParser = require('@enterthenamehere/esdoc/out/Parser/CommentParser').default;
 
 const already = Symbol('already');
 
