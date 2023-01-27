@@ -8,7 +8,6 @@ Original [ESDoc](https://github.com/esdoc/esdoc) is unfortunately no more mantai
 ## What's new/different from ESDoc?
 
 * New scope: all my packages are under @enterthenamehere/ scope;
-* Moved "core" of ESDoc documentation generation functionality into it's own package: esdoc-core;
 * Updated to babel 7, enabling parsing of ESNext features;
 * Added esdoc-ecmascript-proposal-plugin to esdoc-standard-plugin, so you can use ESNext right away;
 * Updated dependencies to get rid of high risk vulnerabilities;
