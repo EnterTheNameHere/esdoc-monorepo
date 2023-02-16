@@ -5,6 +5,11 @@
     "**/node_modules/*/**": true,
     "**/.hg/store/**": true,
     "**/lib/*/**": true,
-    "**/out/*/**": true
+    "**/out/*/**": true,
+    "**/out/**": true
+  },
+  
+  "typescript.tsserver.watchOptions": {
+    "watchFile": "dynamicPriorityPolling"
   }
 }
