@@ -6,8 +6,6 @@ import ESDoc from './ESDoc.js';
 import NPMUtil from '@enterthenamehere/esdoc/out/Util/NPMUtil.js';
 import { FileManager } from '@enterthenamehere/esdoc/out/Util/FileManager';
 
-console.log('>>>> __filename', __filename);
-
 /** @type {minimist.Opts} */
 const minimistOpts = {
   string: [ 'config' ],
@@ -42,7 +40,7 @@ export default class ESDocCLI {
     this.#argv = minimist(argv.slice(2), minimistOpts);
     
     if(this.#argv?.debug) {
-      console.info('Received arguments:');
+      console.info('ESDocCLI: Received arguments:');
       console.info(this.#argv);
     }
 
@@ -71,7 +69,7 @@ export default class ESDocCLI {
     const configPath = this._findConfigFilePath();
 
     if(this.#argv?.debug) {
-      console.info('Checking for configuration file in:');
+      console.info('ESDocCLI: Checking for configuration file in:');
       console.info(configPath);
     }
 
@@ -82,7 +80,7 @@ export default class ESDocCLI {
     }
     
     if(this.#argv?.debug) {
-      console.info('Config:');
+      console.info('ESDocCLI: Config:');
       console.info(config);
     }
 
