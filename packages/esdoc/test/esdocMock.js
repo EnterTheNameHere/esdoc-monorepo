@@ -1,5 +1,5 @@
 import fs from 'fs-extra';
-import path_package from 'path';
+import upath from 'upath';
 import { fork } from 'child_process';
 
 /**
@@ -59,7 +59,7 @@ export class MockESDocTestEnvironment {
          *                the static one {@this.BaseMockingDirectoryPath} changes 
          *                during the environment's life...
          */
-        this._baseMockingDirectoryPath = path_package.resolve( MockESDocTestEnvironment.BaseMockingDirectoryPath );
+        this._baseMockingDirectoryPath = upath.resolve( MockESDocTestEnvironment.BaseMockingDirectoryPath );
         //console.log('_baseMockingDirectoryPath', this._baseMockingDirectoryPath);
 
         do {
@@ -72,19 +72,19 @@ export class MockESDocTestEnvironment {
             /**
             * @type {string} Directory of this mock environment. Should be CWD when running tests.
             */
-            this._directoryPath = path_package.join(this._baseMockingDirectoryPath, this._id);
+            this._directoryPath = upath.join(this._baseMockingDirectoryPath, this._id);
             //console.log('_directoryPath', this._directoryPath);
 
             // We don't want to use existing directory, so if it already exists, generate new ID.
         } while( fs.pathExistsSync( this._directoryPath ) );
         
-        this._mockedNodeModulesPath = path_package.join(
+        this._mockedNodeModulesPath = upath.join(
             this._directoryPath,
             MockESDocTestEnvironment.MockNodeModulesPath
         );
         //console.log('_mockedNodeModulesPath', this._mockedNodeModulesPath);
 
-        this._mockedESDocPackagePath = path_package.join(
+        this._mockedESDocPackagePath = upath.join(
             this._mockedNodeModulesPath,
             MockESDocTestEnvironment.MockNodeModulesESDocPackagePath
         );
@@ -93,40 +93,40 @@ export class MockESDocTestEnvironment {
         /**
          * @type {string} Where ESDoc and ESDocCLI for this mock environment are.
          */
-        this._outPath = path_package.join(this._mockedESDocPackagePath, 'out/');
+        this._outPath = upath.join(this._mockedESDocPackagePath, 'out/');
         //console.log('_outPath', this._outPath);
         
         /**
          * @type {string} Path to this mock environment's ESDoc.js file.
          */
-        this._ESDocPath = path_package.join(this._outPath, 'ESDoc.js');
+        this._ESDocPath = upath.join(this._outPath, 'ESDoc.js');
         //console.log('_ESDocPath', this._ESDocPath);
         
         /**
          * @type {string} Path to this mock environment's ESDocCLI.js file.
          */
-        this._ESDocCLIPath = path_package.join(this._outPath, 'ESDocCLI.js');
+        this._ESDocCLIPath = upath.join(this._outPath, 'ESDocCLI.js');
         //console.log('_ESDocCLIPath', this._ESDocCLIPath);
         
-        const realESDocPath = path_package.resolve(__dirname, '../out/ESDoc.js');
+        const realESDocPath = upath.resolve(__dirname, '../out/ESDoc.js');
         //console.log('realESDocPath', realESDocPath);
-        const realESDocCLIPath = path_package.resolve(__dirname, '../out/ESDocCLI.js');
+        const realESDocCLIPath = upath.resolve(__dirname, '../out/ESDocCLI.js');
         //console.log('realESDocCLIPath', realESDocCLIPath);
-        const realESDocPackageJSON = path_package.resolve(__dirname, '../package.json');
+        const realESDocPackageJSON = upath.resolve(__dirname, '../package.json');
         //console.log('realESDocPackageJSON', realESDocPackageJSON);
         
         fs.ensureDirSync(this._outPath);
         fs.copySync(realESDocPath, this._ESDocPath );
         fs.copySync(realESDocCLIPath, this._ESDocCLIPath );
-        fs.copySync(realESDocPackageJSON, path_package.join( this._mockedESDocPackagePath, 'package.json' ) );
+        fs.copySync(realESDocPackageJSON, upath.join( this._mockedESDocPackagePath, 'package.json' ) );
         
-        this._ESDoc = require( path_package.resolve( this._ESDocPath ) ).default;
-        this._ESDocCLI = require( path_package.resolve( this._ESDocCLIPath ) ).default;
+        this._ESDoc = require( upath.resolve( this._ESDocPath ) ).default;
+        this._ESDocCLI = require( upath.resolve( this._ESDocCLIPath ) ).default;
         
         // We need to delete the cached version from require, or next time we would get cached version with
         // all data already set instead of freshly initialized
-        delete require.cache[require.resolve( path_package.resolve(this._ESDocPath) )];
-        delete require.cache[require.resolve( path_package.resolve(this._ESDocCLIPath) )];
+        delete require.cache[require.resolve( upath.resolve(this._ESDocPath) )];
+        delete require.cache[require.resolve( upath.resolve(this._ESDocCLIPath) )];
     }
     
     /**
@@ -137,7 +137,7 @@ export class MockESDocTestEnvironment {
      * @param {string} data - Will be converted to string by toString().
      */
     writeToFile( name, data ) {
-        const path = path_package.join(this._directoryPath, name);
+        const path = upath.join(this._directoryPath, name);
         fs.ensureFileSync( path );
         fs.writeFileSync( path, data.toString(), { flag: 'w' } );
     }
@@ -150,7 +150,7 @@ export class MockESDocTestEnvironment {
      * @param {string} jsonData - Will be converted to JSON.
      */
     writeToJSONFile( name, jsonData ) {
-        const path = path_package.join(this._directoryPath, name);
+        const path = upath.join(this._directoryPath, name);
         fs.ensureFileSync( path );
         fs.outputJsonSync( path, jsonData, { flag: 'w' } );
     }
