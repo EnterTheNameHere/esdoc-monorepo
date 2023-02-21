@@ -1,8 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
 
-import logger from '@enterthenamehere/color-logger';
-
 import ASTUtil from '@enterthenamehere/esdoc/out/Util/ASTUtil';
 import DocFactory from '@enterthenamehere/esdoc/out/Factory/DocFactory';
 import ESParser from '@enterthenamehere/esdoc/out/Parser/ESParser';
@@ -11,7 +9,8 @@ import InvalidCodeLogger from '@enterthenamehere/esdoc/out/Util/InvalidCodeLogge
 import PathResolver from '@enterthenamehere/esdoc/out/Util/PathResolver';
 import PluginManager from '@enterthenamehere/esdoc/out/Plugin/PluginManager';
 
-console.log('>>>> __filename', __filename);
+const debugModule = require('debug');
+const debug = debugModule('ESDoc:ESDoc');
 
 /**
  * API Documentation Generator.
@@ -33,11 +32,9 @@ export default class ESDoc {
         console.error(`[31m${message}[0m`);
         throw new Error(message);
     }
-
-    if(config.debug) {
-      console.info('Executing ESDoc with following config:');
-      console.info(config);
-    }
+    
+    if(config.debug) debugModule.enable('ESDoc:*');
+    debug('Executing ESDoc with following config:\n%O', config);
     
     // Let's allow multiple sources instead of just one directory
     if( Object.prototype.hasOwnProperty.call(config, 'sources') ) {
@@ -123,8 +120,6 @@ export default class ESDoc {
     PluginManager.onStart();
     
     config = PluginManager.onHandleConfig(config);
-
-    logger.debug = Boolean(config.debug);
     
     let includes = [];
     let excludes = [];
