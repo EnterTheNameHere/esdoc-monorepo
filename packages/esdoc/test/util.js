@@ -25,6 +25,14 @@ function find_imp(key, ...values) {
 
 // We're overriding find to throw instead of return undefined for testing report
 export function find(key, ...values) {
+  if(!global.docs || global.docs.length === 0) {
+    throw new Error('ESDoc didn\'t generate any docs!');
+  }
+  
+  if(typeof global.docs.find !== 'function') {
+    throw new Error('global.docs do not have find() method!');
+  }
+
   const result = find_imp( key, ...values );
   if( result === undefined ) {
     throw new Error(`Key '${key}' with '${values}' value is not found in generated documents. If you are implementing new feature, check if source file was correctly parsed to AST and if *Doc correctly processed it to ESDoc format.`);
