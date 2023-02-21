@@ -5,6 +5,75 @@ import { FileManager } from '../Util/FileManager';
 console.log('>>>> __filename', __filename);
 
 /**
+ * @typedef  {object} Plugin
+ * @property {(event: PluginEvent, pluginOptions: PluginOptions, globalOptions: GlobalOptions)=>void|undefined} onInitialize
+ * @property {(event: PluginEvent)=>void|undefined} onStart
+ * @property {(event: PluginEvent)=>void|undefined} onHandleConfig
+ * @property {(event: PluginEvent)=>void|undefined} onHandleCode
+ * @property {(event: PluginEvent)=>void|undefined} onHandleCodeParser
+ * @property {(event: PluginEvent)=>void|undefined} onHandleAST
+ * @property {(event: PluginEvent)=>void|undefined} onHandleDocs
+ * @property {(event: PluginEvent)=>void|undefined} onPublish
+ * @property {(event: PluginEvent)=>void|undefined} onHandleContent
+ * @property {(event: PluginEvent)=>void|undefined} onComplete
+ */
+
+/**
+ * Represents entry of an ESDoc Plugin in PluginManager.
+ */
+class PluginEntry {
+  /**
+   * 
+   * @param {string}        pluginNameOrPath
+   * @param {PluginOptions} pluginOptions - if not provided, will be empty object.
+   */
+  constructor(pluginNameOrPath, pluginOptions = {}) {
+    /**
+     * If null, plugin wasn't instantiated yet.
+     * @type {Plugin|null}
+     */
+    this._instance = null;
+    /**
+     * @type {string}
+     */
+    this._name = pluginNameOrPath;
+    /**
+     * If no options were provided, it will be empty object.
+     * @type {PluginOptions}
+     */
+    this._pluginOptions = pluginOptions ?? {};
+  }
+  
+  /**
+   * @returns {Plugin}
+   */
+  get instance() {
+    return this._instance;
+  }
+  
+  /**
+   * @param {Plugin}
+   */
+  set instance(value) {
+    this._instance = value;
+  }
+  
+  /**
+   * @returns {string}
+   */
+  get name() {
+    return this._name;
+  }
+  
+  /**
+   * @returns {object}
+   */
+  get pluginOptions() {
+    return this._pluginOptions;
+  }
+}
+
+/**
  * Plugin system for your plugin.
  */
 class PluginManager {
