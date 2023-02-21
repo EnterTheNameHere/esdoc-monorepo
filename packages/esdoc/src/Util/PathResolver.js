@@ -1,4 +1,4 @@
-import path from 'path';
+import upath from 'upath';
 import os from 'os';
 
 console.log('>>>> __filename', __filename);
@@ -30,17 +30,17 @@ export default class PathResolver {
     }
 
     /** @type {string} */
-    this._inDirPath = path.resolve(inDirPath);
+    this._inDirPath = upath.resolve(inDirPath);
 
     /** @type {string} */
-    this._filePath = path.resolve(filePath);
+    this._filePath = upath.resolve(filePath);
 
     /** @type {NPMPackageObject} */
     this._packageName = packageName;
 
     if (mainFilePath) {
       /** @type {string} */
-      this._mainFilePath = path.resolve(mainFilePath);
+      this._mainFilePath = upath.resolve(mainFilePath);
     }
   }
 
@@ -51,13 +51,13 @@ export default class PathResolver {
   get importPath() {
     const relativeFilePath = this.filePath;
 
-    if (this._mainFilePath === path.resolve(relativeFilePath)) {
+    if (this._mainFilePath === upath.resolve(relativeFilePath)) {
       return this._packageName;
     }
 
     let filePath = '';
     if (this._packageName) {
-      filePath = path.normalize(`${this._packageName}${path.sep}${relativeFilePath}`);
+      filePath = upath.normalize(`${this._packageName}${upath.sep}${relativeFilePath}`);
     } else {
       filePath = `./${relativeFilePath}`;
     }
@@ -78,7 +78,7 @@ export default class PathResolver {
    * @type {string}
    */
   get filePath() {
-    const relativeFilePath = path.relative(path.dirname(this._inDirPath), this._filePath);
+    const relativeFilePath = upath.relative(upath.dirname(this._inDirPath), this._filePath);
     return this._slash(relativeFilePath);
   }
 
@@ -87,9 +87,9 @@ export default class PathResolver {
    * @param {string} relativePath - relative path on this file.
    */
   resolve(relativePath) {
-    const selfDirPath = path.dirname(this._filePath);
-    const resolvedPath = path.resolve(selfDirPath, relativePath);
-    const resolvedRelativePath = path.relative(path.dirname(this._inDirPath), resolvedPath);
+    const selfDirPath = upath.dirname(this._filePath);
+    const resolvedPath = upath.resolve(selfDirPath, relativePath);
+    const resolvedRelativePath = upath.relative(upath.dirname(this._inDirPath), resolvedPath);
     return this._slash(resolvedRelativePath);
   }
 

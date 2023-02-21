@@ -1,4 +1,4 @@
-import path from 'path';
+import upath from 'upath';
 
 //const filePathMap = {};
 
@@ -14,7 +14,7 @@ export default class NamingUtil {
    * @returns {string} name
    */
   static filePathToName(filePath) {
-    let basename = path.basename(filePath).split('.')[0];
+    let basename = upath.basename(filePath).split('.')[0];
     basename = basename.replace(/[^a-zA-Z0-9_$]/gu, '');
 
     //filePathMap[filePath] = filePathMap[filePath] || 0;

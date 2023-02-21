@@ -1,4 +1,4 @@
-import path from 'path';
+import upath from 'upath';
 import { FileManager } from './FileManager';
 
 console.log('>>>> __filename', __filename);
@@ -14,11 +14,11 @@ export default class NPMUtil {
   static findPackage() {
     let packageObj = null;
     try {
-      const packageFilePath = path.resolve(__dirname, '../../package.json');
+      const packageFilePath = upath.resolve(__dirname, '../../package.json');
       const json = FileManager.readFileContents(packageFilePath);
       packageObj = JSON.parse(json);
     } catch (e) {
-      const packageFilePath = path.resolve(__dirname, '../../../package.json');
+      const packageFilePath = upath.resolve(__dirname, '../../../package.json');
       const json = FileManager.readFileContents(packageFilePath);
       packageObj = JSON.parse(json);
     }
