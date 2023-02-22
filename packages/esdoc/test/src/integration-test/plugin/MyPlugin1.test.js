@@ -26,7 +26,7 @@ describe('test/plugin/MyPlugin1:', function () {
   });
 
   it('output', function () {
-    const content = fs.readFileSync('./test/integration-test/out/index.md').toString();
+    const content = fs.readFileSync('./test/src/integration-test/out/index.md').toString();
     assert(content.includes('EmptyForPlugin_Modified1_Modified2'));
     assert(content.includes('made by MyPlugin1_Modified'));
   });
