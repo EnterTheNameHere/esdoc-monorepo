@@ -10,7 +10,7 @@ const InvalidCodeLogger = require('@enterthenamehere/esdoc/out/Util/InvalidCodeL
 const PathResolver = require('@enterthenamehere/esdoc/out/Util/PathResolver').default;
 const ASTUtil = require('@enterthenamehere/esdoc/out/Util/ASTUtil').default;
 
-class Plugin {
+class ESDocIntegrateTestPlugin {
   onHandleDocs(ev) {
     this._docs = ev.data.docs;
     this._option = ev.data.option;
@@ -31,10 +31,8 @@ class Plugin {
     if (!this._option) return;
 
     const option = this._option;
-    if( typeof(option.source) !== 'string' ) {
-        console.error('[31mesdoc-integrate-test-plugin: option.source must be a directory![0m');
-        throw new Error('esdoc-integrate-test-plugin: option.source must be a directory!');
-    }
+    // TODO: make source Array of strings.
+    if (!option.source) option.source = './test';
     if (!option.interfaces) option.interfaces = ['describe', 'it', 'context', 'suite', 'test'];
     if (!option.includes) option.includes = ['(spec|Spec|test|Test)\\.js$'];
     if (!option.excludes) option.excludes = ['\\.config\\.js$'];
@@ -52,6 +50,8 @@ class Plugin {
     const includes = option.includes.map((v) => { return new RegExp(v, 'u'); });
     const excludes = option.excludes.map((v) => { return new RegExp(v, 'u'); });
     const sourceDirPath = path.resolve(option.source);
+    
+    // TODO: make source Array of strings and check if they are valid directories.
 
     this._walk(option.source, (filePath) => {
       const relativeFilePath = path.relative(sourceDirPath, filePath);
@@ -135,4 +135,4 @@ class Plugin {
   }
 }
 
-module.exports = new Plugin();
+module.exports = new ESDocIntegrateTestPlugin();
