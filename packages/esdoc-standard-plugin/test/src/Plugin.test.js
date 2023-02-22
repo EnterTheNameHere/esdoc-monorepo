@@ -26,15 +26,15 @@ describe('test standard plugin:', function () {
           }
         }
       },
-      {name: '@enterthenamehere/esdoc-lint-plugin', option: {}},
-      {name: '@enterthenamehere/esdoc-coverage-plugin', option: {}},
-      {name: '@enterthenamehere/esdoc-accessor-plugin', option: {}},
-      {name: '@enterthenamehere/esdoc-type-inference-plugin', option: {}},
+      {name: '@enterthenamehere/esdoc-lint-plugin', option: {enable: true}},
+      {name: '@enterthenamehere/esdoc-coverage-plugin', option: {enable: true, kind: ['class', 'method', 'member', 'get', 'set', 'constructor', 'function', 'variable']}},
+      {name: '@enterthenamehere/esdoc-accessor-plugin', option: {access: ['public', 'protected', 'private'], autoPrivate: true}},
+      {name: '@enterthenamehere/esdoc-type-inference-plugin', option: {enable: true}},
       {name: '@enterthenamehere/esdoc-ecmascript-proposal-plugin', option: {}},
-      {name: '@enterthenamehere/esdoc-external-ecmascript-plugin', option: {}},
+      {name: '@enterthenamehere/esdoc-external-ecmascript-plugin', option: {enable: true}},
       {name: '@enterthenamehere/esdoc-brand-plugin', option: {title: 'My Library'}},
-      {name: '@enterthenamehere/esdoc-undocumented-identifier-plugin', option: {}},
-      {name: '@enterthenamehere/esdoc-unexported-identifier-plugin', option: {}},
+      {name: '@enterthenamehere/esdoc-undocumented-identifier-plugin', option: {enable: true}},
+      {name: '@enterthenamehere/esdoc-unexported-identifier-plugin', option: {enable: false}},
       {name: '@enterthenamehere/esdoc-integrate-manual-plugin', option: {
         files: ['./test/manual/overview.md'],
         //coverage: true
