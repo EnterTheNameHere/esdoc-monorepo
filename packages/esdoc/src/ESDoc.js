@@ -110,11 +110,7 @@ export default class ESDoc {
     PluginManager.setGlobalConfig( this._getGlobalConfig(config) );
     
     config.plugins.forEach((pluginSettings) => {
-      if(config.debug) {
-        console.info('Registering plugin:');
-        console.info(pluginSettings);
-      }
-      PluginManager.registerPlugin(pluginSettings);
+      PluginManager.registerPlugin(pluginSettings.name, pluginSettings.options ?? pluginSettings.option ?? {});
     });
     
     PluginManager.onStart();

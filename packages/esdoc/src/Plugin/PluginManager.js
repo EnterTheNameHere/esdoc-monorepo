@@ -1,6 +1,9 @@
-import path from 'path';
+import upath from 'upath';
 import { isDeepStrictEqual } from 'util';
 import { FileManager } from '../Util/FileManager';
+
+const debugModule = require('debug');
+const debug = debugModule('ESDoc:PluginManager');
 
 console.log('>>>> __filename', __filename);
 
@@ -121,64 +124,104 @@ class PluginManager {
   }
 
   /**
-   * Register ESDoc plugin. Expects object with `name` property, which is npm package name or path (absolute or relative) to file, and `option` property, which is object with settings.
-   * @param {{name:string, option:Object}} pluginSettings 
+   * Register ESDoc plugin.
+   * 
+   * `pluginNameOrPath` must be either package name, eg. what you write to require("package-here") or a relative/absolute path to javascript file.
+   * `pluginOptions` can be an object with options plugin can be configured with as properties. Default is empty object.
+   * 
+   * @note Path resolution is left on node.js first. This works with npm local installation without any issues thanks to deduping. However if packages
+   * are installed globally, npm have issue finding sub-dependencies so plugins installed by other plugins won't work as expected, eg: esdoc-standard-plugin
+   * will install multiple plugins, but esdoc package will not be able to find them, since they are not deduped when installed globally.
+   * If package cannot be found, we will try to look inside plugin's node_modules directory, if exists, for the plugin. If plugin cannot be found, error will
+   * be thrown.
+   * 
+   * @param {string} pluginNameOrPath
+   * @param {object} [pluginOptions] - defaults to empty object
    */
-  registerPlugin( pluginSettings ) {
-    if( !pluginSettings || typeof(pluginSettings.name) !== 'string' ) {
-      console.error('PluginManager::registerPlugin - Plugin must have a name!', pluginSettings);
-      return;
+  registerPlugin(pluginNameOrPath, pluginOptions) {
+    debug('#registerPlugin: Registering plugin "%s" with options:\n%O', pluginNameOrPath, pluginOptions);
+    
+    if(!pluginNameOrPath || typeof(pluginNameOrPath) !== 'string' || pluginNameOrPath.trim().length === 0) {
+      throw new Error('PluginManager#registerPlugin: parameter pluginNameOrPath must be a string and it cannot be empty!');
     }
-
-    // Check if package name has package scope prefix. Required for replace ESDoc & run functionality.
-    if( pluginSettings.name && typeof(pluginSettings.name) === 'string' ) {
-      // Plugin name can be a file path, for these do not check for scopePrefix
-      if( !pluginSettings.name.startsWith('.') && !pluginSettings.name.startsWith('/') )
-      {
-        // Check if name of package contains prefix, if not, add it...
-        if( !pluginSettings.name.startsWith(this._globalOptions.packageScopePrefix) ) {
-          pluginSettings.name = `${this._globalOptions.packageScopePrefix}/${pluginSettings.name}`;
-        }
+    
+    let _pluginNameOrPath = pluginNameOrPath.trim();
+    const _pluginOptions = pluginOptions ?? {};
+    
+    // Plugin name can be a file path, for these do not check for scopePrefix
+    if( !_pluginNameOrPath.startsWith('.') && !_pluginNameOrPath.startsWith('/') )
+    {
+      // Check if name of package contains prefix, if not, add it...
+      if( !_pluginNameOrPath.startsWith(this._globalOptions.packageScopePrefix) ) {
+        _pluginNameOrPath = `${this._globalOptions.packageScopePrefix}/${_pluginNameOrPath}`;
       }
     }
     
-    let savedPluginEntry = this._pluginEntries.get(pluginSettings.name);
+    let savedPluginEntry = this._pluginEntries.get(_pluginNameOrPath);
     if( !savedPluginEntry ) {
-      this._pluginEntries.set(pluginSettings.name, {instance: null, settings: pluginSettings});
-      savedPluginEntry = this._pluginEntries.get(pluginSettings.name);
+      debug('Creating new PluginEntry for plugin named: "%s" with options:\n%O', _pluginNameOrPath, _pluginOptions);
+      this._pluginEntries.set(_pluginNameOrPath, new PluginEntry(_pluginNameOrPath, _pluginOptions));
+      savedPluginEntry = this._pluginEntries.get(_pluginNameOrPath);
     } else {
       return;
     }
-
-    if( !isDeepStrictEqual( savedPluginEntry.settings.option, pluginSettings.option ) ) {
-      console.warn(`PluginManager::registerPlugin - ${pluginSettings.name} is registered more than once, which itself is not an issue, but option is not equal, which might be an issue!`);
-      console.warn('Current plugin option:\n', savedPluginEntry.settings.option, 'New option:\n', pluginSettings.option);
+    
+    if( !isDeepStrictEqual( savedPluginEntry.pluginOptions, _pluginOptions ) ) {
+      console.warn(`PluginManager::registerPlugin - ${_pluginNameOrPath} is registered more than once, which itself is not an issue, but option is not equal, which might be an issue!`);
+      console.warn('Current plugin option:\n', savedPluginEntry.pluginOptions, 'New option:\n', _pluginOptions);
     }
-
+    
     let pluginInstance = null;
     
     try {
-      if( savedPluginEntry.settings.name.startsWith('.') || savedPluginEntry.settings.name.startsWith('/') ) {
+      debug('Trying to instantiate plugin "%O"', savedPluginEntry.name);
+      if( savedPluginEntry.name.startsWith('.') || savedPluginEntry.name.startsWith('/') ) {
         // plugin's name is path
-        const filePath = path.resolve(savedPluginEntry.settings.name);
-        pluginInstance = require(filePath);
+        const filePath = upath.resolve(savedPluginEntry.name);
+        
+        debug('Plugin path: "%s"', filePath);
+        
+        try {
+          debug('Requiring plugin...');
+          pluginInstance = require(filePath);
+        } catch(err) {
+          debug('Instantiating "%s" failed!', filePath);
+          throw err;
+        }
+
+        debug('Finished...');
       } else {
         // plugin's name is package
+        debug('Plugin full name: "%s"', savedPluginEntry.name);
+        
         module.paths.push('./node_modules');
-        pluginInstance = require(savedPluginEntry.settings.name);
+
+        try {
+          debug('Requiring plugin...');
+          pluginInstance = require(savedPluginEntry.name);
+        } catch(err) {
+          debug('Instantiating "%s" failed!', savedPluginEntry.name);
+          throw err;
+        }
+        
+        debug('Finished...');
+        
         module.paths.pop();
       }
     } catch (err) {
-      console.error(`[31mError! Plugin named '[31;7m${savedPluginEntry.settings.name}[0m[31m' cannot be found!`);
-      console.error(`Try running '[37;7mnpm install --save-dev ${savedPluginEntry.settings.name}[0m[31m' to install the plugin.[0m`);
+      debug('err: %O', err);
+      console.error(`[31mError! Plugin named '[31;7m${savedPluginEntry.name}[0m[31m' cannot be found!`);
+      console.error(`Try running '[37;7mnpm install --save-dev ${savedPluginEntry.name}[0m[31m' to install the plugin.[0m`);
       process.exit(1);
     }
     
     savedPluginEntry.instance = pluginInstance;
-
+    
     // If plugin have onInitialize function, call it with options as argument.
     if(pluginInstance.onInitialize && pluginInstance.onInitialize instanceof Function) {
-      pluginInstance.onInitialize(new PluginEvent({}, this), savedPluginEntry.settings.option, this._globalOptions);
+      const ev = new PluginEvent({}, this);
+      ev.debug = debugModule(`ESDoc:Plugin:${savedPluginEntry.name}#onInitialize`);
+      pluginInstance.onInitialize(ev, savedPluginEntry.pluginOptions, this._globalOptions);
     }
   }
 
@@ -190,7 +233,7 @@ class PluginManager {
   init(plugins = [], scopePrefix = '') {
     this.onHandlePlugins(plugins, scopePrefix);
   }
-
+  
   /**
    * Executes function named `handlerName`, if exists, on all plugins.
    * @param {string} handlerName - handler name(e.g. onHandleCode)
@@ -198,14 +241,29 @@ class PluginManager {
    * @private
    */
   _execHandler(handlerName, ev) {
+    debug(`#_execHandler: About to execute "${handlerName}" event on plugins having handler for it.`);
+    
+    if(typeof handlerName !== 'string') {
+      console.error('[PluginManager::_execHandler] Error: handlerName parameter must be typeof string!', `${typeof handlerName} received.`);
+    }
+    
     for( const pluginName of this._pluginEntries.keys() ) {
       const pluginEntry = this._pluginEntries.get(pluginName);
+      if(!pluginEntry.instance) {
+        throw new Error(`Plugin "${pluginEntry.name}" is not instantiated! Cannot call "${handlerName}" on it. This means registration of plugin somehow failed.`);
+      }
       // We don't have control over handlerName
-      const targetFunction = pluginEntry.instance[handlerName] || null;
+      const targetFunction = pluginEntry.instance[handlerName];
       if( targetFunction && targetFunction instanceof Function ) {
-        ev.data.option = pluginEntry.settings.option;
+        debug('Calling %s#%s', pluginName, handlerName);
+        ev.data.option = pluginEntry.pluginOptions;
         ev.data.globalOption = this._globalOptions;
+        ev.debug = debugModule(`ESDoc:Plugin:${pluginName}#${handlerName}`);
+        
+        //debug('Calling %s#%s', pluginName, handlerName);
+        //ev.debug = debug;
         targetFunction.call(pluginEntry.instance, ev);
+        debug('%s#%s finished.', pluginName, handlerName);
       }
     }
   }
