@@ -137,24 +137,10 @@ describe('test ESDocCLI:', function () {
                 fs.unlinkSync('customFile.json');
                 process.chdir('../');
             });
-    
-            it('does not find wrong file', function () {
-                process.chdir('./test/');
-                const cli = new ESDocCLI([null, null, '-c', 'thisFileDoesNotExist.json']);
-                assert.equal(cli._findConfigFilePath(), null);
-                process.chdir('../');
-            });
-    
-            it('still does not find wrong file, but finds implicit file', function () {
-                process.chdir('./test/');
-                fs.writeFileSync('.esdoc.json', 'dummy');
-                const cli = new ESDocCLI([null, null, '-c', 'thisFileDoesNotExist.json']);
-                assert.equal(cli._findConfigFilePath(), upath.resolve('.esdoc.json'));
-                fs.unlinkSync('.esdoc.json');
-                process.chdir('../');
-            });
+            
+            // TODO: won't find non-existing file; ESDoc now shows error about non-existing file and exits. Change test to use run script helper.
         });
-
+        
         describe('--config parameter', function () {
             it('finds file', function () {
                 process.chdir('./test/');
@@ -165,21 +151,7 @@ describe('test ESDocCLI:', function () {
                 process.chdir('../');
             });
     
-            it('does not find wrong file', function () {
-                process.chdir('./test/');
-                const cli = new ESDocCLI([null, null, '--config', 'thisFileDoesNotExist.json']);
-                assert.equal(cli._findConfigFilePath(), null);
-                process.chdir('../');
-            });
-    
-            it('still does not find wrong file, but finds implicit file', function () {
-                process.chdir('./test/');
-                fs.writeFileSync('.esdoc.json', 'dummy');
-                const cli = new ESDocCLI([null, null, '--config', 'thisFileDoesNotExist.json']);
-                assert.equal(cli._findConfigFilePath(), upath.resolve('.esdoc.json'));
-                fs.unlinkSync('.esdoc.json');
-                process.chdir('../');
-            });
+            // TODO: won't find non-existing file; ESDoc now shows error about non-existing file and exits. Change test to use run script helper.
         });
 
         describe('implicit file names', function () {
@@ -200,7 +172,7 @@ describe('test ESDocCLI:', function () {
                 fs.unlinkSync('esdoc.json');
                 process.chdir('../');
             });
-
+            
             it('finds .esdoc.js', function () {
                 process.chdir('./test/');
                 fs.writeFileSync('.esdoc.js', 'dummy');
@@ -227,9 +199,10 @@ describe('test ESDocCLI:', function () {
             fs.writeFileSync('esdoc.json', 'dummy');
             fs.writeFileSync('.esdoc.js', 'dummy');
             fs.writeFileSync('esdoc.js', 'dummy');
-            const cli = new ESDocCLI([null, null, '-c', 'custom.js']);
-            assert.equal(cli._findConfigFilePath(), 'custom.js');
+            let cli = new ESDocCLI([null, null, '-c', 'custom.js', '--debug']);
+            assert.equal(upath.resolve(cli._findConfigFilePath()), upath.resolve('custom.js'));
             fs.unlinkSync('custom.js');
+            cli = new ESDocCLI([null, null]);
             assert.equal(cli._findConfigFilePath(), upath.resolve('.esdoc.json'));
             fs.unlinkSync('.esdoc.json');
             assert.equal(cli._findConfigFilePath(), upath.resolve('esdoc.json'));
