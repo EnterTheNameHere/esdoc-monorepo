@@ -40,6 +40,7 @@ export default class ESDocCLI {
     this.#argv = minimist(argv.slice(2), minimistOpts);
     
     if(this.#argv?.debug) {
+      console.info('ESDocCLI path:', process.cwd());
       console.info('ESDocCLI: Received arguments:');
       console.info(this.#argv);
     }
