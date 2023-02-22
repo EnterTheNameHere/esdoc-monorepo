@@ -1,12 +1,11 @@
 const assert = require('assert');
-const path = require('path');
 
 describe('test standard plugin:', function () {
   it('dynamically load plugins', function () {
     const pluginEntries = require('../spy-plugin.js').pluginEntries;
     const actual = [];
     for( const pluginEntry of pluginEntries.values() ) {
-      actual.push(pluginEntry.settings);
+      actual.push({name: pluginEntry.name, option: pluginEntry.pluginOptions});
     };
 
     const expected = [
@@ -27,15 +26,15 @@ describe('test standard plugin:', function () {
           }
         }
       },
-      {name: '@enterthenamehere/esdoc-lint-plugin', option: undefined},
-      {name: '@enterthenamehere/esdoc-coverage-plugin', option: undefined},
-      {name: '@enterthenamehere/esdoc-accessor-plugin', option: undefined},
-      {name: '@enterthenamehere/esdoc-type-inference-plugin', option: undefined},
-      {name: '@enterthenamehere/esdoc-ecmascript-proposal-plugin', option: undefined},
-      {name: '@enterthenamehere/esdoc-external-ecmascript-plugin'},
+      {name: '@enterthenamehere/esdoc-lint-plugin', option: {}},
+      {name: '@enterthenamehere/esdoc-coverage-plugin', option: {}},
+      {name: '@enterthenamehere/esdoc-accessor-plugin', option: {}},
+      {name: '@enterthenamehere/esdoc-type-inference-plugin', option: {}},
+      {name: '@enterthenamehere/esdoc-ecmascript-proposal-plugin', option: {}},
+      {name: '@enterthenamehere/esdoc-external-ecmascript-plugin', option: {}},
       {name: '@enterthenamehere/esdoc-brand-plugin', option: {title: 'My Library'}},
-      {name: '@enterthenamehere/esdoc-undocumented-identifier-plugin', option: undefined},
-      {name: '@enterthenamehere/esdoc-unexported-identifier-plugin', option: undefined},
+      {name: '@enterthenamehere/esdoc-undocumented-identifier-plugin', option: {}},
+      {name: '@enterthenamehere/esdoc-unexported-identifier-plugin', option: {}},
       {name: '@enterthenamehere/esdoc-integrate-manual-plugin', option: {
         files: ['./test/manual/overview.md'],
         //coverage: true
@@ -46,10 +45,10 @@ describe('test standard plugin:', function () {
         includes: ["Test.js$"],
         excludes: ["\\.config\\.js$"]
       }},
-      {name: '@enterthenamehere/esdoc-publish-html-plugin'},
-      {name: './test/spy-plugin.js'}
+      {name: '@enterthenamehere/esdoc-publish-html-plugin', option: {}},
+      {name: './test/spy-plugin.js', option: {}}
     ];
-
+    
     assert.deepEqual(actual, expected);
 
   });
