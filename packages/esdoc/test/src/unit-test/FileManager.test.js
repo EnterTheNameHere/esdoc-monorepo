@@ -1,7 +1,7 @@
 const process = require('process');
 const fs = require('fs-extra');
 const readdirp = require('readdirp');
-const path = require('path');
+const upath = require('upath');
 
 const expect = require('chai').expect;
 
@@ -139,25 +139,25 @@ describe('test/Utils/FileManager', function () {
 
     it("Returns all files inside directory recursive", function () {
         const expected = [
-            path.join('tree/plugins/lint.js'),
-            path.join('tree/plugins/publish-html.html'),
-            path.join('tree/plugins/standard.js'),
-            path.join('tree/plugins/typescript.ts'),
-            path.join('tree/earth/zealandia/middle earth.config.ts'),
-            path.join('tree/earth/south america/test/test.test.ts'),
-            path.join('tree/earth/north america/node_modules/node'),
-            path.join('tree/earth/europe/slovakia/bratislava.html'),
-            path.join('tree/earth/europe/germany/berlin.js'),
-            path.join('tree/earth/europe/germany/dortmund.ts'),
-            path.join('tree/earth/europe/germany/dresden.test.js'),
-            path.join('tree/earth/europe/czech republic/brno.js'),
-            path.join('tree/earth/europe/czech republic/pilsen.test.ts'),
-            path.join('tree/earth/europe/czech republic/prague.html'),
-            path.join('tree/earth/australia/oceania.config.js'),
-            path.join('tree/earth/asia/india.js'),
-            path.join('tree/earth/asia/japan.html'),
-            path.join('tree/earth/asia/taiwan.test.js'),
-            path.join('tree/earth/africa/spec/spec.spec.js')
+            upath.join('tree/plugins/lint.js'),
+            upath.join('tree/plugins/publish-html.html'),
+            upath.join('tree/plugins/standard.js'),
+            upath.join('tree/plugins/typescript.ts'),
+            upath.join('tree/earth/zealandia/middle earth.config.ts'),
+            upath.join('tree/earth/south america/test/test.test.ts'),
+            upath.join('tree/earth/north america/node_modules/node'),
+            upath.join('tree/earth/europe/slovakia/bratislava.html'),
+            upath.join('tree/earth/europe/germany/berlin.js'),
+            upath.join('tree/earth/europe/germany/dortmund.ts'),
+            upath.join('tree/earth/europe/germany/dresden.test.js'),
+            upath.join('tree/earth/europe/czech republic/brno.js'),
+            upath.join('tree/earth/europe/czech republic/pilsen.test.ts'),
+            upath.join('tree/earth/europe/czech republic/prague.html'),
+            upath.join('tree/earth/australia/oceania.config.js'),
+            upath.join('tree/earth/asia/india.js'),
+            upath.join('tree/earth/asia/japan.html'),
+            upath.join('tree/earth/asia/taiwan.test.js'),
+            upath.join('tree/earth/africa/spec/spec.spec.js')
         ];
         
         const actual = FileManager.getListOfFiles('tree');
@@ -166,10 +166,10 @@ describe('test/Utils/FileManager', function () {
 
     it("Returns only html files", function () {
         const expected = [
-            path.join('tree/plugins/publish-html.html' ),
-            path.join('tree/earth/europe/slovakia/bratislava.html' ),
-            path.join('tree/earth/europe/czech republic/prague.html'),
-            path.join('tree/earth/asia/japan.html'),
+            upath.join('tree/plugins/publish-html.html' ),
+            upath.join('tree/earth/europe/slovakia/bratislava.html' ),
+            upath.join('tree/earth/europe/czech republic/prague.html'),
+            upath.join('tree/earth/asia/japan.html'),
         ];
 
         const actual = FileManager.getListOfFiles('tree', ['**/*.html']);
@@ -178,19 +178,19 @@ describe('test/Utils/FileManager', function () {
 
     it("Returns only html and js files", function () {
         const expected = [
-            path.join('tree/plugins/lint.js' ),
-            path.join('tree/plugins/publish-html.html' ),
-            path.join('tree/plugins/standard.js' ),
-            path.join('tree/earth/europe/slovakia/bratislava.html' ),
-            path.join('tree/earth/europe/germany/berlin.js' ),
-            path.join('tree/earth/europe/germany/dresden.test.js'),
-            path.join('tree/earth/europe/czech republic/brno.js'),
-            path.join('tree/earth/europe/czech republic/prague.html'),
-            path.join('tree/earth/australia/oceania.config.js'),
-            path.join('tree/earth/asia/india.js'),
-            path.join('tree/earth/asia/japan.html'),
-            path.join('tree/earth/asia/taiwan.test.js'),
-            path.join('tree/earth/africa/spec/spec.spec.js')
+            upath.join('tree/plugins/lint.js' ),
+            upath.join('tree/plugins/publish-html.html' ),
+            upath.join('tree/plugins/standard.js' ),
+            upath.join('tree/earth/europe/slovakia/bratislava.html' ),
+            upath.join('tree/earth/europe/germany/berlin.js' ),
+            upath.join('tree/earth/europe/germany/dresden.test.js'),
+            upath.join('tree/earth/europe/czech republic/brno.js'),
+            upath.join('tree/earth/europe/czech republic/prague.html'),
+            upath.join('tree/earth/australia/oceania.config.js'),
+            upath.join('tree/earth/asia/india.js'),
+            upath.join('tree/earth/asia/japan.html'),
+            upath.join('tree/earth/asia/taiwan.test.js'),
+            upath.join('tree/earth/africa/spec/spec.spec.js')
         ];
 
         const actual = FileManager.getListOfFiles('tree', ['**/*.html', '**/*.js']);
@@ -199,15 +199,15 @@ describe('test/Utils/FileManager', function () {
 
     it("Returns only html and js files, except *config.js and *test.js and *spec.js", function () {
         const expected = [
-            path.join('tree/plugins/lint.js' ),
-            path.join('tree/plugins/publish-html.html' ),
-            path.join('tree/plugins/standard.js' ),
-            path.join('tree/earth/europe/slovakia/bratislava.html' ),
-            path.join('tree/earth/europe/germany/berlin.js' ),
-            path.join('tree/earth/europe/czech republic/brno.js'),
-            path.join('tree/earth/europe/czech republic/prague.html'),
-            path.join('tree/earth/asia/india.js'),
-            path.join('tree/earth/asia/japan.html'),
+            upath.join('tree/plugins/lint.js' ),
+            upath.join('tree/plugins/publish-html.html' ),
+            upath.join('tree/plugins/standard.js' ),
+            upath.join('tree/earth/europe/slovakia/bratislava.html' ),
+            upath.join('tree/earth/europe/germany/berlin.js' ),
+            upath.join('tree/earth/europe/czech republic/brno.js'),
+            upath.join('tree/earth/europe/czech republic/prague.html'),
+            upath.join('tree/earth/asia/india.js'),
+            upath.join('tree/earth/asia/japan.html'),
         ];
 
         const actual = FileManager.getListOfFiles('tree', ['**/*.(html|js)'], ['**/*.(spec|config|test).js']);
@@ -223,25 +223,25 @@ describe('test/Utils/FileManager', function () {
 
     it("ignores wrong type of includes/excludes", function () {
         const expected = [
-            path.join('tree/plugins/lint.js'),
-            path.join('tree/plugins/publish-html.html'),
-            path.join('tree/plugins/standard.js'),
-            path.join('tree/plugins/typescript.ts'),
-            path.join('tree/earth/zealandia/middle earth.config.ts'),
-            path.join('tree/earth/south america/test/test.test.ts'),
-            path.join('tree/earth/north america/node_modules/node'),
-            path.join('tree/earth/europe/slovakia/bratislava.html'),
-            path.join('tree/earth/europe/germany/berlin.js'),
-            path.join('tree/earth/europe/germany/dortmund.ts'),
-            path.join('tree/earth/europe/germany/dresden.test.js'),
-            path.join('tree/earth/europe/czech republic/brno.js'),
-            path.join('tree/earth/europe/czech republic/pilsen.test.ts'),
-            path.join('tree/earth/europe/czech republic/prague.html'),
-            path.join('tree/earth/australia/oceania.config.js'),
-            path.join('tree/earth/asia/india.js'),
-            path.join('tree/earth/asia/japan.html'),
-            path.join('tree/earth/asia/taiwan.test.js'),
-            path.join('tree/earth/africa/spec/spec.spec.js')
+            upath.join('tree/plugins/lint.js'),
+            upath.join('tree/plugins/publish-html.html'),
+            upath.join('tree/plugins/standard.js'),
+            upath.join('tree/plugins/typescript.ts'),
+            upath.join('tree/earth/zealandia/middle earth.config.ts'),
+            upath.join('tree/earth/south america/test/test.test.ts'),
+            upath.join('tree/earth/north america/node_modules/node'),
+            upath.join('tree/earth/europe/slovakia/bratislava.html'),
+            upath.join('tree/earth/europe/germany/berlin.js'),
+            upath.join('tree/earth/europe/germany/dortmund.ts'),
+            upath.join('tree/earth/europe/germany/dresden.test.js'),
+            upath.join('tree/earth/europe/czech republic/brno.js'),
+            upath.join('tree/earth/europe/czech republic/pilsen.test.ts'),
+            upath.join('tree/earth/europe/czech republic/prague.html'),
+            upath.join('tree/earth/australia/oceania.config.js'),
+            upath.join('tree/earth/asia/india.js'),
+            upath.join('tree/earth/asia/japan.html'),
+            upath.join('tree/earth/asia/taiwan.test.js'),
+            upath.join('tree/earth/africa/spec/spec.spec.js')
         ];
         
         const actual = FileManager.getListOfFiles('tree', '**/*.html', '**/*.js');
@@ -250,10 +250,10 @@ describe('test/Utils/FileManager', function () {
 
     it("ignores wrong type of excludes", function () {
         const expected = [
-            path.join('tree/plugins/publish-html.html' ),
-            path.join('tree/earth/europe/slovakia/bratislava.html' ),
-            path.join('tree/earth/europe/czech republic/prague.html'),
-            path.join('tree/earth/asia/japan.html'),
+            upath.join('tree/plugins/publish-html.html' ),
+            upath.join('tree/earth/europe/slovakia/bratislava.html' ),
+            upath.join('tree/earth/europe/czech republic/prague.html'),
+            upath.join('tree/earth/asia/japan.html'),
         ];
 
         const actual = FileManager.getListOfFiles('tree', ['**/*.html'], '**/*.js');
@@ -263,25 +263,25 @@ describe('test/Utils/FileManager', function () {
     it("ignores wrong type of includes", function () {
         it("Returns only html and js files, except *config.js and *test.js and *spec.js", function () {
             const expected = [
-                path.join('tree/plugins/lint.js'),
-                path.join('tree/plugins/publish-html.html'),
-                path.join('tree/plugins/standard.js'),
-                path.join('tree/plugins/typescript.ts'),
-                path.join('tree/earth/zealandia/middle earth.config.ts'),
-                path.join('tree/earth/south america/test/test.test.ts'),
-                path.join('tree/earth/north america/node_modules/node'),
-                path.join('tree/earth/europe/slovakia/bratislava.html'),
-                path.join('tree/earth/europe/germany/berlin.js'),
-                path.join('tree/earth/europe/germany/dortmund.ts'),
-                path.join('tree/earth/europe/germany/dresden.test.js'),
-                path.join('tree/earth/europe/czech republic/brno.js'),
-                path.join('tree/earth/europe/czech republic/pilsen.test.ts'),
-                path.join('tree/earth/europe/czech republic/prague.html'),
-                path.join('tree/earth/australia/oceania.config.js'),
-                path.join('tree/earth/asia/india.js'),
-                path.join('tree/earth/asia/japan.html'),
-                path.join('tree/earth/asia/taiwan.test.js'),
-                path.join('tree/earth/africa/spec/spec.spec.js')
+                upath.join('tree/plugins/lint.js'),
+                upath.join('tree/plugins/publish-html.html'),
+                upath.join('tree/plugins/standard.js'),
+                upath.join('tree/plugins/typescript.ts'),
+                upath.join('tree/earth/zealandia/middle earth.config.ts'),
+                upath.join('tree/earth/south america/test/test.test.ts'),
+                upath.join('tree/earth/north america/node_modules/node'),
+                upath.join('tree/earth/europe/slovakia/bratislava.html'),
+                upath.join('tree/earth/europe/germany/berlin.js'),
+                upath.join('tree/earth/europe/germany/dortmund.ts'),
+                upath.join('tree/earth/europe/germany/dresden.test.js'),
+                upath.join('tree/earth/europe/czech republic/brno.js'),
+                upath.join('tree/earth/europe/czech republic/pilsen.test.ts'),
+                upath.join('tree/earth/europe/czech republic/prague.html'),
+                upath.join('tree/earth/australia/oceania.config.js'),
+                upath.join('tree/earth/asia/india.js'),
+                upath.join('tree/earth/asia/japan.html'),
+                upath.join('tree/earth/asia/taiwan.test.js'),
+                upath.join('tree/earth/africa/spec/spec.spec.js')
             ];
     
             const actual = FileManager.getListOfFiles('tree', '**/*.(html|js)');
