@@ -191,6 +191,8 @@ export default class ESDocCLI {
       if( fs.existsSync(this.#argv.config) ) {
         return this.#argv.config;
       }
+      console.error(`Error: Config file '${this.#argv.config}' doesn't exist!`);
+      process.exit(2);
     }
 
     let filePath = upath.resolve('./.esdoc.json');
