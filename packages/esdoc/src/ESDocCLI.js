@@ -72,7 +72,8 @@ export default class ESDocCLI {
       console.info('ESDocCLI: Checking for configuration file in:');
       console.info(configPath);
     }
-
+    
+    // TODO: implement loading of user provided file of package json and javascript file too
     if(configPath) {
       config = this._createConfigFromJSONFile(configPath);
     } else {
