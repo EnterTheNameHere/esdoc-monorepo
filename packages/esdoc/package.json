@@ -51,6 +51,7 @@
     "@enterthenamehere/color-logger": "^2.5.4-dev.5",
     "debug": "^4.3.4",
     "fs-extra": "^9.0.1",
+    "lodash": "^4.17.21",
     "minimist": "^1.2.6",
     "rrdir": "^8.2.2",
     "supports-color": "^9.3.1",
