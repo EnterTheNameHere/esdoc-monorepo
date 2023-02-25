@@ -17,7 +17,8 @@
     "access": "public"
   },
   "dependencies": {
-    "fs-extra": "^9.0.1"
+    "fs-extra": "^9.0.1",
+    "upath": "^2.0.1"
   },
   "peerDependencies": {
     "@enterthenamehere/esdoc": "^2.5.4-dev.3"
