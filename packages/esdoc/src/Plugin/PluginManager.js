@@ -164,6 +164,10 @@ class PluginManager {
   getPluginsConfigObjects() {
     return this._pluginsConfigObjects;
   }
+  
+  #instantiatePlugin() {
+
+  }
 
   /**
    * Register ESDoc plugin.
@@ -218,12 +222,12 @@ class PluginManager {
     let nodeJsListOfRequireDirectories = null;
     
     try {
-      debug('About to instantiate plugin %O', savedPluginEntry.name);
+      debug('About to instantiate plugin %o', savedPluginEntry.name);
       if( savedPluginEntry.name.startsWith('.') || savedPluginEntry.name.startsWith('/') ) {
         // plugin's name is path
         filePath = upath.resolve(savedPluginEntry.name);
         
-        debug('Instantiating plugin as a path: %O', filePath);
+        debug('Instantiating plugin as a path: %o', filePath);
         
         try {
           debug('Requiring plugin...');
@@ -231,14 +235,14 @@ class PluginManager {
           filePath = require.resolve(filePath);
           nodeJsListOfRequireDirectories = require.resolve.paths(filePath);
         } catch(err) {
-          debug('Instantiating failed %O', filePath);
+          debug('Instantiating failed %o', filePath);
           throw err;
         }
         
         debug('Finished...');
       } else {
         // plugin's name is package
-        debug('Instantiating plugin as a package name: %O', savedPluginEntry.name);
+        debug('Instantiating plugin as a package name: %o', savedPluginEntry.name);
         
         try {
           debug('Requiring plugin...');
@@ -246,17 +250,47 @@ class PluginManager {
           filePath = require.resolve(savedPluginEntry.name);
           nodeJsListOfRequireDirectories = require.resolve.paths(filePath);
         } catch(err) {
-          debug('Instantiating failed %O', savedPluginEntry.name);
+          debug('Instantiating failed %o', savedPluginEntry.name);
           throw err;
         }
         
         debug('Finished...');
       }
     } catch (err) {
-      debug('err: %O', err);
-      console.error(`[31mError! Plugin named '[31;7m${savedPluginEntry.name}[0m[31m' cannot be found!`);
-      console.error(`Try running '[37;7mnpm install --save-dev ${savedPluginEntry.name}[0m[31m' to install the plugin.[0m`);
-      process.exit(1);
+      if(err.code === 'MODULE_NOT_FOUND') {
+        // Node.js didn't found the plugin, so now let's take it into our hands and check additional node_modules folders from instantiated plugins...
+        this._additionalNodeModulesDirectoriesForRequire.some((directory) => {
+          try {
+            const directoryToCheck = upath.resolve(directory, savedPluginEntry.name);
+            debug('Checking directory %o for plugin %o', directoryToCheck, savedPluginEntry.name);
+            pluginInstance = require(upath.resolve(directory, savedPluginEntry.name));
+            filePath = require.resolve(savedPluginEntry.name);
+            return true;
+          } catch (ourRequireErr) {
+            if(ourRequireErr.code === 'MODULE_NOT_FOUND') {
+              debug('Plugin not found here...');
+              return false;
+            }
+            
+            debug('err: %O', ourRequireErr);
+            console.error(`[31mError! Plugin named '[31;7m${savedPluginEntry.name}[0m[31m' cannot be found!`);
+            console.error(`Try running '[37;7mnpm install --save-dev ${savedPluginEntry.name}[0m[31m' to install the plugin.[0m`);
+            process.exit(1);
+            return false; // TODO: Refactor to better code
+          }
+        });
+        
+        if(!pluginInstance) {
+          console.error(`[31mError! Plugin named '[31;7m${savedPluginEntry.name}[0m[31m' cannot be found!`);
+          console.error(`Try running '[37;7mnpm install --save-dev ${savedPluginEntry.name}[0m[31m' to install the plugin.[0m`);
+          process.exit(1);
+        }
+      } else {
+        debug('err: %O', err);
+        console.error(`[31mError! Plugin named '[31;7m${savedPluginEntry.name}[0m[31m' cannot be found!`);
+        console.error(`Try running '[37;7mnpm install --save-dev ${savedPluginEntry.name}[0m[31m' to install the plugin.[0m`);
+        process.exit(1);
+      }
     }
     
     savedPluginEntry.instance = pluginInstance;
