@@ -1,4 +1,4 @@
-const path = require('path');
+const upath = require('upath');
 const fs = require('fs-extra');
 const TestDocFactory = require('./TestDocFactory');
 
@@ -50,6 +50,9 @@ class ESDocIntegrateTestPlugin {
     const includes = option.includes.map((v) => { return new RegExp(v, 'u'); });
     const excludes = option.excludes.map((v) => { return new RegExp(v, 'u'); });
     const sourceDirPath = upath.resolve(option.source);
+    
+    // We do not control path!
+    if(!fs.existsSync(sourceDirPath)) return results;
     
     // TODO: make source Array of strings and check if they are valid directories.
 
