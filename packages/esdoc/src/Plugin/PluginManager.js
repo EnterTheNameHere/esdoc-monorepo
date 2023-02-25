@@ -1,4 +1,5 @@
 import upath from 'upath';
+import fse from 'fs-extra';
 import { isDeepStrictEqual } from 'util';
 import { FileManager } from '../Util/FileManager';
 
@@ -45,6 +46,11 @@ class PluginEntry {
      * @type {PluginOptions}
      */
     this._pluginOptions = pluginOptions ?? {};
+    /**
+     * When instantiated, it will hold an absolute path to the instantiated file.
+     * @type {PathLike|null}
+     */
+    this._filePath = null;
   }
   
   /**
@@ -74,6 +80,21 @@ class PluginEntry {
   get pluginOptions() {
     return this._pluginOptions;
   }
+  
+  /**
+   * When instantiated, it will hold an absolute path to the instantiated file or `null` when not instantiated.
+   * @returns {PathLike|null}
+   */
+  get filePath() {
+    return this._filePath;
+  }
+
+  /**
+   * @param {PathLike} value
+   */
+  set filePath(value) {
+    this._filePath = value;
+  }
 }
 
 /**
@@ -84,11 +105,32 @@ class PluginManager {
    * create instance.
    */
   constructor() {
-    this._plugins = null;
     /** @type {GlobalOptions} */
     this._globalOptions = null;
     /** @type {Map<string,PluginEntry} */
     this._pluginEntries = new Map();
+    /**
+     * Holds additional "node_modules" directories we found when instantiating plugin instances. NPM (version 8 at this moment)
+     * in global mode installation won't find plugins installed as sub-dependencies of other plugins:
+     * 
+     *     global node_modules:
+     *         esdoc
+     *         esdoc-standard-plugin
+     *              node_modules/esdoc-publish-html-plugin
+     * 
+     * plugins: {name: 'esdoc-publish-html-plugin'}
+     *     
+     *     global node_modules:
+     *         esdoc <- is doing the require
+     *         esdoc-standard-plugin <- can be found by esdoc
+     *             node_modules/esdoc-publish-html-plugin <- cannot be found by esdoc
+     * 
+     * We will add esdoc-standard-plugin's "node_modules" directory as additional directory, so when plugin is not
+     * found we can then try to require html-publish-html-plugin directly from that directory.
+     * 
+     * @type {Array<PathLike>}
+     */
+    this._additionalNodeModulesDirectoriesForRequire = [];
   }
 
   /**
@@ -139,7 +181,7 @@ class PluginManager {
    * @param {object} [pluginOptions] - defaults to empty object
    */
   registerPlugin(pluginNameOrPath, pluginOptions) {
-    debug('#registerPlugin: Registering plugin "%s" with options:\n%O', pluginNameOrPath, pluginOptions);
+    debug('#registerPlugin: Registering plugin %O with options:\n%O', pluginNameOrPath, pluginOptions);
     
     if(!pluginNameOrPath || typeof(pluginNameOrPath) !== 'string' || pluginNameOrPath.trim().length === 0) {
       throw new Error('PluginManager#registerPlugin: parameter pluginNameOrPath must be a string and it cannot be empty!');
@@ -159,7 +201,7 @@ class PluginManager {
     
     let savedPluginEntry = this._pluginEntries.get(_pluginNameOrPath);
     if( !savedPluginEntry ) {
-      debug('Creating new PluginEntry for plugin named: "%s" with options:\n%O', _pluginNameOrPath, _pluginOptions);
+      debug('Creating new PluginEntry for plugin named: %O with options:\n%O', _pluginNameOrPath, _pluginOptions);
       this._pluginEntries.set(_pluginNameOrPath, new PluginEntry(_pluginNameOrPath, _pluginOptions));
       savedPluginEntry = this._pluginEntries.get(_pluginNameOrPath);
     } else {
@@ -172,41 +214,43 @@ class PluginManager {
     }
     
     let pluginInstance = null;
+    let filePath = null;
+    let nodeJsListOfRequireDirectories = null;
     
     try {
-      debug('Trying to instantiate plugin "%O"', savedPluginEntry.name);
+      debug('About to instantiate plugin %O', savedPluginEntry.name);
       if( savedPluginEntry.name.startsWith('.') || savedPluginEntry.name.startsWith('/') ) {
         // plugin's name is path
-        const filePath = upath.resolve(savedPluginEntry.name);
+        filePath = upath.resolve(savedPluginEntry.name);
         
-        debug('Plugin path: "%s"', filePath);
+        debug('Instantiating plugin as a path: %O', filePath);
         
         try {
           debug('Requiring plugin...');
           pluginInstance = require(filePath);
+          filePath = require.resolve(filePath);
+          nodeJsListOfRequireDirectories = require.resolve.paths(filePath);
         } catch(err) {
-          debug('Instantiating "%s" failed!', filePath);
+          debug('Instantiating failed %O', filePath);
           throw err;
         }
-
+        
         debug('Finished...');
       } else {
         // plugin's name is package
-        debug('Plugin full name: "%s"', savedPluginEntry.name);
+        debug('Instantiating plugin as a package name: %O', savedPluginEntry.name);
         
-        module.paths.push('./node_modules');
-
         try {
           debug('Requiring plugin...');
           pluginInstance = require(savedPluginEntry.name);
+          filePath = require.resolve(savedPluginEntry.name);
+          nodeJsListOfRequireDirectories = require.resolve.paths(filePath);
         } catch(err) {
-          debug('Instantiating "%s" failed!', savedPluginEntry.name);
+          debug('Instantiating failed %O', savedPluginEntry.name);
           throw err;
         }
         
         debug('Finished...');
-        
-        module.paths.pop();
       }
     } catch (err) {
       debug('err: %O', err);
@@ -216,7 +260,73 @@ class PluginManager {
     }
     
     savedPluginEntry.instance = pluginInstance;
+    savedPluginEntry.filePath = filePath;
     
+    // Check if filePath directory has node_modules
+    const debugPathResolution = debug.extend('PathResolution');
+    debugPathResolution('Plugin\'s file: %o', savedPluginEntry.filePath);
+    let currentDirectory = upath.dirname(savedPluginEntry.filePath);
+    debugPathResolution('Plugin\'s directory: %o', currentDirectory);
+    let currentDirectoryPlusNodeModulesPart = upath.resolve(currentDirectory, 'node_modules');
+    let loopSafetyCheck = 0;
+    let hasNodeModulesDir = false;
+    let isDirAlreadyOnNodeJSList = false;
+    // normalize paths
+    nodeJsListOfRequireDirectories = nodeJsListOfRequireDirectories.map((requireDirectory) => {
+      return upath.normalize(requireDirectory);
+    });
+    debugPathResolution('Node.js list of require paths: %O', nodeJsListOfRequireDirectories);
+    do {
+      debugPathResolution('Looking for "node_modules" in directory: %o', currentDirectory);
+      
+      if(!upath.isAbsolute(currentDirectory)) {
+        debugPathResolution('We expect directory to be an absolute path at this time. If it isn\'t, something is wrong and it\'s better to not attempt anything');
+        break;
+      }
+      
+      hasNodeModulesDir = fse.existsSync(currentDirectoryPlusNodeModulesPart);
+        
+      if(hasNodeModulesDir) {
+        // Check if the directory is already on list of node.js paths. We don't need
+        // to continue to add these since node.js already have them and checks them.
+        isDirAlreadyOnNodeJSList = nodeJsListOfRequireDirectories.includes(currentDirectoryPlusNodeModulesPart);
+        if(isDirAlreadyOnNodeJSList) {
+          debugPathResolution('This directory is already checked by node.js so we are finished here.');
+          break;
+        } 
+        
+        // Check if the directory is already on our list.
+        if(this._additionalNodeModulesDirectoriesForRequire.includes(currentDirectoryPlusNodeModulesPart)) {
+          debugPathResolution('This directory is already on our list so we are finished here.');
+          break;
+        }
+        
+        debugPathResolution('Directory %o added to list of directories to look for plugins.', currentDirectoryPlusNodeModulesPart);
+        this._additionalNodeModulesDirectoriesForRequire.push(currentDirectoryPlusNodeModulesPart);
+      }
+      
+      // Check if we are at root dir. We don't need to continue then.
+      const parsed = upath.parse(currentDirectory);
+      if(parsed.root === parsed.dir && parsed.name === '') {
+        debugPathResolution('We\'ve reached root dir, which is weird, but we are finished here.');
+        break;
+      }
+      
+      currentDirectory = upath.resolve(currentDirectory, '..');
+      currentDirectoryPlusNodeModulesPart = upath.resolve(currentDirectory, 'node_modules');
+
+      loopSafetyCheck += 1;
+      if(loopSafetyCheck > 31000) {
+        console.warn('PluginManager#registerPlugin - path resolution loop reached 31000 iterations. If you have this many subdirectories, wow. '
+        + 'If you don\'t have so many subdirectories, we did something wrong and this prevents application to be stuck inside loop. '
+        + 'Please contact us to check this issue.');
+        break;
+      }
+
+    } while(true); // eslint-disable-line no-constant-condition
+    
+    debugPathResolution('List of directories to look for now is: %O', this._additionalNodeModulesDirectoriesForRequire);
+
     // If plugin have onInitialize function, call it with options as argument.
     if(pluginInstance.onInitialize && pluginInstance.onInitialize instanceof Function) {
       const ev = new PluginEvent({}, this);
@@ -224,7 +334,7 @@ class PluginManager {
       pluginInstance.onInitialize(ev, savedPluginEntry.pluginOptions, this._globalOptions);
     }
   }
-
+  
   /**
    * initialize with plugin property.
    * @param {Array<{name: string, option: object}>} plugins - expect config.plugins property.
@@ -255,7 +365,7 @@ class PluginManager {
       // We don't have control over handlerName
       const targetFunction = pluginEntry.instance[handlerName];
       if( targetFunction && targetFunction instanceof Function ) {
-        debug('Calling %s#%s', pluginName, handlerName);
+        debug('Calling %O#%O', pluginName, handlerName);
         ev.data.option = pluginEntry.pluginOptions;
         ev.data.globalOption = this._globalOptions;
         ev.debug = debugModule(`ESDoc:Plugin:${pluginName}#${handlerName}`);
@@ -263,7 +373,7 @@ class PluginManager {
         //debug('Calling %s#%s', pluginName, handlerName);
         //ev.debug = debug;
         targetFunction.call(pluginEntry.instance, ev);
-        debug('%s#%s finished.', pluginName, handlerName);
+        debug('%O#%O finished.', pluginName, handlerName);
       }
     }
   }
