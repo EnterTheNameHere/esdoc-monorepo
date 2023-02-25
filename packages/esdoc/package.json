@@ -53,6 +53,7 @@
     "fs-extra": "^9.0.1",
     "minimist": "^1.2.6",
     "rrdir": "^8.2.2",
+    "supports-color": "^9.3.1",
     "upath": "^2.0.1"
   },
   "keywords": [
