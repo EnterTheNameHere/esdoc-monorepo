@@ -49,12 +49,12 @@ class ESDocIntegrateTestPlugin {
 
     const includes = option.includes.map((v) => { return new RegExp(v, 'u'); });
     const excludes = option.excludes.map((v) => { return new RegExp(v, 'u'); });
-    const sourceDirPath = path.resolve(option.source);
+    const sourceDirPath = upath.resolve(option.source);
     
     // TODO: make source Array of strings and check if they are valid directories.
 
     this._walk(option.source, (filePath) => {
-      const relativeFilePath = path.relative(sourceDirPath, filePath);
+      const relativeFilePath = upath.relative(sourceDirPath, filePath);
       let match = false;
       for (const reg of includes) {
         if (relativeFilePath.match(reg)) {
@@ -90,7 +90,7 @@ class ESDocIntegrateTestPlugin {
     const entries = fs.readdirSync(dirPath);
 
     for (const entry of entries) {
-      const entryPath = path.resolve(dirPath, entry);
+      const entryPath = upath.resolve(dirPath, entry);
       const stat = this._FileManager.getFileStat(entryPath);
 
       if (stat.isFile()) {
