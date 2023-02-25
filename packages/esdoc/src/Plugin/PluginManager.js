@@ -263,8 +263,10 @@ class PluginManager {
           try {
             const directoryToCheck = upath.resolve(directory, savedPluginEntry.name);
             debug('Checking directory %o for plugin %o', directoryToCheck, savedPluginEntry.name);
-            pluginInstance = require(upath.resolve(directory, savedPluginEntry.name));
-            filePath = require.resolve(savedPluginEntry.name);
+            debug('Requiring plugin...');
+            pluginInstance = require(directoryToCheck);
+            filePath = require.resolve(directoryToCheck);
+            nodeJsListOfRequireDirectories = require.resolve.paths(directoryToCheck);
             return true;
           } catch (ourRequireErr) {
             if(ourRequireErr.code === 'MODULE_NOT_FOUND') {
@@ -272,6 +274,7 @@ class PluginManager {
               return false;
             }
             
+            debug('Instantiating failed %o', savedPluginEntry.name);
             debug('err: %O', ourRequireErr);
             console.error(`[31mError! Plugin named '[31;7m${savedPluginEntry.name}[0m[31m' cannot be found!`);
             console.error(`Try running '[37;7mnpm install --save-dev ${savedPluginEntry.name}[0m[31m' to install the plugin.[0m`);
