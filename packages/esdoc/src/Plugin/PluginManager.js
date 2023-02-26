@@ -3,6 +3,8 @@ import fse from 'fs-extra';
 import { isDeepStrictEqual } from 'util';
 import { FileManager } from '../Util/FileManager';
 
+const _ = require('lodash');
+
 const debugModule = require('debug');
 const debug = debugModule('ESDoc:PluginManager');
 
@@ -298,6 +300,12 @@ class PluginManager {
     
     savedPluginEntry.instance = pluginInstance;
     savedPluginEntry.filePath = filePath;
+    if(savedPluginEntry.instance && savedPluginEntry.instance.getDefaultOptions instanceof Function) {
+      debug('Getting default values for unset options...');
+      const pluginsDefaultOptions = savedPluginEntry.instance.getDefaultOptions();
+      _.defaultsDeep(savedPluginEntry.pluginOptions, pluginsDefaultOptions);
+      debug('%O', savedPluginEntry.pluginOptions);
+    }
     
     // Check if filePath directory has node_modules
     const debugPathResolution = debug.extend('PathResolution');
