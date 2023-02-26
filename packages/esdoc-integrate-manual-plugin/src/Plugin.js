@@ -1,4 +1,4 @@
-const path = require('path');
+const fse = require('fs-extra');
 
 console.log('>>>> __filename', __filename);
 
@@ -34,6 +34,11 @@ class Plugin {
         const indexFileName = manual.index;
         console.warn(`@enterthenamehere/esdoc-manual-plugin:\nNo files in option.files - if you just want to add readme.md file as the main page, just add "index": "${indexFileName}" to your esdoc top config. You don't need manual plugin for this. Otherwise specify which files consist your manual into the option.files for manual plugin.`);
         return results;
+    }
+    
+    // TODO: Report if file is not found and is not default value?
+    if (!fse.existsSync(manual.index)) {
+      manual.index = null;
     }
 
     if (manual.index) {
