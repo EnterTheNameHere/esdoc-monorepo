@@ -25,6 +25,8 @@ To use a custom template (ex `my-template` placed in the working directory):
     {"name": "@enterthenamehere/esdoc-publish-html-plugin", "option": {"template": "my-template"}}
 ```
 
+`template` default is `null` - if set, it will start resolving path from process.cwd()
+
 We recommend that you base on [the original template](https://github.com/EnterTheNameHere/esdoc-monorepo/tree/main/packages/esdoc-publish-html-plugin/src/Builder/template).
 
 ## LICENSE

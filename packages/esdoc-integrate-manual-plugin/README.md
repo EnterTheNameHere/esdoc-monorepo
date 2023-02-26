@@ -39,6 +39,11 @@ npm install @enterthenamehere/esdoc-integrate-manual-plugin
 }
 ```
 
+`index` is default `readme.md`
+`globalIndex` is default `true`
+`asset` is default `null` - can be directory to copy
+`files` is default `[]` - array of files making manual pages
+
 ## LICENSE
 MIT
 

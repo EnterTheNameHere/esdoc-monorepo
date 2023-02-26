@@ -17,7 +17,7 @@ npm install @enterthenamehere/esdoc-integrate-test-plugin
     {
       "name": "@enterthenamehere/esdoc-integrate-test-plugin",
       "option": {
-        "source": "./test/",
+        "source": "./test",
         "interfaces": ["describe", "it", "context", "suite", "test"],
         "includes": ["(spec|Spec|test|Test)\\.js$"],
         "excludes": ["\\.config\\.js$"]
@@ -27,7 +27,7 @@ npm install @enterthenamehere/esdoc-integrate-test-plugin
 }
 ```
 
-- `source` is required
+- `source` default is `./test`
 - `interfaces` default is `["describe", "it", "context", "suite", "test"]`
 - `includes` default is `["(spec|Spec|test|Test)\\.js$"]`
 - `excludes` default is `["\\.config\\.js$"]`

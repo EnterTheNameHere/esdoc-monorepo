@@ -9,7 +9,7 @@ npm install @enterthenamehere/esdoc-brand-plugin
 ```
 
 ## Config
-This plugin takes a title and a repository from `package.json (name, repsitory)`.
+This plugin takes a title and a repository from `package.json (name, repository)`.
 ```json
 {
   "source": "./src",
