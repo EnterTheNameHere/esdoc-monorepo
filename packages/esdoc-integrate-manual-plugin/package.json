@@ -37,5 +37,9 @@
   "directories": {
     "test": "test"
   },
-  "main": "src/Plugin.js"
+  "main": "src/Plugin.js",
+  "dependencies": {
+    "fs-extra": "^11.1.0",
+    "upath": "^2.0.1"
+  }
 }
