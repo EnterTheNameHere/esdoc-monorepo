@@ -2,19 +2,18 @@
 console.log('>>>> __filename', __filename);
 
 class ESDocStandardPlugin {
-  onInitialize(initializeEvent, option) {
-    if(!option) option = {};
-    initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-lint-plugin', option.lint);
-    initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-coverage-plugin', option.coverage);
-    initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-accessor-plugin', option.accessor);
-    initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-type-inference-plugin', option.typeInference);
-    initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-ecmascript-proposal-plugin', option.ecmascriptProposal);
+  onInitialize(initializeEvent, options) {
+    if(!options) options = {};
+    initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-lint-plugin', options.lint);
+    initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-coverage-plugin', options.coverage);
+    initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-accessor-plugin', options.accessor);
+    initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-type-inference-plugin', options.typeInference);
+    initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-ecmascript-proposal-plugin', options.ecmascriptProposal);
     initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-external-ecmascript-plugin');
-    initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-brand-plugin', option.brand);
-    initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-undocumented-identifier-plugin', option.undocumentIdentifier);
-    initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-unexported-identifier-plugin', option.unexportedIdentifier);
-    initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-integrate-manual-plugin', option.manual);
-    initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-integrate-test-plugin', option.test);
+    initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-brand-plugin', options.brand);
+    initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-undocumented-identifier-plugin', options.undocumentIdentifier);
+    initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-integrate-manual-plugin', options.manual);
+    initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-integrate-test-plugin', options.test);
     initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-publish-html-plugin');
   }
 
