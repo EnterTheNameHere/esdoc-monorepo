@@ -1,3 +1,4 @@
+const upath = require('upath');
 const fse = require('fs-extra');
 
 console.log('>>>> __filename', __filename);
@@ -46,7 +47,7 @@ class Plugin {
         kind: 'manualIndex',
         globalIndex: manual.globalIndex,
         content: ev.FileManager.readFileContents(manual.index),
-        longname: path.resolve(manual.index),
+        longname: upath.resolve(manual.index),
         name: manual.index,
         static: true,
         access: 'public'
@@ -56,7 +57,7 @@ class Plugin {
         kind: 'manualIndex',
         globalIndex: false,
         content: null,
-        longname: '', // longname does not must be null.
+        longname: '', // longname must not be null.
         name: manual.index,
         static: true,
         access: 'public'
@@ -66,7 +67,7 @@ class Plugin {
     if (manual.asset) {
       results.push({
         kind: 'manualAsset',
-        longname: path.resolve(manual.asset),
+        longname: upath.resolve(manual.asset),
         name: manual.asset,
         static: true,
         access: 'public'
@@ -76,7 +77,7 @@ class Plugin {
     for (const filePath of manual.files) {
       results.push({
         kind: 'manual',
-        longname: path.resolve(filePath),
+        longname: upath.resolve(filePath),
         name: filePath,
         content: ev.FileManager.readFileContents(filePath),
         static: true,
