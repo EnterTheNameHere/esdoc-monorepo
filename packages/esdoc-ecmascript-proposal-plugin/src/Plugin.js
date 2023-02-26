@@ -1,20 +1,35 @@
 console.log('>>>> __filename', __filename);
 
 class Plugin {
+  getDefaultOptions() {
+    return {
+      all: true,
+      classProperties: true,
+      objectRestSpread: true,
+      doExpressions: true,
+      functionBind: true,
+      functionSent: true,
+      asyncGenerators: true,
+      decorators: true,
+      exportExtensions: true,
+      dynamicImport: true,
+    };
+  }
+  
   onHandleCodeParser(ev) {
-    const option = ev.data.option || { all: true };
-    const plugins = ev.data.parserOption.plugins;
+    const option = ev.data.option;
+    const parserPlugins = ev.data.parserOption.plugins;
 
-    if (option.all || option.classProperties) plugins.push('classProperties');
-    if (option.all || option.objectRestSpread) plugins.push('objectRestSpread');
-    if (option.all || option.doExpressions) plugins.push('doExpressions');
-    if (option.all || option.functionBind) plugins.push('functionBind');
-    if (option.all || option.functionSent) plugins.push('functionSent');
-    if (option.all || option.asyncGenerators) plugins.push('asyncGenerators');
-    if (option.all || option.decorators) plugins.push(['decorators', {decoratorsBeforeExport: true, legacy:true}]);
-    if (option.all || option.exportExtensions) plugins.push('exportExtensions');
-    if (option.all || option.exportExtensions) plugins.push('exportDefaultFrom');
-    if (option.all || option.dynamicImport) plugins.push('dynamicImport');
+    if (option.all || option.classProperties) parserPlugins.push('classProperties');
+    if (option.all || option.objectRestSpread) parserPlugins.push('objectRestSpread');
+    if (option.all || option.doExpressions) parserPlugins.push('doExpressions');
+    if (option.all || option.functionBind) parserPlugins.push('functionBind');
+    if (option.all || option.functionSent) parserPlugins.push('functionSent');
+    if (option.all || option.asyncGenerators) parserPlugins.push('asyncGenerators');
+    if (option.all || option.decorators) parserPlugins.push(['decorators', {decoratorsBeforeExport: true, legacy:true}]);
+    if (option.all || option.exportExtensions) parserPlugins.push('exportExtensions');
+    if (option.all || option.exportExtensions) parserPlugins.push('exportDefaultFrom');
+    if (option.all || option.dynamicImport) parserPlugins.push('dynamicImport');
   }
 }
 

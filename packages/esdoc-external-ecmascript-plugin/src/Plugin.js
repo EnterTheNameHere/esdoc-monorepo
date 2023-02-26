@@ -4,10 +4,13 @@ const path = require('path');
 console.log('>>>> __filename', __filename);
 
 class Plugin {
+  getDefaultOptions() {
+    return {enable: true};
+  }
+
   onHandleConfig(ev) {
     this._config = ev.data.config;
-    this._option = ev.data.option || {};
-    if (!('enable' in this._option)) this._option.enable = true;
+    this._option = ev.data.option;
 
     if (!this._option.enable) return;
 

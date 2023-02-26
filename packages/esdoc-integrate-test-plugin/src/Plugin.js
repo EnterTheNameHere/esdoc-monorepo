@@ -11,6 +11,15 @@ const PathResolver = require('@enterthenamehere/esdoc/out/Util/PathResolver').de
 const ASTUtil = require('@enterthenamehere/esdoc/out/Util/ASTUtil').default;
 
 class ESDocIntegrateTestPlugin {
+  getDefaultOptions() {
+    return {
+      source: './test',
+      interfaces: ['describe', 'it', 'context', 'suite', 'test'],
+      includes: ['(spec|Spec|test|Test)\\.js$'],
+      excludes: ['\\.config\\.js$'],
+    };
+  }
+
   onHandleDocs(ev) {
     this._docs = ev.data.docs;
     this._option = ev.data.option;
@@ -21,21 +30,8 @@ class ESDocIntegrateTestPlugin {
   }
 
   _exec() {
-    this._setDefault();
-
     const docs = this._generateDocs();
     this._docs.push(...docs);
-  }
-
-  _setDefault() {
-    if (!this._option) return;
-
-    const option = this._option;
-    // TODO: make source Array of strings.
-    if (!option.source) option.source = './test';
-    if (!option.interfaces) option.interfaces = ['describe', 'it', 'context', 'suite', 'test'];
-    if (!option.includes) option.includes = ['(spec|Spec|test|Test)\\.js$'];
-    if (!option.excludes) option.excludes = ['\\.config\\.js$'];
   }
 
   /**

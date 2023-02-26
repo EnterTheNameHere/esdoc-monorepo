@@ -3,6 +3,15 @@ const path = require('path');
 console.log('>>>> __filename', __filename);
 
 class Plugin {
+  getDefaultOptions() {
+    return {
+      index: 'readme.md',
+      globalIndex: true, // TODO: What globalIndex means?
+      files: [],
+      asset: null, // TODO: Implement support for directories
+    };
+  }
+
   onHandleDocs(ev) {
     this._docs = ev.data.docs;
     this._option = ev.data.option;
@@ -11,26 +20,18 @@ class Plugin {
   }
 
   _exec(ev){
-    this._setDefault();
-
     const docs = this._generateDocs(ev);
     this._docs.push(...docs);
-  }
-
-  _setDefault() {
-    //if (!this._option) return;
-
-    //if (!('coverage' in this._option)) this._option.coverage = true;
   }
 
   _generateDocs(ev) {
     const manual = this._option;
     const results = [];
-
-    if (!this._option) return results;
     
-    if( !this._option.files || this._option.files.length === 0 ) {
-        const indexFileName = this._option.index || 'readme.md';
+    if (!manual) return results;
+    
+    if( !manual.files || manual.files.length === 0 ) {
+        const indexFileName = manual.index;
         console.warn(`@enterthenamehere/esdoc-manual-plugin:\nNo files in option.files - if you just want to add readme.md file as the main page, just add "index": "${indexFileName}" to your esdoc top config. You don't need manual plugin for this. Otherwise specify which files consist your manual into the option.files for manual plugin.`);
         return results;
     }

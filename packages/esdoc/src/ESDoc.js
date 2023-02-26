@@ -272,7 +272,8 @@ export default class ESDoc {
     }
 
     if (!config.index) config.index = './README.md';
-
+    
+    if (Object.prototype.hasOwnProperty.call(config, 'package.json')) config.package = config['package.json']; // alias
     if (!config.package) config.package = './package.json';
 
     if (!('outputAST' in config)) config.outputAST = true;
@@ -292,7 +293,8 @@ export default class ESDoc {
     return {
       debug: config.debug,
       verbose: config.verbose,
-      packageScopePrefix: this._getPackagePrefix()
+      packageScopePrefix: this._getPackagePrefix(),
+      package: config.package
     };
   }
 

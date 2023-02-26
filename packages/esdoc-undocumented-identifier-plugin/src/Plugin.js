@@ -1,9 +1,12 @@
 console.log('>>>> __filename', __filename);
 
 class Plugin {
+  getDefaultOptions() {
+    return {enable: true};
+  }
+
   onHandleDocs(ev) {
-    this._option = ev.data.option || {};
-    if (!('enable' in this._option)) this._option.enable = true;
+    this._option = ev.data.option;
 
     const ignore = !this._option.enable;
 

@@ -5,17 +5,19 @@ const ASTUtil = require('@enterthenamehere/esdoc/out/Util/ASTUtil').default;
 console.log('>>>> __filename', __filename);
 
 class Plugin {
+  getDefaultOptions() {
+    return {enable: true};
+  }
+  
   onHandleDocs(ev) {
     this._docs = ev.data.docs;
-    this._option = ev.data.option || {};
-
-    if (!('enable' in this._option)) this._option.enable = true;
-
+    this._option = ev.data.option;
+    
     this._exec();
   }
 
   _exec() {
-    if (!this._option.enable) return this._docs;
+    if (!this._option.enable) return;
 
     this._inferenceMethod();
     this._inferenceFunction();
@@ -23,8 +25,6 @@ class Plugin {
     this._inferenceSetter();
     this._inferenceMember();
     this._inferenceVariable();
-    
-    return '';
   }
 
   _inferenceMethod() {

@@ -4,14 +4,26 @@ const path = require('path');
 const cheerio = require('cheerio');
 
 class Plugin {
-  onHandleConfig(ev) {
-    const config = ev.data.config;
-    const option = ev.data.option || {};
+  getDefaultOptions() {
+    return {
+      logo: null,
+      title: null,
+      description: null,
+      repository: null,
+      site: null,
+      author: null,
+      image: null,
+    };
+  }
 
+  onHandleConfig(ev) {
+    const globalConfig = ev.data.globalConfig;
+    const option = ev.data.option;
+    
     // get package.json
     let packageObj = {};
     try {
-      const packagePath = config.package || './package.json';
+      const packagePath = globalConfig.package ?? './package.json';
       const tmp = ev.FileManager.readFileContents(packagePath);
       packageObj = JSON.parse(tmp);
     } catch (e) {
@@ -19,12 +31,12 @@ class Plugin {
     }
 
     this._logo = option.logo;
-    this._description = option.description || packageObj.description;
-    this._title = option.title || packageObj.name;
-    this._repository = option.repository || this._getRepositoryURL(packageObj);
-    this._site = option.site || packageObj.homepage;
+    this._description = option.description ?? packageObj.description;
+    this._title = option.title ?? packageObj.name;
+    this._repository = option.repository ?? this._getRepositoryURL(packageObj);
+    this._site = option.site ?? packageObj.homepage;
     this._image = option.image;
-    this._author = option.author || this._getAuthor(packageObj);
+    this._author = option.author ?? this._getAuthor(packageObj);
   }
 
   onPublish(ev) {

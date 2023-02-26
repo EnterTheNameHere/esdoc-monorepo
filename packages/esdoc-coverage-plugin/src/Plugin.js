@@ -3,6 +3,13 @@ const path = require('path');
 console.log('>>>> __filename', __filename);
 
 class Plugin {
+  getDefaultOptions() {
+    return {
+      "enable": true,
+      "kind": ["class", "method", "member", "get", "set", "constructor", "function", "variable"]
+    };
+  }
+
   onHandleDocs(ev) {
     this._docs = ev.data.docs;
   }

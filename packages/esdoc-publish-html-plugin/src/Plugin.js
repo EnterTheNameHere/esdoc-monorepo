@@ -17,16 +17,23 @@ import ManualDocBuilder from './Builder/ManualDocBuilder.js';
 console.log('>>>> __filename', __filename);
 
 class Plugin {
+  getDefaultOptions() {
+    return {
+      template: null,
+    };
+  }
+
   onHandleDocs(ev) {
     this._docs = ev.data.docs;
   }
 
   onPublish(ev) {
-    this._option = ev.data.option || {};
+    this._option = ev.data.option;
     this._globalOption = ev.data.globalOption;
     this._template = typeof this._option.template === 'string'
       ? path.resolve(process.cwd(), this._option.template)
       : path.resolve(__dirname, './html-template');
+    ev.debug('template location:', this._template);
     this._exec(this._docs, ev.data.writeFile, ev.data.copyDir, ev.data.readFile);
   }
 

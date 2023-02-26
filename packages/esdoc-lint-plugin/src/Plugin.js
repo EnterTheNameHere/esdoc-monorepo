@@ -7,6 +7,10 @@ const ASTNodeContainer = require('@enterthenamehere/esdoc/out/Util/ASTNodeContai
  * Lint Output Builder class.
  */
 class Plugin {
+  getDefaultOptions() {
+    return {enable: true};
+  }
+
   onHandleDocs(ev) {
     this._docs = ev.data.docs;
     this._option = ev.data.option || {};
