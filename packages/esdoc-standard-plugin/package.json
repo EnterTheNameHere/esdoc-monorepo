@@ -33,7 +33,8 @@
     "@enterthenamehere/esdoc-lint-plugin": "^2.5.4-dev.6",
     "@enterthenamehere/esdoc-publish-html-plugin": "^2.5.4-dev.6",
     "@enterthenamehere/esdoc-type-inference-plugin": "^2.5.4-dev.6",
-    "@enterthenamehere/esdoc-undocumented-identifier-plugin": "^2.5.4-dev.5"
+    "@enterthenamehere/esdoc-undocumented-identifier-plugin": "^2.5.4-dev.5",
+    "@enterthenamehere/esdoc-unexported-identifier-plugin": "^2.5.4-dev.5"
   },
   "engines": {
     "node": ">=14.21.1"

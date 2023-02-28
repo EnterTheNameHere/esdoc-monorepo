@@ -12,6 +12,7 @@ class ESDocStandardPlugin {
     initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-external-ecmascript-plugin');
     initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-brand-plugin', options.brand);
     initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-undocumented-identifier-plugin', options.undocumentIdentifier);
+    initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-unexported-identifier-plugin', options.unexportedIdentifier);
     initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-integrate-manual-plugin', options.manual);
     initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-integrate-test-plugin', options.test);
     initializeEvent.PluginManager.registerPlugin('@enterthenamehere/esdoc-publish-html-plugin');

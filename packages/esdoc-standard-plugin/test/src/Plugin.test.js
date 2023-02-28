@@ -97,7 +97,13 @@ describe('test standard plugin:', function () {
       {
         name: '@enterthenamehere/esdoc-undocumented-identifier-plugin',
         option: {
-          enable: true
+          enable: true,
+        }
+      },
+      {
+        name: '@enterthenamehere/esdoc-unexported-identifier-plugin',
+        option: {
+          enable: false,
         }
       },
       {
