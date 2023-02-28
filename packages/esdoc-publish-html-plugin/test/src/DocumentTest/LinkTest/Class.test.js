@@ -1,7 +1,7 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /** @test {DocResolver#_resolveLink} */
-describe('TestLinkClass', function () {
+describe(fileNameToDescription(__filename, 'TestLinkClass'), function () {
   const doc = readDoc('class/src/Link/Class.js~TestLinkClass.html');
 
   it('has link from class.', function () {
@@ -28,7 +28,7 @@ describe('TestLinkClass', function () {
 });
 
 /** @test {DocResolver#_resolveLink} */
-describe('TestLinkClass3', function () {
+describe(fileNameToDescription(__filename, 'TestLinkClass3'), function () {
   const doc = readDoc('class/src/Link/Class.js~TestLinkClass3.html');
 
   it('has link to inherited class method.', function () {

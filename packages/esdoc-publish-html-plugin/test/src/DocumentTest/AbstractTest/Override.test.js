@@ -1,7 +1,7 @@
-import {readDoc, assert, find} from './../../util.js';
+import {readDoc, assert, find, fileNameToDescription} from './../../util.js';
 
 /** @test {DocBuilder} */
-describe('TestAbstractOverrideDefinition:', function () {
+describe(fileNameToDescription(__filename, 'TestAbstractOverrideDefinition:'), function () {
   const doc = readDoc('class/src/Abstract/Override.js~TestAbstractOverride.html');
 
   /** @test {DocBuilder#_buildOverrideMethod} */

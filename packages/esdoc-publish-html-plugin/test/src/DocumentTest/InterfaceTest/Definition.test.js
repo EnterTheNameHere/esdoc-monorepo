@@ -1,7 +1,7 @@
-import {readDoc, assert, find} from './../../util.js';
+import {readDoc, assert, find, fileNameToDescription} from './../../util.js';
 
 /** @test {ClassDoc#@interface} */
-describe('TestInterfaceDefinition', function () {
+describe(fileNameToDescription(__filename, 'TestInterfaceDefinition'), function () {
   const doc = readDoc('class/src/Interface/Definition.js~TestInterfaceDefinition.html');
 
   it('has interface mark.', function () {

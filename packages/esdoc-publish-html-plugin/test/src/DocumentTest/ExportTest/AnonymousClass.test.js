@@ -1,7 +1,7 @@
-import {readDoc, assert} from './../../util.js';
+import {readDoc, assert, fileNameToDescription} from './../../util.js';
 
 /** @test {ClassDoc#@_name} */
-describe('TestExportAnonymousClass', function () {
+describe(fileNameToDescription(__filename, 'TestExportAnonymousClass'), function () {
   const doc = readDoc('class/src/Export/AnonymousClass.js~AnonymousClass.html');
 
   describe('in self detail', function () {

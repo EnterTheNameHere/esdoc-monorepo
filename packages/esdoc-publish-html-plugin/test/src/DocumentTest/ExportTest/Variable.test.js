@@ -1,7 +1,7 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /** @test {VariableDoc#@_name} */
-describe('test export variable', function () {
+describe(fileNameToDescription(__filename, 'test export variable'), function () {
   const doc = readDoc('variable/index.html');
 
   it('has default import path with direct variable definition.', function () {

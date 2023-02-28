@@ -1,7 +1,7 @@
-import {readDoc, assert, find} from './../../util.js';
+import {readDoc, assert, find, fileNameToDescription} from './../../util.js';
 
 /** @test {AbstractDoc#@deprecated} */
-describe('testDeprecatedVariable:', function () {
+describe(fileNameToDescription(__filename, 'testDeprecatedVariable:'), function () {
   const doc = readDoc('variable/index.html');
 
   describe('in summary', function () {

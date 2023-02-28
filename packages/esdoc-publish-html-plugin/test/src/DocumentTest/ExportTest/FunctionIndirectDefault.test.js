@@ -1,7 +1,7 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /** @test {FunctionDoc#@_name} */
-describe('test export function indirect default', function () {
+describe(fileNameToDescription(__filename, 'test export function indirect default'), function () {
   const doc = readDoc('function/index.html');
   it('has default import path with indirect function definition', function () {
     findParent(doc, '[id="static-function-testExportFunctionIndirectDefault"]', '[data-ice="detail"]', (doc)=>{

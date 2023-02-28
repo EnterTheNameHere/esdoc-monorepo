@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import {loadCheerio, assert, findParent} from './../../util.js';
+import {loadCheerio, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /** @test {FunctionDoc#@_name} */
-describe('testExportAnonymousFunction', function () {
+describe(fileNameToDescription(__filename, 'testExportAnonymousFunction'), function () {
   const $ = loadCheerio('function/index.html');
   const anonymousFunctions = $('[data-ice="summary"] [href*="#static-function-AnonymousFunction"]');
   expect( anonymousFunctions.length ).to.equal(2);

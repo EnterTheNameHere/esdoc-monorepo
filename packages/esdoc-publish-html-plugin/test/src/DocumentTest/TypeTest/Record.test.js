@@ -1,10 +1,10 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /**
  * @test {ParamParser#parseParamValue}
  * @test {ParamParser#parseParam}
  */
-describe('TestTypeRecord', function () {
+describe(fileNameToDescription(__filename, 'TestTypeRecord'), function () {
   const doc = readDoc('class/src/Type/Record.js~TestTypeRecord.html');
 
   it('has record type.', function () {

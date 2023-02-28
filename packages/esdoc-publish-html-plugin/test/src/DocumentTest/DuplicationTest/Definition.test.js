@@ -1,7 +1,7 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /** @test {DocResolver#_resolveDuplication} */
-describe('TestDuplicationDefinition', function () {
+describe(fileNameToDescription(__filename, 'TestDuplicationDefinition'), function () {
   const doc = readDoc('class/src/Duplication/Definition.js~TestDuplicationDefinition.html');
 
   describe('in summary', function () {

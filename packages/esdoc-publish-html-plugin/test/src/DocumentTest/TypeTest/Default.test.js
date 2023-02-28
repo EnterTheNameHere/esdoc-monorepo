@@ -1,10 +1,10 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /**
  * @test {ParamParser#parseParamValue}
  * @test {ParamParser#parseParam}
  */
-describe('TestTypeDefault', function () {
+describe(fileNameToDescription(__filename, 'TestTypeDefault'), function () {
   const doc = readDoc('class/src/Type/Default.js~TestTypeDefault.html');
 
   it('has default value.', function () {

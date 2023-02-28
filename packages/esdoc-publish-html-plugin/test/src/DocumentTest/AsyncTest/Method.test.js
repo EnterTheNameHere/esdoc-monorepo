@@ -1,7 +1,7 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /** @test {MethodDoc#_$async} */
-describe('TestAsyncMethod', function () {
+describe(fileNameToDescription(__filename, 'TestAsyncMethod'), function () {
   const doc = readDoc('class/src/Async/Method.js~TestAsyncMethod.html');
 
   describe('in summary', function () {

@@ -1,7 +1,7 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /** @test {TypedefDoc} */
-describe('TestTypedefDefinition', function () {
+describe(fileNameToDescription(__filename, 'TestTypedefDefinition'), function () {
   const doc = readDoc('typedef/index.html');
 
   describe('in summary', function () {

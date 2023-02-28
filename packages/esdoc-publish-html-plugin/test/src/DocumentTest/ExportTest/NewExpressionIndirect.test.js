@@ -1,10 +1,10 @@
-import {readDoc, assert, find, findParent} from './../../util.js';
+import {readDoc, assert, find, findParent, fileNameToDescription} from './../../util.js';
 
 /**
  * @test {DocFactory#_inspectExportDefaultDeclaration}
  * @test {DocFactory#_inspectExportNamedDeclaration}
  */
-describe('test default export with new expression and indirect.', function () {
+describe(fileNameToDescription(__filename, 'test default export with new expression and indirect.'), function () {
   it('has instance description', function () {
     const doc = readDoc('class/src/Export/NewExpressionIndirect.js~TestExportNewExpressionIndirect.html');
 

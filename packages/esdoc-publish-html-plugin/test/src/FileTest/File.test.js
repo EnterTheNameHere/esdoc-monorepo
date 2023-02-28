@@ -1,7 +1,7 @@
-import {readDoc, assert} from './../util.js';
+import {readDoc, assert, fileNameToDescription} from './../util.js';
 
 /** @test {FileDocBuilder} */
-describe('test source code file', function () {
+describe(fileNameToDescription(__filename, 'test source code file'), function () {
   const doc = readDoc('file/src/Desc/Class.js.html');
 
   it('has source code.', function () {

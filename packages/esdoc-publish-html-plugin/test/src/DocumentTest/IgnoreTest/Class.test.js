@@ -1,7 +1,7 @@
-import {readDoc, assert, find} from './../../util.js';
+import {readDoc, assert, find, fileNameToDescription} from './../../util.js';
 
 /** @test {DocResolver#_resolveIgnore */
-describe('test ignore class', function () {
+describe(fileNameToDescription(__filename, 'test ignore class'), function () {
   describe('TestIgnoreClass1', function () {
     it('is not documented.', function () {
       assert.throws(()=> readDoc('class/src/Ignore/Class.js~TestIgnoreClass1.html'));

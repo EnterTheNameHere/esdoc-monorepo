@@ -1,7 +1,7 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /** @test {DocResolver#_resolveLink} */
-describe('testLinkVariable', function () {
+describe(fileNameToDescription(__filename, 'testLinkVariable'), function () {
   const doc = readDoc('variable/index.html');
 
   it('has link.', function () {

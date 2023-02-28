@@ -1,7 +1,7 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /** @test {AbstractDoc#@example} */
-describe('testExampleFunction', function () {
+describe(fileNameToDescription(__filename, 'testExampleFunction'), function () {
   const doc = readDoc('function/index.html');
 
 // TODO: It's hard to test against a code transformed with highlighter. Think of something...

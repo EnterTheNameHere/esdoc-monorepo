@@ -1,7 +1,7 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /** @test {AbstractDoc#@desc} */
-describe('TestDescMultiLine:', function () {
+describe(fileNameToDescription(__filename, 'TestDescMultiLine:'), function () {
   const doc = readDoc('class/src/Desc/MultiLine.js~TestDescMultiLine.html');
 
   describe('in summary', function () {

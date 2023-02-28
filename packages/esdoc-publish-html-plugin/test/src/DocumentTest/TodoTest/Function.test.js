@@ -1,7 +1,7 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /** @test {AbstractDoc#@todo} */
-describe('testTodoFunction', function () {
+describe(fileNameToDescription(__filename, 'testTodoFunction'), function () {
   const doc = readDoc('function/index.html');
 
   it('has todo.', function () {

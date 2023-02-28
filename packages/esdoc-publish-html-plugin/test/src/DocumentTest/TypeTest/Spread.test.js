@@ -1,10 +1,10 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /**
  * @test {ParamParser#parseParamValue}
  * @test {ParamParser#parseParam}
  */
-describe('TestTypeSpread', function () {
+describe(fileNameToDescription(__filename, 'TestTypeSpread'), function () {
   const doc = readDoc('class/src/Type/Spread.js~TestTypeSpread.html');
 
   it('has spread type.', function () {

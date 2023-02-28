@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import { loadCheerio } from './../../util.js';
+import { loadCheerio , fileNameToDescription} from './../../util.js';
 
 /** @test {FunctionDoc#@_name} */
-describe('test export arrow function', function () {
+describe(fileNameToDescription(__filename, 'test export arrow function'), function () {
   const $ = loadCheerio('function/index.html');
 
   describe('default anonymous arrow function export', function () {

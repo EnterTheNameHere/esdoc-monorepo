@@ -1,7 +1,7 @@
-import {readDoc, assert, findParent} from './../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../util.js';
 
 /** @test {DocBuilder#_buildNavDoc} */
-describe('test navigation:', function () {
+describe(fileNameToDescription(__filename, 'test navigation:'), function () {
   const doc = readDoc('index.html');
 
   it('has class', function () {

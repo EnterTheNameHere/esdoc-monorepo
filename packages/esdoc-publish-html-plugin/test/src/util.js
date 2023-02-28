@@ -1,7 +1,7 @@
 import _assert from 'assert';
 import fs from 'fs-extra';
 import cheerio from 'cheerio';
-// import path from 'path';
+import upath from 'upath';
 // import ESDocCLI from '../../src/ESDocCLI.js';
 
 // export function cli(configPath = null) {
@@ -19,6 +19,16 @@ import cheerio from 'cheerio';
 //   cli.exec();
 //   consoleLogSwitch(true);
 // }
+
+export function fileNameToDescription(fileName, appendText, rootDir = 'src') {
+  let normalizedFileName = upath.normalizeSafe(fileName);
+  normalizedFileName = upath.removeExt(normalizedFileName, '.js');
+  normalizedFileName = upath.removeExt(normalizedFileName, '.test');
+  const normalizedRoot = upath.normalizeSafe(rootDir);
+  const directoryPart = normalizedFileName.substring(normalizedFileName.lastIndexOf(normalizedRoot) + normalizedRoot.length + 1);
+  const description = `${directoryPart}/${appendText}`;
+  return description;
+}
 
 export function loadCheerio(fileName, dirName = './test/fixture/out') {
   const html = fs.readFileSync(`${dirName}/${fileName}`, {encoding: 'utf-8'});

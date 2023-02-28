@@ -1,10 +1,10 @@
-import {readDoc, assert, find} from './../../util.js';
+import {readDoc, assert, find, fileNameToDescription} from './../../util.js';
 
 /**
  * @test {ClassDoc#@extends}
  * @test {DocResolver#_resolveNecessary}
  */
-describe('TestExtendsMixin', function () {
+describe(fileNameToDescription(__filename, 'TestExtendsMixin'), function () {
   const doc = readDoc('class/src/Extends/Mixin.js~TestExtendsMixin.html');
 
   it('has expression extends.', function () {

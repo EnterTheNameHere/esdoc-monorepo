@@ -1,10 +1,10 @@
-import {readDoc, assert, find, findParent} from './../../util.js';
+import {readDoc, assert, find, findParent, fileNameToDescription} from './../../util.js';
 
 /**
  * @test {ClassDocBuilder#_buildClassDoc}
  * @test {DocBuilder#_buildDetailDocs}
  */
-describe('TestDecoratorDefinition:', function () {
+describe(fileNameToDescription(__filename, 'TestDecoratorDefinition:'), function () {
   const doc = readDoc('class/src/Decorator/Definition.js~TestDecoratorDefinition.html');
 
   it('has decorator at class.', function () {

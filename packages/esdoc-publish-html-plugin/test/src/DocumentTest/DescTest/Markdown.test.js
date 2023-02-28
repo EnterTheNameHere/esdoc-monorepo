@@ -1,7 +1,7 @@
-import {readDoc, assert, find} from './../../util.js';
+import {readDoc, assert, find, fileNameToDescription} from './../../util.js';
 
 /** @test {AbstractDoc#@desc} */
-describe('TestDescMarkdown:', function () {
+describe(fileNameToDescription(__filename, 'TestDescMarkdown:'), function () {
   const doc = readDoc('class/src/Desc/Markdown.js~TestDescMarkdown.html');
 
   describe('in self detail', function () {

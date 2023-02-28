@@ -1,7 +1,7 @@
 import fsextra from 'fs-extra';
-import { loadCheerio, assert } from '../../util';
+import { loadCheerio, assert, fileNameToDescription } from '../../util';
 
-describe('TestSourceCodeHighlightingCSS', function () {
+describe(fileNameToDescription(__filename, 'TestSourceCodeHighlightingCSS'), function () {
   it('tests class import path is styled', function () {
     const $ = loadCheerio('class/src/Abstract/Override.js~TestAbstractOverride.html');
     const importPartCodeElement = $('div[class="import-path"] pre[class="prettyprint"] code');

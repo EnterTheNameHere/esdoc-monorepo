@@ -1,7 +1,7 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /** @test {ExternalDoc#@_name} */
-describe('TestExternalDefinition', function () {
+describe(fileNameToDescription(__filename, 'TestExternalDefinition'), function () {
   const doc = readDoc('index.html');
 
   it('has external document.', function () {

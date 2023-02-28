@@ -1,10 +1,10 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /**
  * @test {ParamParser#parseParamValue}
  * @test {ParamParser#parseParam}
  */
-describe('TestTypeTypedef', function () {
+describe(fileNameToDescription(__filename, 'TestTypeTypedef'), function () {
   const doc = readDoc('class/src/Type/Typedef.js~TestTypeTypedef.html');
 
   it('has typedef type.', function () {

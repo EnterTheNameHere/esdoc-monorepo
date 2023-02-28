@@ -1,7 +1,7 @@
-import {readDoc, assert} from './../util.js';
+import {readDoc, assert, fileNameToDescription} from './../util.js';
 
 /** @test {IndexDocBuilder} */
-describe('test index', function () {
+describe(fileNameToDescription(__filename, 'test index'), function () {
   const doc = readDoc('index.html');
 
   it('has README.md', function () {

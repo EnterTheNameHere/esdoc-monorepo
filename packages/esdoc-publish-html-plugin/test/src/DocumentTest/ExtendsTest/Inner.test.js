@@ -1,10 +1,10 @@
-import {readDoc, assert, find} from './../../util.js';
+import {readDoc, assert, find, fileNameToDescription} from './../../util.js';
 
 /**
  * @test {ClassDoc#@extends}
  * @test {DocResolver@_resolveNecessary}
  */
-describe('TestExtendsInner', function () {
+describe(fileNameToDescription(__filename, 'TestExtendsInner'), function () {
   it('has extends chain.', function () {
     const doc = readDoc('class/src/Extends/Inner.js~TestExtendsInner.html');
     find(doc, '.self-detail [data-ice="extendsChain"]', (doc)=>{

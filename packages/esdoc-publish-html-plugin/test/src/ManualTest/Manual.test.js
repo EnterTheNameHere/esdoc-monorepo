@@ -1,7 +1,7 @@
-import {readDoc, assert, find} from './../util.js';
+import {readDoc, assert, find, fileNameToDescription} from './../util.js';
 
 /** @test {ManualDocBuilder} */
-describe('test manual', function () {
+describe(fileNameToDescription(__filename, 'test manual'), function () {
   describe('test navigation', function () {
     it('has manual link in header', function () {
       const doc = readDoc('index.html');

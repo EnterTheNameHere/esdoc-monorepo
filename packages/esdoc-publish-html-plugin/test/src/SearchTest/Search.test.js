@@ -1,7 +1,8 @@
 import fs from 'fs-extra';
 import assert from 'assert';
+import {fileNameToDescription} from '../util';
 
-describe('test search', function () {
+describe(fileNameToDescription(__filename, 'test search'), function () {
   const searchIndexJS = fs.readFileSync('./test/fixture/out/script/search_index.js', {encoding: 'utf8'}).toString();
   const searchIndexJSON = searchIndexJS.replace('window.esdocSearchIndex = ', '');
   const searchIndex = JSON.parse(searchIndexJSON);

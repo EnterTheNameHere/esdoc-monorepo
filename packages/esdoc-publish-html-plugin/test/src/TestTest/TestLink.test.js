@@ -1,9 +1,9 @@
-import {readDoc, assert, findParent} from './../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../util.js';
 
 /** @test {ClassDocBuilder} */
-describe('test link of test', function () {
+describe(fileNameToDescription(__filename, 'test link of test'), function () {
   const doc = readDoc('class/src/Desc/Class.js~TestDescClass.html');
-
+  
   it('has link of test at class', function () {
     assert.multiIncludes(doc, '.self-detail [data-ice="test"] a', [
       'Use describe style mocha interface',

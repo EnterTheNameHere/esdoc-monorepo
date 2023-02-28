@@ -1,7 +1,7 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /** @test {AbstractDoc#@listens} */
-describe('testListensFunction', function () {
+describe(fileNameToDescription(__filename, 'testListensFunction'), function () {
   const doc = readDoc('function/index.html');
 
   it('has listens.', function () {

@@ -1,7 +1,7 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /** @test {AbstractDoc#@desc} */
-describe('TestParamMethod', function () {
+describe(fileNameToDescription(__filename, 'TestParamMethod'), function () {
   const doc = readDoc('class/src/Param/Method.js~TestParamMethod.html');
 
   describe('in summary', function () {

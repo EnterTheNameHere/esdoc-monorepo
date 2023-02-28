@@ -1,10 +1,10 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /**
  * @test {ParamParser#parseParamValue}
  * @test {ParamParser#parseParam}
  */
-describe('TestTypeUnion', function () {
+describe(fileNameToDescription(__filename, 'TestTypeUnion'), function () {
   const doc = readDoc('class/src/Type/Union.js~TestTypeUnion.html');
 
   it('has union type.', function () {

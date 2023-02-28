@@ -1,10 +1,10 @@
-import {readDoc, assert, findParent} from './../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../util.js';
 
 /**
  * @test {TestDocBuilder}
  * @test {TestDocBuilder#_buildTestDocHTML}
  */
-describe('test integration of test', function () {
+describe(fileNameToDescription(__filename, 'test integration of test'), function () {
   const doc = readDoc('test.html').find('[data-ice="tests"]');
 
   describe('describe/it style', function () {

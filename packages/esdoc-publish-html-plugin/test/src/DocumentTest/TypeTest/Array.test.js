@@ -1,10 +1,10 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /**
  * @test {ParamParser#parseParamValue}
  * @test {ParamParser#parseParam}
  */
-describe('TestTypeArray', function () {
+describe(fileNameToDescription(__filename, 'TestTypeArray'), function () {
   const doc = readDoc('class/src/Type/Array.js~TestTypeArray.html');
 
   it('has array type.', function () {

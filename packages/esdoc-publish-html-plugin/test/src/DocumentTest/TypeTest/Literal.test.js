@@ -1,10 +1,10 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /**
  * @test {ParamParser#parseParamValue}
  * @test {ParamParser#parseParam}
  */
-describe('TestTypeLiteral', function () {
+describe(fileNameToDescription(__filename, 'TestTypeLiteral'), function () {
   const doc = readDoc('class/src/Type/Literal.js~TestTypeLiteral.html');
 
   it('has literal type.', function () {

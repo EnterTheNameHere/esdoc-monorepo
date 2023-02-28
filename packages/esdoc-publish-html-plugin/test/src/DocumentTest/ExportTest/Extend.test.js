@@ -1,7 +1,7 @@
-import {readDoc} from './../../util.js';
+import {readDoc, fileNameToDescription} from './../../util.js';
 
 /** @test {DocResolver#_resolveNecessary} */
-describe('TestExportExtendsInner', function () {
+describe(fileNameToDescription(__filename, 'TestExportExtendsInner'), function () {
   it('is documented.', function () {
     readDoc('class/src/Export/Extends.js~TestExportExtendsInner.html');
   });

@@ -1,10 +1,10 @@
-import {readDoc, assert, find, findParent} from './../../util.js';
+import {readDoc, assert, find, findParent, fileNameToDescription} from './../../util.js';
 
 /**
  * @test {ClassDoc#@extends}
  * @test {ClassDocBuilder#_buildInheritedSummaryHTML}
  */
-describe('test deep extends', function () {
+describe(fileNameToDescription(__filename, 'test deep extends'), function () {
   describe('TestExtendsDeepSquare', function () {
     const doc = readDoc('class/src/Extends/Deep.js~TestExtendsDeepSquare.html');
 

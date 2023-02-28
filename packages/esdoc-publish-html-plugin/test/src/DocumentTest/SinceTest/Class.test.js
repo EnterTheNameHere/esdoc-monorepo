@@ -1,7 +1,7 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /** @test {AbstractDoc#@since} */
-describe('TestSinceClass', function () {
+describe(fileNameToDescription(__filename, 'TestSinceClass'), function () {
   const doc = readDoc('class/src/Since/Class.js~TestSinceClass.html');
 
   it('has since at class.', function () {

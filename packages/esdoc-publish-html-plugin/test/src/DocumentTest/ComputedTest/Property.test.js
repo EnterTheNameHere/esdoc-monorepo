@@ -1,8 +1,8 @@
 /* eslint-disable no-template-curly-in-string, no-multi-spaces */
-import {readDoc, assert, find} from './../../util.js';
+import {readDoc, assert, find, fileNameToDescription} from './../../util.js';
 
 /** @test {MemberDoc#@_name} */
-describe('TestComputedProperty:', function () {
+describe(fileNameToDescription(__filename, 'TestComputedProperty:'), function () {
   const doc = readDoc('class/src/Computed/Property.js~TestComputedProperty.html');
 
   describe('in summary:', function () {

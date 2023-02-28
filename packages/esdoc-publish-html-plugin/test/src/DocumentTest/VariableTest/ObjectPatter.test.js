@@ -1,7 +1,7 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /** @test {VariableDoc} */
-describe('testVariableObjectPattern', function () {
+describe(fileNameToDescription(__filename, 'testVariableObjectPattern'), function () {
   const doc = readDoc('variable/index.html');
 
   describe('in summary', function () {

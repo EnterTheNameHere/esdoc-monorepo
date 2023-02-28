@@ -1,10 +1,10 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /**
  * @test {ParamParser#parseParamValue}
  * @test {ParamParser#parseParam}
  */
-describe('TestTypeGenerics', function () {
+describe(fileNameToDescription(__filename, 'TestTypeGenerics'), function () {
   const doc = readDoc('class/src/Type/Generics.js~TestTypeGenerics.html');
 
   it('has generics type.', function () {

@@ -1,7 +1,7 @@
-import {readDoc, assert, findParent} from './../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../util.js';
 
 /** @test {IdentifiersDocBuilder} */
-describe('test identifiers', function () {
+describe(fileNameToDescription(__filename, 'test identifiers'), function () {
   const doc = readDoc('identifiers.html');
 
   it('has Abstract summary.', function () {

@@ -1,7 +1,7 @@
-import {readDoc, assert, find} from './../../util.js';
+import {readDoc, assert, find, fileNameToDescription} from './../../util.js';
 
 /** @test {ClassDoc#@extends} */
-describe('TestExtendsBuiltin', function () {
+describe(fileNameToDescription(__filename, 'TestExtendsBuiltin'), function () {
   const doc = readDoc('class/src/Extends/Builtin.js~TestExtendsBuiltin.html');
 
   it('has extends chain.', function () {

@@ -1,7 +1,7 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /** @test {ESParser} */
-describe('TestTrailingCommaDefinition', function () {
+describe(fileNameToDescription(__filename, 'TestTrailingCommaDefinition'), function () {
   const doc = readDoc('class/src/TrailingComma/Definition.js~TestTrailingCommaDefinition.html');
 
   describe('in self detail', function () {

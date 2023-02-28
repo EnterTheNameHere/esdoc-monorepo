@@ -1,7 +1,7 @@
-import {readDoc, assert, find} from './../../util.js';
+import {readDoc, assert, find, fileNameToDescription} from './../../util.js';
 
 /** @test {ClassDocBuilder} */
-describe('TestClassDefinition:', function () {
+describe(fileNameToDescription(__filename, 'TestClassDefinition:'), function () {
   const doc = readDoc('class/src/Class/Definition.js~TestClassDefinition.html');
 
   /** @test {DocBuilder#_getTitle} */

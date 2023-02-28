@@ -1,10 +1,10 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /**
  * @test {ParamParser#parseParamValue}
  * @test {ParamParser#parseParam}
  */
-describe('TestTypeComplex', function () {
+describe(fileNameToDescription(__filename, 'TestTypeComplex'), function () {
   const doc = readDoc('class/src/Type/Complex.js~TestTypeComplex.html');
 
   it('has function complex type.', function () {

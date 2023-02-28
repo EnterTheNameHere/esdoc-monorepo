@@ -1,7 +1,7 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /** @test {ESParser} */
-describe('TestExponentiationOperatorDefinition', function () {
+describe(fileNameToDescription(__filename, 'TestExponentiationOperatorDefinition'), function () {
   const doc = readDoc('class/src/ExponentiationOperator/Definition.js~TestExponentiationOperatorDefinition.html');
 
   describe('in self detail', function () {

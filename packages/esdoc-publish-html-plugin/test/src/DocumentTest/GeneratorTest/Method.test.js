@@ -1,7 +1,7 @@
-import {readDoc, assert, findParent} from './../../util.js';
+import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
 
 /** @test {AbstractDoc#@_generator} */
-describe('TestGeneratorMethod', function () {
+describe(fileNameToDescription(__filename, 'TestGeneratorMethod'), function () {
   const doc = readDoc('class/src/Generator/Method.js~TestGeneratorMethod.html');
 
   describe('in summary', function () {
