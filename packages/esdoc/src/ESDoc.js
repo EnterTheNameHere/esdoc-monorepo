@@ -115,7 +115,9 @@ export default class ESDoc {
     
     PluginManager.onStart();
     
+    debug('About to call PluginManager#onHandleConfig. Current config => %O', config);
     config = PluginManager.onHandleConfig(config);
+    debug('PluginManager#onHandleConfig finished. Config now => %O', config);
     
     let includes = [];
     let excludes = [];
@@ -277,7 +279,7 @@ export default class ESDoc {
     if (!config.package) config.package = './package.json';
 
     if (!('outputAST' in config)) config.outputAST = true;
-
+    
     if (!config.plugins) config.plugins = [];
 
     if (!config.verbose) config.verbose = false;
