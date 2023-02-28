@@ -300,11 +300,12 @@ class PluginManager {
     
     savedPluginEntry.instance = pluginInstance;
     savedPluginEntry.filePath = filePath;
-    if(savedPluginEntry.instance && savedPluginEntry.instance.getDefaultOptions instanceof Function) {
-      debug('Getting default values for unset options...');
+    if(savedPluginEntry?.instance?.getDefaultOptions instanceof Function) {
       const pluginsDefaultOptions = savedPluginEntry.instance.getDefaultOptions();
-      _.defaultsDeep(savedPluginEntry.pluginOptions, pluginsDefaultOptions);
-      debug('%O', savedPluginEntry.pluginOptions);
+      debug('Retrieving plugin\'s default options => %O', pluginsDefaultOptions);
+      debug('Updating plugin\'s current options %O', savedPluginEntry.pluginOptions);
+      _.defaults(savedPluginEntry.pluginOptions, pluginsDefaultOptions);
+      debug('with default values => %O', savedPluginEntry.pluginOptions);
     }
     
     // Check if filePath directory has node_modules
