@@ -187,7 +187,7 @@ class PluginManager {
    * @param {object} [pluginOptions] - defaults to empty object
    */
   registerPlugin(pluginNameOrPath, pluginOptions) {
-    debug('#registerPlugin: Registering plugin %O with options:\n%O', pluginNameOrPath, pluginOptions);
+    debug('#registerPlugin: Registering plugin %o with options:\n%O', pluginNameOrPath, pluginOptions);
     
     if(!pluginNameOrPath || typeof(pluginNameOrPath) !== 'string' || pluginNameOrPath.trim().length === 0) {
       throw new Error('PluginManager#registerPlugin: parameter pluginNameOrPath must be a string and it cannot be empty!');
@@ -207,7 +207,7 @@ class PluginManager {
     
     let savedPluginEntry = this._pluginEntries.get(_pluginNameOrPath);
     if( !savedPluginEntry ) {
-      debug('Creating new PluginEntry for plugin named: %O with options:\n%O', _pluginNameOrPath, _pluginOptions);
+      debug('Creating new PluginEntry for plugin named: %o with options:\n%O', _pluginNameOrPath, _pluginOptions);
       this._pluginEntries.set(_pluginNameOrPath, new PluginEntry(_pluginNameOrPath, _pluginOptions));
       savedPluginEntry = this._pluginEntries.get(_pluginNameOrPath);
     } else {
@@ -397,7 +397,7 @@ class PluginManager {
    * @private
    */
   _execHandler(handlerName, ev) {
-    debug(`#_execHandler: About to execute "${handlerName}" event on plugins having handler for it.`);
+    debug(`#_execHandler: About to execute %o event on plugins having handler for it.`, handlerName);
     
     if(typeof handlerName !== 'string') {
       console.error('[PluginManager::_execHandler] Error: handlerName parameter must be typeof string!', `${typeof handlerName} received.`);
