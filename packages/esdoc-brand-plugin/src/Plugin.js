@@ -17,18 +17,20 @@ class Plugin {
   }
 
   onHandleConfig(ev) {
-    const globalConfig = ev.data.globalConfig;
+    const globalOption = ev.data.globalOption;
     const option = ev.data.option;
     
     // get package.json
     let packageObj = {};
     try {
-      const packagePath = globalConfig.package ?? './package.json';
+      const packagePath = globalOption.package ?? './package.json';
       const tmp = ev.FileManager.readFileContents(packagePath);
       packageObj = JSON.parse(tmp);
     } catch (e) {
       // ignore
     }
+    
+    // TODO: Put the data into options?
 
     this._logo = option.logo;
     this._description = option.description ?? packageObj.description;
