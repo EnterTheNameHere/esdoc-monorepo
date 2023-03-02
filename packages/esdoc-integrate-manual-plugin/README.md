@@ -18,7 +18,7 @@ npm install @enterthenamehere/esdoc-integrate-manual-plugin
       "name": "@enterthenamehere/esdoc-integrate-manual-plugin",
       "option": {
         "index": "./manual/index.md",
-        "globalIndex": true,
+        "globalIndex": false,
         "asset": "./manual/asset",
         "files": [
           "./manual/overview.md",
@@ -40,7 +40,7 @@ npm install @enterthenamehere/esdoc-integrate-manual-plugin
 ```
 
 `index` is default `readme.md`
-`globalIndex` is default `true`
+`globalIndex` is default `false`
 `asset` is default `null` - can be directory to copy
 `files` is default `[]` - array of files making manual pages
 
