@@ -7,7 +7,7 @@ class Plugin {
   getDefaultOptions() {
     return {
       index: 'readme.md',
-      globalIndex: true, // TODO: What globalIndex means?
+      globalIndex: false, // TODO: What globalIndex means?
       files: [],
       asset: null, // TODO: Implement support for directories
     };
