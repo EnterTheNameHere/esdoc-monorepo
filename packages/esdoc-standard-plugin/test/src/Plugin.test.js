@@ -24,7 +24,7 @@ describe('test standard plugin:', function () {
           manual: {
             asset: null,
             files: ['./test/manual/overview.md'],
-            globalIndex: true,
+            globalIndex: false,
             index: 'readme.md',
           },
           test: {
@@ -111,7 +111,7 @@ describe('test standard plugin:', function () {
         option: {
           asset: null,
           files: ['./test/manual/overview.md'],
-          globalIndex: true,
+          globalIndex: false,
           index: 'readme.md',
         }
       },
