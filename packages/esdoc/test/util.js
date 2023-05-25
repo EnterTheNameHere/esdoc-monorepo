@@ -1,4 +1,15 @@
 import fs from 'fs-extra';
+import upath from 'upath';
+
+export function fileNameToDescription(fileName, appendText = '', rootDir = 'src') {
+  let normalizedFileName = upath.normalizeSafe(fileName);
+  normalizedFileName = upath.removeExt(normalizedFileName, '.js');
+  normalizedFileName = upath.removeExt(normalizedFileName, '.test');
+  const normalizedRoot = upath.normalizeSafe(rootDir);
+  const directoryPart = normalizedFileName.substring(normalizedFileName.lastIndexOf(normalizedRoot) + normalizedRoot.length + 1);
+  const description = appendText === '' ? directoryPart : `${directoryPart}/${appendText}`;
+  return description;
+}
 
 function find_imp(key, ...values) {
   const results = [];
@@ -10,7 +21,7 @@ function find_imp(key, ...values) {
       return results;
     });
   }
-
+  
   for(const value of values) {
     const result = global.docs.find( (doc) => {
       if (typeof value === 'string') return doc[key] === value;
@@ -19,7 +30,7 @@ function find_imp(key, ...values) {
     });
     results.push(result);
   }
-
+  
   return results;
 }
 
@@ -32,12 +43,12 @@ export function find(key, ...values) {
   if(typeof global.docs.find !== 'function') {
     throw new Error('global.docs do not have find() method!');
   }
-
+  
   const result = find_imp( key, ...values );
   if( result === undefined ) {
     throw new Error(`Key '${key}' with '${values}' value is not found in generated documents. If you are implementing new feature, check if source file was correctly parsed to AST and if *Doc correctly processed it to ESDoc format.`);
   }
-
+  
   return result;
 }
 
