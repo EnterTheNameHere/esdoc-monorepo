@@ -7,5 +7,6 @@ module.exports = {
   'recursive': true,
   'checkLeaks': true,
   'forbidPending': true,
-  'fullTrace': true
+  'fullTrace': true,
+  'enable-source-maps': true,
 };
