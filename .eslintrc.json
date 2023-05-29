@@ -97,7 +97,8 @@
         "rest-spread-spacing": [ "error", "never" ],
         "symbol-description": "error",
         "strict": 1,
-        "template-curly-spacing": "error"
+        "template-curly-spacing": "error",
+        "quotes": [ "error", "single", { "avoidEscape": true } ]
     },
     "overrides": [
         {
