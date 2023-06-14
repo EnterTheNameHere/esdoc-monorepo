@@ -3,28 +3,27 @@
     "default": {
       "runner": "nx/tasks-runners/default",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "test"
-        ]
+        "cacheableOperations": ["build", "test"]
       }
     }
   },
+  "namedInputs": {
+    "sharedGlobals": ["{workspaceRoot}/babel.config.json"],
+    "default": ["{projectRoot}/**/*"],
+    "production": ["!{projectRoot}/**/*.test.js"]
+  },
   "targetDefaults": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        "{projectRoot}/out,lib"
-      ]
+      "inputs": ["production", "^production"],
+      "dependsOn": ["^build"],
+      "outputs": ["{projectRoot}/out"]
     },
     "test": {
-      "dependsOn": [
-        "^test"
-      ],
+      "dependsOn": ["^test"],
       "outputs": [
-        "{projectRoot}/test/out"
+        "{projectRoot}/test/out",
+        "{projectRoot}/test/src/integration-test/out",
+        "{projectRoot}/test/fixture/out"
       ]
     }
   }
