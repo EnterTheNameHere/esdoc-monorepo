@@ -30,12 +30,26 @@ export class SchemaArrayItemValidator extends SchemaItemValidator {
     // 'defaultValue' is optional, so check only if it's defined
     if(_.hasIn(this._schemaItem, 'defaultValue')) {
       // 'defaultValue' must be an array
+      if(!_.isArray(this._schemaItem.defaultValue)) {
+        throw new InvalidOptionsSchemaDefinitionError(
+          `'${this._schemaItem.name}'.defaultValue property has an invalid value! Default value for type 'array' must be an array.`,
+          this._fullSchema,
+          this._schemaItem
+        );
+      }
       
-
       // 'defaultValue' can be empty
+      
       // All elements of 'defaultValue' array must be of type defined in 'ofType'
-
-      throw new Error('Implement this!');
+      for(const arrayElement of this._schemaItem.defaultValue) {
+        if(typeof arrayElement !== this._schemaItem.ofType) {
+          throw new InvalidOptionsSchemaDefinitionError(
+            `'${this._schemaItem.name}'.defaultValue array has invalid value in it! A ${this._schemaItem.ofType} is expected, but ${typeof arrayElement} was encountered.`,
+            this._fullSchema,
+            this._schemaItem
+          );
+        }
+      }
     }
   }
 }
