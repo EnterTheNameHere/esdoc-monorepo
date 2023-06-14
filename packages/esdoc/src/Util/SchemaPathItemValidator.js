@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { SchemaItemValidator } from './SchemaItemValidator';
+import { SchemaItemValidator } from './SchemaItemValidator.js';
 import { InvalidOptionsSchemaDefinitionError } from './Errors/OptionsManagerErrors.js';
 
 
