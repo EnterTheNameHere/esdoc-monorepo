@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { InvalidOptionsSchemaDefinitionError } from './Errors/OptionsManagerErrors.js';
-import { OptionsManager, debug } from './OptionsManager';
-
+import { OptionsManager } from './OptionsManager';
 
 export class SchemaItemValidator {
   _schemaItem = null;
@@ -148,11 +147,8 @@ export class SchemaItemValidator {
   }
 
   validateDefaultValue() {
-    debug.extend('validateDefaultValue', '#')('inside');
     // 'defaultValue' is optional, so validate it only if it exists.
     if(_.hasIn(this._schemaItem, 'defaultValue')) {
-      debug.extend('validateDefaultValue', '#')('%o', this._schemaItem.defaultValue);
-
       // 'defaultValue' must have same type as the one defined as 'type'
       if (typeof this._schemaItem.defaultValue !== this._schemaItem.type) {
         throw new InvalidOptionsSchemaDefinitionError(
