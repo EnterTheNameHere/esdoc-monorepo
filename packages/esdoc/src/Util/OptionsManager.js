@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import upath from 'upath';
 
-import {default as debugModule} from 'debug';
+import { default as debugModule } from 'debug';
 const debug = debugModule('ESDoc:OptionsManager');
 
 import { InvalidOptionsSchemaDefinitionError, InvalidOptionsValueError, MissingOptionsValueError } from './Errors/OptionsManagerErrors.js';

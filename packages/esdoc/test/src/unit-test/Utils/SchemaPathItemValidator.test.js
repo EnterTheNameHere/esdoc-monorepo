@@ -1,7 +1,7 @@
-import {expect} from 'chai';
-import {fileNameToDescription} from '../../../util.js';
+import { expect } from 'chai';
+import { fileNameToDescription } from '../../../util.js';
 
-import {InvalidOptionsSchemaDefinitionError} from '../../../../src/Util/Errors/OptionsManagerErrors.js';
+import { InvalidOptionsSchemaDefinitionError } from '../../../../src/Util/Errors/OptionsManagerErrors.js';
 import { SchemaPathItemValidator } from '../../../../src/Util/SchemaPathItemValidator.js';
 
 const wrapper = function(itemSchema) {
