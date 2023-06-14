@@ -1,7 +1,8 @@
 import {expect} from 'chai';
 import {fileNameToDescription} from '../../../util';
 
-import {InvalidOptionsSchemaDefinitionError, OptionsManager} from '../../../../src/Util/OptionsManager';
+import { InvalidOptionsSchemaDefinitionError } from '../../../../src/Util/Errors/OptionsManagerErrors.js';
+import { OptionsManager } from '../../../../src/Util/OptionsManager';
 import {SchemaArrayItemValidator} from '../../../../src/Util/SchemaArrayItemValidator';
 
 const wrapper = function(itemSchema) {

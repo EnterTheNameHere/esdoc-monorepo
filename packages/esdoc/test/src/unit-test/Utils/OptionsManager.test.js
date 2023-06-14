@@ -2,7 +2,8 @@ import upath from 'upath';
 import {expect} from 'chai';
 import {fileNameToDescription} from '../../../util';
 
-import {InvalidOptionsSchemaDefinitionError, OptionsManager} from '../../../../src/Util/OptionsManager';
+import { InvalidOptionsSchemaDefinitionError } from '../../../../src/Util/Errors/OptionsManagerErrors.js';
+import { OptionsManager } from '../../../../src/Util/OptionsManager';
 
 describe(fileNameToDescription(__filename), function () {
   describe('processOptions()', function () {

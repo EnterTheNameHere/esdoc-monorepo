@@ -1,5 +1,6 @@
 import _ from 'lodash';
-import { InvalidOptionsSchemaDefinitionError, OptionsManager, debug } from './OptionsManager';
+import { InvalidOptionsSchemaDefinitionError } from './Errors/OptionsManagerErrors.js';
+import { OptionsManager, debug } from './OptionsManager';
 
 
 export class SchemaItemValidator {
