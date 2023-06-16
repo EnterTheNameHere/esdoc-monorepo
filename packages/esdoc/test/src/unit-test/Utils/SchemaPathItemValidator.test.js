@@ -6,7 +6,7 @@ import { SchemaPathItemValidator } from '../../../../src/Util/SchemaPathItemVali
 
 const wrapper = function(itemSchema) {
   //console.log('%o, validate: %O', __filename, itemSchema);
-  new SchemaPathItemValidator(itemSchema, {}, null, itemSchema).validate();
+  new SchemaPathItemValidator(itemSchema).validate();
 };
 
 describe(fileNameToDescription(__filename), function () {

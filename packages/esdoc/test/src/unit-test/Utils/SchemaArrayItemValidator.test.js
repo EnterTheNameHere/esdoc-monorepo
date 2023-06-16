@@ -7,7 +7,7 @@ import { SchemaArrayItemValidator } from '../../../../src/Util/SchemaArrayItemVa
 
 const wrapper = function(itemSchema) {
   //console.log('%o, validate: %O', __filename, itemSchema);
-  new SchemaArrayItemValidator(itemSchema, {}, null, itemSchema).validate();
+  new SchemaArrayItemValidator(itemSchema).validate();
 };
 
 describe(fileNameToDescription(__filename), function () {

@@ -7,13 +7,11 @@ export class SchemaItemValidator {
   _optionValue = null;
   _fullSchema = null;
   _fullOptions = null;
-
-  constructor(schemaItem, optionValue, fullSchema = null, fullOptions = null) {
+  
+  constructor(schemaItem, fullSchema = null) {
     this._schemaItem = schemaItem;
-    this._optionValue = optionValue;
     this._fullSchema = fullSchema;
-    this._fullOptions = fullOptions;
-
+    
     if(_.isNull(this._schemaItem) || _.isUndefined(this._schemaItem)) {
       throw new TypeError('SchemaItem is either null or undefined. Valid SchemaItem is required!');
     }
