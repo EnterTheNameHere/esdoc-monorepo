@@ -4,9 +4,7 @@ import { OptionsManager } from './OptionsManager.js';
 
 export class SchemaItemValidator {
   _schemaItem = null;
-  _optionValue = null;
   _fullSchema = null;
-  _fullOptions = null;
   
   constructor(schemaItem, fullSchema = null) {
     this._schemaItem = schemaItem;
