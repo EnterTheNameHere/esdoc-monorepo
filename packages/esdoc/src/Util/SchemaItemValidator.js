@@ -3,9 +3,26 @@ import { InvalidOptionsSchemaDefinitionError } from './Errors/OptionsManagerErro
 import { OptionsManager } from './OptionsManager.js';
 
 export class SchemaItemValidator {
+  /**
+   * @protected
+   */
   _schemaItem = null;
+  /**
+   * @protected
+   */
   _fullSchema = null;
   
+  /**
+   * Constructs new validator. The `schemaItem` parameter is required. Throws if 'name' property of schema definition
+   * is invalid.
+   * 
+   * You can optionally pass object with full SchemaDefinition as `fullSchema`. This will then be included with
+   * any thrown error object if validation or value processing ends with error.
+   * 
+   * @param {typeof _schemaItem} schemaItem 
+   * @param {typeof _fullSchema} fullSchema
+   * @throws {InvalidOptionsSchemaDefinitionError}
+   */
   constructor(schemaItem, fullSchema = null) {
     this._schemaItem = schemaItem;
     this._fullSchema = fullSchema;
@@ -17,7 +34,13 @@ export class SchemaItemValidator {
     // Name is important if we want to tell user which SchemaItem causes error...
     this.validateName();
   }
-
+  
+  /**
+   * Validates if SchemaDefinition is valid. Throws when error is encountered during validation.
+   * 
+   * @public
+   * @throws {InvalidOptionsSchemaDefinitionError}
+   */
   validate() {
     this.validateName();
     this.validateType();
@@ -25,7 +48,13 @@ export class SchemaItemValidator {
     this.validateIsRequired();
     this.validateDefaultValue();
   }
-
+  
+  /**
+   * Validates if SchemaDefinition contains 'name' property. Throws if property is missing, is not string, or has wrong value.
+   * 
+   * @protected
+   * @throws {InvalidOptionsSchemaDefinitionError}
+   */
   validateName() {
     // 'name' is not optional, it must exist. And be a string...
     if(!_.hasIn(this._schemaItem, 'name')) {
@@ -54,7 +83,11 @@ export class SchemaItemValidator {
       );
     }
   }
-
+  
+  /**
+   * Validates if SchemaDefinition contains 'type' property. Throws if property is missing, is not string, or has wrong value.
+   * @protected
+   */
   validateType(customType = OptionsManager.SupportedSchemaItemTypes) {
     // Wrong use of function. Prevents mistakes when overriding in child classes...
     if(!_.isArray(customType)) {
@@ -79,7 +112,11 @@ export class SchemaItemValidator {
       );
     }
   }
-
+  
+  /**
+   * Validates SchemaDefinition's 'alias' property, if it exists. Throws if alias' definition is invalid.
+   * @protected
+   */
   validateAlias() {
     // 'alias' is optional, so validate it only if it exists.
     if(_.hasIn(this._schemaItem, 'alias')) {
@@ -127,7 +164,10 @@ export class SchemaItemValidator {
       }
     }
   }
-
+  
+  /**
+   * @protected
+   */
   validateIsRequired() {
     // 'isRequired' is optional, so validate it only if it exists.
     if(_.hasIn(this._schemaItem, 'isRequired')) {
@@ -141,7 +181,10 @@ export class SchemaItemValidator {
       }
     }
   }
-
+  
+  /**
+   * @protected
+   */
   validateDefaultValue() {
     // 'defaultValue' is optional, so validate it only if it exists.
     if(_.hasIn(this._schemaItem, 'defaultValue')) {
