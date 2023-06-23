@@ -1,9 +1,9 @@
 import _ from 'lodash';
-import { SchemaItemValidator } from './SchemaItemValidator.js';
+import { OptionItemSchema } from './SchemaItemValidator.js';
 import { InvalidOptionsSchemaDefinitionError } from './Errors/OptionsManagerErrors.js';
 
 
-export class SchemaPathItemValidator extends SchemaItemValidator {
+export class SchemaPathItemValidator extends OptionItemSchema {
   validateType() {
     super.validateType(['path']);
   }

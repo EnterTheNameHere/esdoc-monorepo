@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import { OptionsManager } from './OptionsManager.js';
 import { InvalidOptionsSchemaDefinitionError } from './Errors/OptionsManagerErrors.js';
-import { SchemaItemValidator } from './SchemaItemValidator.js';
+import { OptionItemSchema } from './SchemaItemValidator.js';
 
 
-export class SchemaArrayItemValidator extends SchemaItemValidator {
+export class SchemaArrayItemValidator extends OptionItemSchema {
   validateType() {
     super.validateType(['array']);
     // Additionally, 'ofType' must be set too
