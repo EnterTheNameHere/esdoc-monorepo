@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { OptionItemSchema } from './SchemaItemValidator.js';
+import { OptionItemSchema } from './OptionItemSchema.js';
 import { InvalidOptionsSchemaDefinitionError } from './Errors/OptionsManagerErrors.js';
 
 
