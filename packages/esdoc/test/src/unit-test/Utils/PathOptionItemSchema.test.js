@@ -2,11 +2,11 @@ import { expect } from 'chai';
 import { fileNameToDescription } from '../../../util.js';
 
 import { InvalidOptionsSchemaDefinitionError } from '../../../../src/Util/Errors/OptionsManagerErrors.js';
-import { SchemaPathItemValidator } from '../../../../src/Util/SchemaPathItemValidator.js';
+import { PathOptionItemSchema } from '../../../../src/Util/PathOptionItemSchema.js';
 
 const wrapper = function(itemSchema) {
   //console.log('%o, validate: %O', __filename, itemSchema);
-  new SchemaPathItemValidator(itemSchema).validate();
+  new PathOptionItemSchema(itemSchema).validate();
 };
 
 describe(fileNameToDescription(__filename), function () {

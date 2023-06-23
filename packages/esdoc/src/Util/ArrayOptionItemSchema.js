@@ -4,7 +4,7 @@ import { InvalidOptionsSchemaDefinitionError } from './Errors/OptionsManagerErro
 import { OptionItemSchema } from './OptionItemSchema.js';
 
 
-export class SchemaArrayItemValidator extends OptionItemSchema {
+export class ArrayOptionItemSchema extends OptionItemSchema {
   validateType() {
     super.validateType(['array']);
     // Additionally, 'ofType' must be set too

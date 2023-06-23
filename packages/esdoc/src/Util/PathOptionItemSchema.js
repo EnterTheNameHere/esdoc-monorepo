@@ -3,7 +3,7 @@ import { OptionItemSchema } from './OptionItemSchema.js';
 import { InvalidOptionsSchemaDefinitionError } from './Errors/OptionsManagerErrors.js';
 
 
-export class SchemaPathItemValidator extends OptionItemSchema {
+export class PathOptionItemSchema extends OptionItemSchema {
   validateType() {
     super.validateType(['path']);
   }

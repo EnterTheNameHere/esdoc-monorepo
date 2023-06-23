@@ -3,11 +3,11 @@ import { fileNameToDescription } from '../../../util.js';
 
 import { InvalidOptionsSchemaDefinitionError } from '../../../../src/Util/Errors/OptionsManagerErrors.js';
 import { OptionsManager } from '../../../../src/Util/OptionsManager.js';
-import { SchemaArrayItemValidator } from '../../../../src/Util/SchemaArrayItemValidator.js';
+import { ArrayOptionItemSchema } from '../../../../src/Util/ArrayOptionItemSchema.js';
 
 const wrapper = function(itemSchema) {
   //console.log('%o, validate: %O', __filename, itemSchema);
-  new SchemaArrayItemValidator(itemSchema).validate();
+  new ArrayOptionItemSchema(itemSchema).validate();
 };
 
 describe(fileNameToDescription(__filename), function () {
