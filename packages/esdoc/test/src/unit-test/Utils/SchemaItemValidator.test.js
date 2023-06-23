@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { fileNameToDescription } from '../../../util.js';
 
 import { InvalidOptionsSchemaDefinitionError, InvalidOptionsValueError } from '../../../../src/Util/Errors/OptionsManagerErrors.js';
-import { OptionItemSchema } from '../../../../src/Util/SchemaItemValidator.js';
+import { OptionItemSchema } from '../../../../src/Util/OptionItemSchema.js';
 
 const wrapperValidate = function(itemSchema) {
   //console.log('%o, validate: %O', __filename, itemSchema);
@@ -66,7 +66,7 @@ describe(fileNameToDescription(__filename), function () {
       itemSchema = { name: () => { return 'name'; } };
       expect(wrapperValidate.bind(wrapperValidate, itemSchema)).to.throw(InvalidOptionsSchemaDefinitionError, "property 'name' is");
     });
-
+    
     it('Throws error when type is wrong', function() {
       // type is missing
       let itemSchema = { name: 'name' };
