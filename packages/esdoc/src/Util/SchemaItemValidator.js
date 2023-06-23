@@ -30,9 +30,6 @@ export class SchemaItemValidator {
     if(_.isNull(this._schemaItem) || _.isUndefined(this._schemaItem)) {
       throw new TypeError('SchemaItem is either null or undefined. Valid SchemaItem is required!');
     }
-
-    // Name is important if we want to tell user which SchemaItem causes error...
-    this.validateName();
   }
   
   /**
