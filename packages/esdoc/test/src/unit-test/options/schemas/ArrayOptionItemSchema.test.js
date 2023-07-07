@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { fileNameToDescription } from '../../../util.js';
+import { fileNameToDescription } from '../../../../util.js';
 
 import { InvalidOptionsSchemaDefinitionError } from '../../../../src/Util/Errors/OptionsManagerErrors.js';
 import { OptionsManager } from '../../../../src/Util/OptionsManager.js';
