@@ -1,8 +1,7 @@
 import _ from 'lodash';
-import { InvalidOptionsSchemaDefinitionError } from './Errors/OptionsManagerErrors.js';
-import { OptionsManager } from './OptionsManager.js';
+import { InvalidOptionsSchemaDefinitionError } from '../OptionsManagerErrors.js';
 
-export class OptionItemSchema {
+export class Type {
   /**
    * @protected
    */

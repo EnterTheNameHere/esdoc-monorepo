@@ -1,9 +1,9 @@
 import _ from 'lodash';
-import { OptionTypeSchema } from './Type.js';
+import { Type } from './Type.js';
 import { InvalidOptionsSchemaDefinitionError } from '../OptionsManagerErrors.js';
 
 
-export class PathOptionTypeSchema extends OptionTypeSchema {
+export class PathOptionTypeSchema extends Type {
   validateType() {
     super.validateType(['path']);
   }
