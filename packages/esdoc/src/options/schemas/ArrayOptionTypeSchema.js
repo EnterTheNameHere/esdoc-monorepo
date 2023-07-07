@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { OptionsManager } from './OptionsManager.js';
 import { InvalidOptionsSchemaDefinitionError } from './Errors/OptionsManagerErrors.js';
-import { OptionItemSchema } from './OptionItemSchema.js';
+import { OptionItemSchema } from './OptionTypeSchema.js';
 
 
 export class ArrayOptionItemSchema extends OptionItemSchema {
