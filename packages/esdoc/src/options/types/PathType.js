@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { OptionTypeSchema } from './OptionTypeSchema.js';
+import { OptionTypeSchema } from './Type.js';
 import { InvalidOptionsSchemaDefinitionError } from '../OptionsManagerErrors.js';
 
 
