@@ -24,7 +24,7 @@
     "prismjs": "^1.27.0",
     "sanitize-html": "^2.11.0",
     "taffydb": "^2.7.3",
-    "trash-cli": "^4.0.0"
+    "trash-cli": "^5.0.0"
   },
   "engines": {
     "node": ">= 10.23.1"
