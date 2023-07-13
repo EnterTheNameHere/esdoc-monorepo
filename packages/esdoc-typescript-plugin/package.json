@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@enterthenamehere/esdoc-core": "file:../esdoc-core",
-    "typescript": "^4.0.5"
+    "typescript": "^5.1.6"
   },
   "engines": {
     "node": ">= 10.23.1"
