@@ -18,21 +18,19 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [16]
     steps:
-    - name: "Checkout"
-      uses: actions/checkout@v2
+    - name: "Checking code from repository..."
+      uses: actions/checkout@v3
 
-    - name: "Use Node.js ${{ matrix.node-version }}"
-      uses: actions/setup-node@v2
+    - name: "Setting up Node.js ${{ matrix.node-version }}..."
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
     
-    - name: "Install dependencies"
+    - name: "Installing dependencies..."
       run: |
         npm ci
-        npx lerna bootstrap
     
-    - name: "Run tests"
+    - name: "Running tests..."
       run: npm run test
