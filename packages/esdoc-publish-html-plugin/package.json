@@ -22,7 +22,7 @@
     "cheerio": "1.0.0-rc.10",
     "marked": "^4.0.10",
     "prismjs": "^1.27.0",
-    "sanitize-html": "^2.1.2",
+    "sanitize-html": "^2.11.0",
     "taffydb": "^2.7.3",
     "trash-cli": "^4.0.0"
   },
