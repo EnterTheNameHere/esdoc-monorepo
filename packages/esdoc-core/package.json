@@ -40,7 +40,7 @@
     "@babel/traverse": "^7.22.8",
     "@enterthenamehere/color-logger": "file:../color-logger",
     "fs-extra": "^11.1.1",
-    "rrdir": "^11.0.1"
+    "rrdir": "^8.2.2"
   },
   "files": [
     "src",
