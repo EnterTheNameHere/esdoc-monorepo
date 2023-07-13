@@ -14,7 +14,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@enterthenamehere/ice-cap": "file:../ice-cap",
+    "@enterthenamehere/ice-cap": "*",
     "turndown": "^7.1.2",
     "turndown-plugin-gfm": "^1.0.2"
   },

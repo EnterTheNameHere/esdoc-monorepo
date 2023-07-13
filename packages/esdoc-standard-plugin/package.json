@@ -14,18 +14,18 @@
     "access": "public"
   },
   "dependencies": {
-    "@enterthenamehere/esdoc-accessor-plugin": "file:../esdoc-accessor-plugin",
-    "@enterthenamehere/esdoc-brand-plugin": "file:../esdoc-brand-plugin",
-    "@enterthenamehere/esdoc-coverage-plugin": "file:../esdoc-coverage-plugin",
-    "@enterthenamehere/esdoc-ecmascript-proposal-plugin": "file:../esdoc-ecmascript-proposal-plugin",
-    "@enterthenamehere/esdoc-external-ecmascript-plugin": "file:../esdoc-external-ecmascript-plugin",
-    "@enterthenamehere/esdoc-integrate-manual-plugin": "file:../esdoc-integrate-manual-plugin",
-    "@enterthenamehere/esdoc-integrate-test-plugin": "file:../esdoc-integrate-test-plugin",
-    "@enterthenamehere/esdoc-lint-plugin": "file:../esdoc-lint-plugin",
-    "@enterthenamehere/esdoc-publish-html-plugin": "file:../esdoc-publish-html-plugin",
-    "@enterthenamehere/esdoc-type-inference-plugin": "file:../esdoc-type-inference-plugin",
-    "@enterthenamehere/esdoc-undocumented-identifier-plugin": "file:../esdoc-undocumented-identifier-plugin",
-    "@enterthenamehere/esdoc-unexported-identifier-plugin": "file:../esdoc-unexported-identifier-plugin"
+    "@enterthenamehere/esdoc-accessor-plugin": "*",
+    "@enterthenamehere/esdoc-brand-plugin": "*",
+    "@enterthenamehere/esdoc-coverage-plugin": "*",
+    "@enterthenamehere/esdoc-ecmascript-proposal-plugin": "*",
+    "@enterthenamehere/esdoc-external-ecmascript-plugin": "*",
+    "@enterthenamehere/esdoc-integrate-manual-plugin": "*",
+    "@enterthenamehere/esdoc-integrate-test-plugin": "*",
+    "@enterthenamehere/esdoc-lint-plugin": "*",
+    "@enterthenamehere/esdoc-publish-html-plugin": "*",
+    "@enterthenamehere/esdoc-type-inference-plugin": "*",
+    "@enterthenamehere/esdoc-undocumented-identifier-plugin": "*",
+    "@enterthenamehere/esdoc-unexported-identifier-plugin": "*"
   },
   "engines": {
     "node": ">= 10.23.1"

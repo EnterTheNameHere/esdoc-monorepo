@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "@babel/generator": "^7.22.9",
-    "@enterthenamehere/esdoc-core": "file:../esdoc-core",
-    "@enterthenamehere/ice-cap": "file:../ice-cap",
+    "@enterthenamehere/esdoc-core": "*",
+    "@enterthenamehere/ice-cap": "*",
     "cpx2": "^5.0.0",
     "escape-string-regexp": "^4.0.0",
     "cheerio": "1.0.0-rc.10",
