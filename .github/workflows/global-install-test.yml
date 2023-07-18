@@ -38,5 +38,17 @@ jobs:
       run: |
         find "$( npm prefix -g )" -maxdepth 5 -type d
     
+    - name: "Debug: list packages in global directory"
+      run: |
+        npm list
+    
+    - name: "Debug: npm list -g"
+      run: |
+        npm list -g
+    
     - name: "Running tests..."
       run: npm run test:execute
+
+    - name: "Debug: list packages in global directory"
+      run: |
+        npm list
