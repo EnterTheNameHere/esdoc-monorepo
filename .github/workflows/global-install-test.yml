@@ -33,22 +33,46 @@ jobs:
     - name: "Installing ESDoc with Standard plugin globally from generated archives..."
       run: |
         for file in ./*.tgz; do if [[ -f "$file" ]]; then echo "Installing $file"; npm install "$file" --global --ignore-scripts --no-package-lock --no-save; fi; done
-      
-    - name: "Debug: list packages in global directory"
-      run: |
-        find "$( npm prefix -g )" -maxdepth 5 -type d
-    
-    - name: "Debug: list packages in global directory"
-      run: |
-        npm list
     
     - name: "Debug: npm list -g"
       run: |
         npm list -g
     
-    - name: "Running tests..."
-      run: npm run test:execute
-
-    - name: "Debug: list packages in global directory"
+    - name: Find global package.json files
+      id: find-package-json-global
+      run: |
+        find "$( npm prefix -g )" -maxdepth 5 -name "package.json" -type f
+    
+    - name: Output package.json contents
+      run: |
+        for packageJsonFile in ${{ steps.find-package-json-global.outputs.stdout }}
+        do
+          echo "Contents of $packageJsonFile:"
+          cat $packageJsonFile
+          echo "============================="
+        done
+    
+    - name: "Debug: list packages in local directory pre test"
       run: |
         npm list
+    
+    - name: "Running tests..."
+      run: npm run test:execute
+    
+    - name: "Debug: list packages in local directory post test"
+      run: |
+        npm list
+
+    - name: Find local package.json files
+      id: find-package-json-local
+      run: |
+        find ./node_modules -maxdepth 5 -name "package.json" -type f
+    
+    - name: Output package.json contents
+      run: |
+        for packageJsonFile in ${{ steps.find-package-json-local.outputs.stdout }}
+        do
+          echo "Contents of $packageJsonFile:"
+          cat $packageJsonFile
+          echo "============================="
+        done
