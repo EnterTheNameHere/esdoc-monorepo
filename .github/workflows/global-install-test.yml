@@ -40,4 +40,4 @@ jobs:
         find . -maxdepth 5 -type d
     
     - name: "Running tests..."
-      run: npm run test
+      run: npm run test:execute
