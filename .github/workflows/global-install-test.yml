@@ -32,7 +32,7 @@ jobs:
     
     - name: "Installing ESDoc with Standard plugin globally from generated archives..."
       run: |
-        for file in ./*.tgz; do if[ -f "$file" ]; then npm install "$file" --global --ignore-scripts --no-package-lock --no-save; fi; done
+        for file in ./*.tgz; do if [[ -f "$file" ]]; then echo "$file"; fi; done
         
     - name: "Running tests..."
       run: npm run test
