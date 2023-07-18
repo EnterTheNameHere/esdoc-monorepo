@@ -1,0 +1,38 @@
+name: Global installatin test
+on:
+  # Allows running this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16]
+    steps:
+    - name: "Setting up Node.js v${{ matrix.node-version }}..."
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    
+    - name: "Checking out ESDoc source code..."
+      uses: actions/checkout@v3
+    
+    - name: "Installing monorepo workspace dependencies..."
+      run: |
+        npm ci
+    
+    - name: "Packaging monorepo archives for installation..."
+      run: |
+        npm pack -ws
+    
+    - name: "Installing ESDoc with Standard plugin globally from generated archives..."
+      run: |
+        for file in "./*.tgz"; do
+          if[ -f "$file" ]; then
+            npm install "$file" --global --ignore-scripts --no-package-lock --no-save
+          fi
+        done
+        
+    - name: "Running tests..."
+      run: npm run test
