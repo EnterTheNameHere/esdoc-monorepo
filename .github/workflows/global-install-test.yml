@@ -1,4 +1,4 @@
-name: Global installatin test
+name: Global installation test
 on:
   # Allows running this workflow manually from the Actions tab
   workflow_dispatch:
@@ -26,9 +26,13 @@ jobs:
       run: |
         npm pack -ws
     
+    - name: "Debug: list archives"
+      run: |
+        ls *.tgz
+    
     - name: "Installing ESDoc with Standard plugin globally from generated archives..."
       run: |
-        for file in "./*.tgz"; do
+        for file in ./*.tgz; do
           if[ -f "$file" ]; then
             npm install "$file" --global --ignore-scripts --no-package-lock --no-save
           fi
