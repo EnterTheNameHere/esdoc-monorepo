@@ -1,4 +1,4 @@
-process.env.esdoc_fixture_path = './sample-projects/minimal-esdoc/'
+process.env.esdoc_fixture_path = './sample-projects/minimal-esdoc-test-fixture/'
 
 module.exports = {
   'require': 'babelRegister.js',
