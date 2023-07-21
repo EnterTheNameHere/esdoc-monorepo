@@ -4,7 +4,7 @@
   "description": "Testing suite for global installation of ESDoc",
   "scripts": {
     "test-minimal": "mocha ./unit-tests/minimal/ --config .mocha-minimal-test-rc.js",
-    "test-standard": "mocha ./unit-tests/minimal/ ./unit-tests/standard/ --config .mocha-standard-test-rc.js"
+    "test-standard": "mocha ./unit-tests/standard/ --config .mocha-standard-test-rc.js"
   },
   "devDependencies": {
     "@babel/register": "^7.22.5",
