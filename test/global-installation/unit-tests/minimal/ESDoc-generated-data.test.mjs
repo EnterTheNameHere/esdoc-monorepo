@@ -4,8 +4,6 @@ import { expect } from 'chai';
 import { helper } from '../../helper.mjs';
 
 describe('Check ESDoc generated index.json', function() {
-  console.log('[DEBUG] process: %O', process);
-
   it('and it contains what we expect', function() {
     // Here we just check some of the data which is expected
     // to be present in index.json
