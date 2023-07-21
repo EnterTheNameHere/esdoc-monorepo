@@ -10,69 +10,59 @@ jobs:
       matrix:
         node-version: [16]
     steps:
-    - name: "Setting up Node.js v${{ matrix.node-version }}..."
+    - name: "[All] Setting up Node.js v${{ matrix.node-version }}..."
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
     
-    - name: "Checking out ESDoc source code..."
+    - name: "[All] Checking out ESDoc source code..."
       uses: actions/checkout@v3
     
-    - name: "Installing monorepo workspace dependencies..."
+    - name: "[All] Installing testing suite..."
+      working-directory: ./test/global-installation
       run: |
-        npm ci
+        npm install --no-package-lock
     
-    - name: "Packaging monorepo archives for installation..."
+    - name: "[DEBUG] Global packages list:"
       run: |
-        npm pack -ws
-    
-    - name: "Debug: list archives"
-      run: |
-        ls *.tgz
-    
-    - name: "Installing ESDoc with Standard plugin globally from generated archives..."
-      run: |
-        for file in ./*.tgz; do if [[ -f "$file" ]]; then echo "Installing $file"; npm install "$file" --global --ignore-scripts --no-package-lock --no-save; fi; done
-    
-    - name: "Debug: npm list -g"
-      run: |
-        npm list -g
-    
-    - name: Find global package.json files
-      id: find-package-json-global
-      run: |
-        find "$( npm prefix -g )" -maxdepth 5 -name "package.json" -type f
-    
-    - name: Output package.json contents
-      run: |
-        for packageJsonFile in ${{ steps.find-package-json-global.outputs.stdout }}
-        do
-          echo "Contents of $packageJsonFile:"
-          cat $packageJsonFile
-          echo "============================="
-        done
-    
-    - name: "Debug: list packages in local directory pre test"
-      run: |
-        npm list
-    
-    - name: "Running tests..."
-      run: npm run test:execute
-    
-    - name: "Debug: list packages in local directory post test"
-      run: |
-        npm list
+        npm list --global --depth=4
 
-    - name: Find local package.json files
-      id: find-package-json-local
+    - name: "[Minimal] Installing ESDoc globally..."
       run: |
-        find ./node_modules -maxdepth 5 -name "package.json" -type f
+        npm install --global @enterthenamehere/esdoc@latest
     
-    - name: Output package.json contents
+    - name: "[DEBUG] Global packages list:"
       run: |
-        for packageJsonFile in ${{ steps.find-package-json-local.outputs.stdout }}
-        do
-          echo "Contents of $packageJsonFile:"
-          cat $packageJsonFile
-          echo "============================="
-        done
+        npm list --global --depth=4
+    
+    - name: "[Minimal] Generating documentation..."
+      working-directory: ./test/global-installation/sample-projects/minimal-esdoc-test-fixture
+      run: |
+        npm run generate-docs
+    
+    - name: "[Minimal] Executing tests..."
+      working-directory: ./test/global-installation
+      run: |
+        npm run test-minimal
+    
+    - name: "[DEBUG] Global packages list:"
+      run: |
+        npm list --global --depth=4
+
+    - name: "[Standard] Installing ESDoc and standard-plugin globally..."
+      run: |
+        npm install --global @enterthenamehere/esdoc@latest @enterthenamehere/esdoc-standard-plugin@latest
+    
+    - name: "[DEBUG] Global packages list:"
+      run: |
+        npm list --global --depth=4
+
+    - name: "[Standard] Generating documentation..."
+      working-directory: ./test/global-installation/sample-projects/standard-esdoc-test-fixture
+      run: |
+        npm run generate-docs
+      
+    - name: "[Standard] Executing tests..."
+      working-directory: ./test/global-installation
+      run: |
+        npm run test-standard
