@@ -1,0 +1,16 @@
+{
+  "private": "true",
+  "name": "test-suite-esdoc-global-installation",
+  "description": "Testing suite for global installation of ESDoc",
+  "scripts": {
+    "test-minimal": "mocha ./unit-tests/minimal/ ./unit-tests/standard/ --config .mocha-minimal-test-rc.js"
+  },
+  "devDependencies": {
+    "@babel/register": "^7.22.5",
+    "chai": "^4.3.7",
+    "collect.js": "^4.36.1",
+    "fs-extra": "^11.1.1",
+    "mocha": "^10.2.0",
+    "upath": "^2.0.1"
+  }
+}
