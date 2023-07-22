@@ -17,8 +17,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@enterthenamehere/ice-cap": "^2.5.4-dev.5",
-    "turndown": "^7.1.1",
+    "@enterthenamehere/ice-cap": "*",
+    "turndown": "^7.1.2",
     "turndown-plugin-gfm": "^1.0.2"
   },
   "engines": {

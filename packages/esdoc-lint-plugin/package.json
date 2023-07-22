@@ -17,7 +17,7 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@enterthenamehere/esdoc": "^2.5.4-dev.3"
+    "@enterthenamehere/esdoc": "*"
   },
   "engines": {
     "node": ">=14.21.1"

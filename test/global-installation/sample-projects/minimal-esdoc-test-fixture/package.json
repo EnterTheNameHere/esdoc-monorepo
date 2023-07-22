@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "@enterthenamehere/minimal-esdoc-test-fixture",
+  "description": "Contains just enough source code and settings to generate minimal documentation with ESDoc.",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EnterTheNameHere/esdoc-monorepo"
+  },
+  "scripts": {
+    "generate-docs": "esdoc"
+  },
+  "main": "./src/ESDocTest.js"
+}

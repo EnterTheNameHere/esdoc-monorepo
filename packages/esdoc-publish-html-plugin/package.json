@@ -42,19 +42,19 @@
     "transpile": "babel ./src --out-dir ./out --root-mode upward"
   },
   "dependencies": {
-    "@babel/generator": "^7.12.5",
-    "@enterthenamehere/ice-cap": "^2.5.4-dev.5",
-    "cheerio": "1.0.0-rc.10",
-    "cpx2": "^3.0.0",
+    "@babel/generator": "^7.22.9",
+    "@enterthenamehere/ice-cap": "*",
+    "cpx2": "^5.0.0",
     "escape-string-regexp": "^4.0.0",
+    "cheerio": "1.0.0-rc.10",
     "marked": "^4.0.10",
     "prismjs": "^1.27.0",
-    "sanitize-html": "^2.1.2",
+    "sanitize-html": "^2.11.0",
     "taffydb": "^2.7.3",
-    "trash-cli": "^4.0.0"
+    "trash-cli": "^5.0.0"
   },
   "peerDependencies": {
-    "@enterthenamehere/esdoc": "^2.5.4-dev.3"
+    "@enterthenamehere/esdoc": "*"
   },
   "keywords": [
     "esdoc",

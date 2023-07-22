@@ -20,8 +20,8 @@
     "cheerio": "1.0.0-rc.10"
   },
   "peerDependencies": {
-    "@enterthenamehere/esdoc": "^2.5.4-dev.3",
-    "@enterthenamehere/esdoc-publish-html-plugin": "^2.5.4-dev.3"
+    "@enterthenamehere/esdoc": "*",
+    "@enterthenamehere/esdoc-publish-html-plugin": "*"
   },
   "engines": {
     "node": ">=14.21.1"

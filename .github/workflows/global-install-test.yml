@@ -1,0 +1,68 @@
+name: Global installation test
+on:
+  # Allows running this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16]
+    steps:
+    - name: "[All] Setting up Node.js v${{ matrix.node-version }}..."
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    
+    - name: "[All] Checking out ESDoc source code..."
+      uses: actions/checkout@v3
+    
+    - name: "[All] Installing testing suite..."
+      working-directory: ./test/global-installation
+      run: |
+        npm install --no-package-lock
+    
+    - name: "[DEBUG] Global packages list:"
+      run: |
+        npm list --global --depth=4
+
+    - name: "[Minimal] Installing ESDoc globally..."
+      run: |
+        npm install --global @enterthenamehere/esdoc@latest
+    
+    - name: "[DEBUG] Global packages list:"
+      run: |
+        npm list --global --depth=4
+    
+    - name: "[Minimal] Generating documentation..."
+      working-directory: ./test/global-installation/sample-projects/minimal-esdoc-test-fixture
+      run: |
+        npm run generate-docs
+    
+    - name: "[Minimal] Executing tests..."
+      working-directory: ./test/global-installation
+      run: |
+        npm run test-minimal
+    
+    - name: "[DEBUG] Global packages list:"
+      run: |
+        npm list --global --depth=4
+
+    - name: "[Standard] Installing ESDoc and standard-plugin globally..."
+      run: |
+        npm install --global @enterthenamehere/esdoc@latest @enterthenamehere/esdoc-standard-plugin@latest
+    
+    - name: "[DEBUG] Global packages list:"
+      run: |
+        npm list --global --depth=4
+
+    - name: "[Standard] Generating documentation..."
+      working-directory: ./test/global-installation/sample-projects/standard-esdoc-test-fixture
+      run: |
+        npm run generate-docs
+      
+    - name: "[Standard] Executing tests..."
+      working-directory: ./test/global-installation
+      run: |
+        npm run test-standard
