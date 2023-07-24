@@ -16,9 +16,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@enterthenamehere/color-logger": "*"
-  },
   "peerDependencies": {
     "@enterthenamehere/esdoc": "*"
   },

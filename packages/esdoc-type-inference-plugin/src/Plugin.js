@@ -1,4 +1,3 @@
-const logger = require('@enterthenamehere/color-logger');
 const ASTNodeContainer = require('@enterthenamehere/esdoc/out/Util/ASTNodeContainer.js').default;
 const ASTUtil = require('@enterthenamehere/esdoc/out/Util/ASTUtil').default;
 
@@ -10,6 +9,7 @@ class Plugin {
   onHandleDocs(ev) {
     this._docs = ev.data.docs;
     this._option = ev.data.option;
+    this.debug = ev.debug;
     
     this._exec();
   }
@@ -261,7 +261,7 @@ class Plugin {
           break;
         }
         default:
-          logger.w('unknown param.type', param);
+          this.debug('Unknown param.type:', param);
       }
 
       _params.push(result);

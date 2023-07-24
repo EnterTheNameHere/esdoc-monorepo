@@ -17,8 +17,10 @@
     "access": "public"
   },
   "dependencies": {
-    "@enterthenamehere/color-logger": "^2.5.4-dev.5",
     "cheerio": "1.0.0-rc.10"
+  },
+  "peerDependencies": {
+    "@enterthenamehere/esdoc": "*"
   },
   "scripts": {
     "build": "npm run clear && npm run transpile",

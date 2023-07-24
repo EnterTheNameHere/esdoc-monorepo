@@ -1,7 +1,6 @@
 /* eslint-disable max-lines */
 import path from 'path';
 import IceCap from '@enterthenamehere/ice-cap';
-import logger from '@enterthenamehere/color-logger';
 import escapeStringRegexp from 'escape-string-regexp';
 import {shorten, parseExample, escapeURLHash, sanitize, highlight} from './util.js';
 import DocResolver from './DocResolver.js';
@@ -888,7 +887,7 @@ export default class DocBuilder {
     ice.loop('property', properties, (i, prop, ice2) => {
       ice2.autoDrop = false;
       if( !prop.name ) {
-          logger.w(`Property ${prop.types} is missing a name!`);
+          console.warn(`DocBuilder: Property ${prop.types} is missing a name!`);
           prop.name = '(no name provided)';
       }
       ice2.attr('property', 'data-depth', prop.name.split('.').length - 1);

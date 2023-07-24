@@ -1,8 +1,4 @@
 import cheerio from 'cheerio';
-import { ColorLogger } from '@enterthenamehere/color-logger';
-
-/** @ignore */
-const logger = new ColorLogger('IceCap');
 
 /**
  * @class
@@ -296,7 +292,7 @@ export default class IceCap {
 
     const filtered = this._filter($nodes);
 
-    if (filtered.length === 0 && this.constructor._debug) logger.w(`node not found. id = ${id}`);
+    if (filtered.length === 0 && this.constructor._debug) console.warn(`IceCap: Node not found. id = ${id}`);
 
     return filtered;
   }

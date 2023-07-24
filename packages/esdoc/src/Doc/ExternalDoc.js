@@ -1,6 +1,7 @@
-import logger from '@enterthenamehere/color-logger';
 import AbstractDoc from './AbstractDoc.js';
 import ParamParser from '../Parser/ParamParser.js';
+
+const debug = require('debug')('ESDoc:ExternalDoc');
 
 /**
  * Doc Class from virtual comment node of external.
@@ -28,14 +29,14 @@ export default class ExternalDoc extends AbstractDoc {
   _$name() {
     const value = this._findTagValue(['@external']);
     if (!value) {
-      logger.w('can not resolve name.');
+      debug('Cannot resolve @external name.');
     }
 
     this._value.name = value;
 
     const tags = this._findAll(['@external']);
     if (!tags) {
-      logger.w('can not resolve name.');
+      debug('Cannot resolve @external name.');
       return;
     }
 

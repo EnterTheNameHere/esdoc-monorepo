@@ -1,4 +1,3 @@
-import logger from '@enterthenamehere/color-logger';
 import CommentParser from '../Parser/CommentParser.js';
 import FileDoc from '../Doc/FileDoc.js';
 import ClassDoc from '../Doc/ClassDoc.js';
@@ -13,6 +12,7 @@ import ExternalDoc from '../Doc/ExternalDoc.js';
 import ASTUtil from '../Util/ASTUtil.js';
 
 const already = Symbol('already');
+const debug = require('debug')('ESDoc:DocFactory');
 
 /**
  * Doc factory class.
@@ -119,7 +119,7 @@ export default class DocFactory {
           break;
         }
         default:
-          logger.w(`unknown export declaration type. type = "${exportNode.declaration.type}"`);
+          debug(`Unknown export declaration type. type = "${exportNode.declaration.type}"`);
           break;
       }
 
@@ -500,7 +500,7 @@ export default class DocFactory {
       return {type: 'Method', node: node};
     }
     
-    logger.w('this method is not in class', node);
+    debug('This method is not in class', node);
     return {type: null, node: null};
   }
 
@@ -516,7 +516,7 @@ export default class DocFactory {
       return {type: 'ClassProperty', node: node};
     }
     
-    logger.w('this class property is not in class', node);
+    debug('This class property is not in class', node);
     return {type: null, node: null};
   }
 
@@ -589,7 +589,7 @@ export default class DocFactory {
         if (node.left.type === 'MemberExpression' && node.left.object.type === 'ThisExpression') {
           const classNode = this._findUp(node, ['ClassExpression', 'ClassDeclaration']);
           if (!this._processedClassNodes.includes(classNode)) {
-            logger.w('this member is not in class.', this._pathResolver.filePath, node);
+            debug('This member is not in class.', this._pathResolver.filePath, node);
             return {type: null, node: null};
           }
 
