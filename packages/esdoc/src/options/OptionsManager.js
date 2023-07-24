@@ -4,7 +4,7 @@ import upath from 'upath';
 import { default as debugModule } from 'debug';
 const debug = debugModule('ESDoc:OptionsManager');
 
-import { InvalidOptionsSchemaDefinitionError, InvalidOptionsValueError, MissingOptionsValueError } from './Errors/OptionsManagerErrors.js';
+import { InvalidOptionsSchemaDefinitionError, InvalidOptionsValueError, MissingOptionsValueError } from './OptionsManagerErrors.js';
 
 /**
  * @typedef {Array<OptionsSchemaItem>} OptionsSchema
