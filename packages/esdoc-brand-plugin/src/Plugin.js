@@ -1,5 +1,3 @@
-console.log('>>>> __filename', __filename);
-
 const path = require('path');
 const cheerio = require('cheerio');
 

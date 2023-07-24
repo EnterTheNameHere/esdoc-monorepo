@@ -2,8 +2,6 @@ import fs from 'fs-extra';
 import upath from 'upath';
 import rrdir from 'rrdir';
 
-console.log('>>>> __filename', __filename);
-
 class FileDoesNotExistOrNoPermissionError extends Error {
     /**
      * Custom Error with `path` parameter to indicate requested file does not exist.

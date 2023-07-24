@@ -1,5 +1,3 @@
-console.log('>>>> __filename', __filename);
-
 class Plugin {
   getDefaultOptions() {
     return {enable: false};

@@ -1,5 +1,3 @@
-console.log('>>>> __filename', __filename);
-
 class Plugin {
   onHandleConfig(ev) {
     this._config = ev.data.config;

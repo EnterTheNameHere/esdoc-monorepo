@@ -1,8 +1,6 @@
 const upath = require('upath');
 const fse = require('fs-extra');
 
-console.log('>>>> __filename', __filename);
-
 class Plugin {
   getDefaultOptions() {
     return {

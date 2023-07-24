@@ -1,8 +1,6 @@
 import AbstractDoc from './AbstractDoc.js';
 import { FileManager } from '../Util/FileManager';
 
-console.log('>>>> __filename', __filename);
-
 /**
  * Doc Class from source file.
  */

@@ -1,5 +1,3 @@
-console.log('>>>> __filename', __filename);
-
 /**
  * Param Type Parser class.
  */

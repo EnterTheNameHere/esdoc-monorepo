@@ -8,8 +8,6 @@ const _ = require('lodash');
 const debugModule = require('debug');
 const debug = debugModule('ESDoc:PluginManager');
 
-console.log('>>>> __filename', __filename);
-
 /**
  * @typedef  {object} Plugin
  * @property {(event: PluginEvent, pluginOptions: PluginOptions, globalOptions: GlobalOptions)=>void|undefined} onInitialize

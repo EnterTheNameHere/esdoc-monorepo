@@ -1,8 +1,6 @@
 import upath from 'upath';
 import { FileManager } from './FileManager';
 
-console.log('>>>> __filename', __filename);
-
 /**
  * Node Package Manager(npm) util class.
  */

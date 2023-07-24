@@ -1,5 +1,3 @@
-console.log('>>>> __filename', __filename);
-
 /**
  * ESDoc config object.
  * @typedef {Object} ESDocConfig

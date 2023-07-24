@@ -1,5 +1,3 @@
-console.log('>>>> __filename', __filename);
-
 // hack: depends on esdoc internal class
 const AbstractDoc = require('@enterthenamehere/esdoc/out/Doc/AbstractDoc').default;
 const ParamParser = require('@enterthenamehere/esdoc/out/Parser/ParamParser').default;

@@ -1,5 +1,3 @@
-console.log('>>>> __filename', __filename);
-
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 
 // Value properties

@@ -2,8 +2,6 @@ import babelGenerator from '@babel/generator';
 import AbstractDoc from './AbstractDoc.js';
 import NamingUtil from '../Util/NamingUtil';
 
-console.log('>>>> __filename', __filename);
-
 /**
  * Doc Class from Function declaration AST node.
  */

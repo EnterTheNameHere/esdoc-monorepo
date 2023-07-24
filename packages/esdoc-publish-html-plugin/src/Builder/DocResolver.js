@@ -1,8 +1,6 @@
 import escapeStringRegexp from 'escape-string-regexp';
 import {markdown} from './util.js';
 
-console.log('>>>> __filename', __filename);
-
 /**
  * Resolve various properties in doc object.
  */

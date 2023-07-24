@@ -1,8 +1,6 @@
 const AbstractBuilder = require('./AbstractBuilder');
 const IceCap = require('@enterthenamehere/ice-cap').default;
 
-console.log('>>>> __filename', __filename);
-
 class FunctionBuilder extends AbstractBuilder {
   makeHTML() {
     const docs = this._docs.filter((doc) => { return doc.kind === 'function'; });

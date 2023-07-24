@@ -1,8 +1,6 @@
 import cheerio from 'cheerio';
 import { ColorLogger } from '@enterthenamehere/color-logger';
 
-console.log('>>>> __filename', __filename);
-
 /** @ignore */
 const logger = new ColorLogger('IceCap');
 

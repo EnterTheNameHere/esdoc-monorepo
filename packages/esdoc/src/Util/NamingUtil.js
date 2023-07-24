@@ -2,8 +2,6 @@ import upath from 'upath';
 
 //const filePathMap = {};
 
-console.log('>>>> __filename', __filename);
-
 /**
  * Identifier Naming Util class.
  */

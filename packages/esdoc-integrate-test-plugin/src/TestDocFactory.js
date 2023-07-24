@@ -5,8 +5,6 @@ const CommentParser = require('@enterthenamehere/esdoc/out/Parser/CommentParser'
 
 const already = Symbol('already');
 
-console.log('>>>> __filename', __filename);
-
 /**
  * Test doc factory class.
  * @example

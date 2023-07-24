@@ -3,8 +3,6 @@ import ParamParser from '../Parser/ParamParser.js';
 import NamingUtil from '../Util/NamingUtil';
 import { FileManager } from '../Util/FileManager.js';
 
-console.log('>>>> __filename', __filename);
-
 /**
  * Doc Class from Class Declaration AST node.
  */

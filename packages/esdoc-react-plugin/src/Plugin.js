@@ -3,8 +3,6 @@ const cheerio = require('cheerio');
 const ParamParser = require('@enterthenamehere/esdoc/out/Parser/ParamParser').default;
 const DocBuilder = require('@enterthenamehere/esdoc-publish-html-plugin/out/Builder/DocBuilder').default;
 
-console.log('>>>> __filename', __filename);
-
 class Plugin {
   constructor() {
     this._docs = null;

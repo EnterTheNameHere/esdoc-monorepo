@@ -14,8 +14,6 @@ import TestDocBuilder from './Builder/TestDocBuilder.js';
 import TestFileDocBuilder from './Builder/TestFileDocBuilder.js';
 import ManualDocBuilder from './Builder/ManualDocBuilder.js';
 
-console.log('>>>> __filename', __filename);
-
 class Plugin {
   getDefaultOptions() {
     return {

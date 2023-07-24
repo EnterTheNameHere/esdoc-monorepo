@@ -3,8 +3,6 @@ import DocBuilder from './DocBuilder.js';
 import {dateForUTC} from './util.js';
 import { FileManager } from '@enterthenamehere/esdoc/out/Util/FileManager';
 
-console.log('>>>> __filename', __filename);
-
 /**
  * Source output html builder class.
  */

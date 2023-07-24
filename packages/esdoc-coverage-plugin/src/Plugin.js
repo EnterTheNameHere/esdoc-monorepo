@@ -1,7 +1,5 @@
 const path = require('path');
 
-console.log('>>>> __filename', __filename);
-
 class Plugin {
   getDefaultOptions() {
     return {

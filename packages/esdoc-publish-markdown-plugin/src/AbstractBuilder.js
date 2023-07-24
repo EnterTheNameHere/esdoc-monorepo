@@ -1,8 +1,6 @@
 const path = require('path');
 const { FileManager } = require('@enterthenamehere/esdoc/out/Util/FileManager');
 
-console.log('>>>> __filename', __filename);
-
 class AbstractBuilder {
   constructor(docs) {
     this._docs = docs;

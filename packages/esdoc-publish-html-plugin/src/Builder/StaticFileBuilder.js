@@ -1,8 +1,6 @@
 import path from 'path';
 import DocBuilder from './DocBuilder.js';
 
-console.log('>>>> __filename', __filename);
-
 /**
  * Static file output builder class.
  */

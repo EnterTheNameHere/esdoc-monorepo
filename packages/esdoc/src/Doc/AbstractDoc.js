@@ -5,8 +5,6 @@ import InvalidCodeLogger from '../Util/InvalidCodeLogger.js';
 import ASTNodeContainer from '../Util/ASTNodeContainer.js';
 import babelGenerator from '@babel/generator';
 
-console.log('>>>> __filename', __filename);
-
 /**
  * Abstract Doc Class.
  * @todo rename this class name.

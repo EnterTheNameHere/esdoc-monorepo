@@ -1,6 +1,4 @@
 
-console.log('>>>> __filename', __filename);
-
 class ESDocStandardPlugin {
   onInitialize(initializeEvent, options) {
     if(!options) options = {};

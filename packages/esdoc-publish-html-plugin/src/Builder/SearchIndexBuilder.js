@@ -1,7 +1,5 @@
 import DocBuilder from './DocBuilder.js';
 
-console.log('>>>> __filename', __filename);
-
 /**
  * Search index of identifier builder class.
  */

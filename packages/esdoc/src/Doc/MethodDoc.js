@@ -1,8 +1,6 @@
 import AbstractDoc from './AbstractDoc.js';
 import babelGenerator from '@babel/generator';
 
-console.log('>>>> __filename', __filename);
-
 /**
  * Doc Class from Method Definition AST node.
  */

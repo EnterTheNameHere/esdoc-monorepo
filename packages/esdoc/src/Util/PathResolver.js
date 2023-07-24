@@ -1,8 +1,6 @@
 import upath from 'upath';
 import os from 'os';
 
-console.log('>>>> __filename', __filename);
-
 /**
  * file path resolver.
  * @example

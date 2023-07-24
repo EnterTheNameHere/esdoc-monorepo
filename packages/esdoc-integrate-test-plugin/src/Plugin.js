@@ -2,8 +2,6 @@ const upath = require('upath');
 const fs = require('fs-extra');
 const TestDocFactory = require('./TestDocFactory');
 
-console.log('>>>> __filename', __filename);
-
 // hack
 const ESParser = require('@enterthenamehere/esdoc/out/Parser/ESParser').default;
 const InvalidCodeLogger = require('@enterthenamehere/esdoc/out/Util/InvalidCodeLogger').default;

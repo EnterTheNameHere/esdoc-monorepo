@@ -1,7 +1,5 @@
 import babelTraverse from '@babel/traverse';
 
-console.log('>>>> __filename', __filename);
-
 /**
  * Utility for AST.
  */

@@ -1,5 +1,3 @@
-console.log('>>>> __filename', __filename);
-
 /**
  * Doc Comment Parser class.
  *

@@ -2,8 +2,6 @@ const ASTUtil = require('@enterthenamehere/esdoc/out/Util/ASTUtil').default;
 const CommentParser = require('@enterthenamehere/esdoc/out/Parser/CommentParser').default;
 const InvalidCodeLogger = require('@enterthenamehere/esdoc/out/Util/InvalidCodeLogger').default;
 
-console.log('>>>> __filename', __filename);
-
 function formatExpression(expr) {
   switch (expr.type) {
   case 'ObjectExpression':

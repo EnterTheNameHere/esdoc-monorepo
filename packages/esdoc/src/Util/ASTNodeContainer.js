@@ -1,5 +1,3 @@
-console.log('>>>> __filename', __filename);
-
 class ASTNodeContainer {
   constructor() {
     this._docId = 0;

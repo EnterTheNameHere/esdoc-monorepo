@@ -3,8 +3,6 @@ import DocBuilder from './DocBuilder.js';
 import path from 'path';
 import {escapeURLHash} from './util';
 
-console.log('>>>> __filename', __filename);
-
 /**
  * Identifier output builder class.
  */

@@ -1,7 +1,5 @@
 import AbstractDoc from './AbstractDoc.js';
 
-console.log('>>>> __filename', __filename);
-
 /**
  * Doc Class for Assignment AST node.
  */
