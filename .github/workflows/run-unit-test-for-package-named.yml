@@ -1,0 +1,58 @@
+name: Run unit test for package named...
+on:
+  # Allows running this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      package-name:
+        type: choice
+        description: "Run unit-tests for package:"
+        options:
+          - esdoc
+          - esdoc-accessor-plugin
+          - esdoc-brand-plugin
+          - esdoc-coverage-plugin
+          - esdoc-ecmascript-proposal-plugin
+          - esdoc-exclude-source-plugin
+          - esdoc-external-ecmascript-plugin
+          - esdoc-external-nodejs-plugin
+          - esdoc-external-webapi-plugin
+          - esdoc-flow-type-plugin
+          - esdoc-importpath-plugin
+          - esdoc-inject-gtm-plugin
+          - esdoc-inject-script-plugin
+          - esdoc-inject-style-plugin
+          - esdoc-integrate-manual-plugin
+          - esdoc-integrate-test-plugin
+          - esdoc-jsx-plugin
+          - esdoc-lint-plugin
+          - esdoc-publish-html-plugin
+          - esdoc-publish-markdown-plugin
+          - esdoc-react-plugin
+          - esdoc-standard-plugin
+          - esdoc-type-inference-plugin
+          - esdoc-typescript-plugin
+          - esdoc-undocumented-identifier-plugin
+          - esdoc-unexported-identifier-plugin
+          - ice-cap
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16]
+    steps:
+    - name: "Checking code from repository..."
+      uses: actions/checkout@v3
+
+    - name: "Setting up Node.js ${{ matrix.node-version }}..."
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    
+    - name: "Installing dependencies..."
+      run: |
+        npm ci
+    
+    - name: "Running tests for package ${{github.event.inputs.package-name}}..."
+      working-directory: ./packages/${{github.event.inputs.package-name}}/
+      run: npm run test
