@@ -4,7 +4,7 @@ const fse = require('fs-extra');
 class Plugin {
   getDefaultOptions() {
     return {
-      index: 'readme.md',
+      index: 'README.md',
       globalIndex: false, // TODO: What globalIndex means?
       files: [],
       asset: null, // TODO: Implement support for directories
