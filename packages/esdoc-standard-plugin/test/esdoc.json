@@ -4,6 +4,7 @@
   "excludes": ["\\.test\\.js$"],
   "index": "./test/README.md",
   "package": "./test/package.json",
+  "debug": true,
   "plugins": [
     {
       "name": "./src/Plugin.js",
