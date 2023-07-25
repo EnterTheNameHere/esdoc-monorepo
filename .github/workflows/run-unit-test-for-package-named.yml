@@ -55,4 +55,6 @@ jobs:
     
     - name: "Running tests for package ${{github.event.inputs.package-name}}..."
       working-directory: ./packages/${{github.event.inputs.package-name}}/
-      run: npm run test
+      run: |
+        DEBUG="ESDoc:*""
+        npm run test
