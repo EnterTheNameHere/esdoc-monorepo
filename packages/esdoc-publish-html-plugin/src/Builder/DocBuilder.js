@@ -161,13 +161,13 @@ export default class DocBuilder {
       ice.drop('esdocVersion');
     }
 
-    const existTest = this._docs.find((tag) => { return tag.kind.indexOf('test') === 0; });
+    const existTest = this._docs.find((doc) => { return doc.kind.indexOf('test') === 0; });
     ice.drop('testLink', !existTest);
-
-    const existManual = this._docs.find((tag) => { return tag.kind.indexOf('manual') === 0; });
+    
+    const existManual = this._docs.find((doc) => { return doc.kind.indexOf('manual') === 0; });
     ice.drop('manualHeaderLink', !existManual);
 
-    const manualIndex = this._docs.find((tag) => { return tag.kind === 'manualIndex'; });
+    const manualIndex = this._docs.find((doc) => { return doc.kind === 'manualIndex'; });
     if (manualIndex && manualIndex.globalIndex) {
       ice.drop('manualHeaderLink');
     }
