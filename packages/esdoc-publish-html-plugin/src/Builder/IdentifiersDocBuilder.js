@@ -26,7 +26,7 @@ export default class IdentifiersDocBuilder extends DocBuilder {
     // traverse docs and create Map<dirPath, doc[]>
     const dirDocs = new Map();
     const kinds = ['class', 'interface', 'function', 'variable', 'typedef', 'external'];
-    for (const doc of this._tags) {
+    for (const doc of this._docs) {
       if (!kinds.includes(doc.kind)) continue;
       if (doc.builtinExternal) continue;
       if (doc.ignore) continue;

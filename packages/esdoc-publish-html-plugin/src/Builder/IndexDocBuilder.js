@@ -21,14 +21,14 @@ export default class IndexDocBuilder extends DocBuilder {
    * @private
    */
   _buildIndexDoc() {
-    const indexTag = this._tags.find((tag) => { return tag.kind === 'index'; });
-    if (!indexTag) return 'Please create README.md';
+    const indexDoc = this._docs.find((doc) => { return doc.kind === 'index'; });
+    if (!indexDoc) return 'Please create README.md';
 
-    const indexContent = indexTag.content;
+    const indexContent = indexDoc.content;
 
     const html = this._readTemplate('index.html');
     const ice = new IceCap(html);
-    const ext = path.extname(indexTag.name);
+    const ext = path.extname(indexDoc.name);
     if (['.md', '.markdown'].includes(ext)) {
       ice.load('index', markdown(indexContent));
     } else {

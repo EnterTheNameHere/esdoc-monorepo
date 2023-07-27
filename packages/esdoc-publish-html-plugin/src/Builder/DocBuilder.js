@@ -16,10 +16,10 @@ export default class DocBuilder {
    * @param {String} template - template absolute path
    * @param {Taffy} data - doc object database.
    */
-  constructor(template, data, tags, globalOption) {
+  constructor(template, data, docs, globalOption) {
     this._template = template;
     this._data = data;
-    this._tags = tags;
+    this._docs = docs;
     this._globalOption = globalOption;
     new DocResolver(this).resolve(globalOption);
   }
@@ -161,13 +161,13 @@ export default class DocBuilder {
       ice.drop('esdocVersion');
     }
 
-    const existTest = this._tags.find((tag) => { return tag.kind.indexOf('test') === 0; });
+    const existTest = this._docs.find((tag) => { return tag.kind.indexOf('test') === 0; });
     ice.drop('testLink', !existTest);
 
-    const existManual = this._tags.find((tag) => { return tag.kind.indexOf('manual') === 0; });
+    const existManual = this._docs.find((tag) => { return tag.kind.indexOf('manual') === 0; });
     ice.drop('manualHeaderLink', !existManual);
 
-    const manualIndex = this._tags.find((tag) => { return tag.kind === 'manualIndex'; });
+    const manualIndex = this._docs.find((tag) => { return tag.kind === 'manualIndex'; });
     if (manualIndex && manualIndex.globalIndex) {
       ice.drop('manualHeaderLink');
     }

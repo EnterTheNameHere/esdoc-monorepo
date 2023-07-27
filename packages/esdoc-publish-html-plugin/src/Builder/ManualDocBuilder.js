@@ -10,9 +10,9 @@ import {markdown} from './util.js';
 export default class ManualDocBuilder extends DocBuilder {
   exec(writeFile, copyDir/*, readFile*/) {
 
-    const manuals = this._tags.filter((tag) => { return tag.kind === 'manual'; });
-    const manualIndex = this._tags.find((tag) => { return tag.kind === 'manualIndex'; });
-    const manualAsset = this._tags.find((tag) => { return tag.kind === 'manualAsset'; });
+    const manuals = this._docs.filter((doc) => { return doc.kind === 'manual'; });
+    const manualIndex = this._docs.find((doc) => { return doc.kind === 'manualIndex'; });
+    const manualAsset = this._docs.find((doc) => { return doc.kind === 'manualAsset'; });
 
     if (manuals.length === 0) return;
 
