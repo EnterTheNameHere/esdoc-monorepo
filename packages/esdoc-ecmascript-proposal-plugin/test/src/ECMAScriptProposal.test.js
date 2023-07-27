@@ -66,65 +66,65 @@ describe('test ecmascript proposal result:', function () {
     let doc = find('longname', 'src/ObjectRestSpread.js~ObjectRestSpread#method1');
     assert.deepEqual(doc.params, [
       {
-        "nullable": null,
-        "types": [
-          "Object"
+        'nullable': null,
+        'types': [
+          'Object'
         ],
-        "spread": false,
-        "optional": false,
-        "name": "config",
-        "description": "this is config."
+        'spread': false,
+        'optional': false,
+        'name': 'config',
+        'description': 'this is config.'
       },
       {
-        "nullable": null,
-        "types": [
-          "number"
+        'nullable': null,
+        'types': [
+          'number'
         ],
-        "spread": false,
-        "optional": false,
-        "name": "config.x",
-        "description": "this is number x."
+        'spread': false,
+        'optional': false,
+        'name': 'config.x',
+        'description': 'this is number x.'
       },
       {
-        "nullable": null,
-        "types": [
-          "string"
+        'nullable': null,
+        'types': [
+          'string'
         ],
-        "spread": false,
-        "optional": false,
-        "name": "config.y",
-        "description": "this is string y."
+        'spread': false,
+        'optional': false,
+        'name': 'config.y',
+        'description': 'this is string y.'
       },
       {
-        "nullable": null,
-        "types": [
-          "number[]"
+        'nullable': null,
+        'types': [
+          'number[]'
         ],
-        "spread": false,
-        "optional": false,
-        "name": "config.a",
-        "description": "thi is number[] a."
+        'spread': false,
+        'optional': false,
+        'name': 'config.a',
+        'description': 'thi is number[] a.'
       },
       {
-        "nullable": null,
-        "types": [
-          "string[]"
+        'nullable': null,
+        'types': [
+          'string[]'
         ],
-        "spread": false,
-        "optional": false,
-        "name": "config.b",
-        "description": "thi is number[] b."
+        'spread': false,
+        'optional': false,
+        'name': 'config.b',
+        'description': 'thi is number[] b.'
       }
     ]);
 
     doc = find('longname', 'src/ObjectRestSpread.js~ObjectRestSpread#method2');
     assert.deepEqual(doc.return, {
-      "nullable": null,
-      "types": [
-        "{a: number, b: string, c: boolean}"
+      'nullable': null,
+      'types': [
+        '{a: number, b: string, c: boolean}'
       ],
-      "spread": false,
-      "description": ""
+      'spread': false,
+      'description': ''
     });
   });
 });

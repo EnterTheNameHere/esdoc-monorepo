@@ -32,7 +32,7 @@ describe(fileNameToDescription(__filename, 'test default export with new express
 
     findParent(doc, '#static-variable-testExportNewExpressionProperty', '[data-ice="detail"]', (doc)=>{
       assert.includes(doc, 'h3', 'public testExportNewExpressionProperty: TestExportNewExpressionProperty');
-      assert.includes(doc, '[data-ice="importPath"]', `import testExportNewExpressionProperty from 'esdoc-test-fixture/src/Export/NewExpressionProperty.js'`);
+      assert.includes(doc, '[data-ice="importPath"]', "import testExportNewExpressionProperty from 'esdoc-test-fixture/src/Export/NewExpressionProperty.js'");
     });
   });
 });

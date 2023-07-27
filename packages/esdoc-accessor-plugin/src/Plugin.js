@@ -2,7 +2,7 @@ class Plugin {
   getDefaultOptions() {
     return {
       autoPrivate: true,
-      access: ["public", "protected", "private"],
+      access: ['public', 'protected', 'private'],
     };
   }
   

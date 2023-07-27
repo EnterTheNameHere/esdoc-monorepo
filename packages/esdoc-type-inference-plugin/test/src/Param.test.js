@@ -6,13 +6,13 @@ describe('test/Param.js:', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodLiteral');
     assert.deepEqual(doc.params, [
       {
-        "name": "p1",
-        "optional": true,
-        "types": [
-          "number"
+        'name': 'p1',
+        'optional': true,
+        'types': [
+          'number'
         ],
-        "defaultRaw": 123,
-        "defaultValue": "123"
+        'defaultRaw': 123,
+        'defaultValue': '123'
       }
     ]);
   });
@@ -21,13 +21,13 @@ describe('test/Param.js:', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodIdentifier');
     assert.deepEqual(doc.params, [
       {
-        "name": "p1",
-        "optional": true,
-        "types": [
-          "*"
+        'name': 'p1',
+        'optional': true,
+        'types': [
+          '*'
         ],
-        "defaultRaw": "value",
-        "defaultValue": "value"
+        'defaultRaw': 'value',
+        'defaultValue': 'value'
       }
     ]);
   });
@@ -36,10 +36,10 @@ describe('test/Param.js:', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodNewExpression');
     assert.deepEqual(doc.params, [
       {
-        "name": "p1",
-        "optional": true,
-        "types": [
-          "*"
+        'name': 'p1',
+        'optional': true,
+        'types': [
+          '*'
         ]
       }
     ]);
@@ -49,16 +49,16 @@ describe('test/Param.js:', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodArray');
     assert.deepEqual(doc.params, [
       {
-        "name": "p1",
-        "optional": true,
-        "types": [
-          "number[]"
+        'name': 'p1',
+        'optional': true,
+        'types': [
+          'number[]'
         ],
-        "defaultRaw": [
+        'defaultRaw': [
           123,
           456
         ],
-        "defaultValue": "[123,456]"
+        'defaultValue': '[123,456]'
       }
     ]);
   });
@@ -67,15 +67,15 @@ describe('test/Param.js:', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodArrayDestructuring');
     assert.deepEqual(doc.params, [
       {
-        "name": "arrayPattern",
-        "types": [
-          "*[]"
+        'name': 'arrayPattern',
+        'types': [
+          '*[]'
         ],
-        "defaultRaw": [
-          "null",
-          "null"
+        'defaultRaw': [
+          'null',
+          'null'
         ],
-        "defaultValue": "[null, null]"
+        'defaultValue': '[null, null]'
       }
     ]);
   });
@@ -84,16 +84,16 @@ describe('test/Param.js:', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodArrayAndDestructuring');
     assert.deepEqual(doc.params, [
       {
-        "name": "arrayPattern",
-        "optional": true,
-        "types": [
-          "number[]"
+        'name': 'arrayPattern',
+        'optional': true,
+        'types': [
+          'number[]'
         ],
-        "defaultRaw": [
+        'defaultRaw': [
           123,
           456
         ],
-        "defaultValue": "[123,456]"
+        'defaultValue': '[123,456]'
       }
     ]);
   });
@@ -102,15 +102,15 @@ describe('test/Param.js:', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodArraySparseDestructuring');
     assert.deepEqual(doc.params, [
       {
-        "name": "arrayPattern",
-        "types": [
-          "*[]"
+        'name': 'arrayPattern',
+        'types': [
+          '*[]'
         ],
-        "defaultRaw": [
+        'defaultRaw': [
           'undefined',
           'null'
         ],
-        "defaultValue": "[undefined, null]"
+        'defaultValue': '[undefined, null]'
       }
     ]);
   });
@@ -119,16 +119,16 @@ describe('test/Param.js:', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodObject');
     assert.deepEqual(doc.params, [
       {
-        "name": "p1",
-        "optional": true,
-        "types": [
-          "{\"x1\": string, \"x2\": boolean}"
+        'name': 'p1',
+        'optional': true,
+        'types': [
+          '{"x1": string, "x2": boolean}'
         ],
-        "defaultRaw": {
-          "x1": "text",
-          "x2": true
+        'defaultRaw': {
+          'x1': 'text',
+          'x2': true
         },
-        "defaultValue": "{\"x1\":\"text\",\"x2\":true}"
+        'defaultValue': '{"x1":"text","x2":true}'
       }
     ]);
   });
@@ -137,15 +137,15 @@ describe('test/Param.js:', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodObjectDestructuring');
     assert.deepEqual(doc.params, [
       {
-        "name": "objectPattern",
-        "types": [
-          "{\"x1\": *, \"x2\": *}"
+        'name': 'objectPattern',
+        'types': [
+          '{"x1": *, "x2": *}'
         ],
-        "defaultRaw": {
-          "x1": null,
-          "x2": null
+        'defaultRaw': {
+          'x1': null,
+          'x2': null
         },
-        "defaultValue": "{\"x1\":null,\"x2\":null}"
+        'defaultValue': '{"x1":null,"x2":null}'
       }
     ]);
   });
@@ -154,16 +154,16 @@ describe('test/Param.js:', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodObjectAndDestructuring');
     assert.deepEqual(doc.params, [
       {
-        "name": "objectPattern",
-        "optional": true,
-        "types": [
-          "{\"x1\": number, \"x2\": string}"
+        'name': 'objectPattern',
+        'optional': true,
+        'types': [
+          '{"x1": number, "x2": string}'
         ],
-        "defaultRaw": {
-          "x1": 123,
-          "x2": "text"
+        'defaultRaw': {
+          'x1': 123,
+          'x2': 'text'
         },
-        "defaultValue": "{\"x1\":123,\"x2\":\"text\"}"
+        'defaultValue': '{"x1":123,"x2":"text"}'
       }
     ]);
   });
@@ -172,11 +172,11 @@ describe('test/Param.js:', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodSpread');
     assert.deepEqual(doc.params, [
       {
-        "name": "p1",
-        "types": [
-          "...*"
+        'name': 'p1',
+        'types': [
+          '...*'
         ],
-        "spread": true
+        'spread': true
       }
     ]);
   });
@@ -185,18 +185,18 @@ describe('test/Param.js:', function () {
     const doc = find('longname', 'src/Param.js~TestParam#methodArrayDestructuringAndPartialDefault');
     assert.deepEqual(doc.params, [
       {
-        "name": "arrayPattern",
-        "types": [
-          "number[]"
+        'name': 'arrayPattern',
+        'types': [
+          'number[]'
         ],
-        "defaultRaw": [
-          "null",
-          "10",
-          "*",
-          "\"text\"",
-          "*"
+        'defaultRaw': [
+          'null',
+          '10',
+          '*',
+          '"text"',
+          '*'
         ],
-        "defaultValue": "[null, 10, *, \"text\", *]"
+        'defaultValue': '[null, 10, *, "text", *]'
       }
     ]);
   });

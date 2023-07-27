@@ -1,3 +1,4 @@
+// eslint-disable-next-line quotes
 const { default: PluginManager } = require("@enterthenamehere/esdoc/out/Plugin/PluginManager");
 
 class SpyingPlugin {

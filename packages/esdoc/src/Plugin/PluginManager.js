@@ -395,7 +395,7 @@ class PluginManager {
    * @private
    */
   _execHandler(handlerName, ev) {
-    debug(`#_execHandler: About to execute %o event on plugins having handler for it.`, handlerName);
+    debug('#_execHandler: About to execute %o event on plugins having handler for it.', handlerName);
     
     if(typeof handlerName !== 'string') {
       console.error('[PluginManager::_execHandler] Error: handlerName parameter must be typeof string!', `${typeof handlerName} received.`);

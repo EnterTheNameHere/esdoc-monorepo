@@ -1,6 +1,5 @@
 const assert = require('assert');
 const fs = require('fs');
-const path = require('path');
 
 describe('test/results.js:', function () {
   const tmp = fs.readFileSync('./test/out/lint.json').toString();

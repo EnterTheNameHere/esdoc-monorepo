@@ -5,10 +5,10 @@ export const testVariableLiteral = 123;
 export const testVariableArray = [123, 456];
 
 // object
-export const testVariableObject = {x1: 123, x2: "text"};
+export const testVariableObject = {x1: 123, x2: 'text'};
 
 // template literal
-export const testVariableTemplateLiteral = `text`;
+export const testVariableTemplateLiteral = 'text';
 
 // new expression with same file
 export class TestVariableNewExpression {}

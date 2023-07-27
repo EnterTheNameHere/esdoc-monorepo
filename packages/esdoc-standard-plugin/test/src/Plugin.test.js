@@ -6,7 +6,7 @@ describe('test standard plugin:', function () {
     const actual = [];
     for( const pluginEntry of pluginEntries.values() ) {
       actual.push({name: pluginEntry.name, option: pluginEntry.pluginOptions});
-    };
+    }
 
     const expected = [
       {

@@ -67,13 +67,13 @@ export default class MyClass {
 /**
   * unnamed method.
   */
-MyClass.prototype["@@iterator"] = function(){
+MyClass.prototype['@@iterator'] = function(){
   return this;
 };
 
 /**
   * unnamed arrow method.
   */
-MyClass.prototype["@@asyncIterator"] = () => {
+MyClass.prototype['@@asyncIterator'] = () => {
   return undefined;
 };

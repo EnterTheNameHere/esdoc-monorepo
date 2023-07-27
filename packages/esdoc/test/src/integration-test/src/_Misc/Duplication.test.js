@@ -7,12 +7,12 @@ describe('test/_Misc/Duplication:', function () {
 
     const doc = docs[0];
     assert.deepEqual(doc.type, {
-      "nullable": null,
-      "types": [
-        "number"
+      'nullable': null,
+      'types': [
+        'number'
       ],
-      "spread": false,
-      "description": null
+      'spread': false,
+      'description': null
     });
   });
 });

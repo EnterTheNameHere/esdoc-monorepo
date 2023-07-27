@@ -6,7 +6,7 @@ describe(fileNameToDescription(__filename, 'test export variable indirect defaul
 
   it('has default import path with indirect variable definition.', function () {
     findParent(doc, '[id="static-variable-testExportVariableIndirectDefault"]', '[data-ice="detail"]', (doc)=>{
-      assert.includes(doc, '[data-ice="importPath"]', `import testExportVariableIndirectDefault from 'esdoc-test-fixture/src/Export/VariableIndirectDefault.js'`);
+      assert.includes(doc, '[data-ice="importPath"]', "import testExportVariableIndirectDefault from 'esdoc-test-fixture/src/Export/VariableIndirectDefault.js'");
     });
   });
 });

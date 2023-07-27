@@ -33,7 +33,7 @@ describe(fileNameToDescription(__filename, 'test default export with new express
 
       findParent(doc, '#static-variable-testExportNewExpression', '[data-ice="detail"]', (doc)=>{
         assert.includes(doc, 'h3', 'public testExportNewExpression: TestExportNewExpression');
-        assert.includes(doc, '[data-ice="importPath"]', `import testExportNewExpression from 'esdoc-test-fixture/src/Export/NewExpression.js'`);
+        assert.includes(doc, '[data-ice="importPath"]', "import testExportNewExpression from 'esdoc-test-fixture/src/Export/NewExpression.js'");
       });
     });
   });
@@ -66,7 +66,7 @@ describe(fileNameToDescription(__filename, 'test default export with new express
 
       findParent(doc, '#static-variable-testExportNewExpression2', '[data-ice="detail"]', (doc)=>{
         assert.includes(doc, 'h3', 'public testExportNewExpression2: TestExportNewExpression2');
-        assert.includes(doc, '[data-ice="importPath"]', `import {testExportNewExpression2} from 'esdoc-test-fixture/src/Export/NewExpression.js'`);
+        assert.includes(doc, '[data-ice="importPath"]', "import {testExportNewExpression2} from 'esdoc-test-fixture/src/Export/NewExpression.js'");
       });
     });
   });

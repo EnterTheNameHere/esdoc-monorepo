@@ -347,7 +347,7 @@ export default class DocFactory {
 
       let doc = null;
       if (comment === lastComment) {
-        if (node.declarations && node.declarations[0].id.type === "ArrayPattern") {
+        if (node.declarations && node.declarations[0].id.type === 'ArrayPattern') {
           // HACK implementing multiple variables from array pattern. e.g. export cont [a, b] = arr
           // Uses elementIndex which we add to node so VariableDoc knows which element to pick.
           const length = node.declarations[0].id.elements.length;

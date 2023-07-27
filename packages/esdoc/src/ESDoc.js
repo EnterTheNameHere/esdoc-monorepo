@@ -28,7 +28,7 @@ export default class ESDoc {
    */
   static generate(config) {
     if( typeof(config) === 'undefined' || config === null ) {
-        const message = `[31mError: config object is expected as an argument![0m`;
+        const message = '[31mError: config object is expected as an argument![0m';
         console.error(`[31m${message}[0m`);
         throw new Error(message);
     }
@@ -46,7 +46,7 @@ export default class ESDoc {
     if( Object.prototype.hasOwnProperty.call(config, 'source') ) {
       if( typeof(config.source) === 'string' ) {
         if( config.source.trim() === '' ) {
-          const message = `[31mError: config.source cannot be empty! This is a directory where you have your source code.[0m`;
+          const message = '[31mError: config.source cannot be empty! This is a directory where you have your source code.[0m';
           console.error(`[31m${message}[0m`);
           throw new Error(message);
         }
@@ -55,19 +55,19 @@ export default class ESDoc {
         
         // Ok now we only expect an array, nothing else
         if( !Array.isArray(config.source) ) {
-          const message = `[31mError: config.source must be either a string or an array of strings![0m`;
+          const message = '[31mError: config.source must be either a string or an array of strings![0m';
           console.error(`[31m${message}[0m`);
           throw new Error(message);
         }
 
         config.source.forEach( (value) => {
           if( typeof(value) !== 'string' ) {
-            const message = `[31mError: config.source must contain only strings![0m`;
+            const message = '[31mError: config.source must contain only strings![0m';
             console.error(`[31m${message}[0m`);
             throw new Error(message);
           }
           if( value.trim() === '' ) {
-            const message = `[31mError: config.source cannot contain empty string![0m`;
+            const message = '[31mError: config.source cannot contain empty string![0m';
             console.error(`[31m${message}[0m`);
             throw new Error(message);
           }
@@ -76,7 +76,7 @@ export default class ESDoc {
     }
 
     if( typeof(config.destination) !== 'string' || config.destination === '' ) {
-        const message = `[31mError: config.destination needs to be a directory where to output generated documentation![0m`;
+        const message = '[31mError: config.destination needs to be a directory where to output generated documentation![0m';
         console.error(`[31m${message}[0m`);
         throw new Error(message);
     }

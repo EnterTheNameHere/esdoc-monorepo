@@ -6,12 +6,12 @@ describe('test/Emits/Emits:', function () {
     const doc = find('longname', 'src/Emits/Emits.js~TestEmitsClass#methodEmits');
     assert.deepEqual(doc.emits, [
       {
-        types: ["TestEmitsEvent1"],
-        "description": "emits event when foo."
+        types: ['TestEmitsEvent1'],
+        'description': 'emits event when foo.'
       },
       {
-        types: ["TestEmitsEvent2"],
-        "description": "emits event when bar."
+        types: ['TestEmitsEvent2'],
+        'description': 'emits event when bar.'
       }
     ]);
   });
@@ -20,8 +20,8 @@ describe('test/Emits/Emits:', function () {
     const doc = find('longname', 'src/Emits/Emits.js~testEmitsFunction');
     assert.deepEqual(doc.emits, [
       {
-        types: ["TestEmitsEvent1"],
-        "description": ""
+        types: ['TestEmitsEvent1'],
+        'description': ''
       },
     ]);
   });

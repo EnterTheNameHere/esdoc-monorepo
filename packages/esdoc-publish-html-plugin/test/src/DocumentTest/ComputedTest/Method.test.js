@@ -21,7 +21,7 @@ describe(fileNameToDescription(__filename, 'TestComputedMethod:'), function () {
       });
     });
   });
-
+  
   describe('in detail:', function () {
     it('has computed method.', function () {
       assert.includes(doc, `[id="instance-method-['foo']"] [data-ice="name"]`,            `['foo']`);

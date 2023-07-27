@@ -6,6 +6,6 @@ const MyClass = require('../src/MyClass');
  */
 describe('MyClass', function () {
   it('has MyClass', function () {
-    assert(MyClass)
+    assert(MyClass);
   });
 });

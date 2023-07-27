@@ -59,7 +59,7 @@ this is not doc comment.
 
   /** @test {CommentParser.parse} */
   it('return empty with line comment.', function () {
-    const value = `this is line comment.`;
+    const value = 'this is line comment.';
     const comment = {type: 'CommentLine', value: value};
     const tags = CommentParser.parse(comment);
     assert.equal(tags.length, 0);

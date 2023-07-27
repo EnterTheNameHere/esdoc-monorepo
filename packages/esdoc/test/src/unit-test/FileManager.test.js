@@ -55,7 +55,7 @@ describe('test/Utils/FileManager', function () {
                         fs.ensureFileSync('bratislava.html');
                         process.chdir('..');
                     }
-                    process.chdir('..')
+                    process.chdir('..');
                 }
                 {
                     fs.ensureDirSync('asia');
@@ -125,7 +125,7 @@ describe('test/Utils/FileManager', function () {
         process.chdir('..');
     });
 
-    after("Clean testing directory/file tree and return to original path", function () {
+    after('Clean testing directory/file tree and return to original path', function () {
         process.chdir(originalPath);
         process.chdir('./test');
         fs.rmSync( 'tree', { recursive: true, force: true } );
@@ -137,7 +137,7 @@ describe('test/Utils/FileManager', function () {
         process.chdir('./test');
     });
 
-    it("Returns all files inside directory recursive", function () {
+    it('Returns all files inside directory recursive', function () {
         const expected = [
             upath.join('tree/plugins/lint.js'),
             upath.join('tree/plugins/publish-html.html'),
@@ -164,7 +164,7 @@ describe('test/Utils/FileManager', function () {
         expect(actual).to.have.all.members(expected);
     });
 
-    it("Returns only html files", function () {
+    it('Returns only html files', function () {
         const expected = [
             upath.join('tree/plugins/publish-html.html' ),
             upath.join('tree/earth/europe/slovakia/bratislava.html' ),
@@ -176,7 +176,7 @@ describe('test/Utils/FileManager', function () {
         expect(actual).to.have.all.members(expected);
     });
 
-    it("Returns only html and js files", function () {
+    it('Returns only html and js files', function () {
         const expected = [
             upath.join('tree/plugins/lint.js' ),
             upath.join('tree/plugins/publish-html.html' ),
@@ -197,7 +197,7 @@ describe('test/Utils/FileManager', function () {
         expect(actual).to.have.all.members(expected);
     });
 
-    it("Returns only html and js files, except *config.js and *test.js and *spec.js", function () {
+    it('Returns only html and js files, except *config.js and *test.js and *spec.js', function () {
         const expected = [
             upath.join('tree/plugins/lint.js' ),
             upath.join('tree/plugins/publish-html.html' ),
@@ -214,14 +214,14 @@ describe('test/Utils/FileManager', function () {
         expect(actual).to.have.all.members(expected);
     });
 
-    it("returns empty array when path is of wrong type", function () {
+    it('returns empty array when path is of wrong type', function () {
         expect( FileManager.getListOfFiles(0) ).to.be.empty;
         expect( FileManager.getListOfFiles('') ).to.be.empty;
         expect( FileManager.getListOfFiles() ).to.be.empty;
         expect( FileManager.getListOfFiles(['some', 'path']) ).to.be.empty;
     });
 
-    it("ignores wrong type of includes/excludes", function () {
+    it('ignores wrong type of includes/excludes', function () {
         const expected = [
             upath.join('tree/plugins/lint.js'),
             upath.join('tree/plugins/publish-html.html'),
@@ -248,7 +248,7 @@ describe('test/Utils/FileManager', function () {
         expect(actual).to.have.all.members(expected);
     });
 
-    it("ignores wrong type of excludes", function () {
+    it('ignores wrong type of excludes', function () {
         const expected = [
             upath.join('tree/plugins/publish-html.html' ),
             upath.join('tree/earth/europe/slovakia/bratislava.html' ),
@@ -260,8 +260,8 @@ describe('test/Utils/FileManager', function () {
         expect(actual).to.have.all.members(expected);
     });
 
-    it("ignores wrong type of includes", function () {
-        it("Returns only html and js files, except *config.js and *test.js and *spec.js", function () {
+    it('ignores wrong type of includes', function () {
+        it('Returns only html and js files, except *config.js and *test.js and *spec.js', function () {
             const expected = [
                 upath.join('tree/plugins/lint.js'),
                 upath.join('tree/plugins/publish-html.html'),

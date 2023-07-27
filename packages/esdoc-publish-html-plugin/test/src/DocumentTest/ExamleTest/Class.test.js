@@ -1,4 +1,4 @@
-import {readDoc, assert, findParent, fileNameToDescription} from './../../util.js';
+import {readDoc, assert, fileNameToDescription} from './../../util.js';
 
 /** @test {AbstractDoc#@example} */
 describe(fileNameToDescription(__filename, 'TestExampleClass'), function () {

@@ -21,7 +21,7 @@ describe('test/Variable.js:', function () {
     const doc = find('longname', 'src/Variable.js~testVariableTemplateLiteral');
     assert.deepEqual(doc.type, {types: ['string']});
   });
-
+  
   it('infer type that is new expression with same file', function () {
     const doc = find('longname', 'src/Variable.js~testVariableNewExpression');
     assert.deepEqual(doc.type, {types: ['src/Variable.js~TestVariableNewExpression']});

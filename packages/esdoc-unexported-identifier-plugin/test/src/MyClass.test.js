@@ -1,5 +1,5 @@
 const assert = require('assert');
-const {find, file} = require('../util');
+const {find} = require('../util');
 
 describe('test unexported identifier result:', function () {
 

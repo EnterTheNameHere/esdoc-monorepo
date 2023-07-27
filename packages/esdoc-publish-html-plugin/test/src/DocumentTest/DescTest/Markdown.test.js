@@ -29,7 +29,7 @@ describe(fileNameToDescription(__filename, 'TestDescMarkdown:'), function () {
 
         // code fence of js
         assert.includes(doc.find('pre:nth-child(6) code.language-js code.source-code.prettyprint'), null,
-          `let foo = 'this is code block'`
+          "let foo = 'this is code block'"
         );
 
         // table

@@ -10,6 +10,6 @@ export default class TestMember {
     this.memberObject = {x1: 123, x2: 'text'};
 
     // template literal
-    this.memberTemplateLiteral= `text`;
+    this.memberTemplateLiteral= 'text';
   }
 }

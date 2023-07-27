@@ -1,4 +1,3 @@
-import fsextra from 'fs-extra';
 import { loadCheerio, assert, fileNameToDescription } from '../../util';
 
 describe(fileNameToDescription(__filename, 'TestSourceCodeHighlightingCSS'), function () {
@@ -28,7 +27,7 @@ describe(fileNameToDescription(__filename, 'TestSourceCodeHighlightingCSS'), fun
   it('tests interface import path is styled', function () {
     let $ = loadCheerio('class/src/Interface/Definition.js~TestInterfaceDefinition.html');
     let importPartCodeElement = $('div[class="import-path"] pre[class="prettyprint"] code');
-
+    
     assert.equal( $('span[class*="keyword"]', importPartCodeElement).eq(0).html(), 'import' );
     assert.equal( $('span[class*="imports"] span[class*="maybe-class-name"]', importPartCodeElement).html(), 'TestInterfaceDefinition' );
     assert.equal( $('span[class*="keyword"]', importPartCodeElement).eq(1).html(), 'from' );
@@ -119,7 +118,7 @@ describe(fileNameToDescription(__filename, 'TestSourceCodeHighlightingCSS'), fun
     assert.equal( $('span[class*="operator"]', exampleCodeElement).eq(0).html(), '=' );
     assert.equal( $('span[class*="number"]', exampleCodeElement).eq(0).html(), '123' );
     assert.equal( $('span[class*="punctuation"]', exampleCodeElement).eq(0).html(), ';' );
-    assert.equal( exampleCodeElement.contents().eq(6).text(), "\n" );
+    assert.equal( exampleCodeElement.contents().eq(6).text(), '\n' );
     assert.equal( $('span[class*="console"]', exampleCodeElement).html(), 'console' );
     assert.equal( $('span[class*="punctuation"]', exampleCodeElement).eq(1).html(), '.' );
     assert.equal( $('span[class*="function"]', exampleCodeElement).html(), 'log' );
@@ -139,7 +138,7 @@ describe(fileNameToDescription(__filename, 'TestSourceCodeHighlightingCSS'), fun
     assert.equal( $('span[class*="operator"]', exampleCodeElement).eq(0).html(), '=' );
     assert.equal( $('span[class*="number"]', exampleCodeElement).eq(0).html(), '123' );
     assert.equal( $('span[class*="punctuation"]', exampleCodeElement).eq(0).html(), ';' );
-    assert.equal( exampleCodeElement.contents().eq(6).text(), "\n" );
+    assert.equal( exampleCodeElement.contents().eq(6).text(), '\n' );
     assert.equal( $('span[class*="console"]', exampleCodeElement).html(), 'console' );
     assert.equal( $('span[class*="punctuation"]', exampleCodeElement).eq(1).html(), '.' );
     assert.equal( $('span[class*="function"]', exampleCodeElement).html(), 'log' );
@@ -155,7 +154,7 @@ describe(fileNameToDescription(__filename, 'TestSourceCodeHighlightingCSS'), fun
     assert.equal( $('span[class*="operator"]', exampleCodeElement).eq(0).html(), '=' );
     assert.equal( $('span[class*="number"]', exampleCodeElement).eq(0).html(), '123' );
     assert.equal( $('span[class*="punctuation"]', exampleCodeElement).eq(0).html(), ';' );
-    assert.equal( exampleCodeElement.contents().eq(6).text(), "\n" );
+    assert.equal( exampleCodeElement.contents().eq(6).text(), '\n' );
     assert.equal( $('span[class*="console"]', exampleCodeElement).html(), 'console' );
     assert.equal( $('span[class*="punctuation"]', exampleCodeElement).eq(1).html(), '.' );
     assert.equal( $('span[class*="function"]', exampleCodeElement).html(), 'log' );

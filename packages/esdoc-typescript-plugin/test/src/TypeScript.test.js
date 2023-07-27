@@ -1,5 +1,5 @@
 const assert = require('assert');
-const {find, file} = require('../util');
+const {find} = require('../util');
 
 describe('test/TypeScript.js:', function () {
   it('has type of method, without comment', function () {

@@ -21,7 +21,7 @@ export default class TestParam {
   methodArraySparseDestructuring([, p2]) {}
 
   // object default
-  methodObject(p1 = {x1: "text", x2: true}){}
+  methodObject(p1 = {x1: 'text', x2: true}){}
 
   // object destructuring
   methodObjectDestructuring({x1, x2}){}

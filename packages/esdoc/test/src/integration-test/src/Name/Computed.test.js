@@ -8,7 +8,7 @@ describe('test/Name/Computed:', function () {
   });
 
   it('has method computed name', function () {
-    const doc = find('longname', "src/Name/Computed.js~TestNameComputed#[foo.baz]");
+    const doc = find('longname', 'src/Name/Computed.js~TestNameComputed#[foo.baz]');
     assert(doc);
   });
 });

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { loadCheerio , fileNameToDescription} from './../../util.js';
+import { loadCheerio, fileNameToDescription} from './../../util.js';
 
 /** @test {FunctionDoc#@_name} */
 describe(fileNameToDescription(__filename, 'test export arrow function'), function () {
@@ -23,7 +23,7 @@ describe(fileNameToDescription(__filename, 'test export arrow function'), functi
       expect( $('[data-ice="name"]', secondArrowFunction).html() ).to.equal('ArrowFunction');
       expect( $('[data-ice="importPath"]', secondArrowFunction).text() ).to.equal('import ArrowFunction from \'esdoc-test-fixture/src/ArrowFunction.js\'');
       expect( $('[data-ice="description"] p', secondArrowFunction).html() ).to.equal('This is another anonymous arrow function to test multiple anonymous default exports.');
-    })
+    });
   });
 
   it('has named import path with direct arrow function definition.', function () {

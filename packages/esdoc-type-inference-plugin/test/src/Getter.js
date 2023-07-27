@@ -12,6 +12,6 @@ export default class TestGetter {
   }
 
   get getTemplateLiteral() {
-    return `text`;
+    return 'text';
   }
 }

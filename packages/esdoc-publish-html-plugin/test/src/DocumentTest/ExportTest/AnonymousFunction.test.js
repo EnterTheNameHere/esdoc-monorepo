@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import {loadCheerio, assert, findParent, fileNameToDescription} from './../../util.js';
+import {loadCheerio, fileNameToDescription} from './../../util.js';
 
 /** @test {FunctionDoc#@_name} */
 describe(fileNameToDescription(__filename, 'testExportAnonymousFunction'), function () {

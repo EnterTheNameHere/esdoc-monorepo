@@ -16,12 +16,12 @@ export default class TestReturn {
 
   // template literal
   methodTemplateLiteral(){
-    return `text`;
+    return 'text';
   }
 
   methodObjectWithSpread(){
     const spread1 = ['a', 'b', 'c'];
     const spread2 = [1,2,3];
-    return { ...spread1, ...spread2 }
+    return { ...spread1, ...spread2 };
   }
 }

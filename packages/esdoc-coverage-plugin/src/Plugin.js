@@ -3,8 +3,8 @@ const path = require('path');
 class Plugin {
   getDefaultOptions() {
     return {
-      "enable": true,
-      "kind": ["class", "method", "member", "get", "set", "constructor", "function", "variable"]
+      'enable': true,
+      'kind': ['class', 'method', 'member', 'get', 'set', 'constructor', 'function', 'variable']
     };
   }
 

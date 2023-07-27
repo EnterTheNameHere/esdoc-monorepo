@@ -1,5 +1,4 @@
 const assert = require('assert');
-const path = require('path');
 const fs = require('fs');
 const cheerio = require('cheerio');
 
@@ -12,8 +11,8 @@ describe('test inject style result:', function () {
 
   it('has injected style', function () {
     const style = fs.readFileSync('./test/out/inject/css/0-inject.css').toString();
-    assert.equal(style.replace('\r\n', '\n'), "body { background: #eee; }\n");
+    assert.equal(style.replace('\r\n', '\n'), 'body { background: #eee; }\n');
     const style2 = fs.readFileSync('./test/out/inject/css/1-inject.css').toString();
-    assert.equal(style2.replace('\r\n', '\n'), "div { background: #aaa; }\n");
+    assert.equal(style2.replace('\r\n', '\n'), 'div { background: #aaa; }\n');
   });
 });
