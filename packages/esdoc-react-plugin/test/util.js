@@ -7,8 +7,9 @@ module.exports.load = function(fileName) {
 };
 
 module.exports.text = function($el, query) {
+    // TODO: What is this?
     if(query === 'tbody tr:nth-child(2)') {
-        console.error('found');
+        console.error('found (this is printed only during tests, it\'t not forgotten console message)');
         console.error('el: ', $el, 'text: ', $el.find(query).text());
     }
   return $el.find(query).text().replace(/\s+/g, ' ').trim();
