@@ -27,23 +27,23 @@ jobs:
       run: |
         npm list --global --depth=4
     
-    - name: "[Minimal] Installing ESDoc globally..."
+    - name: "[Standard] Installing ESDoc and standard-plugin globally..."
       run: |
-        npm install --global @enterthenamehere/esdoc@latest
+        npm install --global @enterthenamehere/esdoc@latest @enterthenamehere/esdoc-standard-plugin@latest
     
     - name: "[DEBUG] Global packages list:"
       run: |
         npm list --global --depth=4
-    
-    - name: "[Minimal] Generating documentation..."
-      working-directory: ./test/global-installation/sample-projects/minimal-esdoc-test-fixture
+
+    - name: "[Standard] Generating documentation..."
+      working-directory: ./test/global-installation/sample-projects/standard-esdoc-test-fixture
       run: |
         npm run generate-docs
-    
-    - name: "[Minimal] Executing tests..."
+      
+    - name: "[Standard] Executing tests..."
       working-directory: ./test/global-installation
       run: |
-        npm run test-minimal
+        npm run test-standard
     
     - name: "[DEBUG] Global packages list:"
       run: |
