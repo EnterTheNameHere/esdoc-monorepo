@@ -1,5 +1,6 @@
 const assert = require('assert');
 const {find} = require('../util');
+const fse = require('fs-extra');
 
 describe('test/MyClass.js:', function () {
 
@@ -10,7 +11,7 @@ describe('test/MyClass.js:', function () {
 
   it('removed external-webapi.js', function () {
     assert.throws(()=>{
-      fs.readFileSync('./test/src/.external-webapi.js');
+      fse.readFileSync('./test/src/.external-webapi.js');
     });
   });
 });
