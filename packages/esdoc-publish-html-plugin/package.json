@@ -45,6 +45,7 @@
     "@babel/generator": "^7.22.9",
     "@enterthenamehere/ice-cap": "*",
     "cheerio": "1.0.0-rc.10",
+    "collect.js": "^4.36.1",
     "cpx2": "^5.0.0",
     "escape-string-regexp": "^4.0.0",
     "marked": "^4.0.10",
