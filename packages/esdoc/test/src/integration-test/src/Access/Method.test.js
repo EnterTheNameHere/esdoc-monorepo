@@ -114,7 +114,6 @@ describe('test/Access/Method/ES2022:', function () {
   
   it('class private accessor', function () {
     const doc = find('longname', 'src/Access/Method.js~TestAccessMethod#privateAccessor');
-    console.log( doc );
     expect(doc.kind).to.equal('get');
     expect(doc.access).to.equal('private');
     expect(doc.return.types).to.deep.equal(['number']);
