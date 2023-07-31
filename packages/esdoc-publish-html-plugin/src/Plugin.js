@@ -1,5 +1,4 @@
 import path from 'path';
-import {taffy} from 'taffydb';
 import IceCap from '@enterthenamehere/ice-cap';
 import DocBuilder from './Builder/DocBuilder';
 import StaticFileBuilder from './Builder/StaticFileBuilder.js';
@@ -38,11 +37,9 @@ class Plugin {
   _exec(docs, writeFile, copyDir, readFile) {
     IceCap.debug = Boolean(this._option.debug);
     
-    const data = taffy(docs);
-    
     //bad hack: for other plugin uses builder.
     DocBuilder.createDefaultBuilder = () => {
-      return new DocBuilder(this._template, data, docs, this._globalOption);
+      return new DocBuilder(this._template, docs, this._globalOption);
     };
 
     let coverage = null;
@@ -52,20 +49,20 @@ class Plugin {
       // nothing
     }
 
-    new IdentifiersDocBuilder(this._template, data, docs).exec(writeFile, copyDir);
-    new IndexDocBuilder(this._template, data, docs).exec(writeFile, copyDir);
-    new ClassDocBuilder(this._template, data, docs).exec(writeFile, copyDir);
-    new SingleDocBuilder(this._template, data, docs).exec(writeFile, copyDir);
-    new FileDocBuilder(this._template, data, docs).exec(writeFile, copyDir);
-    new StaticFileBuilder(this._template, data, docs).exec(writeFile, copyDir);
-    new SearchIndexBuilder(this._template, data, docs).exec(writeFile, copyDir);
-    new SourceDocBuilder(this._template, data, docs).exec(writeFile, copyDir, coverage);
-    new ManualDocBuilder(this._template, data, docs).exec(writeFile, copyDir, readFile);
+    new IdentifiersDocBuilder(this._template, docs).exec(writeFile, copyDir);
+    new IndexDocBuilder(this._template, docs).exec(writeFile, copyDir);
+    new ClassDocBuilder(this._template, docs).exec(writeFile, copyDir);
+    new SingleDocBuilder(this._template, docs).exec(writeFile, copyDir);
+    new FileDocBuilder(this._template, docs).exec(writeFile, copyDir);
+    new StaticFileBuilder(this._template, docs).exec(writeFile, copyDir);
+    new SearchIndexBuilder(this._template, docs).exec(writeFile, copyDir);
+    new SourceDocBuilder(this._template, docs).exec(writeFile, copyDir, coverage);
+    new ManualDocBuilder(this._template, docs).exec(writeFile, copyDir, readFile);
 
     const testsExist = docs.find((doc) => { return doc.kind.indexOf('test') === 0; });
     if (testsExist) {
-      new TestDocBuilder(this._template, data, docs).exec(writeFile, copyDir);
-      new TestFileDocBuilder(this._template, data, docs).exec(writeFile, copyDir);
+      new TestDocBuilder(this._template, docs).exec(writeFile, copyDir);
+      new TestFileDocBuilder(this._template, docs).exec(writeFile, copyDir);
     }
   }
 }

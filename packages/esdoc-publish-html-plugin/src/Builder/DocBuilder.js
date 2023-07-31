@@ -6,6 +6,8 @@ import {shorten, parseExample, escapeURLHash, sanitize, highlight} from './util.
 import DocResolver from './DocResolver.js';
 import NPMUtil from '@enterthenamehere/esdoc/out/Util/NPMUtil.js';
 import { FileManager } from '@enterthenamehere/esdoc/out/Util/FileManager.js';
+import collectjs from 'collect.js';
+import _ from 'lodash';
 
 /**
  * Builder base class.
@@ -16,9 +18,8 @@ export default class DocBuilder {
    * @param {String} template - template absolute path
    * @param {Taffy} data - doc object database.
    */
-  constructor(template, data, docs, globalOption) {
+  constructor(template, docs, globalOption) {
     this._template = template;
-    this._data = data;
     this._docs = docs;
     this._globalOption = globalOption;
     new DocResolver(this).resolve(globalOption);
@@ -135,20 +136,83 @@ export default class DocBuilder {
   }
 
   /**
-   * find doc objects that is ordered.
-   * @param {string} order - doc objects order(``column asec`` or ``column desc``).
-   * @param {...Object} cond - condition objects
-   * @returns {DocObject[]} found doc objects.
-   * @private
+   * Selects and returns docs based on `filters`, optionally ordered by `order`, and finally ordered by 'name' property.
+   * @param {string|null} orderBy Can be ``name_of_property asec, [another]`` or ``name_of_property desc, [another]`` or null
+   * @param  {...FilterObject} filters Can be filter objects of taffydb, eg. { select_property_name: with_this_value, next: value }
+   * @returns {ESDoc[]} docs ordered by 'name' property, if any, or empty array.
    */
-  _orderedFind(order, ...cond) {
-    const data = this._data(...cond);
+  _orderedFind(orderBy, ...filters) {
+    //console.log('_orderedFind', {order, cond});
+    let collection = collectjs(this._docs);
+    
+    for(const filterObject of filters) {
+      // example of filterObject:
+      // { longname: { regex: /[~]src\/Version\/Function\.js~testVersionFunction$/u }, kind: 'function' }
+      // { name: 'src/Variable/ObjectPattern.js~testVariableObjectPattern2', kind: 'variable' }
+      // { longname: 'number' }
+      // { kind: [ 'class', 'function', 'variable', 'typedef', 'external' ] }
+      //
+      // object property name (key) is the name of property we want to compare
+      // it's value is the value we want to compare against
+      // { longname: 'number' }
+      // we want to find all docs with longname being 'number'
+      // { kind: [ 'class', 'function', 'variable', 'typedef', 'external' ] }
+      // we want to find all docs with kind being either 'class', 'function', 'variable', etc.
+      // 
+      // if object has two properties, it means both properties should be compared
+      // { longname: 'number', kind: [ 'class', 'function', 'variable', 'typedef', 'external' ] }
+      // we want to find all docs with longname being 'number' AND kind being one of 'class', etc.
+      // 
+      // the value can be object - in such case it's special
+      // { longname: { regex: /[~]src\/Version\/Function\.js~testVersionFunction$/u } }
+      // for taffydb, this would mean search for all docs with longname using regex compare algorithm
+      //
+      // the name of property of the inner object indicates what algorithm should be used:
+      // - regex
+      // - left
 
-    if (order) {
-      return data.order(`${order}, name asec`).map((v) => { return v; });
+      // conditions are property_name: property_value of filterObject
+      const conditions = Object.entries(filterObject);
+      for(const [key, value] of conditions) {
+        //console.log('filtering docs by condition:', [key,value]);
+        if(Array.isArray(value)) {
+          collection = collection.whereIn(key, value);
+        } else if(typeof value === 'object') {
+          // use special algorithm to compare values
+          const algorithm = Object.entries(value);
+          if(algorithm.length === 1) {
+            const [algorithmName, algorithmValue] = algorithm[0];
+            if(algorithmName === 'regex') {
+              // match value by regexp
+              collection = collection.filter((doc) => { return doc[key].match(algorithmValue) ? true : false; });
+            }
+            else if(algorithmName === 'left') {
+              // check if value starts with string
+              collection = collection.filter((doc) => { return _.startsWith(algorithmValue, doc[key]); });
+            }
+            else {
+              console.log('\n\n\n=========== WARNING ============\n=========== WARNING ============\n=========== WARNING ============');
+              console.log('unknown algorithm:');
+              console.log(algorithm[0]);
+              console.log('\n\n\n');
+            }
+          } else {
+            console.log('\n\n\n=========== WARNING ============\n=========== WARNING ============\n=========== WARNING ============');
+            console.log('algorithm array doesn\'t have 1 element as expected:');
+            console.log(algorithm);
+            console.log('\n\n\n');
+          }
+        } else {
+          collection = collection.where(key, value);
+        }
+      }
     }
     
-    return data.order('name asec').map((v) => { return v; });
+    // We ignore orderBy as it was doing nothing with testId, which was already sorted asc
+    
+    collection = collection.sortBy('name');
+    
+    return collection.all();
   }
 
   /**

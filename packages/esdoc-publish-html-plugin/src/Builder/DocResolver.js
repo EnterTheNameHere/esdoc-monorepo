@@ -11,14 +11,13 @@ export default class DocResolver {
    */
   constructor(builder) {
     this._builder = builder;
-    this._data = builder._data;
   }
 
   /**
    * resolve various properties.
    */
   resolve(globalOption) {
-    if (this._data.__RESOLVED_ALL__) return;
+    if(this._builder._docs.__RESOLVED_ALL__) return;
 
     if(globalOption && globalOption.verbose) console.info('resolve: extends chain');
     this._resolveExtendsChain();
@@ -37,8 +36,8 @@ export default class DocResolver {
 
     if(globalOption && globalOption.verbose) console.info('resolve: test relation');
     this._resolveTestRelation();
-
-    this._data.__RESOLVED_ALL__ = true;
+    
+    this._builder._docs.__RESOLVED_ALL__ = true;
   }
 
   /**
@@ -47,25 +46,25 @@ export default class DocResolver {
    * @private
    */
   _resolveIgnore() {
-    if (this._data.__RESOLVED_IGNORE__) return;
+    if(this._builder._docs.__RESOLVED_IGNORE__) return;
 
     const docs = this._builder._find({ignore: true});
     for (const doc of docs) {
       const longnameSanitized = escapeStringRegexp(doc.longname);
       const regex = new RegExp(`^${longnameSanitized}[.~#]`, 'u');
-      this._data({longname: {regex: regex}}).remove();
+      this._builder._remove({longname: {regex: regex}});
     }
-    this._data({ignore: true}).remove();
+    this._builder._remove({ignore: true});
 
-    this._data.__RESOLVED_IGNORE__ = true;
+    this._builder._docs.__RESOLVED_IGNORE__ = true;
   }
-
+  
   /**
    * resolve description as markdown.
    * @private
    */
   _resolveMarkdown() {
-    if (this._data.__RESOLVED_MARKDOWN__) return;
+    if(this._builder._docs.__RESOLVED_MARKDOWN__) return;
 
     function convert(obj) {
       for (const key of Object.keys(obj)) {
@@ -84,7 +83,7 @@ export default class DocResolver {
       convert(doc);
     }
 
-    this._data.__RESOLVED_MARKDOWN__ = true;
+    this._builder._docs.__RESOLVED_MARKDOWN__ = true;
   }
 
   /**
@@ -93,7 +92,7 @@ export default class DocResolver {
    * @todo resolve all ``description`` property.
    */
   _resolveLink() {
-    if (this._data.__RESOLVED_LINK__) return;
+    if(this._builder._docs.__RESOLVED_LINK__) return;
 
     const link = (str) => {
       if (!str) return str;
@@ -103,45 +102,46 @@ export default class DocResolver {
       });
     };
 
-    this._data().each((v) => {
-      v.description = link(v.description);
+    const docs = this._builder._find();
+    for(const doc of docs) {
+      doc.description = link(doc.description);
 
-      if (v.params) {
-        for (const param of v.params) {
+      if(Array.isArray(doc.params)) {
+        for(const param of doc.params) {
           param.description = link(param.description);
         }
       }
 
-      if (v.properties) {
-        for (const property of v.properties) {
+      if(Array.isArray(doc.properties)) {
+        for(const property of doc.properties) {
           property.description = link(property.description);
         }
       }
 
-      if (v.return) {
-        v.return.description = link(v.return.description);
+      if(doc.return) {
+        doc.return.description = link(doc.return.description);
       }
-
-      if (v.throws) {
-        for (const _throw of v.throws) {
+      
+      if(Array.isArray(doc.throws)) {
+        for(const _throw of doc.throws) {
           _throw.description = link(_throw.description);
         }
       }
-
-      if (v.see) {
-        for (let i = 0; i < v.see.length; i++) {
-          if (v.see[i].indexOf('{@link') === 0) {
-            v.see[i] = link(v.see[i]);
-          } else if (v.see[i].indexOf('<a href') === 0) {
+      
+      if(Array.isArray(doc.see)) {
+        for(let seeIndex = 0; seeIndex < doc.see.length; seeIndex += 1) {
+          if(doc.see[seeIndex].indexOf('{@link') === 0) {
+            doc.see[seeIndex] = link(doc.see[seeIndex]);
+          } else if(doc.see[seeIndex].indexOf('<a href') === 0) {
             // ignore
           } else {
-            v.see[i] = `<a href="${v.see[i]}">${v.see[i]}</a>`;
+            doc.see[seeIndex] = `<a href="${doc.see[seeIndex]}">${doc.see[seeIndex]}</a>`;
           }
         }
       }
-    });
+    }
 
-    this._data.__RESOLVED_LINK__ = true;
+    this._builder._docs.__RESOLVED_LINK__ = true;
   }
 
   /**
@@ -157,7 +157,7 @@ export default class DocResolver {
    * @private
    */
   _resolveExtendsChain() {
-    if (this._data.__RESOLVED_EXTENDS_CHAIN__) return;
+    if(this._builder._docs.__RESOLVED_EXTENDS_CHAIN__) return;
 
     const extendsChain = (doc) => {
       if (!doc.extends) return;
@@ -272,7 +272,7 @@ export default class DocResolver {
       //mixed(doc);
     }
 
-    this._data.__RESOLVED_EXTENDS_CHAIN__ = true;
+    this._builder._docs.__RESOLVED_EXTENDS_CHAIN__ = true;
   }
 
   /**
@@ -291,24 +291,22 @@ export default class DocResolver {
    * @private
    */
   _resolveNecessary() {
-    let builder = this._builder;
-    this._data({export: false}).update(function() {
-      let doc = this;
+    const docsWithoutExport = this._builder._find({export: false});
+    for(const doc of docsWithoutExport) {
       let childNames = [];
-      if (doc._custom_direct_subclasses) childNames.push(...doc._custom_direct_subclasses);
-      if (doc._custom_indirect_subclasses) childNames.push(...doc._custom_indirect_subclasses);
-      if (doc._custom_direct_implemented) childNames.push(...doc._custom_direct_implemented);
-      if (doc._custom_indirect_implemented) childNames.push(...doc._custom_indirect_implemented);
+      if(doc._custom_direct_subclasses) childNames.push(...doc._custom_direct_subclasses);
+      if(doc._custom_indirect_subclasses) childNames.push(...doc._custom_indirect_subclasses);
+      if(doc._custom_direct_implemented) childNames.push(...doc._custom_direct_implemented);
+      if(doc._custom_indirect_implemented) childNames.push(...doc._custom_indirect_implemented);
 
-      for (let childName of childNames) {
-        let childDoc = builder._find({longname: childName})[0];
-        if (!childDoc) continue;
-        if (!childDoc.ignore && childDoc.export) {
+      for(let childName of childNames) {
+        let childDoc = this._builder._find({longname: childName})[0];
+        if(!childDoc) continue;
+        if(!childDoc.ignore && childDoc.export) {
           doc.ignore = false;
-          return doc;
         }
       }
-    });
+    }
   }
 
   /**
@@ -319,7 +317,7 @@ export default class DocResolver {
    * @private
    */
   _resolveTestRelation() {
-    if (this._data.__RESOLVED_TEST_RELATION__) return;
+    if(this._builder._docs.__RESOLVED_TEST_RELATION__) return;
 
     let testDocs = this._builder._find({kind: 'test'});
     for (let testDoc of testDocs) {
@@ -354,6 +352,6 @@ export default class DocResolver {
       testDoc.testFullDescription = desc.join(' ');
     }
 
-    this._data.__RESOLVED_TEST_RELATION__ = true;
+    this._builder._docs.__RESOLVED_TEST_RELATION__ = true;
   }
 }
