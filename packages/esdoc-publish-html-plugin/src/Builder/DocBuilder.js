@@ -33,6 +33,23 @@ export default class DocBuilder {
    */
   exec(writeFile, copyDir) {
   }
+  
+  _remove(...cond) {
+    const toDelete = this._find(...cond);
+    let num = toDelete.length;
+    if(num) {
+      // Iterate docs to delete backwards, finding index and removing that item from docs one by one
+      do {
+        const docToDeleteIndex = this._docs.indexOf(toDelete[num-1]);
+        if(docToDeleteIndex === -1) {
+          console.error('Error: Trying to delete doc from docs, but doc is not found in docs. We got the doc FROM THE DOCS, so it is not possible that it is not there... This is some scary bug');
+          return;
+        }
+        this._docs.splice(docToDeleteIndex, 1);
+        num -= 1;
+      } while(num);
+    }
+  }
 
   /**
    * find doc object.
