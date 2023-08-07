@@ -134,8 +134,88 @@ class GitLogCommand {
   async runGitLogCommand() {
     const command = this.constructGitLogCommand();
     
-    const result = await helperRunCommand(command);
-
+    const result = await helperRunCommand(command + ' 4552a25fd7b227b4b5df5d00c11f0c2e7eb3f81f');
+    result.std.out = [
+      '@start@4552a25fd7b227b4b5df5d00c11f0c2e7eb3f81f@sep@v2.5.2@sep@dependabot[bot]@sep@49699333+dependabot[bot]@users.noreply.github.com@sep@1689183212@sep@GitHub@sep@noreply@github.com@sep@1689183212@sep@build(deps)!: bump json5 from 1.0.1 to 1.0.2@sep@build(deps)!: bump json5 from 1.0.1 to 1.0.2\n' +
+      '\n' +
+      'Bumps [json5](https://github.com/json5/json5) from 1.0.1 to 1.0.2.\n' +
+      '- [Release notes](https://github.com/json5/json5/releases)\n' +
+      '- [Changelog](https://github.com/json5/json5/blob/main/CHANGELOG.md)\n' +
+      '- [Commits](https://github.com/json5/json5/compare/v1.0.1...v1.0.2)\n' +
+      '\n' +
+      '---\n' +
+      'updated-dependencies:\n' +
+      '- dependency-name: json5\n' +
+      '  dependency-type: indirect\n' +
+      '...\n' +
+      '\n' +
+      'Signed-off-by: dependabot[bot] <support@github.com>@end@\n' +
+      'package-lock.json\n',
+      '\n',
+      '@start@0ee25c8178d3d65f64edea28107a65dc3aecb418@sep@v2.5.2@sep@EnterTheNameHere Bohemian@sep@email@enterthenamehere.com@sep@1689183159@sep@GitHub@sep@noreply@github.com@sep@1689183159@sep@Merge pull request #21 from EnterTheNameHere/dependabot/npm_and_yarn/semver-5.7.2@sep@Merge pull request #21 from EnterTheNameHere/dependabot/npm_and_yarn/semver-5.7.2\n' +
+      '\n' +
+      'build(deps): bump semver from 5.7.1 to 5.7.2@end@',
+      '\n',
+      '@start@763d4ca8318577e84d80df9ec0f8f0849727e4b3@sep@v2.5.2@sep@dependabot[bot]@sep@49699333+dependabot[bot]@users.noreply.github.com@sep@1689064961@sep@GitHub@sep@noreply@github.com@sep@1689064961@sep@build(deps): bump semver from 5.7.1 to 5.7.2\n@sep@build(deps): bump semver from 5.7.1 to 5.7.2\n' +
+      '\n' +
+      'Bumps [semver](https://github.com/npm/node-semver) from 5.7.1 to 5.7.2.\n' +
+      '- [Release notes](https://github.com/npm/node-semver/releases)\n' +
+      '- [Changelog](https://github.com/npm/node-semver/blob/v5.7.2/CHANGELOG.md)\n' +
+      '- [Commits](https://github.com/npm/node-semver/compare/v5.7.1...v5.7.2)\n' +
+      '\n' +
+      '---\n' +
+      'updated-dependencies:\n' +
+      '- dependency-name: semver\n' +
+      '  dependency-type: indirect\n' +
+      '...\n' +
+      '\n' +
+      'BREAKING-CHANGE: this is footer\n' +
+      'Signed-off-by: dependabot[bot] <support@github.com>\n' +
+      'Approved-by: dependabot[bot] <support@github.com>\n' +
+      'Read-by: dependabot[bot] <support@github.com>\n' +
+      'Written-by: dependabot[bot] <support@github.com>\n' +
+      'Bored-by: dependabot[bot] <support@github.com>@end@\n' +
+      'package-lock.json\n' +
+      '\n',
+      "@start@8d416eda69d1e057980204be24e901b06d174ad8@sep@v2.5.2@sep@EnterTheNameHere Bohemian@sep@email@enterthenamehere.com@sep@1666794776@sep@EnterTheNameHere Bohemian@sep@email@enterthenamehere.com@sep@1666794776@sep@Merge branch 'main' of https://github.com/enterthenamehere/esdoc-monorepo@sep@Merge branch 'main' of https://github.com/enterthenamehere/esdoc-monorepo\n" +
+      '@end@',
+      '\n',
+      '@start@f08f9be1bec897acde3fb192cbec60f07fba4449@sep@v2.5.2@sep@EnterTheNameHere Bohemian@sep@email@enterthenamehere.com@sep@1666794771@sep@EnterTheNameHere Bohemian@sep@email@enterthenamehere.com@sep@1666794771@sep@build: allows running unit tests on github manually\n@sep@build: allows running unit tests on github manually\n\nBREAKING CHANGE: this is footer\n' +
+      '@end@\n' +
+      '.github/workflows/unit-tests.yml\n' +
+      '\n',
+      '@start@ad5357710f07434f5536c37bd2e0dc2f740e3ef6@sep@v2.5.2@sep@EnterTheNameHere Bohemian@sep@email@enterthenamehere.com@sep@1666790781@sep@GitHub@sep@noreply@github.com@sep@1666790781@sep@Merge pull request #20 from Timbuktu1982/patch-4@sep@Merge pull request #20 from Timbuktu1982/patch-4\n' +
+      '\n' +
+      'Update tag descriptors for object example@end@',
+      '\n',
+      '@start@ed10fbfeac030a2a438a9149c5548dbc84b68dcf@sep@v2.5.2@sep@Oliver Schmidt@sep@47846931+Timbuktu1982@users.noreply.github.com@sep@1666779554@sep@GitHub@sep@noreply@github.com@sep@1666779554@sep@Update tag descriptors for object example@sep@Update tag descriptors for object example@end@\n' +
+      'packages/esdoc/manual/tags.md\n',
+      '\n',
+      '@start@bea8960b724acd565011e19d20e2622012c1ce8c@sep@v2.5.2@sep@EnterTheNameHere Bohemian@sep@email@enterthenamehere.com@sep@1666579098@sep@GitHub@sep@noreply@github.com@sep@1666579098@sep@Create LICENSE@sep@Create LICENSE\n' +
+      '\n' +
+      'docs: adds root license@end@\n' +
+      'LICENSE\n',
+      '\n',
+      '@start@0792b527014fcb0815f4570e791d9ae894ff69f8@sep@v2.5.2@sep@EnterTheNameHere Bohemian@sep@email@enterthenamehere.com@sep@1666576353@sep@EnterTheNameHere Bohemian@sep@email@enterthenamehere.com@sep@1666576353@sep@build!: updates lerna to 6@sep@build!: updates lerna to 6\n' +
+      '@end@\n' +
+      'lerna.json\n' +
+      'package-lock.json\n' +
+      'package.json\n',
+      '\n',
+      '@start@8d26eb8307f86edc2efea979708a1c5f384a78d6@sep@v2.5.2@sep@EnterTheNameHere Bohemian@sep@email@enterthenamehere.com@sep@1653891082@sep@EnterTheNameHere Bohemian@sep@email@enterthenamehere.com@sep@1653891082@sep@v2.5.2@sep@v2.5.2\n' +
+      '@end@\n' +
+      'lerna.json\n' +
+      'packages/esdoc-brand-plugin/package.json\n' +
+      'packages/esdoc-inject-gtm-plugin/package.json\n' +
+      'packages/esdoc-inject-script-plugin/package.json\n' +
+      'packages/esdoc-inject-style-plugin/package.json\n' +
+      'packages/esdoc-publish-html-plugin/package.json\n' +
+      'packages/esdoc-publish-markdown-plugin/package.json\n' +
+      'packages/esdoc-react-plugin/package.json\n' +
+      'packages/esdoc-standard-plugin/package.json\n' +
+      'packages/ice-cap/package.json\n',
+      '\n'
+    ];
     return result;
   }
   
@@ -243,14 +323,196 @@ function getPackagesInvolved(commit) {
   return Array.from(packagesInvolved);
 }
 
+/**
+ * Parse commit's raw body as conventional commit. If commit raw body doesn't conform to conventional
+ * commit's specification, property named 'valid' in returned object will be set to **false**. Parsing in
+ * such case was aborted and any data in returned object should be ignored.
+ * 
+ * @example
+ * const commit = {
+ *   rawBody: 'fix(parser): detection of separator'
+ * }
+ * const conventionalCommit = getConventionalCommitData(commit);
+ * if(conventionalCommit.valid) {
+ *   console.log(conventionalCommit.type)        // "fix"
+ *   console.log(conventionalCommit.scope)       // "parser"
+ *   console.log(conventionalCommit.description) // "detection of separator"
+ * }
+ * 
+ * @param {*} commit 
+ * @returns 
+ */
 function getConventionalCommitData(commit) {
+  // If we find commit body cannot be parsed as a conventional commit, set valid to false and return immediately...
   const conventionalCommitData = {
     type: '',
     scope: '',
     description: '',
-    body: '',
-    footer: ''
+    rawBody: '',
+    bodies: [],
+    rawFooter: '',
+    footers: [],
+    valid: true,
+    breakingChange: false,
   };
+  
+  /** @type {string} */
+  let body = commit.rawBody;
+  
+  // This is highly unexpected, maybe TODO: report something?
+  if(!body) {
+    conventionalCommitData.valid = false;
+    return conventionalCommitData;
+  }
+  
+  // Now let's try parsing commit body message according to conventional commit specification:
+
+  // Commits MUST be prefixed with a type, which consists of a noun, feat, fix, etc.,
+  // followed by the OPTIONAL scope, OPTIONAL !, and REQUIRED terminal colon and space.
+  let index = body.indexOf(': ');
+  if(index === -1) {
+    conventionalCommitData.valid = false;
+    return conventionalCommitData;
+  }
+  conventionalCommitData.type = body.substring(0, index);
+  body = body.substring(index+2);
+  
+  // The type feat MUST be used when a commit adds a new feature to your application or library.
+
+  // The type fix MUST be used when a commit represents a bug fix for your application.
+  
+  // A scope MAY be provided after a type. A scope MUST consist of a noun describing
+  // a section of the codebase surrounded by parenthesis, e.g., fix(parser):
+  index = conventionalCommitData.type.indexOf('(');
+  let indexStart = index;
+  // We imply there should be only one ( so if more are found, it's not valid conventional commit
+  let secondParenIndex = conventionalCommitData.type.indexOf('(', indexStart+1);
+  if(secondParenIndex !== -1) {
+    conventionalCommitData.valid = false;
+    return conventionalCommitData;
+  }
+  let indexEnd = conventionalCommitData.type.indexOf(')');
+  if(indexStart !== -1 && indexEnd !== -1) {
+    const tempText = conventionalCommitData.type;
+    conventionalCommitData.type = tempText.substring(0, indexStart);
+    conventionalCommitData.scope = tempText.substring(indexStart+1, indexEnd);
+
+    // If included in the type/scope prefix, breaking changes MUST be indicated by a ! immediately
+    // before the :. If ! is used, BREAKING CHANGE: MAY be omitted from the footer section, and the
+    // commit description SHALL be used to describe the breaking change.
+
+    // Check for ! aka BREAKING CHANGE
+    if(tempText.endsWith('!')) {
+      conventionalCommitData.breakingChange = true;
+    }
+  }
+  
+  // If included in the type/scope prefix, breaking changes MUST be indicated by a ! immediately
+  // before the :. If ! is used, BREAKING CHANGE: MAY be omitted from the footer section, and the
+  // commit description SHALL be used to describe the breaking change.
+
+  // Check for ! aka BREAKING CHANGE
+  if(conventionalCommitData.type.endsWith('!')) {
+    conventionalCommitData.breakingChange = true;
+  }
+  
+  // A description MUST immediately follow the colon and space after the type/scope prefix.
+  // The description is a short summary of the code changes, e.g.,
+  // fix: array parsing issue when multiple spaces were contained in string.
+  
+  // A longer commit body MAY be provided after the short description, providing additional
+  // contextual information about the code changes. The body MUST begin one blank line after
+  // the description.
+  index = body.indexOf('\n\n');
+  
+  if(index !== -1) {
+    conventionalCommitData.description = body.substring(0, index);
+    body = body.substring(index+2);
+  } else {
+    // No empty line was found, so all we have is description and we are done...
+    conventionalCommitData.description = body;
+    return conventionalCommitData;
+  }
+  
+  // A commit body is free-form and MAY consist of any number of newline separated paragraphs.
+
+  // One or more footers MAY be provided one blank line after the body. (...)
+  index = body.lastIndexOf('\n\n');
+  if(index === -1) {
+    // No footer found
+    conventionalCommitData.rawBody = body;
+    return conventionalCommitData;
+  }
+
+  // Footer found
+  conventionalCommitData.rawBody = body.substring(0, index);
+  body = body.substring(index+2);
+  conventionalCommitData.rawFooter = body;
+  
+  // (...) Each footer MUST consist of a word token, followed by either a :<space> or <space># separator,
+  // followed by a string value (this is inspired by the git trailer convention).
+  do {
+    // Footer message MUST contain token separator, otherwise it's not a valid conventional commit
+    let currentFooterTokenSeparatorIndex = body.indexOf(': ');
+    if(currentFooterTokenSeparatorIndex === -1) currentFooterTokenSeparatorIndex = body.indexOf(' #');
+    if(currentFooterTokenSeparatorIndex === -1) {
+      conventionalCommitData.valid = false;
+      return conventionalCommitData;
+    }
+
+    // Check if this is final footer
+    let nextFooterTokenSeparatorIndex = body.indexOf(': ', currentFooterTokenSeparatorIndex+1);
+    if(nextFooterTokenSeparatorIndex === -1) nextFooterTokenSeparatorIndex = body.indexOf(' #', currentFooterTokenSeparatorIndex+1);
+    if(nextFooterTokenSeparatorIndex === -1) {
+      // Footer is final one
+      conventionalCommitData.footers.push(body.trim());
+      return conventionalCommitData;
+    }
+    
+    // More footers exists, extract current one (together with token of next footer)
+    let currentFooter = body.substring(0, nextFooterTokenSeparatorIndex);
+    
+    // A footer’s token MUST use - in place of whitespace characters,
+    // e.g., Acked-by (this helps differentiate the footer section from a 
+    // multi-paragraph body). An exception is made for BREAKING CHANGE,
+    // which MAY also be used as a token.
+
+    // A footer’s value MAY contain spaces and newlines, and parsing MUST terminate when the next
+    // valid footer token/separator pair is observed.
+    
+    // We backtrack from the next footer's separator's position to start of it's token to get end of current footer
+    const matched = currentFooter.match(/.*$/u);
+    const token = matched[0];
+    // Remove the token, getting just current footer
+    currentFooter = currentFooter.substring(0, currentFooter.length - token.length);
+    // Save current token
+    conventionalCommitData.footers.push(currentFooter.trim());
+    // And to next footer
+    body = body.substring(currentFooter.length);
+    
+  } while (body.length);
+  
+  // Breaking changes MUST be indicated in the type/scope prefix of a commit, or as an entry in the footer.
+  
+  // If included as a footer, a breaking change MUST consist of the uppercase text BREAKING CHANGE,
+  // followed by a colon, space, and description, e.g.,
+  // BREAKING CHANGE: environment variables now take precedence over config files.
+  
+  // BREAKING-CHANGE MUST be synonymous with BREAKING CHANGE, when used as a token in a footer.
+  
+  // The units of information that make up Conventional Commits MUST NOT be treated as case
+  // sensitive by implementors, with the exception of BREAKING CHANGE which MUST be uppercase.
+  
+  for(const footer of conventionalCommitData.footers) {
+    console.log('footer', footer);
+    if(footer.startsWith('BREAKING CHANGE: ') || footer.startsWith('BREAKING-CHANGE: ')) {
+      conventionalCommitData.breakingChange = true;
+      break;
+    }
+  }
+  
+  // Types other than feat and fix MAY be used in your commit messages, e.g., docs: update ref docs.
+  
 
   return conventionalCommitData;
 }
@@ -276,123 +538,7 @@ gitLogCmd.run();
 const commits = await gitLogCmd.run();
 for(const commit of commits) {
   commit.packagesInvolved = getPackagesInvolved(commit);
+  commit.conventionalCommit = getConventionalCommitData(commit);
 }
 
 console.log('commits:', commits);
-
-// const startTag = '@start@';
-// const endTag = '@end@';
-// const sepTag = '@sep@';
-// /// @type {[{argument: string, name: string, group?: string} | {option: string, name?: string, value?: object}]}
-// const data = [
-//   { argument: '%H', name: 'hash' },
-//   { argument: '%(describe:abbrev=0)', name: 'tag' },
-//   { argument: '%at', group: 'user', name: 'time' },
-//   { argument: '%an', group: 'user', name: 'name' },
-//   { argument: '%ae', group: 'user', name: 'email' },
-//   { argument: '%ct', group: 'committer', name: 'time' },
-//   { argument: '%cn', group: 'committer', name: 'name' },
-//   { argument: '%ce', group: 'committer', name: 'email' },
-//   { argument: '%s', name: 'subject' },
-//   { argument: '%B', name: 'rawBody' },
-//   { option: '--name-only', name: 'file' },
-//   { option: '--max-count', value: 100 }
-// ];
-
-// const command = gitLogCmd.constructGitLogCommand();
-// const result = await helperRunCommand(command);
-
-// console.log('result:', inspect(result, false, 10, true));
-
-// if(result.error) {
-//   console.error(ansiColor.red(result.error));
-// }
-// if(result.std.err.length) {
-//   console.error(ansiColor.red(result.std.err.length));
-// }
-
-// const commits = [];
-
-// if(result.std.out.length) {
-//   /// @type {string[]}
-//   const multipleLogs = result.std.out;
-//   for(const singleLog of multipleLogs) {
-//     let text = singleLog.trim();
-//     console.log('text:\n%O', text);
-//     const numberOfStartTags = (text.match(new RegExp(startTag, 'gu')) || []).length;
-//     const numberOfEndTags = (text.match(new RegExp(endTag, 'gu')) || []).length;
-    
-//     // Properly formatted log will start with startTag, end with endTag, (optionally followed by file list)
-//     // and there will be just 1 tag of each
-//     if(numberOfStartTags === 1 && numberOfEndTags === 1) {
-//       const commit = {};
-
-//       // Separate log into individual items
-//       const separated = text.split(sepTag);
-      
-//       // Remove startTag
-//       let item = separated[0];
-//       item = item.replace(startTag, '');
-//       separated[0] = item;
-
-//       // After endTag we might have a list of files
-//       item = separated[separated.length-1];
-//       if(!item.endsWith(endTag)) {
-//         // We have list of files, so extract them...
-//         const halves = item.split(endTag);
-
-//         // Get just the raw body part without files list
-//         item = halves[0];
-        
-//         // TODO: extract package names
-//         const files = halves[1].split('\n');
-//         commit.files = [];
-//         commit.packagesInvolved = new Set();
-//         for(const file of files) {
-//           if(file.trim().length) {
-//             const filePathParts = file.split('/');
-//             if(filePathParts[0] === 'packages') {
-//               commit.packagesInvolved.add(filePathParts[1] ?? '');
-//             }
-//             commit.files.push(file.trim());
-//           }
-//         }
-//         commit.packagesInvolved = Array.from(commit.packagesInvolved);
-//       }
-//       item = item.replace(endTag, '');
-//       separated[separated.length-1] = item;
-      
-//       // commit
-//       commit.hash = separated[0];
-
-//       // tag
-//       commit.tag = separated[1];
-      
-//       // author
-//       commit.author = {
-//         name: separated[3],
-//         email: separated[4],
-//         time: separated[2],
-//       };
-      
-//       // committer
-//       commit.committer = {
-//         name: separated[6],
-//         email: separated[7],
-//         time: separated[5],
-//       };
-      
-//       // subject
-//       commit.subject = separated[8];
-
-//       // body
-//       commit.body = separated[9];
-
-//       commit.unprocessed = separated;
-
-//       commits.push(commit);
-//     }
-//   }
-// }
-
-// console.log(inspect(commits, false, 10, true));
