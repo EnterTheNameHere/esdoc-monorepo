@@ -4,14 +4,27 @@ import ansiColor from 'ansi-colors';
 
 const origDebug = console.debug;
 console.debug = function (message, ...args) {
-  origDebug(ansiColor.cyan('[DEBUG] ') + message, args.map( (arg) => { return inspect(arg, false, 10, true); }).join(' ') );
+  // eslint-disable-next-line no-console
+  origDebug(ansiColor.cyan('[DEBUG] ') + ansiColor.magenta(`${console.indentLevel ?? 0} `) + message, args.map( (arg) => { return inspect(arg, false, 10, true); }).join(' ') );
 };
 
 // eslint-disable-next-line no-console
 const origLog = console.log;
 // eslint-disable-next-line no-console
 console.log = function (message, ...args) {
-  origLog(ansiColor.yellow('[  LOG] ') + message, args.map( (arg) => { return inspect(arg, false, 10, true); }).join(' ') );
+  // eslint-disable-next-line no-console
+  origLog(ansiColor.yellow('[  LOG] ') + ansiColor.magenta(`${console.indentLevel ?? 0} `) + message, args.map( (arg) => { return inspect(arg, false, 10, true); }).join(' ') );
+};
+
+// eslint-disable-next-line no-console
+console.changeIndent = function (changeLevel) {
+  // eslint-disable-next-line no-console
+  if(!console.indentLevel) {
+    // eslint-disable-next-line no-console
+    console.indentLevel = 0;
+  }
+  // eslint-disable-next-line no-console
+  console.indentLevel += changeLevel;
 };
 
 async function helperRunCommand(command) {
@@ -38,18 +51,34 @@ async function helperRunCommand(command) {
   });
 }
 
+class GitCommitData {
+  static HASH = { name: 'hash', placeholder: '%H' };
+  static TAG = { name: 'tag', placeholder: '%(describe:abbrev=0)' };
+  static AUTHOR_NAME = { name: 'author.name', placeholder: '%an' };
+  static AUTHOR_EMAIL = { name: 'author.email', placeholder: '%ae' };
+  static AUTHOR_TIME = { name: 'author.time', placeholder: '%at' };
+  static COMMITTER_NAME = { name: 'committer.name', placeholder: '%cn' };
+  static COMMITTER_EMAIL = { name: 'committer.email', placeholder: '%ce' };
+  static COMMITTER_TIME = { name: 'committer.time', placeholder: '%ct' };
+  static SUBJECT = { name: 'subject', placeholder: '%s' };
+  static RAW_BODY = { name: 'rawBody', placeholder: '%B' };
+  
+  name = '';
+  placeholder = '';
+}
+
 class GitLogCommand {
   prettyFormatStartTag = '@start@';
   prettyFormatEndTag = '@end@';
   prettyFormatSeparatorTag = '@sep@';
   
   data = [];
-  dataOrder = [];
+  dataOrder = [];  
   
   /**
    * Returns the string command which will be used to run the git log.
    * @returns {string}
-   */
+  */
   constructGitLogCommand() {
     const command = 'git log --pretty=format:';
     let prettyFormatPlaceholders = [];
@@ -61,7 +90,7 @@ class GitLogCommand {
       if(typeof entry.placeholder === 'string') {
         prettyFormatPlaceholders.push(entry.placeholder);
         // Store where in commit data array will this placeholder be so we can easily retrieve it when processing result...
-        this.dataOrder.push({index: prettyFormatPlaceholders.length - 1, placeholder: entry});
+        this.dataOrder.push({index: prettyFormatPlaceholders.length - 1, ...entry});
       }
       
       // Prepare options, that is anything like --max-count=100
@@ -89,43 +118,31 @@ class GitLogCommand {
    * which do not require value.
    * @param {string} name 
    * @param {object} [value=null] 
-   */
-  addOption(name, value = null) {
-    console.debug(ansiColor.magenta('GitLogCommand#addOption'), name, value);
-    
-    if(typeof name !== 'string') throw new TypeError('A string is expected!');
-    const lName = name.startsWith('--') ? name : `--${name}`;
-    const entry = {option: lName};
-    if(value !== null) {
-      entry.value = value;
+  */
+ addOption(name, value = null) {
+   console.debug(ansiColor.magenta('GitLogCommand#addOption'), name, value);
+   
+   if(typeof name !== 'string') throw new TypeError('A string is expected!');
+   const lName = name.startsWith('--') ? name : `--${name}`;
+   const entry = {option: lName};
+   if(value !== null) {
+     entry.value = value;
     }
     
     this.data.push(entry);
   }
   
-  addFormatPlaceholder(placeholder, customPropertyName, customPropertyGroup = null) {
-    // Validate placeholder, for example %an, which requests author's name
-    if(typeof placeholder !== 'string') throw new TypeError('A string indicating format placeholder is expected!');
-    if(placeholder.trim().length === 0) throw new Error('Placeholder cannot be empty!');
-    // Validate property name under which we will store the data we got for this placeholder, for example 'name', like { name: 'Ben' }
-    if(typeof customPropertyName !== 'string') throw new TypeError(`A string specifying a name in property under which you would like to store this placeholder "${placeholder}"'s data under is expected!`);
-    // TODO: Make property name safe
-    if(customPropertyName.trim().length === 0) throw new Error(`Name of property under which you would like to store this placeholder "${placeholder}"'s data under cannot be empty!`);
-    // If exists, validate group property name under which we store the data we got for this placeholder, for example with group name 'author' and property's name 'name', it will be { author: { name: 'Ben' } }
-    if(customPropertyGroup !== null) {
-      // TODO: group Make property name safe
-      if(typeof customPropertyGroup !== 'string') throw new TypeError(`A string specifying a group property name under which you want "${placeholder}"'s data to be stored under is expected!`);
-      if(customPropertyGroup.trim().length === 0) throw new Error(`Group name under which you would like to store this placeholder "${placeholder}"'s data under cannot be empty!`);
-    }
+  /**
+   * @param {GitCommitData} data 
+   */
+  include(data) {
+    if(!data) throw new TypeError('One of GitCommitData fields is expected as an argument.');
+    if(!Object.prototype.hasOwnProperty.call(data, 'name')) throw new TypeError('Argument must be an object with "name" property.');
+    if(typeof data.name !== 'string') throw new TypeError('Argument\'s "name" property must be a string.');
+    if(!Object.prototype.hasOwnProperty.call(data, 'placeholder')) throw new TypeError('Argument must be an object with "placeholder" property.');
+    if(typeof data.placeholder !== 'string') throw new TypeError('Argument\'s "placeholder" property must be a string.');
     
-    const entry = {};
-    entry.placeholder = placeholder;
-    entry.name = customPropertyName;
-    if(customPropertyGroup) {
-      entry.group = customPropertyGroup;
-    }
-    
-    this.data.push(entry);
+    this.data.push(data);
   }
   
   /**
@@ -170,11 +187,11 @@ class GitLogCommand {
       '...\n' +
       '\n' +
       'BREAKING-CHANGE: this is footer\n' +
-      'Signed-off-by: dependabot[bot] <support@github.com>\n' +
-      'Approved-by: dependabot[bot] <support@github.com>\n' +
-      'Read-by: dependabot[bot] <support@github.com>\n' +
-      'Written-by: dependabot[bot] <support@github.com>\n' +
-      'Bored-by: dependabot[bot] <support@github.com>@end@\n' +
+      'Signed-off-by: one[bot] <one@github.com>\n' +
+      'Approved-by: two[bot] <two@github.com>\n' +
+      'Read-by: three[bot] <three@github.com>\n' +
+      'Written-by: four[bot] <four@github.com>\n' +
+      'Bored-by: five[bot] <five@github.com>@end@\n' +
       'package-lock.json\n' +
       '\n',
       "@start@8d416eda69d1e057980204be24e901b06d174ad8@sep@v2.5.2@sep@EnterTheNameHere Bohemian@sep@email@enterthenamehere.com@sep@1666794776@sep@EnterTheNameHere Bohemian@sep@email@enterthenamehere.com@sep@1666794776@sep@Merge branch 'main' of https://github.com/enterthenamehere/esdoc-monorepo@sep@Merge branch 'main' of https://github.com/enterthenamehere/esdoc-monorepo\n" +
@@ -261,21 +278,27 @@ class GitLogCommand {
         // We have stored order in which placeholder data will be in commit data array when generating command string
         // Now go over each of them
         for(const entry of this.dataOrder.values()) {
-          const groupPropertyName = entry.placeholder.group;
-          const propertyName = entry.placeholder.name;
-          const propertyValue = commitData[entry.index];
-          
-          // If groupPropertyName is set, propertyValue should be stored under another property named groupPropertyName,
-          // eg. { groupPropertyName: { propertyName: propertyValue } }
-          if(groupPropertyName) {
-            // Make sure the property with groupPropertyName exists in root
-            if(!commit[groupPropertyName]) commit[groupPropertyName] = {};
-            // Store the value under the groupPropertyName property
-            commit[groupPropertyName][propertyName] = propertyValue;
-          } else {
-            // Store the propertyValue in root
-            commit[propertyName] = propertyValue;
+          // Property name should be the name property in entry, which could have dot . in them, so following:
+          // { name: "commit.author.name", value: "enter" }
+          // would correspond to:
+          // {
+          //   commit: {
+          //     author: {
+          //       name: "enter"
+          //     }
+          //   }
+          // }
+
+          const propertyNames = entry.name.split('.');
+          const numberOfParents = propertyNames.length - 1;
+          let currentProperty = commit;
+          for(let ii = 0; ii < numberOfParents; ii += 1) {
+            if(!Object.prototype.hasOwnProperty.call(currentProperty, propertyNames[ii])) {
+              currentProperty[propertyNames[ii]] = {};
+            }
+            currentProperty = currentProperty[propertyNames[ii]];
           }
+          currentProperty[propertyNames[numberOfParents]] = commitData[entry.index];
         }
         
         commit.optionsData = additionalText;
@@ -323,198 +346,402 @@ function getPackagesInvolved(commit) {
   return Array.from(packagesInvolved);
 }
 
-/**
- * Parse commit's raw body as conventional commit. If commit raw body doesn't conform to conventional
- * commit's specification, property named 'valid' in returned object will be set to **false**. Parsing in
- * such case was aborted and any data in returned object should be ignored.
- * 
- * @example
- * const commit = {
- *   rawBody: 'fix(parser): detection of separator'
- * }
- * const conventionalCommit = getConventionalCommitData(commit);
- * if(conventionalCommit.valid) {
- *   console.log(conventionalCommit.type)        // "fix"
- *   console.log(conventionalCommit.scope)       // "parser"
- *   console.log(conventionalCommit.description) // "detection of separator"
- * }
- * 
- * @param {*} commit 
- * @returns 
- */
-function getConventionalCommitData(commit) {
-  // If we find commit body cannot be parsed as a conventional commit, set valid to false and return immediately...
-  const conventionalCommitData = {
-    type: '',
-    scope: '',
-    description: '',
-    rawBody: '',
-    bodies: [],
-    rawFooter: '',
+class ConventionalCommitParser {  
+  conventionalCommitData = {
+    type: null,
+    scope: null,
+    description: null,
+    rawBody: null,
+    body: null,
+    rawFooter: null,
     footers: [],
     valid: true,
     breakingChange: false,
   };
+
+  static defaultOptions = {
+    debug: true,
+    includeReasonWhyNotValid: true,
+    trimDescription: true,
+    trimBody: true,
+    trimFooterValue: true,
+  };
   
-  /** @type {string} */
-  let body = commit.rawBody;
-  
-  // This is highly unexpected, maybe TODO: report something?
-  if(!body) {
-    conventionalCommitData.valid = false;
-    return conventionalCommitData;
+  static parseGitLogCommitData(commitData, options = this.defaultOptions) {
+    if(!commitData.rawBody) {
+      throw new TypeError('GitLogData.rawBody is required to parse conventional commit from it!');
+    }
+    if(typeof commitData.rawBody !== 'string') {
+      throw new TypeError('GitLogData.rawBody must be a string!');
+    }
+    
+    console.changeIndent(1);
+    console.debug('Parsing git commit raw body:', commitData.rawBody);
+
+    /**
+     * @type {string}
+     */
+    const rawBodyText = commitData.rawBody;
+    
+    // Optional body can be provided after description, separated by a blank line from the header.
+    let index = rawBodyText.indexOf('\n\n');
+    let headerText = null;
+    let bodyText = null;
+    let footerText = null;
+    console.debug('index of \\n\\n:', index);
+    if(index !== -1) {
+      // We have body
+      headerText = rawBodyText.substring(0, index);
+      bodyText = rawBodyText.substring(index+2);
+      console.debug('headerText:', headerText);
+      console.debug('bodyText:', bodyText);
+      
+      // Optional footer can be provided after body, separated by a blank line from the body.
+      index = bodyText.lastIndexOf('\n\n');
+      console.debug('index of last \\n\\n:', index);
+      if(index !== -1) {
+        footerText = bodyText.substring(index+2);
+        bodyText = bodyText.substring(0, index);
+        console.debug('footerText:', footerText);
+        console.debug('bodyText:', bodyText);
+      }
+    } else {
+      // No body, only header
+      headerText = rawBodyText;
+      console.debug('headerText:', headerText);
+    }
+
+    console.debug('headerText:', headerText);
+    console.debug('bodyText:', bodyText);
+    console.debug('footerText:', footerText);
+    
+    const header = headerText ? this.#parseHeader(headerText, options) : { valid: true };
+    console.debug('header:', header);
+    if(!header.valid) {
+      console.changeIndent(-1);
+      return header;
+    }
+    
+    const footer = footerText ? this.#parseFooter(footerText, options) : { valid: true };
+    console.debug('footer:', footer);
+    if(!footer.valid) {
+      console.changeIndent(-1);
+      return footer;
+    }
+    
+    const body = bodyText ? this.#parseBody(bodyText, options) : { valid: true };
+    console.debug('body:', body);
+    if(!body.valid) {
+      console.changeIndent(-1);
+      return body;
+    }
+    
+    console.changeIndent(-1);
+    // If breakingChange is true in one,
+    // it must be true in final object, so
+    // make sure of it
+    let hasBreakingChange = false;
+    if(!hasBreakingChange && header.breakingChange === true) hasBreakingChange = true;
+    if(!hasBreakingChange && body.breakingChange === true) hasBreakingChange = true;
+    if(!hasBreakingChange && footer.breakingChange === true) hasBreakingChange = true;
+    return {
+      ...header,
+      ...(body ? body : {}),
+      ...(footer ? footer : {}),
+      breakingChange: hasBreakingChange,
+    };
   }
   
-  // Now let's try parsing commit body message according to conventional commit specification:
+  /**
+   * 
+   * @param {string} text 
+   * @param {*} options 
+   */
+  static #parseHeader(text, options) {
+    console.changeIndent(1);
+    console.debug('Parsing ConventionalCommit header:', text);
+    
+    const result = {
+      valid: true,
+      type: null,
+      scope: null,
+      description: null,
+      breakingChange: false,
+    };
+    
+    // Commits MUST be prefixed with a type, which consists of a noun, feat, fix, etc.,
+    // followed by the OPTIONAL scope, OPTIONAL !, and REQUIRED terminal colon and space.
+    const separatorIndex = text.indexOf(': ');
+    if(separatorIndex === -1) {
+      console.debug('Separator not found.');
+      console.changeIndent(-1);
+      // terminal colon and space not found, not valid conventional commit
+      return {
+        ...{valid: false},
+        ...(options.includeReasonWhyNotValid ? {reason: 'No colon and space characters found which are required to separate type/scope and description.'} : {})
+      };
+    }
+    
+    // The type feat MUST be used when a commit adds a new feature to your application or library.
+    // The type fix MUST be used when a commit represents a bug fix for your application.
+    
+    // A scope MAY be provided after a type. A scope MUST consist of a noun describing
+    // a section of the codebase surrounded by parenthesis, e.g., fix(parser):
+    let tempText = text.substring(0, separatorIndex);
+    console.debug('tempText', tempText);
+    result.description = text.substring(separatorIndex+2);
+    if(options.trimDescription) {
+      result.description = result.description.trim();
+    }
+    console.debug('result.description', result.description);
+    const parenStartIndex = tempText.indexOf('(');
+    const parenEndIndex = tempText.indexOf(')', parenStartIndex+1);
+    
+    // Multiple ( would mean not valid scope
+    let secondParenIndex = tempText.indexOf('(', parenStartIndex+1);
+    if(secondParenIndex !== -1) {
+      console.debug('Multiple ( found.');
+      console.changeIndent(-1);
+      return {
+        ...{valid: false},
+        ...(options?.includeReasonWhyNotValid ? {reason: 'Multiple ( found. Just one is expected.'} : {})
+      };
+    }
+    // Multiple ) would mean not valid scope too
+    secondParenIndex = tempText.indexOf(')', parenEndIndex+1);
+    if(secondParenIndex !== -1) {
+      console.debug('Multiple ) found.');
+      console.changeIndent(-1);
+      return {
+        ...{valid: false},
+        ...(options?.includeReasonWhyNotValid ? {reason: 'Multiple ) found. Just one is expected.'} : {})
+      };
+    }
+    // Only ( without ) is not valid either
+    if(parenStartIndex !== -1 && parenEndIndex === -1) {
+      console.debug('Only ( without pairing ending ) found.');
+      console.changeIndent(-1);
+      return {
+        ...{valid: false},
+        ...(options?.includeReasonWhyNotValid ? {reason: 'Only ( without pairing ending ) found. That makes parens uneven.'} : {})
+      };
+    }
+    // Only ) is not valid too
+    if(parenStartIndex === -1 && parenEndIndex !== -1) {
+      console.debug('Only ) without pairing starting ( found.');
+      console.changeIndent(-1);
+      return {
+        ...{valid: false},
+        ...(options?.includeReasonWhyNotValid ? {reason: 'Only ) without pairing starting ( found. That makes parens uneven.'} : {})
+      };
+    }
 
-  // Commits MUST be prefixed with a type, which consists of a noun, feat, fix, etc.,
-  // followed by the OPTIONAL scope, OPTIONAL !, and REQUIRED terminal colon and space.
-  let index = body.indexOf(': ');
-  if(index === -1) {
-    conventionalCommitData.valid = false;
-    return conventionalCommitData;
-  }
-  conventionalCommitData.type = body.substring(0, index);
-  body = body.substring(index+2);
-  
-  // The type feat MUST be used when a commit adds a new feature to your application or library.
-
-  // The type fix MUST be used when a commit represents a bug fix for your application.
-  
-  // A scope MAY be provided after a type. A scope MUST consist of a noun describing
-  // a section of the codebase surrounded by parenthesis, e.g., fix(parser):
-  index = conventionalCommitData.type.indexOf('(');
-  let indexStart = index;
-  // We imply there should be only one ( so if more are found, it's not valid conventional commit
-  let secondParenIndex = conventionalCommitData.type.indexOf('(', indexStart+1);
-  if(secondParenIndex !== -1) {
-    conventionalCommitData.valid = false;
-    return conventionalCommitData;
-  }
-  let indexEnd = conventionalCommitData.type.indexOf(')');
-  if(indexStart !== -1 && indexEnd !== -1) {
-    const tempText = conventionalCommitData.type;
-    conventionalCommitData.type = tempText.substring(0, indexStart);
-    conventionalCommitData.scope = tempText.substring(indexStart+1, indexEnd);
-
+    // Now if we have ( and ) that's what we want
+    if(parenStartIndex !== -1 && parenEndIndex !== -1) {
+      result.scope = tempText.substring(parenStartIndex+1, parenEndIndex);
+      tempText = tempText.replace(`(${result.scope})`, '');
+    }
+    
     // If included in the type/scope prefix, breaking changes MUST be indicated by a ! immediately
     // before the :. If ! is used, BREAKING CHANGE: MAY be omitted from the footer section, and the
     // commit description SHALL be used to describe the breaking change.
-
-    // Check for ! aka BREAKING CHANGE
+    // Breaking changes MUST be indicated in the type/scope prefix of a commit, or as an entry in the footer.
     if(tempText.endsWith('!')) {
-      conventionalCommitData.breakingChange = true;
+      result.breakingChange = true;
+      tempText = tempText.substring(0, tempText.length-1);
+    } else {
+      result.breakingChange = false;
     }
-  }
-  
-  // If included in the type/scope prefix, breaking changes MUST be indicated by a ! immediately
-  // before the :. If ! is used, BREAKING CHANGE: MAY be omitted from the footer section, and the
-  // commit description SHALL be used to describe the breaking change.
+    console.debug('result.breakingChange', result.breakingChange);
+    
+    console.debug('result.scope', result.scope);
+    
+    result.type = tempText;
+    
+    console.debug('result.type', result.type);
 
-  // Check for ! aka BREAKING CHANGE
-  if(conventionalCommitData.type.endsWith('!')) {
-    conventionalCommitData.breakingChange = true;
-  }
-  
-  // A description MUST immediately follow the colon and space after the type/scope prefix.
-  // The description is a short summary of the code changes, e.g.,
-  // fix: array parsing issue when multiple spaces were contained in string.
-  
-  // A longer commit body MAY be provided after the short description, providing additional
-  // contextual information about the code changes. The body MUST begin one blank line after
-  // the description.
-  index = body.indexOf('\n\n');
-  
-  if(index !== -1) {
-    conventionalCommitData.description = body.substring(0, index);
-    body = body.substring(index+2);
-  } else {
-    // No empty line was found, so all we have is description and we are done...
-    conventionalCommitData.description = body;
-    return conventionalCommitData;
-  }
-  
-  // A commit body is free-form and MAY consist of any number of newline separated paragraphs.
-
-  // One or more footers MAY be provided one blank line after the body. (...)
-  index = body.lastIndexOf('\n\n');
-  if(index === -1) {
-    // No footer found
-    conventionalCommitData.rawBody = body;
-    return conventionalCommitData;
-  }
-
-  // Footer found
-  conventionalCommitData.rawBody = body.substring(0, index);
-  body = body.substring(index+2);
-  conventionalCommitData.rawFooter = body;
-  
-  // (...) Each footer MUST consist of a word token, followed by either a :<space> or <space># separator,
-  // followed by a string value (this is inspired by the git trailer convention).
-  do {
-    // Footer message MUST contain token separator, otherwise it's not a valid conventional commit
-    let currentFooterTokenSeparatorIndex = body.indexOf(': ');
-    if(currentFooterTokenSeparatorIndex === -1) currentFooterTokenSeparatorIndex = body.indexOf(' #');
-    if(currentFooterTokenSeparatorIndex === -1) {
-      conventionalCommitData.valid = false;
-      return conventionalCommitData;
-    }
-
-    // Check if this is final footer
-    let nextFooterTokenSeparatorIndex = body.indexOf(': ', currentFooterTokenSeparatorIndex+1);
-    if(nextFooterTokenSeparatorIndex === -1) nextFooterTokenSeparatorIndex = body.indexOf(' #', currentFooterTokenSeparatorIndex+1);
-    if(nextFooterTokenSeparatorIndex === -1) {
-      // Footer is final one
-      conventionalCommitData.footers.push(body.trim());
-      return conventionalCommitData;
+    // Now check if type and scope are single word
+    const isAWord = /^\w+$/iu;
+    if(!isAWord.test(result.type)) {
+      console.debug(`Parsed type is not a single word: "${result.type.length > 10 ? `${result.type.substring(0, 20)}...` : conventionalCommitData.type}"`);
+      console.changeIndent(-1);
+      return {
+        ...{valid: false},
+        ...(options?.includeReasonWhyNotValid)
+          ? {reason: `Parsed type is not a single word: "${result.type.length > 10 ? `${result.type.substring(0, 20)}...` : conventionalCommitData.type}"`}
+          : {}
+      };
     }
     
-    // More footers exists, extract current one (together with token of next footer)
-    let currentFooter = body.substring(0, nextFooterTokenSeparatorIndex);
-    
-    // A footer’s token MUST use - in place of whitespace characters,
-    // e.g., Acked-by (this helps differentiate the footer section from a 
-    // multi-paragraph body). An exception is made for BREAKING CHANGE,
-    // which MAY also be used as a token.
-
-    // A footer’s value MAY contain spaces and newlines, and parsing MUST terminate when the next
-    // valid footer token/separator pair is observed.
-    
-    // We backtrack from the next footer's separator's position to start of it's token to get end of current footer
-    const matched = currentFooter.match(/.*$/u);
-    const token = matched[0];
-    // Remove the token, getting just current footer
-    currentFooter = currentFooter.substring(0, currentFooter.length - token.length);
-    // Save current token
-    conventionalCommitData.footers.push(currentFooter.trim());
-    // And to next footer
-    body = body.substring(currentFooter.length);
-    
-  } while (body.length);
-  
-  // Breaking changes MUST be indicated in the type/scope prefix of a commit, or as an entry in the footer.
-  
-  // If included as a footer, a breaking change MUST consist of the uppercase text BREAKING CHANGE,
-  // followed by a colon, space, and description, e.g.,
-  // BREAKING CHANGE: environment variables now take precedence over config files.
-  
-  // BREAKING-CHANGE MUST be synonymous with BREAKING CHANGE, when used as a token in a footer.
-  
-  // The units of information that make up Conventional Commits MUST NOT be treated as case
-  // sensitive by implementors, with the exception of BREAKING CHANGE which MUST be uppercase.
-  
-  for(const footer of conventionalCommitData.footers) {
-    console.log('footer', footer);
-    if(footer.startsWith('BREAKING CHANGE: ') || footer.startsWith('BREAKING-CHANGE: ')) {
-      conventionalCommitData.breakingChange = true;
-      break;
+    if(typeof result.scope === 'string' && !isAWord.test(result.scope)) {
+      console.debug(`Parsed scope is not a single word: "${result.scope.length > 10 ? `${result.scope.substring(0, 20)}...` : conventionalCommitData.scope}"`);
+      console.changeIndent(-1);
+      return {
+        ...{valid: false},
+        ...(options?.includeReasonWhyNotValid)
+          ? {reason: `Parsed scope is not a single word: "${result.scope.length > 10 ? `${result.scope.substring(0, 20)}...` : conventionalCommitData.scope}"`}
+          : {}
+      };
     }
+    
+    console.changeIndent(-1);
+    return result;
   }
   
-  // Types other than feat and fix MAY be used in your commit messages, e.g., docs: update ref docs.
-  
+  /**
+   * 
+   * @param {string} text 
+   * @param {*} options 
+   */
+  static #parseBody(text, options) {
+    console.changeIndent(1);
+    console.debug('Parsing ConventionalCommit body:', text);
+    
+    const body = {
+      valid: true,
+      body: text,
+      breakingChange: false,
+    };
 
-  return conventionalCommitData;
+    // Check if body contains BREAKING-CHANGE.
+    let index = text.indexOf('BREAKING CHANGE');
+    if(index === -1) index = text.indexOf('BREAKING-CHANGE');
+    if(index !== -1) {
+      body.breakingChange = true;
+    }
+    
+    if(options.trimBody) {
+      body.body = body.body.trim();
+    }
+
+    console.changeIndent(-1);
+    return body;
+  }
+  
+  /**
+   * 
+   * @param {string} text 
+   * @param {*} options 
+   */
+  static #parseFooter(text, options) {
+    console.changeIndent(1);
+    console.debug('Parsing ConventionalCommit footer:', text);
+    
+    const result = {
+      valid: true,
+      footers: [],
+      breakingChange: false,
+    };
+    
+    let tempText = text;
+    // (...) Each footer MUST consist of 
+    // a word token, followed by either a :<space> or <space># separator, followed by a string value
+    // (this is inspired by the git trailer convention).
+    do {
+      let currentTokenSeparatorIndex = tempText.indexOf(': ');
+      if(currentTokenSeparatorIndex === -1) currentTokenSeparatorIndex = tempText.indexOf(' #');
+      
+      if(currentTokenSeparatorIndex === -1) {
+        console.debug('Separator not found.');
+        console.changeIndent(-1);
+        return {
+          ...{valid: false},
+          ...(options.includeReasonWhyNotValid)
+            ? {reason: 'Cannot find colon and space or space and hash which are required to separate footer token and value'}
+            : {}
+        };
+      }
+      
+      const footer = {token: '', value: ''};
+      const footerToken = tempText.substring(0, currentTokenSeparatorIndex);
+      tempText = tempText.substring(currentTokenSeparatorIndex+2);
+      
+      // A footer’s token MUST use - in place of whitespace characters,
+      // e.g., Acked-by (this helps differentiate the footer section from a 
+      // multi-paragraph body). An exception is made for BREAKING CHANGE,
+      // which MAY also be used as a token.
+      if(footerToken === 'BREAKING CHANGE' || footerToken === 'BREAKING-CHANGE') {
+        console.debug('BREAKING-CHANGE found.');
+        footer.token = footerToken;
+        result.breakingChange = true;
+      } else {
+        // Do not set result.breakingChange to false, just in case it's true already, which would overwrite it...
+        const isAFooterToken = /^[\w-]+$/iu;
+        if(!isAFooterToken.test(footerToken)) {
+          console.debug(`Token found in footer is not a valid token. Token: "${typeof footerToken === 'string' ? footerToken : typeof footerToken}"`);
+          console.changeIndent(-1);
+          return {
+            ...{valid: false},
+            ...(options.includeReasonWhyNotValid)
+              ? {reason: `Token found in footer is not a valid token. Token: "${typeof footerToken === 'string' ? footerToken : typeof footerToken}"`}
+              : {}
+          };
+        }
+        footer.token = footerToken;
+      }
+      
+      // See if we find another separator of token and value, which would mean more footers...
+      let nextTokenSeparatorIndex = tempText.indexOf(': ');
+      if(nextTokenSeparatorIndex === -1) nextTokenSeparatorIndex = tempText.indexOf(' #');
+      if(nextTokenSeparatorIndex === -1) {
+        // No separator found, this is the last footer
+        footer.token = footerToken;
+        footer.value = tempText;
+        tempText = '';
+        
+        if(options.trimFooterValue) {
+          footer.value = footer.value.trim();
+        }
+        
+        result.footers.push(footer);
+        console.debug('Footer:', footer);
+      } else {
+        // Separator found so continue with separating next footer's token from this footer's value...
+
+        // A footer’s value MAY contain spaces and newlines, and parsing MUST terminate when the next
+        // valid footer token/separator pair is observed.
+        const currentValueAndNextTokenText = tempText.substring(0, nextTokenSeparatorIndex);
+        
+        // We now have footer value WITH token of next footer. We need to extract the token of next footer
+        const extractNextToken = /[\w-]+$/igu;
+        console.debug('Trying to extract token from:', currentValueAndNextTokenText);
+        const matched = extractNextToken.exec(currentValueAndNextTokenText);
+        if(!matched) {
+          console.debug(`Couldn't parse token of next footer to determine where current footer value ends and next footer's token starts. footerValue: "${typeof currentValueAndNextTokenText === 'string' ? currentValueAndNextTokenText : typeof currentValueAndNextTokenText}"`);
+          console.changeIndent(-1);
+          return {
+            ...{valid: false},
+            ...(options.includeReasonWhyNotValid)
+              ? {reason: `Couldn't parse token of next footer to determine where current footer value ends and next footer's token starts. footerValue: "${typeof currentValueAndNextTokenText === 'string' ? currentValueAndNextTokenText : typeof currentValueAndNextTokenText}"`}
+              : {}
+          };
+        }
+        footer.value = currentValueAndNextTokenText.substring(0, matched.index);
+        tempText = tempText.substring(matched.index);
+        footer.token = footerToken;
+        
+        if(options.trimFooterValue) {
+          footer.value = footer.value.trim();
+        }
+
+        result.footers.push(footer);
+        console.debug('footer:', footer);
+      }
+      
+      // Breaking changes MUST be indicated in the type/scope prefix of a commit, or as an entry in the footer.
+      
+      // If included as a footer, a breaking change MUST consist of the uppercase text BREAKING CHANGE,
+      // followed by a colon, space, and description, e.g.,
+      // BREAKING CHANGE: environment variables now take precedence over config files.
+      // BREAKING-CHANGE MUST be synonymous with BREAKING CHANGE, when used as a token in a footer.
+      // The units of information that make up Conventional Commits MUST NOT be treated as case
+      // sensitive by implementors, with the exception of BREAKING CHANGE which MUST be uppercase.
+    
+    } while(tempText.length);
+    
+    console.changeIndent(-1);
+    return result;
+  }
 }
 
 const gitLogCmd = new GitLogCommand();
@@ -522,23 +749,27 @@ const gitLogCmd = new GitLogCommand();
 gitLogCmd.addOption('name-only');
 gitLogCmd.addOption('--max-count', 100);
 
-gitLogCmd.addFormatPlaceholder('%H', 'hash');
-gitLogCmd.addFormatPlaceholder('%(describe:abbrev=0)', 'tag');
-gitLogCmd.addFormatPlaceholder('%an', 'name', 'author');
-gitLogCmd.addFormatPlaceholder('%ae', 'email', 'author');
-gitLogCmd.addFormatPlaceholder('%at', 'time', 'author');
-gitLogCmd.addFormatPlaceholder('%cn', 'name', 'committer');
-gitLogCmd.addFormatPlaceholder('%ce', 'email', 'committer');
-gitLogCmd.addFormatPlaceholder('%ct', 'time', 'committer');
-gitLogCmd.addFormatPlaceholder('%s', 'subject');
-gitLogCmd.addFormatPlaceholder('%B', 'rawBody');
-
-gitLogCmd.run();
+gitLogCmd.include(GitCommitData.HASH);
+gitLogCmd.include(GitCommitData.TAG);
+gitLogCmd.include(GitCommitData.AUTHOR_NAME);
+gitLogCmd.include(GitCommitData.AUTHOR_EMAIL);
+gitLogCmd.include(GitCommitData.AUTHOR_TIME);
+gitLogCmd.include(GitCommitData.COMMITTER_NAME);
+gitLogCmd.include(GitCommitData.COMMITTER_EMAIL);
+gitLogCmd.include(GitCommitData.COMMITTER_TIME);
+gitLogCmd.include(GitCommitData.SUBJECT);
+gitLogCmd.include(GitCommitData.RAW_BODY);
 
 const commits = await gitLogCmd.run();
+const data = [];
 for(const commit of commits) {
-  commit.packagesInvolved = getPackagesInvolved(commit);
-  commit.conventionalCommit = getConventionalCommitData(commit);
+  const dataItem = { commit: commit };
+  data.push(dataItem);
+
+  dataItem.packagesInvolved = getPackagesInvolved(dataItem.commit);
+  dataItem.conventionalCommit = ConventionalCommitParser.parseGitLogCommitData(dataItem.commit);
+
+  console.debug('dataItem', dataItem);
 }
 
-console.log('commits:', commits);
+console.log('data:', data);
