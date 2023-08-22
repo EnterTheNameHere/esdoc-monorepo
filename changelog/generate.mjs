@@ -100,3 +100,6 @@ for(const commit of commits) {
 }
 
 console.log('data:', data);
+
+console.log = origLog;
+console.debug = origDebug;
