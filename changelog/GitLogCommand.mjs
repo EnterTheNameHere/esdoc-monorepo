@@ -1,5 +1,5 @@
 import { exec } from 'node:child_process';
-import ansiColor from 'ansi-colors';
+import { logDebug, logError } from './utils.mjs';
 
 async function helperRunCommand(command) {
   return new Promise( (resolve, reject) => {
@@ -25,13 +25,59 @@ async function helperRunCommand(command) {
   });
 }
 
+/**
+ * Executes `log` command to `git` with custom pretty print format to request data from commit.
+ * Additional data can be requested, which will be appended after pretty print part. This
+ * additional data is provided as is, no separation or parsing is performed on it...
+ */
 export class GitLogCommand {
+  /**
+   * @protected
+   * Options used when user doesn't provide any further options.
+   */
+  static defaultOptions = {
+    debug: true,
+    verbose: true,
+  };
+  
+  /**
+   * @protected
+   * Separator used to determine where data returned by pretty print starts.
+   */
   prettyFormatStartTag = '@start@';
+  /**
+   * @protected
+   * Separator used to determine where data returned by pretty print ends.
+   */
   prettyFormatEndTag = '@end@';
+  /**
+   * @protected
+   * Separator used to split what pretty print returns to individual items.
+   */
   prettyFormatSeparatorTag = '@sep@';
   
   data = [];
   dataOrder = [];  
+  
+  /**
+   * Creates new instance of GitLogCommand with optional `options`.
+   * Default options are used. If you want to provide your own value,
+   * override the default value by providing `options` object.
+   * @example
+   * include { GitLogCommand } from './GitLogCommand.mjs';
+   * 
+   * const gitLogCmd = new GitLogCommand({ debug: true, verbose: true });
+   * // gitLogCmd will now print debug and info messages
+   * 
+   * @param {instanceof(GitLogCommand.defaultOption)} options 
+   */
+  constructor(options = GitLogCommand.defaultOptions) {
+    /**
+     * @protected
+     * Holds current options.
+     */
+    this.options = { ...GitLogCommand.defaultOptions, ...options };
+  }
   
   /**
    * Returns the string command which will be used to run the git log.
@@ -77,16 +123,17 @@ export class GitLogCommand {
    * @param {string} name 
    * @param {object} [value=null] 
   */
- addOption(name, value = null) {
-   console.debug(ansiColor.magenta('GitLogCommand#addOption'), name, value);
-   
-   if(typeof name !== 'string') throw new TypeError('A string is expected!');
-   const lName = name.startsWith('--') ? name : `--${name}`;
-   const entry = {option: lName};
-   if(value !== null) {
-     entry.value = value;
+  addOption(name, value = null) {
+    const debug = this.options.debug ? logDebug : () => {};
+    debug('GitLogCommand#addOption', name, value);
+
+    if(typeof name !== 'string') throw new TypeError('A string is expected!');
+    const lName = name.startsWith('--') ? name : `--${name}`;
+    const entry = {option: lName};
+    if(value !== null) {
+      entry.value = value;
     }
-    
+
     this.data.push(entry);
   }
   
@@ -94,6 +141,9 @@ export class GitLogCommand {
    * @param {GitCommitData} data 
    */
   include(data) {
+    const debug = this.options.debug ? logDebug : () => {};
+    debug('GitLogCommand#include', '', data);
+
     if(!data) throw new TypeError('One of GitCommitData fields is expected as an argument.');
     if(!Object.prototype.hasOwnProperty.call(data, 'name')) throw new TypeError('Argument must be an object with "name" property.');
     if(typeof data.name !== 'string') throw new TypeError('Argument\'s "name" property must be a string.');
@@ -108,6 +158,8 @@ export class GitLogCommand {
    */
   async runGitLogCommand() {
     const command = this.constructGitLogCommand();
+    const debug = this.options.debug ? logDebug : () => {};
+    debug('GitLogCommand#runGitLogCommand', 'About to execute:', command);
     
     const result = await helperRunCommand(command);
     return result;
@@ -191,10 +243,10 @@ export class GitLogCommand {
     
     // Report errors we received
     if(result.error) {
-      console.error(ansiColor.red(result.error));
+      logError('GitLogCommand#run', result.error);
     }
     if(result.std.err.length) {
-      console.error(ansiColor.red(result.std.err.length));
+      logError('GitLogCommand#run', result.std.err.length);
     }
   
     // Process what we got to commit objects and return them to user...

@@ -1,3 +1,4 @@
+import { logDebug } from './utils.mjs';
 
 export class ConventionalCommitParser {  
   conventionalCommitData = {
@@ -20,7 +21,45 @@ export class ConventionalCommitParser {
     trimFooterValue: true,
   };
   
+  /**
+   * Tries parsing `{ rawBody: 'text here' }` given as an argument according to Conventional Commit specification.
+   * The argument is expected to be a single commit data from commits data returned by {@see GitCommitData#run}.
+   * 
+   * Default options are used. If you want to provide your own value,
+   * override the default value by providing `options` object.
+   * @example
+   * include { GitLogCommand } from './GitLogCommand.mjs';
+   * 
+   * const gitLogCmd = new GitLogCommand();
+   * gitLogCmd.include({ name: 'hash', placeholder: '%H' });
+   * gitLogCmd.include({ name: 'author.name', placeholder: '%an' });
+   * gitLogCmd.addOption('--max-count', 1);
+   * 
+   * const commitsData = await gitLogCmd.run();
+   * 
+   * for(const commitData of commitsData) {
+   *   const conventionalCommit = ConventionalCommitParser.parseGitLogCommitData(commitData, {debug: true, verbose: true});
+   *   // ConventionalCommitParser will print debug and info messages
+   *   console.log(conventionalCommit);
+   *   // {
+   *   //   valid: true,
+   *   //   hash: "########################################",
+   *   //   author: {
+   *   //     name: "EnterTheNameHere Bohemian"
+   *   //   }
+   *   // }
+   * }
+   * 
+   * @param {{ rawBody: string }} commitData 
+   * @param {instanceof(ConventionalCommitParser.defaultOptions)} options 
+   * @returns 
+   */
   static parseGitLogCommitData(commitData, options = this.defaultOptions) {
+    // Fill missing options in case user didn't provide them all
+    const lOptions = { ...this.defaultOptions, ...options };
+    
+    const debug = lOptions.debug ? logDebug : () => {};
+    
     if(!commitData.rawBody) {
       throw new TypeError('GitLogData.rawBody is required to parse conventional commit from it!');
     }
@@ -28,8 +67,7 @@ export class ConventionalCommitParser {
       throw new TypeError('GitLogData.rawBody must be a string!');
     }
     
-    console.changeIndent(1);
-    console.debug('Parsing git commit raw body:', commitData.rawBody);
+    debug('ConventionalCommitParser#parseGitLogCommitData', 'Parsing git commit raw body:', commitData.rawBody);
 
     /**
      * @type {string}
@@ -41,55 +79,51 @@ export class ConventionalCommitParser {
     let headerText = null;
     let bodyText = null;
     let footerText = null;
-    console.debug('index of \\n\\n:', index);
+    debug('ConventionalCommitParser#parseGitLogCommitData', 'index of \\n\\n:', index);
     if(index !== -1) {
       // We have body
       headerText = rawBodyText.substring(0, index);
       bodyText = rawBodyText.substring(index+2);
-      console.debug('headerText:', headerText);
-      console.debug('bodyText:', bodyText);
+      debug('ConventionalCommitParser#parseGitLogCommitData', 'headerText:', headerText);
+      debug('ConventionalCommitParser#parseGitLogCommitData', 'bodyText:', bodyText);
       
       // Optional footer can be provided after body, separated by a blank line from the body.
       index = bodyText.lastIndexOf('\n\n');
-      console.debug('index of last \\n\\n:', index);
+      debug('ConventionalCommitParser#parseGitLogCommitData', 'index of last \\n\\n:', index);
       if(index !== -1) {
         footerText = bodyText.substring(index+2);
         bodyText = bodyText.substring(0, index);
-        console.debug('footerText:', footerText);
-        console.debug('bodyText:', bodyText);
+        debug('ConventionalCommitParser#parseGitLogCommitData', 'footerText:', footerText);
+        debug('ConventionalCommitParser#parseGitLogCommitData', 'bodyText:', bodyText);
       }
     } else {
       // No body, only header
       headerText = rawBodyText;
-      console.debug('headerText:', headerText);
+      debug('ConventionalCommitParser#parseGitLogCommitData', 'headerText:', headerText);
     }
 
-    console.debug('headerText:', headerText);
-    console.debug('bodyText:', bodyText);
-    console.debug('footerText:', footerText);
+    debug('ConventionalCommitParser#parseGitLogCommitData', 'headerText:', headerText);
+    debug('ConventionalCommitParser#parseGitLogCommitData', 'bodyText:', bodyText);
+    debug('ConventionalCommitParser#parseGitLogCommitData', 'footerText:', footerText);
     
-    const header = headerText ? this.#parseHeader(headerText, options) : { valid: true };
-    console.debug('header:', header);
+    const header = headerText ? this.#parseHeader(headerText, lOptions) : { valid: true };
+    debug('ConventionalCommitParser#parseGitLogCommitData', 'header:', header);
     if(!header.valid) {
-      console.changeIndent(-1);
       return header;
     }
     
-    const footer = footerText ? this.#parseFooter(footerText, options) : { valid: true };
-    console.debug('footer:', footer);
+    const footer = footerText ? this.#parseFooter(footerText, lOptions) : { valid: true };
+    debug('ConventionalCommitParser#parseGitLogCommitData', 'footer:', footer);
     if(!footer.valid) {
-      console.changeIndent(-1);
       return footer;
     }
     
-    const body = bodyText ? this.#parseBody(bodyText, options) : { valid: true };
-    console.debug('body:', body);
+    const body = bodyText ? this.#parseBody(bodyText, lOptions) : { valid: true };
+    debug('ConventionalCommitParser#parseGitLogCommitData', 'body:', body);
     if(!body.valid) {
-      console.changeIndent(-1);
       return body;
     }
     
-    console.changeIndent(-1);
     // If breakingChange is true in one,
     // it must be true in final object, so
     // make sure of it
@@ -111,8 +145,9 @@ export class ConventionalCommitParser {
    * @param {*} options 
    */
   static #parseHeader(text, options) {
-    console.changeIndent(1);
-    console.debug('Parsing ConventionalCommit header:', text);
+    const debug = options.debug ? logDebug : () => {};
+
+    debug('ConventionalCommitParser#parseHeader', 'Parsing ConventionalCommit header:', text);
     
     const result = {
       valid: true,
@@ -126,8 +161,7 @@ export class ConventionalCommitParser {
     // followed by the OPTIONAL scope, OPTIONAL !, and REQUIRED terminal colon and space.
     const separatorIndex = text.indexOf(': ');
     if(separatorIndex === -1) {
-      console.debug('Separator not found.');
-      console.changeIndent(-1);
+      debug('ConventionalCommitParser#parseHeader', 'Separator not found.');
       // terminal colon and space not found, not valid conventional commit
       return {
         ...{valid: false},
@@ -141,20 +175,19 @@ export class ConventionalCommitParser {
     // A scope MAY be provided after a type. A scope MUST consist of a noun describing
     // a section of the codebase surrounded by parenthesis, e.g., fix(parser):
     let tempText = text.substring(0, separatorIndex);
-    console.debug('tempText', tempText);
+    debug('ConventionalCommitParser#parseHeader', 'tempText', tempText);
     result.description = text.substring(separatorIndex+2);
     if(options.trimDescription) {
       result.description = result.description.trim();
     }
-    console.debug('result.description', result.description);
+    debug('ConventionalCommitParser#parseHeader', 'result.description', result.description);
     const parenStartIndex = tempText.indexOf('(');
     const parenEndIndex = tempText.indexOf(')', parenStartIndex+1);
     
     // Multiple ( would mean not valid scope
     let secondParenIndex = tempText.indexOf('(', parenStartIndex+1);
     if(secondParenIndex !== -1) {
-      console.debug('Multiple ( found.');
-      console.changeIndent(-1);
+      debug('ConventionalCommitParser#parseHeader', 'Multiple ( found.');
       return {
         ...{valid: false},
         ...(options?.includeReasonWhyNotValid ? {reason: 'Multiple ( found. Just one is expected.'} : {})
@@ -163,8 +196,7 @@ export class ConventionalCommitParser {
     // Multiple ) would mean not valid scope too
     secondParenIndex = tempText.indexOf(')', parenEndIndex+1);
     if(secondParenIndex !== -1) {
-      console.debug('Multiple ) found.');
-      console.changeIndent(-1);
+      debug('ConventionalCommitParser#parseHeader', 'Multiple ) found.');
       return {
         ...{valid: false},
         ...(options?.includeReasonWhyNotValid ? {reason: 'Multiple ) found. Just one is expected.'} : {})
@@ -172,8 +204,7 @@ export class ConventionalCommitParser {
     }
     // Only ( without ) is not valid either
     if(parenStartIndex !== -1 && parenEndIndex === -1) {
-      console.debug('Only ( without pairing ending ) found.');
-      console.changeIndent(-1);
+      debug('ConventionalCommitParser#parseHeader', 'Only ( without pairing ending ) found.');
       return {
         ...{valid: false},
         ...(options?.includeReasonWhyNotValid ? {reason: 'Only ( without pairing ending ) found. That makes parens uneven.'} : {})
@@ -181,8 +212,7 @@ export class ConventionalCommitParser {
     }
     // Only ) is not valid too
     if(parenStartIndex === -1 && parenEndIndex !== -1) {
-      console.debug('Only ) without pairing starting ( found.');
-      console.changeIndent(-1);
+      debug('ConventionalCommitParser#parseHeader', 'Only ) without pairing starting ( found.');
       return {
         ...{valid: false},
         ...(options?.includeReasonWhyNotValid ? {reason: 'Only ) without pairing starting ( found. That makes parens uneven.'} : {})
@@ -205,19 +235,18 @@ export class ConventionalCommitParser {
     } else {
       result.breakingChange = false;
     }
-    console.debug('result.breakingChange', result.breakingChange);
+    debug('ConventionalCommitParser#parseHeader', 'result.breakingChange', result.breakingChange);
     
-    console.debug('result.scope', result.scope);
+    debug('ConventionalCommitParser#parseHeader', 'result.scope', result.scope);
     
     result.type = tempText;
     
-    console.debug('result.type', result.type);
+    debug('ConventionalCommitParser#parseHeader', 'result.type', result.type);
 
     // Now check if type and scope are single word
     const isAWord = /^\w+$/iu;
     if(!isAWord.test(result.type)) {
-      console.debug(`Parsed type is not a single word: "${result.type.length > 10 ? `${result.type.substring(0, 20)}...` : conventionalCommitData.type}"`);
-      console.changeIndent(-1);
+      debug('ConventionalCommitParser#parseHeader', `Parsed type is not a single word: "${result.type.length > 10 ? `${result.type.substring(0, 20)}...` : conventionalCommitData.type}"`);
       return {
         ...{valid: false},
         ...(options?.includeReasonWhyNotValid)
@@ -227,8 +256,7 @@ export class ConventionalCommitParser {
     }
     
     if(typeof result.scope === 'string' && !isAWord.test(result.scope)) {
-      console.debug(`Parsed scope is not a single word: "${result.scope.length > 10 ? `${result.scope.substring(0, 20)}...` : conventionalCommitData.scope}"`);
-      console.changeIndent(-1);
+      debug('ConventionalCommitParser#parseHeader', `Parsed scope is not a single word: "${result.scope.length > 10 ? `${result.scope.substring(0, 20)}...` : conventionalCommitData.scope}"`);
       return {
         ...{valid: false},
         ...(options?.includeReasonWhyNotValid)
@@ -237,7 +265,6 @@ export class ConventionalCommitParser {
       };
     }
     
-    console.changeIndent(-1);
     return result;
   }
   
@@ -247,8 +274,9 @@ export class ConventionalCommitParser {
    * @param {*} options 
    */
   static #parseBody(text, options) {
-    console.changeIndent(1);
-    console.debug('Parsing ConventionalCommit body:', text);
+    const debug = options.debug ? logDebug : () => {};
+
+    debug('ConventionalCommitParser#parseBody', 'Parsing ConventionalCommit body:', text);
     
     const body = {
       valid: true,
@@ -267,7 +295,6 @@ export class ConventionalCommitParser {
       body.body = body.body.trim();
     }
 
-    console.changeIndent(-1);
     return body;
   }
   
@@ -277,8 +304,9 @@ export class ConventionalCommitParser {
    * @param {*} options 
    */
   static #parseFooter(text, options) {
-    console.changeIndent(1);
-    console.debug('Parsing ConventionalCommit footer:', text);
+    const debug = options.debug ? logDebug : () => {};
+    
+    debug('ConventionalCommitParser#parseFooter', 'Parsing ConventionalCommit footer:', text);
     
     const result = {
       valid: true,
@@ -295,8 +323,7 @@ export class ConventionalCommitParser {
       if(currentTokenSeparatorIndex === -1) currentTokenSeparatorIndex = tempText.indexOf(' #');
       
       if(currentTokenSeparatorIndex === -1) {
-        console.debug('Separator not found.');
-        console.changeIndent(-1);
+        debug('ConventionalCommitParser#parseFooter', 'Separator not found.');
         return {
           ...{valid: false},
           ...(options.includeReasonWhyNotValid)
@@ -314,15 +341,14 @@ export class ConventionalCommitParser {
       // multi-paragraph body). An exception is made for BREAKING CHANGE,
       // which MAY also be used as a token.
       if(footerToken === 'BREAKING CHANGE' || footerToken === 'BREAKING-CHANGE') {
-        console.debug('BREAKING-CHANGE found.');
+        debug('ConventionalCommitParser#parseFooter', 'BREAKING-CHANGE found.');
         footer.token = footerToken;
         result.breakingChange = true;
       } else {
         // Do not set result.breakingChange to false, just in case it's true already, which would overwrite it...
         const isAFooterToken = /^[\w-]+$/iu;
         if(!isAFooterToken.test(footerToken)) {
-          console.debug(`Token found in footer is not a valid token. Token: "${typeof footerToken === 'string' ? footerToken : typeof footerToken}"`);
-          console.changeIndent(-1);
+          debug('ConventionalCommitParser#parseFooter', `Token found in footer is not a valid token. Token: "${typeof footerToken === 'string' ? footerToken : typeof footerToken}"`);
           return {
             ...{valid: false},
             ...(options.includeReasonWhyNotValid)
@@ -347,7 +373,7 @@ export class ConventionalCommitParser {
         }
         
         result.footers.push(footer);
-        console.debug('Footer:', footer);
+        debug('ConventionalCommitParser#parseFooter', 'Footer:', footer);
       } else {
         // Separator found so continue with separating next footer's token from this footer's value...
 
@@ -357,11 +383,10 @@ export class ConventionalCommitParser {
         
         // We now have footer value WITH token of next footer. We need to extract the token of next footer
         const extractNextToken = /[\w-]+$/igu;
-        console.debug('Trying to extract token from:', currentValueAndNextTokenText);
+        debug('ConventionalCommitParser#parseFooter', 'Trying to extract token from:', currentValueAndNextTokenText);
         const matched = extractNextToken.exec(currentValueAndNextTokenText);
         if(!matched) {
-          console.debug(`Couldn't parse token of next footer to determine where current footer value ends and next footer's token starts. footerValue: "${typeof currentValueAndNextTokenText === 'string' ? currentValueAndNextTokenText : typeof currentValueAndNextTokenText}"`);
-          console.changeIndent(-1);
+          debug('ConventionalCommitParser#parseFooter', `Couldn't parse token of next footer to determine where current footer value ends and next footer's token starts. footerValue: "${typeof currentValueAndNextTokenText === 'string' ? currentValueAndNextTokenText : typeof currentValueAndNextTokenText}"`);
           return {
             ...{valid: false},
             ...(options.includeReasonWhyNotValid)
@@ -378,7 +403,7 @@ export class ConventionalCommitParser {
         }
 
         result.footers.push(footer);
-        console.debug('footer:', footer);
+        debug('ConventionalCommitParser#parseFooter', 'footer:', footer);
       }
       
       // Breaking changes MUST be indicated in the type/scope prefix of a commit, or as an entry in the footer.
@@ -392,7 +417,6 @@ export class ConventionalCommitParser {
     
     } while(tempText.length);
     
-    console.changeIndent(-1);
     return result;
   }
 }

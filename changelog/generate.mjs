@@ -1,35 +1,12 @@
-import { inspect } from 'node:util';
-import ansiColor from 'ansi-colors';
-
+import { logDebug } from './utils.mjs';
 import { GitLogCommand } from './GitLogCommand.mjs';
 import { ConventionalCommitParser } from './ConventionalCommitParser.mjs';
 
-const origDebug = console.debug;
-console.debug = function (message, ...args) {
-  // eslint-disable-next-line no-console
-  origDebug(ansiColor.cyan('[DEBUG] ') + ansiColor.magenta(`${console.indentLevel ?? 0} `) + message, args.map( (arg) => { return inspect(arg, false, 10, true); }).join(' ') );
+const config = {
+  debug: false,
+  verbose: false,
 };
-
-// eslint-disable-next-line no-console
-const origLog = console.log;
-// eslint-disable-next-line no-console
-console.log = function (message, ...args) {
-  // eslint-disable-next-line no-console
-  origLog(ansiColor.yellow('[  LOG] ') + ansiColor.magenta(`${console.indentLevel ?? 0} `) + message, args.map( (arg) => { return inspect(arg, false, 10, true); }).join(' ') );
-};
-
-// eslint-disable-next-line no-console
-console.changeIndent = function (changeLevel) {
-  // eslint-disable-next-line no-console
-  if(!console.indentLevel) {
-    // eslint-disable-next-line no-console
-    console.indentLevel = 0;
-  }
-  // eslint-disable-next-line no-console
-  console.indentLevel += changeLevel;
-};
-
-
+const debug = config.debug ? logDebug : () => {};
 
 class GitCommitData {
   static HASH = { name: 'hash', placeholder: '%H' };
@@ -51,7 +28,7 @@ class GitCommitData {
 
 function getPackagesInvolved(commit) {
   const packagesInvolved = new Set();
-
+  
   // Check if there is any data returned cause options were used
   if(commit.optionsData) {
     const lines = commit.optionsData.split('\n');
@@ -71,10 +48,10 @@ function getPackagesInvolved(commit) {
 
 
 
-const gitLogCmd = new GitLogCommand();
+const gitLogCmd = new GitLogCommand(config);
 
 gitLogCmd.addOption('name-only');
-gitLogCmd.addOption('--max-count', 100);
+gitLogCmd.addOption('--max-count', 30);
 
 gitLogCmd.include(GitCommitData.HASH);
 gitLogCmd.include(GitCommitData.TAG);
@@ -94,12 +71,9 @@ for(const commit of commits) {
   data.push(dataItem);
 
   dataItem.packagesInvolved = getPackagesInvolved(dataItem.commit);
-  dataItem.conventionalCommit = ConventionalCommitParser.parseGitLogCommitData(dataItem.commit);
-
-  console.debug('dataItem', dataItem);
+  dataItem.conventionalCommit = ConventionalCommitParser.parseGitLogCommitData(dataItem.commit, config);
+  
+  debug('GenerateGitChangelog', 'dataItem', dataItem);
 }
 
-console.log('data:', data);
-
-console.log = origLog;
-console.debug = origDebug;
+debug('GenerateGitChangelog', 'data:', data);
