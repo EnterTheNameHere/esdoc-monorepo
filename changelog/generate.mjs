@@ -1,12 +1,26 @@
-import { logDebug } from './utils.mjs';
+import fse from 'fs-extra';
+
+import { logDebug, logError } from './utils.mjs';
 import { GitLogCommand } from './GitLogCommand.mjs';
 import { ConventionalCommitParser } from './ConventionalCommitParser.mjs';
 
 const config = {
-  debug: false,
+  debug: true,
   verbose: false,
 };
 const debug = config.debug ? logDebug : () => {};
+
+
+
+debug('GenerateGitChangelog', 'Trying to read workspaces from package.json...');
+const packageJSON = fse.readJsonSync('./package.json', {throws: false});
+let workspaces = ['packages/*'];
+if(packageJSON && Array.isArray(packageJSON.workspaces)) {
+  debug('GenerateGitChangelog', 'Workspaces loaded:', packageJSON.workspaces);
+  workspaces = packageJSON.workspaces;
+}
+
+
 
 class GitCommitData {
   static HASH = { name: 'hash', placeholder: '%H' };
@@ -29,16 +43,31 @@ class GitCommitData {
 function getPackagesInvolved(commit) {
   const packagesInvolved = new Set();
   
+  const fixedWorkspacesPaths = [];
+  for(const workspacePath of workspaces) {
+    let fixedPath = workspacePath;
+    while(fixedPath.endsWith('*') || fixedPath.endsWith('.')) {
+      fixedPath = fixedPath.substring(0, fixedPath.length - 1);
+    }
+    // Data integrity check
+    if(!fixedPath.endsWith('/')) {
+      logError('getPackagesInvolved', 'Integrity check: Workspace path, after fixing, is expected to end with / character, but it doesn\'t!', fixedPath);
+    }
+    fixedWorkspacesPaths.push(fixedPath);
+  }
+
   // Check if there is any data returned cause options were used
   if(commit.optionsData) {
     const lines = commit.optionsData.split('\n');
     
     for(const line of lines) {
-      // File paths are one per line, so if path starts with workspace path, we can get name of package involved
-      if(line.startsWith('packages/')) {
-        const filePathParts = line.split('/');
-        const packageName = filePathParts[1] ?? '';
-        if(packageName) packagesInvolved.add(packageName);
+      for(const path of fixedWorkspacesPaths) {
+        // File paths are one per line, so if path starts with workspace path, we can get name of package involved
+        if(line.startsWith(path)) {
+          const filePathParts = line.split('/');
+          const packageName = filePathParts[1] ?? '';
+          if(packageName) packagesInvolved.add(packageName);
+        }
       }
     }
   }
@@ -76,4 +105,4 @@ for(const commit of commits) {
   debug('GenerateGitChangelog', 'dataItem', dataItem);
 }
 
-debug('GenerateGitChangelog', 'data:', data);
+console.log('GenerateGitChangelog', 'data:', data);
