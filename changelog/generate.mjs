@@ -1,4 +1,5 @@
 import fse from 'fs-extra';
+import upath from 'upath';
 
 import { logDebug, logError } from './utils.mjs';
 import { GitLogCommand } from './GitLogCommand.mjs';
@@ -39,11 +40,15 @@ class GitCommitData {
 }
 
 
-
+// TODO: Try inferring scope by using directories of files, eg.
+// TODO: changelog/ConventionalCommitParser.mjs > no package, changelog
+// TODO: packages/esdoc-publish-html-plugin/package.json > publish-html, no scope
+// TODO: packages/esdoc-publish-html-plugin/src/Builder/DocBuilder.js > publish-html, builder
+// TODO: .github/workflows/local-install-test-minimal.yml > no package, github-workflows
+const fixedWorkspacesPaths = new Set();
 function getPackagesInvolved(commit) {
   const packagesInvolved = new Set();
   
-  const fixedWorkspacesPaths = [];
   for(const workspacePath of workspaces) {
     let fixedPath = workspacePath;
     while(fixedPath.endsWith('*') || fixedPath.endsWith('.')) {
@@ -53,7 +58,7 @@ function getPackagesInvolved(commit) {
     if(!fixedPath.endsWith('/')) {
       logError('getPackagesInvolved', 'Integrity check: Workspace path, after fixing, is expected to end with / character, but it doesn\'t!', fixedPath);
     }
-    fixedWorkspacesPaths.push(fixedPath);
+    fixedWorkspacesPaths.add(fixedPath);
   }
 
   // Check if there is any data returned cause options were used
@@ -76,6 +81,80 @@ function getPackagesInvolved(commit) {
 }
 
 
+const FileMode = {
+  createNewFile: 1,
+  append: 2,
+};
+
+const FileOrder = {
+  asc: 1,
+  desc: 2,
+};
+
+const changelogFiles = new Map();
+function generateChangelogs(data) {
+  if(!data) return;
+  
+  for(const dataItem of data) {
+    for(const packageName of dataItem.packagesInvolved) {
+      debug('fixedWorkspacesPaths', '', fixedWorkspacesPaths);
+      for(const fixedWorkspacePath of fixedWorkspacesPaths) {
+        debug('fixedWorkspacePath', '', fixedWorkspacePath);
+        const changelogDirectory = upath.joinSafe(fixedWorkspacePath, packageName);
+        const changelogFilePath = upath.joinSafe(changelogDirectory, 'CHANGELOG.md');
+        
+        let changelogFileEntry = null;
+        
+        // Check file entry exists before trying to access filesystem
+        if(changelogFiles.has(changelogFilePath)) {
+          changelogFileEntry = changelogFiles.get(changelogFilePath);
+        }
+        
+        if(!changelogFileEntry) {
+          if(fse.existsSync(changelogDirectory)) {
+            debug('generateChangelogs', 'Checking if following directory exists:', changelogDirectory);
+            debug('generateChangelogs', 'Exists...');
+            if(!changelogFiles.has(changelogFilePath)) {
+              changelogFiles.set(changelogFilePath, { lastTag: '', contents: '' });
+            }
+            changelogFileEntry = changelogFiles.get(changelogFilePath);
+          } else {
+            debug('generateChangelogs', 'Does not exist...');
+          }
+        }
+
+        if(changelogFileEntry) {
+          let text = '';
+          if(changelogFileEntry.lastTag !== dataItem.commit.tag) {
+            changelogFileEntry.lastTag = dataItem.commit.tag;
+            
+            if(changelogFileEntry.contents.length !== 0) {
+              text += '\n\n';
+            }
+            text += `# ${String(dataItem.commit.tag)}\n\n`;
+          }
+          
+          if(dataItem.conventionalCommit && dataItem.conventionalCommit.valid === true) {
+            text += '- ';
+            text += String(dataItem.conventionalCommit.type);
+            text += dataItem.conventionalCommit.scope ? `(${String(dataItem.conventionalCommit.scope)}): ` : ': ';
+            text += String(dataItem.conventionalCommit.description);
+            text += '\n';
+          } else {
+            text += String(dataItem.commit.subject);
+          }
+          
+          changelogFileEntry.contents += text;
+        }
+      }
+    }
+  }
+
+  for(const changelogFilePath of changelogFiles.keys()) {
+    debug('generateChangelogs', 'About to write changelog into:', changelogFilePath);
+    fse.writeFileSync(changelogFilePath, changelogFiles.get(changelogFilePath).contents);
+  }
+}
 
 const gitLogCmd = new GitLogCommand(config);
 
@@ -102,7 +181,7 @@ for(const commit of commits) {
   dataItem.packagesInvolved = getPackagesInvolved(dataItem.commit);
   dataItem.conventionalCommit = ConventionalCommitParser.parseGitLogCommitData(dataItem.commit, config);
   
-  debug('GenerateGitChangelog', 'dataItem', dataItem);
+  debug('GenerateGitChangelog', 'dataItem after processing:', dataItem);
 }
 
-console.log('GenerateGitChangelog', 'data:', data);
+generateChangelogs(data);
