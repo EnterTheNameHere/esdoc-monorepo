@@ -246,21 +246,21 @@ export class ConventionalCommitParser {
     // Now check if type and scope are single word
     const isAWord = /^\w+$/iu;
     if(!isAWord.test(result.type)) {
-      debug('ConventionalCommitParser#parseHeader', `Parsed type is not a single word: "${result.type.length > 10 ? `${result.type.substring(0, 20)}...` : conventionalCommitData.type}"`);
+      debug('ConventionalCommitParser#parseHeader', `Parsed type is not a single word: "${result.type.length > 10 ? `${result.type.substring(0, 20)}...` : result.type}"`);
       return {
         ...{valid: false},
         ...(options?.includeReasonWhyNotValid)
-          ? {reason: `Parsed type is not a single word: "${result.type.length > 10 ? `${result.type.substring(0, 20)}...` : conventionalCommitData.type}"`}
+          ? {reason: `Parsed type is not a single word: "${result.type.length > 10 ? `${result.type.substring(0, 20)}...` : result.type}"`}
           : {}
       };
     }
     
     if(typeof result.scope === 'string' && !isAWord.test(result.scope)) {
-      debug('ConventionalCommitParser#parseHeader', `Parsed scope is not a single word: "${result.scope.length > 10 ? `${result.scope.substring(0, 20)}...` : conventionalCommitData.scope}"`);
+      debug('ConventionalCommitParser#parseHeader', `Parsed scope is not a single word: "${result.scope.length > 10 ? `${result.scope.substring(0, 20)}...` : result.scope}"`);
       return {
         ...{valid: false},
         ...(options?.includeReasonWhyNotValid)
-          ? {reason: `Parsed scope is not a single word: "${result.scope.length > 10 ? `${result.scope.substring(0, 20)}...` : conventionalCommitData.scope}"`}
+          ? {reason: `Parsed scope is not a single word: "${result.scope.length > 10 ? `${result.scope.substring(0, 20)}...` : result.scope}"`}
           : {}
       };
     }
