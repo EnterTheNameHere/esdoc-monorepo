@@ -1,5 +1,6 @@
 import fse from 'fs-extra';
 import upath from 'upath';
+import globby from 'globby';
 
 import { logDebug, logError } from './utils.mjs';
 import { GitLogCommand } from './GitLogCommand.mjs';
@@ -21,6 +22,14 @@ if(packageJSON && Array.isArray(packageJSON.workspaces)) {
   workspaces = packageJSON.workspaces;
 }
 
+debug('GeneratingGitChangelog', 'Trying to find packages in workspaces...');
+const workspacePackageJSONPaths = [];
+for(const workspace of workspaces) {
+  // Add package.json to workspace path and see what we get...
+  const packageJSONFilePattern = upath.normalizeSafe(upath.join(workspace, 'package.json'));
+  workspacePackageJSONPaths.push(...globby.sync(packageJSONFilePattern));
+}
+const existingPackagesDirs = workspacePackageJSONPaths.map((packageJSONPath) => { return packageJSONPath.substring(0, packageJSONPath.length - 12); });
 
 
 class GitCommitData {
