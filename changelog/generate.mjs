@@ -2,17 +2,17 @@ import fse from 'fs-extra';
 import upath from 'upath';
 import globby from 'globby';
 
-import { logDebug, logError } from './utils.mjs';
+import { logDebug } from './utils.mjs';
 import { GitLogCommand } from './GitLogCommand.mjs';
+import { GitRemoteShow } from './GitRemoteShow.mjs';
 import { ConventionalCommitParser } from './ConventionalCommitParser.mjs';
+import { GitCommitLog } from './GitCommitLog.mjs';
 
 const config = {
-  debug: true,
-  verbose: false,
+  debug: false,
+  verbose: true,
 };
 const debug = config.debug ? logDebug : () => {};
-
-
 
 debug('GenerateGitChangelog', 'Trying to read workspaces from package.json...');
 const packageJSON = fse.readJsonSync('./package.json', {throws: false});
@@ -24,13 +24,19 @@ if(packageJSON && Array.isArray(packageJSON.workspaces)) {
 
 debug('GeneratingGitChangelog', 'Trying to find packages in workspaces...');
 const workspacePackageJSONPaths = [];
+const workspacePackageJSONFiles = new Map();
 for(const workspace of workspaces) {
   // Add package.json to workspace path and see what we get...
   const packageJSONFilePattern = upath.normalizeSafe(upath.join(workspace, 'package.json'));
+  
   workspacePackageJSONPaths.push(...globby.sync(packageJSONFilePattern));
 }
-const existingPackagesDirs = workspacePackageJSONPaths.map((packageJSONPath) => { return packageJSONPath.substring(0, packageJSONPath.length - 12); });
 
+const existingPackagesDirs = workspacePackageJSONPaths.map((packageJSONFilePath) => {
+  const path = packageJSONFilePath.substring(0, packageJSONFilePath.length - 12);
+  workspacePackageJSONFiles.set(path, fse.readJsonSync(packageJSONFilePath));
+  return path;
+});
 
 class GitCommitData {
   static HASH = { name: 'hash', placeholder: '%H' };
@@ -48,66 +54,54 @@ class GitCommitData {
   placeholder = '';
 }
 
-
 // TODO: Try inferring scope by using directories of files, eg.
 // TODO: changelog/ConventionalCommitParser.mjs > no package, changelog
 // TODO: packages/esdoc-publish-html-plugin/package.json > publish-html, no scope
 // TODO: packages/esdoc-publish-html-plugin/src/Builder/DocBuilder.js > publish-html, builder
 // TODO: .github/workflows/local-install-test-minimal.yml > no package, github-workflows
-const fixedWorkspacesPaths = new Set();
-function getPackagesInvolved(commit) {
-  const packagesInvolved = new Set();
-  
-  for(const workspacePath of workspaces) {
-    let fixedPath = workspacePath;
-    while(fixedPath.endsWith('*') || fixedPath.endsWith('.')) {
-      fixedPath = fixedPath.substring(0, fixedPath.length - 1);
-    }
-    // Data integrity check
-    if(!fixedPath.endsWith('/')) {
-      logError('getPackagesInvolved', 'Integrity check: Workspace path, after fixing, is expected to end with / character, but it doesn\'t!', fixedPath);
-    }
-    fixedWorkspacesPaths.add(fixedPath);
-  }
-
-  // Check if there is any data returned cause options were used
-  if(commit.optionsData) {
-    const lines = commit.optionsData.split('\n');
-    
-    for(const line of lines) {
-      for(const path of fixedWorkspacesPaths) {
-        // File paths are one per line, so if path starts with workspace path, we can get name of package involved
-        if(line.startsWith(path)) {
-          const filePathParts = line.split('/');
-          const packageName = filePathParts[1] ?? '';
-          if(packageName) packagesInvolved.add(packageName);
+function getPackagesInvolved(gitCommitLog) {
+  if(typeof gitCommitLog.additionalData === 'string') {
+    /**
+     * @param {string} fileNamePath
+     * @return {string|null}
+     */
+    const findNameOfPackageFileBelongsTo = (fileNamePath) => {
+      for(const packageDir of existingPackagesDirs) {
+        if(fileNamePath.startsWith(packageDir)) {
+          return packageDir;
         }
       }
+      return null;
+    };
+    
+    const packagesInvolved = new Set();
+    
+    const additionalDataLines = gitCommitLog.additionalData.split('\n');
+    for(const additionalDataLine of additionalDataLines) {
+      const packageName = findNameOfPackageFileBelongsTo(additionalDataLine);
+      if(typeof packageName === 'string' && packageName.trim() !== '') {
+        packagesInvolved.add(packageName);
+      }  
     }
+    
+    if(packagesInvolved.size === 0) {
+      return null;
+    }
+    return Array.from(packagesInvolved);
   }
   
-  return Array.from(packagesInvolved);
+  return null;
 }
-
-
-const FileMode = {
-  createNewFile: 1,
-  append: 2,
-};
-
-const FileOrder = {
-  asc: 1,
-  desc: 2,
-};
 
 const changelogFiles = new Map();
 function generateChangelogs(data) {
   if(!data) return;
   
   for(const dataItem of data) {
+    if(!dataItem.packagesInvolved) continue;
     for(const packageName of dataItem.packagesInvolved) {
-      debug('fixedWorkspacesPaths', '', fixedWorkspacesPaths);
-      for(const fixedWorkspacePath of fixedWorkspacesPaths) {
+      debug('fixedWorkspacesPaths', '', workspacePackageJSONPaths);
+      for(const fixedWorkspacePath of workspacePackageJSONPaths) {
         debug('fixedWorkspacePath', '', fixedWorkspacePath);
         const changelogDirectory = upath.joinSafe(fixedWorkspacePath, packageName);
         const changelogFilePath = upath.joinSafe(changelogDirectory, 'CHANGELOG.md');
@@ -137,20 +131,21 @@ function generateChangelogs(data) {
           if(changelogFileEntry.lastTag !== dataItem.commit.tag) {
             changelogFileEntry.lastTag = dataItem.commit.tag;
             
-            if(changelogFileEntry.contents.length !== 0) {
-              text += '\n\n';
-            }
-            text += `# ${String(dataItem.commit.tag)}\n\n`;
+            text += `\n## ${String(dataItem.commit.tag)}\n\n`;
           }
           
           if(dataItem.conventionalCommit && dataItem.conventionalCommit.valid === true) {
             text += '- ';
+            text += `[${dataItem.commit.hash.substring(0,4)}](${dataItem.commit.hash}) `;
             text += String(dataItem.conventionalCommit.type);
             text += dataItem.conventionalCommit.scope ? `(${String(dataItem.conventionalCommit.scope)}): ` : ': ';
             text += String(dataItem.conventionalCommit.description);
             text += '\n';
           } else {
+            text += '- ';
+            text += `[${dataItem.commit.hash.substring(0,4)}](${dataItem.commit.hash}) `;
             text += String(dataItem.commit.subject);
+            text += '\n';
           }
           
           changelogFileEntry.contents += text;
@@ -161,14 +156,25 @@ function generateChangelogs(data) {
 
   for(const changelogFilePath of changelogFiles.keys()) {
     debug('generateChangelogs', 'About to write changelog into:', changelogFilePath);
-    fse.writeFileSync(changelogFilePath, changelogFiles.get(changelogFilePath).contents);
+
+    const changelogFileEntry = changelogFiles.get(changelogFilePath);
+    changelogFileEntry.contents = `# CHANGELOG\n${changelogFileEntry.contents}`;
+    
+    fse.writeFileSync(changelogFilePath, changelogFileEntry.contents);
   }
+}
+
+const gitRemotes = await GitRemoteShow.getGitRemotes();
+
+let gitUrl = null;
+if(gitRemotes && gitRemotes[0] && gitRemotes[0].url) {
+  gitUrl = gitRemotes[0].url;
 }
 
 const gitLogCmd = new GitLogCommand(config);
 
 gitLogCmd.addOption('name-only');
-gitLogCmd.addOption('--max-count', 30);
+gitLogCmd.addOption('--max-count', 20);
 
 gitLogCmd.include(GitCommitData.HASH);
 gitLogCmd.include(GitCommitData.TAG);
@@ -184,13 +190,18 @@ gitLogCmd.include(GitCommitData.RAW_BODY);
 const commits = await gitLogCmd.run();
 const data = [];
 for(const commit of commits) {
-  const dataItem = { commit: commit };
-  data.push(dataItem);
-
-  dataItem.packagesInvolved = getPackagesInvolved(dataItem.commit);
-  dataItem.conventionalCommit = ConventionalCommitParser.parseGitLogCommitData(dataItem.commit, config);
-  
-  debug('GenerateGitChangelog', 'dataItem after processing:', dataItem);
+  const gitCommitLog = GitCommitLog.create(commit);
+  gitCommitLog.packagesInvolved = getPackagesInvolved(commit);
+  if(gitUrl) {
+    if(!gitCommitLog.repository) {
+      gitCommitLog.repository = {
+        type: 'git',
+        url: gitUrl,
+      };
+    }
+  }
+  gitCommitLog.conventionalCommit = ConventionalCommitParser.parseGitLogCommitData(commit);
+  gitCommitLog.normalize();
 }
 
 generateChangelogs(data);
