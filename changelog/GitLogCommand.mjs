@@ -272,7 +272,7 @@ export class GitLogCommand {
       logError('GitLogCommand#run', result.error);
     }
     if(result.std.err.length) {
-      logError('GitLogCommand#run', result.std.err.length);
+      logError('GitLogCommand#run', result.std.err);
     }
   
     // Process what we got to commit objects and return them to user...
