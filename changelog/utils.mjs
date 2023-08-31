@@ -24,6 +24,10 @@ export function logInfo(section, message, ...args) {
   log(ansiColors.yellow('INFO '), section, message, ...args);
 }
 
+export function logWarning(section, message, ...args) {
+  log(ansiColors.red('WARN '), section, message, ...args);
+}
+
 export function logError(section, message, ...args) {
   log(ansiColors.red('ERROR'), section, message, ...args);
 }
