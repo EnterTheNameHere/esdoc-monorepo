@@ -162,17 +162,17 @@ export class GitLogCommand {
     }
     
     const startTagSeparatedTexts = [];
-    for(const entry of newLineSeparatedTexts) {
-      const matched = entry.match(new RegExp(this.prettyFormatStartTag, 'gu'));
+    for(const newLineSeparatedEntry of newLineSeparatedTexts) {
+      const matched = newLineSeparatedEntry.match(new RegExp(this.prettyFormatStartTag, 'gu'));
       if(matched.length > 1) {
-        const splitted = entry.split(this.prettyFormatStartTag);
-        for(const splittedEntry of splitted) {
+        const startTagSplitEntries = newLineSeparatedEntry.split(this.prettyFormatStartTag);
+        for(const entry of startTagSplitEntries) {
           // Splitting leaves one empty entry, ignore it
-          if(splittedEntry === '') continue;
-          startTagSeparatedTexts.push(this.prettyFormatStartTag + splittedEntry);
+          if(entry === '') continue;
+          startTagSeparatedTexts.push(this.prettyFormatStartTag + entry);
         }
       } else {
-        startTagSeparatedTexts.push(entry);
+        startTagSeparatedTexts.push(newLineSeparatedEntry);
       }
     }
     
@@ -257,7 +257,7 @@ export class GitLogCommand {
         currentProperty[propertyNames[numberOfParents]] = commitData[entry.index];
       }
       
-      commit.optionsData = additionalText;
+      commit.additionalData = additionalText;
       commits.push(commit);
     }
     
