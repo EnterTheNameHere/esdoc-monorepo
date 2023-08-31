@@ -143,6 +143,7 @@ export class GitLogCommand {
   /**
    * 
    * @param {Array<string>} stdOut 
+   * @return {Array<string>}
    */
   prepareRawStdOutToCommitsText(stdOut) {
     if(!Array.isArray(stdOut)) return [];
