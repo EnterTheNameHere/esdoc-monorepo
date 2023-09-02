@@ -4,7 +4,7 @@ import { logError, helperRunCommand } from './utils.mjs';
  * Used to get git remotes list to populate GitCommitLog repository field.
  */
 
-export class GitRemoteShow
+export class GitRemoteShowCommand
 {
   /**
    * @type {boolean} defaults to true

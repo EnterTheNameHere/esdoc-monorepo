@@ -4,7 +4,7 @@ import globby from 'globby';
 
 import { logDebug } from './utils.mjs';
 import { GitLogCommand } from './GitLogCommand.mjs';
-import { GitRemoteShow } from './GitRemoteShow.mjs';
+import { GitRemoteShowCommand } from './GitRemoteShow.mjs';
 import { ConventionalCommitParser } from './ConventionalCommitParser.mjs';
 import { GitCommitLog } from './GitCommitLog.mjs';
 
@@ -164,7 +164,7 @@ function generateChangelogs(data) {
   }
 }
 
-const gitRemotes = await GitRemoteShow.getGitRemotes();
+const gitRemotes = await GitRemoteShowCommand.getGitRemotes();
 
 let gitUrl = null;
 if(gitRemotes && gitRemotes[0] && gitRemotes[0].url) {
