@@ -2,7 +2,7 @@ import fse from 'fs-extra';
 import upath from 'upath';
 import globby from 'globby';
 
-import { logDebug } from './utils.mjs';
+import { logDebug } from './eslog.mjs';
 import { GitLogCommand } from './GitLogCommand.mjs';
 import { GitRemoteShowCommand } from './GitRemoteShowCommand.mjs';
 import { ConventionalCommitParser } from './ConventionalCommitParser.mjs';

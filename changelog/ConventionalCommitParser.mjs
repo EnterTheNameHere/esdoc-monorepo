@@ -1,4 +1,4 @@
-import { logDebug } from './utils.mjs';
+import { logDebug } from './eslog.mjs';
 
 export class ConventionalCommitParser {
   static defaultOptions = {

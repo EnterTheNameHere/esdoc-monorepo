@@ -1,5 +1,5 @@
 import { URL } from 'node:url';
-import { logWarning } from './utils.mjs';
+import { logWarning } from './eslog.mjs';
 
 export class GitCommitLog
 {

@@ -1,4 +1,5 @@
-import { logError, helperRunCommand } from './utils.mjs';
+import { logError } from './eslog.mjs';
+import { helperRunCommand } from './utils.mjs';
 
 /**
  * Used to get git remotes list to populate GitCommitLog repository field.

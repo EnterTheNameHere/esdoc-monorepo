@@ -1,4 +1,6 @@
-import { logDebug, logError, helperRunCommand } from './utils.mjs';
+import { logDebug, logError } from './eslog.mjs';
+import { helperRunCommand } from './utils.mjs';
+
 
 /**
  * Executes `log` command to `git` with custom pretty print format to request data from commit.
