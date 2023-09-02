@@ -1,4 +1,4 @@
-import { logDebug, logError } from './eslog.mjs';
+import { log } from './eslog.mjs';
 import { helperRunCommand } from './utils.mjs';
 
 
@@ -101,8 +101,7 @@ export class GitLogCommand {
    * @param {object} [value=null] 
   */
   addOption(name, value = null) {
-    const debug = this.options.debug ? logDebug : () => {};
-    debug('GitLogCommand#addOption', name, value);
+    log.debug('GitLogCommand#addOption', name, value);
 
     if(typeof name !== 'string') throw new TypeError('A string is expected!');
     const lName = name.startsWith('--') ? name : `--${name}`;
@@ -118,8 +117,7 @@ export class GitLogCommand {
    * @param {GitCommitData} data 
    */
   include(data) {
-    const debug = this.options.debug ? logDebug : () => {};
-    debug('GitLogCommand#include', '', data);
+    log.debug('GitLogCommand#include', '', data);
 
     if(!data) throw new TypeError('One of GitCommitData fields is expected as an argument.');
     if(!Object.prototype.hasOwnProperty.call(data, 'name')) throw new TypeError('Argument must be an object with "name" property.');
@@ -135,8 +133,7 @@ export class GitLogCommand {
    */
   async runGitLogCommand() {
     const command = this.constructGitLogCommand();
-    const debug = this.options.debug ? logDebug : () => {};
-    debug('GitLogCommand#runGitLogCommand', 'About to execute:', command);
+    log.debug('GitLogCommand#runGitLogCommand', 'About to execute:', command);
     
     const result = await helperRunCommand(command);
     return result;
@@ -186,8 +183,6 @@ export class GitLogCommand {
   processResultToCommits(result) {
     if(!result) throw new TypeError('Argument expected.');
     
-    const debug = this.options.debug ? logDebug : () => {};
-    
     // Git log output might not be nicely separated into individual entries.
     // Make sure we have them nicely separated before we iterate over them...
     const rawGitLogOutputs = this.prepareRawStdOutToCommitsText(result.std.out);
@@ -203,15 +198,15 @@ export class GitLogCommand {
       // startTag and endTag should exist only once in the whole single log string
       // We can use it to perform minimal safety check about data validity
       if(!singleOutput.startsWith(this.prettyFormatStartTag)) {
-        debug('GitLogCommand#processResultToCommits', 'singleOutput', singleOutput);
+        log.debug('GitLogCommand#processResultToCommits', 'singleOutput', singleOutput);
         throw new Error("Data integrity error: commit data should start with startTag! Continuing could end in unexpected consequences so we're bailing...");
       }
       if((singleOutput.match(new RegExp(this.prettyFormatStartTag, 'gu')) || []).length !== 1) {
-        debug('GitLogCommand#processResultToCommits', 'singleOutput', singleOutput);
+        log.debug('GitLogCommand#processResultToCommits', 'singleOutput', singleOutput);
         throw new Error("Data integrity error: only one startTag is expected to exist in commit data, but more or none found! Continuing could end in unexpected consequences so we're bailing...");
       }
       if((singleOutput.match(new RegExp(this.prettyFormatEndTag, 'gu')) || []).length !== 1) {
-        debug('GitLogCommand#processResultToCommits', 'singleOutput', singleOutput);
+        log.debug('GitLogCommand#processResultToCommits', 'singleOutput', singleOutput);
         throw new Error("Data integrity error: only one endTag is expected to exist in commit data, but more or none found! Continuing could end in unexpected consequences so we're bailing...");
       }
       
@@ -221,8 +216,8 @@ export class GitLogCommand {
       const additionalText = split[1] ?? '';
       
       if(commitText === 'error') {
-        debug('GitLogCommand#processResultToCommits', 'singleOutput', singleOutput);
-        debug('GitLogCommand#processResultToCommits', 'split', split);
+        log.debug('GitLogCommand#processResultToCommits', 'singleOutput', singleOutput);
+        log.debug('GitLogCommand#processResultToCommits', 'split', split);
         throw new Error("Data integrity error: after separating commit data from possible additional data somehow ended in error! Continuing could end in unexpected consequences so we're bailing...");
       }
       
@@ -272,10 +267,10 @@ export class GitLogCommand {
     
     // Report errors we received
     if(result.error) {
-      logError('GitLogCommand#run', result.error);
+      log.error('GitLogCommand#run', result.error);
     }
     if(result.std.err.length) {
-      logError('GitLogCommand#run', result.std.err);
+      log.error('GitLogCommand#run', result.std.err);
     }
   
     // Process what we got to commit objects and return them to user...

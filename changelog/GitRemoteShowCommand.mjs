@@ -1,4 +1,4 @@
-import { logError } from './eslog.mjs';
+import { log } from './eslog.mjs';
 import { helperRunCommand } from './utils.mjs';
 
 /**
@@ -52,13 +52,13 @@ export class GitRemoteShowCommand
       // origin\thttps://github.com/enterthenamehere/esdoc-monorepo.git (fetch)
       const splitLine = line.split('\t');
       if (splitLine.length !== 2) {
-        logError('GitRemoteShow#getGitRemotes', 'Running git remote command produced unexpected output. Remotes list unavailable.', stdOut);
+        log.error('GitRemoteShow#getGitRemotes', 'Running git remote command produced unexpected output. Remotes list unavailable.', stdOut);
         return null;
       }
 
       const splitURLAndType = splitLine[1].split(' ');
       if (splitURLAndType.length !== 2) {
-        logError('GitRemoteShow#getGitRemotes', 'Running git remote command produced unexpected output. Remotes list unavailable.', stdOut);
+        log.error('GitRemoteShow#getGitRemotes', 'Running git remote command produced unexpected output. Remotes list unavailable.', stdOut);
         return null;
       }
 
@@ -99,10 +99,10 @@ export class GitRemoteShowCommand
     // ]
     // Report errors we received
     if (result.error) {
-      logError('GitRemoteShow', result.error);
+      log.error('GitRemoteShow', result.error);
     }
     if (result.std.err.length) {
-      logError('GitRemoteShow', result.std.err);
+      log.error('GitRemoteShow', result.std.err);
     }
 
     return result;

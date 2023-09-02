@@ -1,5 +1,5 @@
 import { URL } from 'node:url';
-import { logWarning } from './eslog.mjs';
+import { log } from './eslog.mjs';
 
 export class GitCommitLog
 {
@@ -57,7 +57,7 @@ export class GitCommitLog
           }
         }
       } else {
-        logWarning('GitCommandLog#normalize', 'Repository type is not git', this.repository);
+        log.warning('GitCommandLog#normalize', 'Repository type is not git', this.repository);
       }
     } else if (typeof this.repository === 'string') {
       // TODO: "repository": "npm/npm"
@@ -66,7 +66,7 @@ export class GitCommitLog
       //       "repository": "bitbucket:user/repo"
       //       "repository": "gitlab:user/repo"
     } else {
-      logWarning('GitCommitLog#normalize', 'Unknown repository field', this.repository);
+      log.warning('GitCommitLog#normalize', 'Unknown repository field', this.repository);
     }
   }
 }

@@ -2,7 +2,7 @@ import fse from 'fs-extra';
 import upath from 'upath';
 import globby from 'globby';
 
-import { logDebug } from './eslog.mjs';
+import { log } from './eslog.mjs';
 import { GitLogCommand } from './GitLogCommand.mjs';
 import { GitRemoteShowCommand } from './GitRemoteShowCommand.mjs';
 import { ConventionalCommitParser } from './ConventionalCommitParser.mjs';
@@ -12,17 +12,22 @@ const config = {
   debug: false,
   verbose: true,
 };
-const debug = config.debug ? logDebug : () => {};
 
-debug('GenerateGitChangelog', 'Trying to read workspaces from package.json...');
+if(config.debug) {
+  log.enable();
+} else {
+  log.disable();
+}
+
+log.debug('GenerateGitChangelog', 'Trying to read workspaces from package.json...');
 const packageJSON = fse.readJsonSync('./package.json', {throws: false});
 let workspaces = ['packages/*'];
 if(packageJSON && Array.isArray(packageJSON.workspaces)) {
-  debug('GenerateGitChangelog', 'Workspaces loaded:', packageJSON.workspaces);
+  log.debug('GenerateGitChangelog', 'Workspaces loaded:', packageJSON.workspaces);
   workspaces = packageJSON.workspaces;
 }
 
-debug('GeneratingGitChangelog', 'Trying to find packages in workspaces...');
+log.debug('GeneratingGitChangelog', 'Trying to find packages in workspaces...');
 const workspacePackageJSONPaths = [];
 const workspacePackageJSONFiles = new Map();
 for(const workspace of workspaces) {
@@ -100,9 +105,9 @@ function generateChangelogs(data) {
   for(const dataItem of data) {
     if(!dataItem.packagesInvolved) continue;
     for(const packageName of dataItem.packagesInvolved) {
-      debug('fixedWorkspacesPaths', '', workspacePackageJSONPaths);
+      log.debug('fixedWorkspacesPaths', '', workspacePackageJSONPaths);
       for(const fixedWorkspacePath of workspacePackageJSONPaths) {
-        debug('fixedWorkspacePath', '', fixedWorkspacePath);
+        log.debug('fixedWorkspacePath', '', fixedWorkspacePath);
         const changelogDirectory = upath.joinSafe(fixedWorkspacePath, packageName);
         const changelogFilePath = upath.joinSafe(changelogDirectory, 'CHANGELOG.md');
         
@@ -115,14 +120,14 @@ function generateChangelogs(data) {
         
         if(!changelogFileEntry) {
           if(fse.existsSync(changelogDirectory)) {
-            debug('generateChangelogs', 'Checking if following directory exists:', changelogDirectory);
-            debug('generateChangelogs', 'Exists...');
+            log.debug('generateChangelogs', 'Checking if following directory exists:', changelogDirectory);
+            log.debug('generateChangelogs', 'Exists...');
             if(!changelogFiles.has(changelogFilePath)) {
               changelogFiles.set(changelogFilePath, { lastTag: '', contents: '' });
             }
             changelogFileEntry = changelogFiles.get(changelogFilePath);
           } else {
-            debug('generateChangelogs', 'Does not exist...');
+            log.debug('generateChangelogs', 'Does not exist...');
           }
         }
 
@@ -155,7 +160,7 @@ function generateChangelogs(data) {
   }
 
   for(const changelogFilePath of changelogFiles.keys()) {
-    debug('generateChangelogs', 'About to write changelog into:', changelogFilePath);
+    log.debug('generateChangelogs', 'About to write changelog into:', changelogFilePath);
 
     const changelogFileEntry = changelogFiles.get(changelogFilePath);
     changelogFileEntry.contents = `# CHANGELOG\n${changelogFileEntry.contents}`;
