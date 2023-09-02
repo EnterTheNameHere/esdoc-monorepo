@@ -4,7 +4,7 @@ import globby from 'globby';
 
 import { logDebug } from './utils.mjs';
 import { GitLogCommand } from './GitLogCommand.mjs';
-import { GitRemoteShowCommand } from './GitRemoteShow.mjs';
+import { GitRemoteShowCommand } from './GitRemoteShowCommand.mjs';
 import { ConventionalCommitParser } from './ConventionalCommitParser.mjs';
 import { GitCommitLog } from './GitCommitLog.mjs';
 
