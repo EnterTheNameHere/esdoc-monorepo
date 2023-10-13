@@ -1,7 +1,7 @@
 import { URL } from 'node:url';
 import { log as parentLog } from './eslog.mjs';
 
-const log = parentLog.withSection('GitCommitLog');
+const log = parentLog.withSection('GitCommitLog', {firstArgumentAsSectionMember: true});
 
 export class GitCommitLog
 {

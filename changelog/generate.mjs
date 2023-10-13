@@ -8,8 +8,13 @@ import { GitRemoteShowCommand } from './GitRemoteShowCommand.mjs';
 import { ConventionalCommitParser } from './ConventionalCommitParser.mjs';
 import { GitCommitLog } from './GitCommitLog.mjs';
 
+import ansiColors from 'ansi-colors';
+
+log.options.firstArgumentAsSectionMember = true;
+log.showOnlyFromLevel(log.silly);
+
 const config = {
-  debug: false,
+  debug: true,
   verbose: true,
 };
 
@@ -100,14 +105,15 @@ function getPackagesInvolved(gitCommitLog) {
 
 const changelogFiles = new Map();
 function generateChangelogs(data) {
+  const lLog = log.withSection('generateChangelogs');
   if(!data) return;
   
   for(const dataItem of data) {
     if(!dataItem.packagesInvolved) continue;
     for(const packageName of dataItem.packagesInvolved) {
-      log.debug('fixedWorkspacesPaths', '', workspacePackageJSONPaths);
+      lLog.debug('fixedWorkspacesPaths', '', workspacePackageJSONPaths);
       for(const fixedWorkspacePath of workspacePackageJSONPaths) {
-        log.debug('fixedWorkspacePath', '', fixedWorkspacePath);
+        lLog.debug('fixedWorkspacePath', '', fixedWorkspacePath);
         const changelogDirectory = upath.joinSafe(fixedWorkspacePath, packageName);
         const changelogFilePath = upath.joinSafe(changelogDirectory, 'CHANGELOG.md');
         
@@ -120,17 +126,17 @@ function generateChangelogs(data) {
         
         if(!changelogFileEntry) {
           if(fse.existsSync(changelogDirectory)) {
-            log.debug('generateChangelogs', 'Checking if following directory exists:', changelogDirectory);
-            log.debug('generateChangelogs', 'Exists...');
+            lLog.debug('generateChangelogs', 'Checking if following directory exists:', changelogDirectory);
+            lLog.debug('generateChangelogs', 'Exists...');
             if(!changelogFiles.has(changelogFilePath)) {
               changelogFiles.set(changelogFilePath, { lastTag: '', contents: '' });
             }
             changelogFileEntry = changelogFiles.get(changelogFilePath);
           } else {
-            log.debug('generateChangelogs', 'Does not exist...');
+            lLog.debug('generateChangelogs', 'Does not exist...');
           }
         }
-
+        
         if(changelogFileEntry) {
           let text = '';
           if(changelogFileEntry.lastTag !== dataItem.commit.tag) {
@@ -160,7 +166,7 @@ function generateChangelogs(data) {
   }
 
   for(const changelogFilePath of changelogFiles.keys()) {
-    log.debug('generateChangelogs', 'About to write changelog into:', changelogFilePath);
+    lLog.debug('generateChangelogs', 'About to write changelog into:', changelogFilePath);
 
     const changelogFileEntry = changelogFiles.get(changelogFilePath);
     changelogFileEntry.contents = `# CHANGELOG\n${changelogFileEntry.contents}`;

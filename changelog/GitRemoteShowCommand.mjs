@@ -1,7 +1,7 @@
 import { helperRunCommand } from './utils.mjs';
 import { log as parentLog } from './eslog.mjs';
 
-const log = parentLog.withSection('GitRemoteShowCommand');
+const log = parentLog.withSection('GitRemoteShowCommand', {firstArgumentAsSectionMember: true});
 
 /**
  * Used to get git remotes list to populate GitCommitLog repository field.

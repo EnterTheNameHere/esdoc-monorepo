@@ -40,7 +40,10 @@ function getLogOptionsProxyHandler(logger, options) {
     
     defineProperty(target, key, descriptor) {
       //console.log(ansiColors.bgYellow.black('LogOptionsProxyHandler::defineProperty'), ansiColors.bgBlue(this.logger.id), ansiColors.bgGreen(key), descriptor);
-      return Reflect.defineProperty(target, key, descriptor);
+      //console.log('target before:', target);
+      const temp = Reflect.defineProperty(target, key, descriptor);
+      //console.log('target after:', target);
+      return temp;
     },
     
     deleteProperty(target, property) {
@@ -71,7 +74,6 @@ function getLogOptionsProxyHandler(logger, options) {
       const temp = this.logger.parent.options[prop];
       //console.log('Returning value of parent logger %O, value is:', this.logger.parent.id, temp);
       return temp;
-      return Reflect.get(target, prop, receiver);
     },
     
     getOwnPropertyDescriptor(target, propertyKey) {
@@ -109,19 +111,19 @@ function getLogOptionsProxyHandler(logger, options) {
     //   console.log(ansiColors.bgYellow.black('LogOptionsProxyHandler::ownKeys'), ansiColors.bgBlue(this.logger.id));
     //   return Reflect.ownKeys(target);
     // },
-
+    
     preventExtensions(target) {
       console.log(ansiColors.bgYellow.black('LogOptionsProxyHandler::preventExtensions'), ansiColors.bgBlue(this.logger.id));
       return Reflect.preventExtensions(target);
     },
 
-    //set(target, propertyKey, value, receiver) {
-    //  console.log(ansiColors.bgYellow.black('LogOptionsProxyHandler::set'), ansiColors.bgBlue(this.logger.id), ansiColors.bgGreen(propertyKey), value);
-    //  // TODO: check propertyKey is safe
-    //  this.options[propertyKey] = value;
-    //  return true;
-    //  //return Reflect.set(target, propertyKey, value, receiver);
-    //},
+    set(target, propertyKey, value, receiver) {
+      //console.log(ansiColors.bgYellow.black('LogOptionsProxyHandler::set'), ansiColors.bgBlue(this.logger.id), ansiColors.bgGreen(propertyKey), value);
+      // TODO: check propertyKey is safe
+      this.options[propertyKey] = value;
+      //console.log('options after:', this.options);
+      return true;
+    },
     
     setPrototypeOf(target, prototype) {
       console.log(ansiColors.bgYellow.black('LogOptionsProxyHandler::setPrototypeOf'), ansiColors.bgBlue(this.logger.id), {target, prototype});
@@ -153,6 +155,7 @@ const defaultLogLevelOptions = [
 
 const defaultOptions = {
   debug: false,
+  enabled: true,
   logLevelOptions: defaultLogLevelOptions,
   copyParentLogLevelsToSection: true,
   sectionName: null,
@@ -166,7 +169,6 @@ const defaultOptions = {
 class Logger {
   id = 'id not set yet';
   parent = null;
-  enabled = true;
   options = null;
   
   _loggingFunctionNames = [];
@@ -312,6 +314,7 @@ class Logger {
     return -1;
   }
   
+  // TODO: re-create log level functions to use no-op for levels we don't want to display
   showOnlyFromLevel(logLevelNumberOrName) {
     if(typeof logLevelNumberOrName === 'number') {
       this.options.showLogsFromLevel = logLevelNumberOrName;
@@ -364,10 +367,8 @@ class Logger {
       this._loggingFunctionNames.push(loggingFunctionOptions.name);
     }
   }
-
+  
   logFunction(logMessageObject) {
-    if(!this.enabled) return;
-    
     if(typeof logMessageObject === 'undefined' || logMessageObject === null) {
       console.error('esdoc.mjs, Logger[%O]#logFunction called with undefined or null logMessageObject', this.id, logMessageObject);
     }
@@ -377,6 +378,10 @@ class Logger {
     //console.log('this:', this);
     
     const options = logMessageObject.options;
+    
+    if(!options.enabled) return;
+    if(options.showLogsFromLevel > logMessageObject.loggingFunctionOptions.level) return;
+    
     // TODO: allow user to set whether level name should be printed
     /**
      * @type {string}
@@ -389,26 +394,25 @@ class Logger {
     // TODO: allow user to set whether it should be colorized
     levelName = logMessageObject.loggingFunctionOptions.nameColor(levelName);
     
-    if(options.sectionName !== null) {
-      // TODO: allow user to set whether section name should be printed
-      let sectionName = options.id;
-      // Logging sugar:
-      // Should we use first argument as part of sectionName, like it's a member name like "ExampleClass#enabled"?
-      if(options.firstArgumentAsSectionMember) {
-        sectionName += options.sectionAndFirstArgumentConcatString + (logMessageObject?.args[0] ?? '');
-        if(logMessageObject?.args?.length > 0) {
-          logMessageObject.args.shift();
-        }
-      }
-      // TODO: allow user to set whether it should be colorized
+    let sectionName = options.sectionName === null ? '' : options.id;
+    if(options.firstArgumentAsSectionMember) {
+      sectionName += (sectionName.length === 0 ? '' : options.sectionAndFirstArgumentConcatString) + logMessageObject.args.shift();
+    }
+    
+    if(sectionName.length > 0) {
       sectionName = options.sectionColor(sectionName);
-      
       logMessageObject.loggingFunctionOptions.outputFunction(levelName, sectionName, ...logMessageObject.args ?? '');
     } else {
       logMessageObject.loggingFunctionOptions.outputFunction(levelName, ...logMessageObject.args ?? '');
     }
+  }
+  
+  enable(enable = true) {
+    this.enabled = enable;
+  }
 
-    
+  disable() {
+    this.enabled = false;
   }
 }
 

@@ -1,6 +1,6 @@
 import { log as parentLog } from './eslog.mjs';
 
-const log = parentLog.withSection('ConventionalCommitParser');
+const log = parentLog.withSection('ConventionalCommitParser', {firstArgumentAsSectionMember: true});
 
 export class ConventionalCommitParser {
   static defaultOptions = {

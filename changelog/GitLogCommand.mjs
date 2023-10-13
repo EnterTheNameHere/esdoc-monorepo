@@ -1,9 +1,49 @@
 import { helperRunCommand } from './utils.mjs';
 import { log as parentLog } from './eslog.mjs';
 
-const log = parentLog.withSection('GitLogCommand');
+const log = parentLog.withSection('GitLogCommand', {firstArgumentAsSectionMember: true});
 
+/**
+ * `placeholder` property is used with pretty=format: option
+ * used when running git log command to request specific data
+ * to be included in the returned output. `name` property
+ * specifies the name of property this data should be available
+ * as in final result object, eg:
+ * 
+ * { name: 'author.email', placeholder: '%ae' }
+ * 
+ * when running git log:
+ * 
+ * git log (..) pretty=format:%ae (..)
+ * 
+ * and then in final result object we assign it to:
+ * 
+ * {
+ *   author: {
+ *     email: 'sample@email.com'
+ *   }
+ * }
+ *  
+ * @typedef {object} PrettyPrintDataField
+ * @property {string} name
+ * @property {string} placeholder
+ */
 
+/**
+ * Groups all data we can request from git log pretty=format: option.
+ * 
+ * @typedef {object} PrettyPrintDataFields
+ * @property {PrettyPrintDataField} Hash
+ * @property {PrettyPrintDataField} Tag
+ * @property {PrettyPrintDataField} AuthorName
+ * @property {PrettyPrintDataField} AuthorEmail
+ * @property {PrettyPrintDataField} AuthorTime
+ * @property {PrettyPrintDataField} CommitterName
+ * @property {PrettyPrintDataField} CommitterEmail
+ * @property {PrettyPrintDataField} CommitterTime
+ * @property {PrettyPrintDataField} Subject
+ * @property {PrettyPrintDataField} RawBody
+ */
 
 /**
  * Executes `log` command to `git` with custom pretty print format to request data from commit.
@@ -11,6 +51,23 @@ const log = parentLog.withSection('GitLogCommand');
  * additional data is provided as is, no separation or parsing is performed on it...
  */
 export class GitLogCommand {
+  /**
+   * Enumerates available commit data field we can request from git log command.
+   * @type {PrettyPrintDataFields}
+   */
+  static CommitDataFields = {
+    Hash: { name: 'hash', placeholder: '%H' },
+    Tag: { name: 'tag', placeholder: '%(describe:abbrev=0)' },
+    AuthorName: { name: 'author.name', placeholder: '%an' },
+    AuthorEmail: { name: 'author.email', placeholder: '%ae' },
+    AuthorTime: { name: 'author.time', placeholder: '%at' },
+    CommitterName: { name: 'committer.name', placeholder: '%cn' },
+    CommitterEmail: { name: 'committer.email', placeholder: '%ce' },
+    CommitterTime: { name: 'committer.time', placeholder: '%ct' },
+    Subject: { name: 'subject', placeholder: '%s' },
+    RawBody: { name: 'rawBody', placeholder: '%B' },
+  };
+
   /**
    * @protected
    * Options used when user doesn't provide any further options.
