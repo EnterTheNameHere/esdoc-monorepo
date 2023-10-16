@@ -160,7 +160,7 @@ const defaultOptions = {
   copyParentLogLevelsToSection: true,
   sectionName: null,
   sectionColor: ansiColors.magenta,
-  sectionConcatString: '-',
+  sectionSeparator: '-',
   firstArgumentAsSectionMember: false,
   sectionAndFirstArgumentConcatString: '#',
   showLogsFromLevel: 3,
@@ -223,7 +223,7 @@ class Logger {
           //console.log(ansiColors.bgCyan('    sectionName is either not provided or is empty, using generic name.'));
           // Section name is either not provided or is empty, so use generic name
           // eslint-disable-next-line prefer-template
-          this.id = this.parent.id + this.options.sectionConcatString + 'section' + getSectionIdNumber();
+          this.id = this.parent.id + this.options.sectionSeparator + 'section' + getSectionIdNumber();
         } else {
           //console.log(ansiColors.bgCyan('    sectionName is provided, using it as a Logger name.'));
           // Printing 'default-sectionName' would only take space on screen, so print just 'sectionName'.
@@ -238,10 +238,10 @@ class Logger {
           //console.log(ansiColors.bgCyan('    our sectionName is either not provided or empty, using generic name.'));
           // Section name is empty, use generic name
           // eslint-disable-next-line prefer-template
-          this.id = this.parent.id + this.options.sectionConcatString + 'section' + getSectionIdNumber();
+          this.id = this.parent.id + this.options.sectionSeparator + 'section' + getSectionIdNumber();
         } else {
           //console.log(ansiColors.bgCyan('    adding our sectionName to parent\'s name.'));
-          this.id = this.parent.id + this.options.sectionConcatString + sectionName;
+          this.id = this.parent.id + this.options.sectionSeparator + sectionName;
         }
       }
     }

@@ -192,8 +192,10 @@ export class GitLogCommand {
    * Runs git log command and returns the result.
    */
   async runGitLogCommand() {
+    const lLog = log.withSection('runGitLogCommand', {sectionSeparator: '#', firstArgumentAsSectionMember: false});
+
     const command = this.constructGitLogCommand();
-    log.debug('runGitLogCommand', 'About to execute:', command);
+    lLog.debug('About to execute:', command);
     
     const result = await helperRunCommand(command);
     return result;
