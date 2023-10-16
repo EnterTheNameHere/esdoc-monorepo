@@ -12,8 +12,7 @@ function getLogLevelFunctionProxyHandler() {
       //console.log('thisArgument %O', thisArgument);
       //console.log('argumentsList %O', argumentsList);
       
-      // Assignment is intentional
-      // eslint-disable-next-line no-param-reassign
+      // Adds Logger's options as the first argument to template log level function which can then add it to data passed to log function.
       argumentsList.unshift(thisArgument.options);
       
       return Reflect.apply(target, thisArgument, argumentsList);
