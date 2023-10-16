@@ -196,8 +196,10 @@ export class GitLogCommand {
 
     const command = this.constructGitLogCommand();
     lLog.debug('About to execute:', command);
-    
+    const sTime = performance.now();
     const result = await helperRunCommand(command);
+    const fTime = performance.now();
+    lLog.debug('Execution finished.', `(${Math.round(fTime-sTime)}ms)`);
     return result;
   }
   
@@ -321,6 +323,7 @@ export class GitLogCommand {
       commits.push(commit);
     }
     
+    log.silly('processResultToCommits', 'Number of commits we could get from git log response:', commits.length);
     return commits;
   }
   
