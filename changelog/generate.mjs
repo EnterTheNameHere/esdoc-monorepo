@@ -180,7 +180,14 @@ const gitRemotes = await GitRemoteShowCommand.getGitRemotes();
 let gitUrl = null;
 if(gitRemotes && gitRemotes[0] && gitRemotes[0].url) {
   gitUrl = gitRemotes[0].url;
+} else if(gitRemotes && gitRemotes.length > 1) {
+  // TODO: We use only first entry. Implementation needed here...
+  log.warn('GenerateGitChangelog', 'More than one git remote found! We use only first entry. Implementation needed here...');
+  gitUrl = gitRemotes[0].url;
+} else {
+  log.warn('GenerateGitChangelog', 'No git remote was found. Repository url unavailable.');
 }
+log.silly('GenerateGitChangelog', `Repository url we will use: ${gitUrl}`);
 
 const gitLogCmd = new GitLogCommand(config);
 
