@@ -166,6 +166,93 @@ const defaultOptions = {
   showLogsFromLevel: 3,
 };
 
+/**
+ * Logger is an _exotic_ object providing logging capabilities with as much quality of life features as possible.
+ * Of course, these quality of life features are great for me, they might not be great for you.
+ * 
+ * You can get default logger by importing eslog.mjs:
+ * ```js
+ * import { log } from 'eslog.mjs';
+ * log.debug('Debug message');
+ * ```
+ * 
+ * Each log message begins with log level name:
+ * ```js
+ * import { log } from 'eslog.mjs';
+ * log.silly('This is silly message'); // SILLY This is silly message
+ * log.warn('This is warn message'); // WARN This is warn message
+ * ```
+ * Logger by default provides 'silly', 'debug', 'log', 'info', 'warn', 'warning' and 'error' logging level functions.
+ * 
+ * You can create children loggers with custom section name:
+ * ```js
+ * import { log } from 'eslog.mjs';
+ * const childLog = log.withSection('Section');
+ * childLog.debug('Debug message'); // DEBUG Section Debug message
+ * ```
+ * 
+ * You can make logger for each file for example:
+ * ```js
+ * import { defaultLog } from 'eslog.mjs';
+ * const log = defaultLog.withSection('FileName.ext');
+ * log.debug('Message from FileName.ext'); // DEBUG FileName.ext Message from FileName.ext
+ * ```
+ * 
+ * You can make first argument part of SectionName by setting options.firstArgumentAsSectionMember to **true**.
+ * ```js
+ * import { log } from 'eslog.mjs';
+ * log.options.firstArgumentAsSectionMember = true;
+ * // or
+ * const sectionLog = log.withSection('Section', { firstArgumentAsSectionMember: true });
+ * 
+ * log.silly('partOfSectionName', 'This is message'); // SILLY partOfSectionName This is message
+ * // default Logger doesn't have sectionName, so only the first argument is displayed as section name
+ * sectionLog.silly('partOfSectionName', 'This is message'); // SILLY Section#partOfSectionName This is message
+ * ```
+ * 
+ * Which can be used for example as method name:
+ * ```js
+ * import { defaultLog } from 'eslog.mjs';
+ * const log = defaultLog.withSection('ExampleClass');
+ * class ExampleClass {
+ *     constructor() {
+ *         log.debug('constructor', 'Inside constructor now...'); // DEBUG ExampleClass#constructor Inside constructor now...
+ *     }
+ * }
+ * ```
+ * 
+ * Or you can create local log for whole member function, if you will do heavier logging:
+ * ```js
+ * import { defaultLog } from 'eslog.mjs;
+ * const log = defaultLog.withSection('ExampleClass');
+ * class ExampleClass {
+ *     loggingHeavyMethod() {
+ *         const lLog = log.withSection('loggingHeavyMethod', {
+ *             firstArgumentAsSectionMember: false, // explicitly turn off
+ *             sectionSeparator: '#' // sectionSeparator is '-' by default, different from sectionAndFirstArgumentConcatString which is '#'
+ *         });
+ * 
+ *         lLog.debug('Message from inside loggingHeavyMethod...'); // DEBUG ExampleClass#loggingHeavyMethod Message from inside loggingHeavyMethod...
+ *         // (...)
+ *         lLog.debug('More logging...'); // DEBUG ExampleClass#loggingHeavyMethod More logging...
+ *     }
+ * }
+ * ```
+ * 
+ * Each Logger has it's own options "container". Default logger loads default values into its options object and
+ * all children will lookup parent's options if options value was not explicitly overridden:
+ * ```js
+ * import { log } from 'eslog.mjs';
+ * log.options.firstArgumentAsSectionMember = true;
+ * // Makes first argument provided to logging function to be part of section name
+ * log.silly('exampleMember', 'This is silly message'); // SILLY exampleMember This is silly message
+ * const sectionLog = log.withSection('Section1'); // No options overridden
+ * sectionLog.silly('exampleMember', 'This is silly message'); // SILLY Section1#exampleMember This is silly message
+ * const sectionWithoutMember = log.withSection('Section2', { firstArgumentAsSectionMember: false }); // override options
+ * sectionWithoutMember.silly('This is silly message'); // SILLY Section2 This is silly message
+ * sectionLog.silly('This is not silly message'); // SILLY Section1#This is not silly message
+ * ```
+ */
 class Logger {
   id = 'id not set yet';
   parent = null;
