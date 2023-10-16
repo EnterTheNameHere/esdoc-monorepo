@@ -192,8 +192,8 @@ export class GitLogCommand {
    * Runs git log command and returns the result.
    */
   async runGitLogCommand() {
-    const lLog = log.withSection('runGitLogCommand', {sectionSeparator: '#', firstArgumentAsSectionMember: false});
-
+    const lLog = log.forMethod('runGitLogCommand');
+    
     const command = this.constructGitLogCommand();
     lLog.debug('About to execute:', command);
     const sTime = performance.now();
@@ -247,6 +247,8 @@ export class GitLogCommand {
   processResultToCommits(result) {
     if(!result) throw new TypeError('Argument expected.');
     
+    const lLog = log.forMethod('processResultToCommits');
+
     // Git log output might not be nicely separated into individual entries.
     // Make sure we have them nicely separated before we iterate over them...
     const rawGitLogOutputs = this.prepareRawStdOutToCommitsText(result.std.out);
@@ -262,15 +264,15 @@ export class GitLogCommand {
       // startTag and endTag should exist only once in the whole single log string
       // We can use it to perform minimal safety check about data validity
       if(!singleOutput.startsWith(this.prettyFormatStartTag)) {
-        log.debug('processResultToCommits', 'singleOutput', singleOutput);
+        lLog.debug('singleOutput', singleOutput);
         throw new Error("Data integrity error: commit data should start with startTag! Continuing could end in unexpected consequences so we're bailing...");
       }
       if((singleOutput.match(new RegExp(this.prettyFormatStartTag, 'gu')) || []).length !== 1) {
-        log.debug('processResultToCommits', 'singleOutput', singleOutput);
+        lLog.debug('singleOutput', singleOutput);
         throw new Error("Data integrity error: only one startTag is expected to exist in commit data, but more or none found! Continuing could end in unexpected consequences so we're bailing...");
       }
       if((singleOutput.match(new RegExp(this.prettyFormatEndTag, 'gu')) || []).length !== 1) {
-        log.debug('processResultToCommits', 'singleOutput', singleOutput);
+        lLog.debug('singleOutput', singleOutput);
         throw new Error("Data integrity error: only one endTag is expected to exist in commit data, but more or none found! Continuing could end in unexpected consequences so we're bailing...");
       }
       
@@ -280,8 +282,8 @@ export class GitLogCommand {
       const additionalText = split[1] ?? '';
       
       if(commitText === 'error') {
-        log.debug('processResultToCommits', 'singleOutput', singleOutput);
-        log.debug('processResultToCommits', 'split', split);
+        lLog.debug('singleOutput', singleOutput);
+        lLog.debug('split', split);
         throw new Error("Data integrity error: after separating commit data from possible additional data somehow ended in error! Continuing could end in unexpected consequences so we're bailing...");
       }
       
@@ -323,7 +325,7 @@ export class GitLogCommand {
       commits.push(commit);
     }
     
-    log.silly('processResultToCommits', 'Number of commits we could get from git log response:', commits.length);
+    lLog.debug('Number of commits we could get from git log response:', commits.length);
     return commits;
   }
   
