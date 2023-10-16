@@ -58,6 +58,8 @@ export class ConventionalCommitParser {
    * @returns 
    */
   static parseGitLogCommitData(commitData, options = this.defaultOptions) {
+    const lLog = log.forMethod('parseGitLogCommitData');
+    
     // Fill missing options in case user didn't provide them all
     const lOptions = { ...this.defaultOptions, ...options };
     
@@ -68,7 +70,7 @@ export class ConventionalCommitParser {
       throw new TypeError('GitLogData.rawBody must be a string!');
     }
     
-    log.debug('parseGitLogCommitData', 'Parsing git commit raw body:', commitData.rawBody);
+    lLog.debug('Parsing git commit raw body:', commitData.rawBody);
 
     /**
      * @type {string}
@@ -80,47 +82,47 @@ export class ConventionalCommitParser {
     let bodyText = null;
     let footerText = null;
     let index = rawBodyText.indexOf('\n\n');
-    log.debug('parseGitLogCommitData', 'index of \\n\\n:', index);
+    lLog.debug('index of \\n\\n:', index);
     if(index !== -1) {
       // We have body
       headerText = rawBodyText.substring(0, index);
       bodyText = rawBodyText.substring(index+2);
-      log.debug('parseGitLogCommitData', 'headerText:', headerText);
-      log.debug('parseGitLogCommitData', 'bodyText:', bodyText);
+      lLog.debug('headerText:', headerText);
+      lLog.debug('bodyText:', bodyText);
       
       // Optional footer can be provided after body, separated by a blank line from the body.
       index = bodyText.lastIndexOf('\n\n');
-      log.debug('parseGitLogCommitData', 'index of last \\n\\n:', index);
+      log.debug('index of last \\n\\n:', index);
       if(index !== -1) {
         footerText = bodyText.substring(index+2);
         bodyText = bodyText.substring(0, index);
-        log.debug('parseGitLogCommitData', 'footerText:', footerText);
-        log.debug('parseGitLogCommitData', 'bodyText:', bodyText);
+        lLog.debug('footerText:', footerText);
+        lLog.debug('bodyText:', bodyText);
       }
     } else {
       // No body, only header
       headerText = rawBodyText;
-      log.debug('parseGitLogCommitData', 'headerText:', headerText);
+      lLog.debug('headerText:', headerText);
     }
 
-    log.debug('parseGitLogCommitData', 'headerText:', headerText);
-    log.debug('parseGitLogCommitData', 'bodyText:', bodyText);
-    log.debug('parseGitLogCommitData', 'footerText:', footerText);
+    lLog.debug('headerText:', headerText);
+    lLog.debug('bodyText:', bodyText);
+    lLog.debug('footerText:', footerText);
     
     const header = headerText ? this.#parseHeader(headerText, lOptions) : { valid: true };
-    log.debug('parseGitLogCommitData', 'header:', header);
+    lLog.debug('header:', header);
     if(!header.valid) {
       return header;
     }
     
     const footer = footerText ? this.#parseFooter(footerText, lOptions) : { valid: true };
-    log.debug('parseGitLogCommitData', 'footer:', footer);
+    lLog.debug('footer:', footer);
     if(!footer.valid) {
       return footer;
     }
     
     const body = bodyText ? this.#parseBody(bodyText, lOptions) : { valid: true };
-    log.debug('parseGitLogCommitData', 'body:', body);
+    lLog.debug('body:', body);
     if(!body.valid) {
       return body;
     }
