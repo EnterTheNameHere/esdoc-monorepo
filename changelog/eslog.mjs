@@ -227,10 +227,7 @@ const defaultOptions = {
  * const log = defaultLog.withSection('ExampleClass');
  * class ExampleClass {
  *     loggingHeavyMethod() {
- *         const lLog = log.withSection('loggingHeavyMethod', {
- *             firstArgumentAsSectionMember: false, // explicitly turn off
- *             sectionSeparator: '#' // sectionSeparator is '-' by default, different from sectionAndFirstArgumentConcatString which is '#'
- *         });
+ *         const lLog = log.forMethod('loggingHeavyMethod');
  * 
  *         lLog.debug('Message from inside loggingHeavyMethod...'); // DEBUG ExampleClass#loggingHeavyMethod Message from inside loggingHeavyMethod...
  *         // (...)
@@ -375,6 +372,41 @@ class Logger {
     
     const loggerWithSection = new Logger({...options ?? {}, sectionName: sectionName}, this);
     return loggerWithSection;
+  }
+  
+  /**
+   * Returns child logger ready to be used in a method of a class. It will display #methodName as part of SectionName.
+   * 
+   * This is "syntax sugar": Logger returned by this function will have firstArgumentAsSectionMember set as false and
+   * sectionAndFirstArgumentConcatString set as '#'. As this is "sugar syntax" function, it is not expected more
+   * child loggers will be created from this logger. These could not display messages as expected.
+   * 
+   * @example
+   * ```js
+   * import { defaultLog } from 'eslog.mjs';
+   * const log = defaultLog.withSection('ExampleClass');
+   * class ExampleClass {
+   *     methodOfExampleClass() {
+   *         const lLog = log.forMethod('methodOfExampleClass');
+   *         
+   *         lLog.debug('Message from inside...'); // DEBUG ExampleClass#methodOfExampleClass Message from inside...
+   *     }
+   * }
+   * ```
+   * @param {string} methodName 
+   * @param {LoggerOptions} options 
+   */
+  forMethod(methodName, options) {
+    const loggerForMethodNamed = new Logger(
+      {
+        ...options ?? {},
+        sectionName: methodName,
+        firstArgumentAsSectionMember: false,
+        sectionAndFirstArgumentConcatString: '#',
+      },
+      this
+    );
+    return loggerForMethodNamed;
   }
   
   /**
