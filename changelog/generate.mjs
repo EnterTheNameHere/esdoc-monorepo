@@ -32,7 +32,7 @@ if(packageJSON && Array.isArray(packageJSON.workspaces)) {
   workspaces = packageJSON.workspaces;
 }
 
-log.debug('GeneratingGitChangelog', 'Trying to find packages in workspaces...');
+log.debug('GenerateGitChangelog', 'Trying to find packages in workspaces...');
 const workspacePackageJSONPaths = [];
 const workspacePackageJSONFiles = new Map();
 for(const workspace of workspaces) {
