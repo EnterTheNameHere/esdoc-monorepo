@@ -396,12 +396,14 @@ class Logger {
    * @param {LoggerOptions} options 
    */
   forMethod(methodName, options) {
+    //console.log('Logger[%O] is creating Logger for method named %O...', this.id, methodName);
+
     const loggerForMethodNamed = new Logger(
       {
         ...options ?? {},
         sectionName: methodName,
         firstArgumentAsSectionMember: false,
-        sectionAndFirstArgumentConcatString: '#',
+        sectionSeparator: '#',
       },
       this
     );
