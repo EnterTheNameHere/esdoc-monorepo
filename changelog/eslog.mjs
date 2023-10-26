@@ -141,6 +141,19 @@ function getSectionIdNumber() {
   return sectionIdNumber++;
 }
 
+/**
+ * TODO: document you lazy ass...
+ * @typedef LogLevelOptions
+ * @prop {number} level User can set from which level logs should be displayed.
+ * @prop {string|Array<string>} name String name(s) of level. You can use array to alias like "warn" and "warning".
+ * @prop {object} nameColor
+ * @prop {Function} outputFunction function which implements the actual logging (like console.log etc.)
+ * @prop {string} [showName] String to display instead of name. Aliasing "warn" and "warning", but we want "want" even when "warning" is called.
+ */
+
+/**
+ * @type {Array<LogLevelOptions>}
+ */
 const defaultLogLevelOptions = [
   { level: 0, name: 'silly',             nameColor: ansiColors.cyan,        outputFunction: console.debug },
   { level: 1, name: 'debug',             nameColor: ansiColors.cyan,        outputFunction: console.debug },
@@ -152,6 +165,22 @@ const defaultLogLevelOptions = [
   { level: 5, name: 'error',             nameColor: ansiColors.bgRed.white, outputFunction: console.error },
 ];
 
+/**
+ * @typedef LoggerOptions
+ * @prop {boolean} [debug=false] Show debug messages of logging system itself? Default: **false**
+ * @prop {boolean} [enabled=true] If set to **false** all logging will be turned off. Default: **true**
+ * @prop {Array<LogLevelOptions>} [logLevelOptions=Logger.defaultLogLevelOptions] {@see Logger.defaultLogLevelOptions}
+ * @prop {boolean} [copyParentLogLevelsToSection] When child Logger is created, use {logLevelOptions} from parent? Default: **true**
+ * @prop {string|null} [sectionName] Section name of child Logger. Section name of default (main) logger is "default".
+ * @prop {object} [sectionColor] magenta
+ * @prop {string} [sectionSeparator] String used between multiple Section names of child and sub-child loggers, like "Section1-Subsection1". Default: '-'
+ * @prop {boolean} [firstArgumentAsSectionMember] Should first argument (or element of array) to log be used as a part of Section name? Default: **false**
+ * @prop {string} [sectionAndFirstArgumentConcatString] String used between Section name and first argument, like "SectionName#method". Default: '#'
+ * @prop {number} [showLogsFromLevel] From which level should logging be passed to output function? Default: 3 (info)
+ */
+/**
+ * @type {LoggerOptions}
+ */
 const defaultOptions = {
   debug: false,
   enabled: true,
@@ -251,11 +280,26 @@ const defaultOptions = {
  */
 class Logger {
   id = 'id not set yet';
+  /**
+   * @type {Logger|null}
+   */
   parent = null;
+  /**
+   * @type {LoggerOptions}
+   */
   options = null;
   
+  /**
+   * @type {Array<LogLevelOptions.name>}
+   */
   _loggingFunctionNames = [];
   
+  /**
+   * 
+   * @param {LogLevelOptions} [options] 
+   * @param {Logger} [parent=null] 
+   * @returns 
+   */
   constructor(options, parent = null) {
     //console.log('==================================================================================');
     //console.log('Creating new Logger', {options, parent});
@@ -492,6 +536,11 @@ class Logger {
     }
   }
   
+  /**
+   * 
+   * @param {{options: Logger.options, loggingFunctionOptions: LogLevelOptions, args: Array<any>}} logMessageObject
+   * @returns 
+   */
   logFunction(logMessageObject) {
     if(typeof logMessageObject === 'undefined' || logMessageObject === null) {
       console.error('esdoc.mjs, Logger[%O]#logFunction called with undefined or null logMessageObject', this.id, logMessageObject);
