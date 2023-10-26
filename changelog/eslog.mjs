@@ -519,12 +519,26 @@ class Logger {
       sectionName += (sectionName.length === 0 ? '' : options.sectionAndFirstArgumentConcatString) + logMessageObject.args.shift();
     }
     
+    let ourOutput = '';
     if(sectionName.length > 0) {
       sectionName = options.sectionColor(sectionName);
-      logMessageObject.loggingFunctionOptions.outputFunction(levelName, sectionName, ...logMessageObject.args ?? '');
+      ourOutput = `${levelName} ${sectionName}`;
     } else {
-      logMessageObject.loggingFunctionOptions.outputFunction(levelName, ...logMessageObject.args ?? '');
+      ourOutput = levelName;
     }
+    
+    // In case user uses console/format like string substitution, we prepend our level/section etc. part
+    // before the user's part so the string substitution keeps working as expected...
+    let correctArgsOrder = [];
+    if(logMessageObject.args.length > 0 && typeof logMessageObject.args[0] === 'string') {
+      // First arg is string, so prepend our output to it...
+      correctArgsOrder.push(`${ourOutput} ${logMessageObject.args[0]}`);
+      if(logMessageObject.args.length > 1) correctArgsOrder.push( ...logMessageObject.args.slice(1) );
+    } else {
+      correctArgsOrder = logMessageObject.args;
+    } 
+    
+    logMessageObject.loggingFunctionOptions.outputFunction(...correctArgsOrder);
   }
   
   enable(enable = true) {
