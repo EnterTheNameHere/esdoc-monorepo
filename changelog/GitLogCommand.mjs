@@ -1,7 +1,7 @@
 import { helperRunCommand } from './utils.mjs';
 import { log as parentLog } from './eslog.mjs';
 
-const log = parentLog.withSection('GitLogCommand', {firstArgumentAsSectionMember: true});
+const log = parentLog.withSection('GitLogCommand');
 
 /**
  * `placeholder` property is used with pretty=format: option
@@ -161,7 +161,8 @@ export class GitLogCommand {
    * @param {object} [value=null] 
   */
   addOption(name, value = null) {
-    log.debug('addOption', name, value);
+    const lLog = log.forMethod('addOption');
+    lLog.debug(name, value);
 
     if(typeof name !== 'string') throw new TypeError('A string is expected!');
     const lName = name.startsWith('--') ? name : `--${name}`;
@@ -177,7 +178,8 @@ export class GitLogCommand {
    * @param {GitCommitData} data 
    */
   include(data) {
-    log.debug('include', data);
+    const lLog = log.forMethod('include');
+    lLog.debug(data);
 
     if(!data) throw new TypeError('One of GitCommitData fields is expected as an argument.');
     if(!Object.prototype.hasOwnProperty.call(data, 'name')) throw new TypeError('Argument must be an object with "name" property.');
@@ -330,14 +332,15 @@ export class GitLogCommand {
   }
   
   async run() {
+    const lLog = log.forMethod('run');
     const result = await this.runGitLogCommand();
     
     // Report errors we received
     if(result.error) {
-      log.error('run', result.error);
+      lLog.error('run', result.error);
     }
     if(result.std.err.length) {
-      log.error('run', result.std.err);
+      lLog.error('run', result.std.err);
     }
   
     // Process what we got to commit objects and return them to user...

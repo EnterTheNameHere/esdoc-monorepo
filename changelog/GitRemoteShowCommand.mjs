@@ -1,7 +1,7 @@
 import { helperRunCommand } from './utils.mjs';
 import { log as parentLog } from './eslog.mjs';
 
-const log = parentLog.withSection('GitRemoteShowCommand', {firstArgumentAsSectionMember: true});
+const log = parentLog.withSection('GitRemoteShowCommand');
 
 /**
  * Used to get git remotes list to populate GitCommitLog repository field.
@@ -26,6 +26,8 @@ export class GitRemoteShowCommand
    */
   static async getGitRemotes()
   {
+    const lLog = log.forMethod('getGitRemotes');
+
     const result = await this.#run();
 
     /**
@@ -54,13 +56,13 @@ export class GitRemoteShowCommand
       // origin\thttps://github.com/enterthenamehere/esdoc-monorepo.git (fetch)
       const splitLine = line.split('\t');
       if (splitLine.length !== 2) {
-        log.error('getGitRemotes', 'Running git remote command produced unexpected output. Remotes list unavailable.', stdOut);
+        lLog.error('getGitRemotes', 'Running git remote command produced unexpected output. Remotes list unavailable.', stdOut);
         return null;
       }
 
       const splitURLAndType = splitLine[1].split(' ');
       if (splitURLAndType.length !== 2) {
-        log.error('getGitRemotes', 'Running git remote command produced unexpected output. Remotes list unavailable.', stdOut);
+        lLog.error('getGitRemotes', 'Running git remote command produced unexpected output. Remotes list unavailable.', stdOut);
         return null;
       }
 
@@ -81,6 +83,7 @@ export class GitRemoteShowCommand
 
   static async #run()
   {
+    const lLog = log.forMethod('run');
     const result = await helperRunCommand(`git remote --verbose show${this.useCache ? ' -n' : ''}`);
 
     // TODO: We should perform check if stdOut array string entries are complete and not split mid output
@@ -101,10 +104,10 @@ export class GitRemoteShowCommand
     // ]
     // Report errors we received
     if (result.error) {
-      log.error('run', result.error);
+      lLog.error('run', result.error);
     }
     if (result.std.err.length) {
-      log.error('run', result.std.err);
+      lLog.error('run', result.std.err);
     }
 
     return result;

@@ -1,7 +1,8 @@
 import { URL } from 'node:url';
 import { log as parentLog } from './eslog.mjs';
 
-const log = parentLog.withSection('GitCommitLog', {firstArgumentAsSectionMember: true});
+const log = parentLog.withSection('GitCommitLog');
+
 
 export class GitCommitLog
 {
@@ -44,6 +45,8 @@ export class GitCommitLog
 
   normalize()
   {
+    const lLog = log.forMethod('normalize');
+    
     if (this.repository === null) {
       // No repository data is a valid value, ignore...
     } else if (typeof this.repository === 'object') {
@@ -59,7 +62,7 @@ export class GitCommitLog
           }
         }
       } else {
-        log.warning('normalize', 'Repository type is not git', this.repository);
+        lLog.warning('Repository type is not git', this.repository);
       }
     } else if (typeof this.repository === 'string') {
       // TODO: "repository": "npm/npm"
@@ -68,7 +71,7 @@ export class GitCommitLog
       //       "repository": "bitbucket:user/repo"
       //       "repository": "gitlab:user/repo"
     } else {
-      log.warning('normalize', 'Unknown repository field', this.repository);
+      lLog.warning('Unknown repository field', this.repository);
     }
   }
 }
