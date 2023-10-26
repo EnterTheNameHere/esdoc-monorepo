@@ -269,7 +269,11 @@ class Logger {
       return;
     }
     
-    this.parent = parent;
+    if(parent instanceof Logger) {
+      this.parent = parent;
+    } else {
+      this.parent = null;
+    }
     
     if(this.parent === null) {
       //console.log(ansiColors.bgCyan('parent is null, creating options with default values and provided options.'));
