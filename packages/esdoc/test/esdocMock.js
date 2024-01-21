@@ -26,9 +26,9 @@ export class MockESDocTestEnvironment {
      */
     static BaseMockingDirectoryPath = upath.resolve(require('node:os').tmpdir(), 'esdoc-tests');
     
-    static MockNodeModulesPath = './node_modules/';
+    static MockNodeModulesPath = 'node_modules/';
     
-    static MockNodeModulesESDocPackagePath = './@enterthenamehere/esdoc/';
+    static MockNodeModulesESDocPackagePath = '@enterthenamehere/esdoc/';
     
     /**
      * Returns ESDoc instance.
