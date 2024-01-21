@@ -24,7 +24,7 @@ export class MockESDocTestEnvironment {
      * Directory under which will be mock environment (new directory named as ID) created.
      * @type {string}
      */
-    static BaseMockingDirectoryPath = './test/tmp_dir/';
+    static BaseMockingDirectoryPath = upath.resolve(require('node:os').tmpdir(), 'esdoc-tests');
     
     static MockNodeModulesPath = './node_modules/';
     
