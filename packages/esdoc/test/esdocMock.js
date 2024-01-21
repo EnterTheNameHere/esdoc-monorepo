@@ -1,4 +1,4 @@
-import fs from 'fs-extra';
+import fse from 'fs-extra';
 import upath from 'upath';
 import { fork } from 'child_process';
 
@@ -76,7 +76,7 @@ export class MockESDocTestEnvironment {
             //console.log('_directoryPath', this._directoryPath);
 
             // We don't want to use existing directory, so if it already exists, generate new ID.
-        } while( fs.pathExistsSync( this._directoryPath ) );
+        } while( fse.pathExistsSync( this._directoryPath ) );
         
         this._mockedNodeModulesPath = upath.join(
             this._directoryPath,
@@ -111,9 +111,9 @@ export class MockESDocTestEnvironment {
         const realESDocPackageJSON = upath.resolve(__dirname, '../package.json');
         //console.log('realESDocPackageJSON', realESDocPackageJSON);
         
-        fs.ensureDirSync(this._outPath);
-        fs.copySync(upath.resolve(__dirname, '../out'), this._outPath);
-        fs.copySync(realESDocPackageJSON, upath.join( this._mockedESDocPackagePath, 'package.json' ) );
+        fse.ensureDirSync(this._outPath);
+        fse.copySync(upath.resolve(__dirname, '../out'), this._outPath);
+        fse.copySync(realESDocPackageJSON, upath.join( this._mockedESDocPackagePath, 'package.json' ) );
         
         const copyDependency = (packageName, relativePath) => {
           console.log(`MockESDocTestEnvironment, copying ${packageName} to dependencies.`);
@@ -121,12 +121,12 @@ export class MockESDocTestEnvironment {
           // can be found from esdoc-tests/<random_id>
           const parts = packageName.split('/');
           const nodeModulesPath = upath.resolve(this._baseMockingDirectoryPath, 'node_modules');
-          fs.ensureDirSync(nodeModulesPath);
+          fse.ensureDirSync(nodeModulesPath);
           const destinationPath = upath.resolve(nodeModulesPath, parts[0]);
           const sourcePath = upath.resolve(require.resolve(packageName), relativePath);
-          if(!fs.existsSync(destinationPath)) {
+          if(!fse.existsSync(destinationPath)) {
             console.log(`Copying from '${sourcePath}' to '${destinationPath}'.`);
-            fs.copySync(sourcePath, destinationPath);
+            fse.copySync(sourcePath, destinationPath);
           } else {
             console.log(`'${sourcePath}' already exists.`);
           }
@@ -176,8 +176,8 @@ export class MockESDocTestEnvironment {
      */
     writeToFile( name, data ) {
         const path = upath.join(this._directoryPath, name);
-        fs.ensureFileSync( path );
-        fs.writeFileSync( path, data.toString(), { flag: 'w' } );
+        fse.ensureFileSync( path );
+        fse.writeFileSync( path, data.toString(), { flag: 'w' } );
     }
     
     /**
@@ -189,8 +189,8 @@ export class MockESDocTestEnvironment {
      */
     writeToJSONFile( name, jsonData ) {
         const path = upath.join(this._directoryPath, name);
-        fs.ensureFileSync( path );
-        fs.outputJsonSync( path, jsonData, { flag: 'w' } );
+        fse.ensureFileSync( path );
+        fse.outputJsonSync( path, jsonData, { flag: 'w' } );
     }
     
     /**
@@ -206,7 +206,7 @@ export class MockESDocTestEnvironment {
      * Cleans the Mock ESDoc environment. Need to be called manually!
      */
     clean = () => {
-        fs.removeSync(this._directoryPath);
+        fse.removeSync(this._directoryPath);
     };
 }
 
