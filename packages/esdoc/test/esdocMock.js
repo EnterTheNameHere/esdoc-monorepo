@@ -115,6 +115,49 @@ export class MockESDocTestEnvironment {
         fs.copySync(upath.resolve(__dirname, '../out'), this._outPath);
         fs.copySync(realESDocPackageJSON, upath.join( this._mockedESDocPackagePath, 'package.json' ) );
         
+        const copyDependency = (packageName, relativePath) => {
+          console.log(`MockESDocTestEnvironment, copying ${packageName} to dependencies.`);
+          // Dependencies are placed in esdoc-tests/node_modules, so they
+          // can be found from esdoc-tests/<random_id>
+          const parts = packageName.split('/');
+          const nodeModulesPath = upath.resolve(this._baseMockingDirectoryPath, 'node_modules');
+          fs.ensureDirSync(nodeModulesPath);
+          const destinationPath = upath.resolve(nodeModulesPath, parts[0]);
+          const sourcePath = upath.resolve(require.resolve(packageName), relativePath);
+          if(!fs.existsSync(destinationPath)) {
+            console.log(`Copying from '${sourcePath}' to '${destinationPath}'.`);
+            fs.copySync(sourcePath, destinationPath);
+          } else {
+            console.log(`'${sourcePath}' already exists.`);
+          }
+        };
+        
+        // HACK: Copy dependencies
+        copyDependency('fs-extra', '../..');
+        copyDependency('universalify', '..');
+        copyDependency('graceful-fs', '..');
+        copyDependency('jsonfile', '..');
+        copyDependency('@babel/traverse', '../../..');
+        copyDependency('to-fast-properties', '..');
+        copyDependency('debug', '../..');
+        copyDependency('ms', '..');
+        copyDependency('globals', '..');
+        copyDependency('@jridgewell/gen-mapping', '../../..');
+        copyDependency('jsesc', '..');
+        copyDependency('js-tokens', '..');
+        copyDependency('chalk', '..');
+        copyDependency('escape-string-regexp', '..');
+        copyDependency('ansi-styles', '..');
+        copyDependency('supports-color', '..');
+        copyDependency('color-convert', '..');
+        copyDependency('color-name', '..');
+        copyDependency('has-flag', '..');
+        copyDependency('upath', '../../..');
+        copyDependency('rrdir', '..');
+        copyDependency('picomatch', '..');
+        copyDependency('lodash', '..');
+        copyDependency('minimist', '..');
+        
         this._ESDoc = require( upath.resolve( this._ESDocPath ) ).default;
         this._ESDocCLI = require( upath.resolve( this._ESDocCLIPath ) ).default;
         
