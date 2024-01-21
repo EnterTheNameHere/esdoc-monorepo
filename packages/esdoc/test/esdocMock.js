@@ -108,16 +108,11 @@ export class MockESDocTestEnvironment {
         this._ESDocCLIPath = upath.join(this._outPath, 'ESDocCLI.js');
         //console.log('_ESDocCLIPath', this._ESDocCLIPath);
         
-        const realESDocPath = upath.resolve(__dirname, '../out/ESDoc.js');
-        //console.log('realESDocPath', realESDocPath);
-        const realESDocCLIPath = upath.resolve(__dirname, '../out/ESDocCLI.js');
-        //console.log('realESDocCLIPath', realESDocCLIPath);
         const realESDocPackageJSON = upath.resolve(__dirname, '../package.json');
         //console.log('realESDocPackageJSON', realESDocPackageJSON);
         
         fs.ensureDirSync(this._outPath);
-        fs.copySync(realESDocPath, this._ESDocPath );
-        fs.copySync(realESDocCLIPath, this._ESDocCLIPath );
+        fs.copySync(upath.resolve(__dirname, '../out'), this._outPath);
         fs.copySync(realESDocPackageJSON, upath.join( this._mockedESDocPackagePath, 'package.json' ) );
         
         this._ESDoc = require( upath.resolve( this._ESDocPath ) ).default;
