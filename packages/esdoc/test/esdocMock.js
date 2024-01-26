@@ -116,7 +116,7 @@ export class MockESDocTestEnvironment {
         fse.copySync(realESDocPackageJSON, upath.join( this._mockedESDocPackagePath, 'package.json' ) );
         
         const copyDependency = (packageName, relativePath) => {
-          console.log(`MockESDocTestEnvironment, copying ${packageName} to dependencies.`);
+          //console.log(`MockESDocTestEnvironment, copying ${packageName} to dependencies.`);
           // Dependencies are placed in esdoc-tests/node_modules, so they
           // can be found from esdoc-tests/<random_id>
           const parts = packageName.split('/');
@@ -125,10 +125,10 @@ export class MockESDocTestEnvironment {
           const destinationPath = upath.resolve(nodeModulesPath, parts[0]);
           const sourcePath = upath.resolve(require.resolve(packageName), relativePath);
           if(!fse.existsSync(destinationPath)) {
-            console.log(`Copying from '${sourcePath}' to '${destinationPath}'.`);
+            //console.log(`Copying from '${sourcePath}' to '${destinationPath}'.`);
             fse.copySync(sourcePath, destinationPath);
           } else {
-            console.log(`'${sourcePath}' already exists.`);
+            //console.log(`'${sourcePath}' already exists.`);
           }
         };
         
