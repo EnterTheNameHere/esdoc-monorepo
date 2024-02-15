@@ -1,4 +1,4 @@
-import fs from 'fs-extra';
+import fse from 'fs-extra';
 import upath from 'upath';
 import { fork } from 'child_process';
 
@@ -24,11 +24,11 @@ export class MockESDocTestEnvironment {
      * Directory under which will be mock environment (new directory named as ID) created.
      * @type {string}
      */
-    static BaseMockingDirectoryPath = './test/tmp_dir/';
+    static BaseMockingDirectoryPath = upath.resolve(require('node:os').tmpdir(), 'esdoc-tests');
     
-    static MockNodeModulesPath = './node_modules/';
+    static MockNodeModulesPath = 'node_modules/';
     
-    static MockNodeModulesESDocPackagePath = './@enterthenamehere/esdoc/';
+    static MockNodeModulesESDocPackagePath = '@enterthenamehere/esdoc/';
     
     /**
      * Returns ESDoc instance.
@@ -76,7 +76,7 @@ export class MockESDocTestEnvironment {
             //console.log('_directoryPath', this._directoryPath);
 
             // We don't want to use existing directory, so if it already exists, generate new ID.
-        } while( fs.pathExistsSync( this._directoryPath ) );
+        } while( fse.pathExistsSync( this._directoryPath ) );
         
         this._mockedNodeModulesPath = upath.join(
             this._directoryPath,
@@ -108,17 +108,55 @@ export class MockESDocTestEnvironment {
         this._ESDocCLIPath = upath.join(this._outPath, 'ESDocCLI.js');
         //console.log('_ESDocCLIPath', this._ESDocCLIPath);
         
-        const realESDocPath = upath.resolve(__dirname, '../out/ESDoc.js');
-        //console.log('realESDocPath', realESDocPath);
-        const realESDocCLIPath = upath.resolve(__dirname, '../out/ESDocCLI.js');
-        //console.log('realESDocCLIPath', realESDocCLIPath);
         const realESDocPackageJSON = upath.resolve(__dirname, '../package.json');
         //console.log('realESDocPackageJSON', realESDocPackageJSON);
         
-        fs.ensureDirSync(this._outPath);
-        fs.copySync(realESDocPath, this._ESDocPath );
-        fs.copySync(realESDocCLIPath, this._ESDocCLIPath );
-        fs.copySync(realESDocPackageJSON, upath.join( this._mockedESDocPackagePath, 'package.json' ) );
+        fse.ensureDirSync(this._outPath);
+        fse.copySync(upath.resolve(__dirname, '../out'), this._outPath);
+        fse.copySync(realESDocPackageJSON, upath.join( this._mockedESDocPackagePath, 'package.json' ) );
+        
+        const copyDependency = (packageName, relativePath) => {
+          //console.log(`MockESDocTestEnvironment, copying ${packageName} to dependencies.`);
+          // Dependencies are placed in esdoc-tests/node_modules, so they
+          // can be found from esdoc-tests/<random_id>
+          const parts = packageName.split('/');
+          const nodeModulesPath = upath.resolve(this._baseMockingDirectoryPath, 'node_modules');
+          fse.ensureDirSync(nodeModulesPath);
+          const destinationPath = upath.resolve(nodeModulesPath, parts[0]);
+          const sourcePath = upath.resolve(require.resolve(packageName), relativePath);
+          if(!fse.existsSync(destinationPath)) {
+            //console.log(`Copying from '${sourcePath}' to '${destinationPath}'.`);
+            fse.copySync(sourcePath, destinationPath);
+          } else {
+            //console.log(`'${sourcePath}' already exists.`);
+          }
+        };
+        
+        // HACK: Copy dependencies
+        copyDependency('fs-extra', '../..');
+        copyDependency('universalify', '..');
+        copyDependency('graceful-fs', '..');
+        copyDependency('jsonfile', '..');
+        copyDependency('@babel/traverse', '../../..');
+        copyDependency('to-fast-properties', '..');
+        copyDependency('debug', '../..');
+        copyDependency('ms', '..');
+        copyDependency('globals', '..');
+        copyDependency('@jridgewell/gen-mapping', '../../..');
+        copyDependency('jsesc', '..');
+        copyDependency('js-tokens', '..');
+        copyDependency('chalk', '..');
+        copyDependency('escape-string-regexp', '..');
+        copyDependency('ansi-styles', '..');
+        copyDependency('supports-color', '..');
+        copyDependency('color-convert', '..');
+        copyDependency('color-name', '..');
+        copyDependency('has-flag', '..');
+        copyDependency('upath', '../../..');
+        copyDependency('rrdir', '..');
+        copyDependency('picomatch', '..');
+        copyDependency('lodash', '..');
+        copyDependency('minimist', '..');
         
         this._ESDoc = require( upath.resolve( this._ESDocPath ) ).default;
         this._ESDocCLI = require( upath.resolve( this._ESDocCLIPath ) ).default;
@@ -138,8 +176,8 @@ export class MockESDocTestEnvironment {
      */
     writeToFile( name, data ) {
         const path = upath.join(this._directoryPath, name);
-        fs.ensureFileSync( path );
-        fs.writeFileSync( path, data.toString(), { flag: 'w' } );
+        fse.ensureFileSync( path );
+        fse.writeFileSync( path, data.toString(), { flag: 'w' } );
     }
     
     /**
@@ -151,8 +189,8 @@ export class MockESDocTestEnvironment {
      */
     writeToJSONFile( name, jsonData ) {
         const path = upath.join(this._directoryPath, name);
-        fs.ensureFileSync( path );
-        fs.outputJsonSync( path, jsonData, { flag: 'w' } );
+        fse.ensureFileSync( path );
+        fse.outputJsonSync( path, jsonData, { flag: 'w' } );
     }
     
     /**
@@ -168,7 +206,7 @@ export class MockESDocTestEnvironment {
      * Cleans the Mock ESDoc environment. Need to be called manually!
      */
     clean = () => {
-        fs.removeSync(this._directoryPath);
+        fse.removeSync(this._directoryPath);
     };
 }
 
