@@ -121,15 +121,10 @@ export class MockESDocTestEnvironment {
           // can be found from esdoc-tests/<random_id>
           const parts = packageName.split('/');
           const nodeModulesPath = upath.resolve(this._baseMockingDirectoryPath, 'node_modules');
-          fse.ensureDirSync(nodeModulesPath);
           const destinationPath = upath.resolve(nodeModulesPath, parts[0]);
           const sourcePath = upath.resolve(require.resolve(packageName), relativePath);
-          if(!fse.existsSync(destinationPath)) {
-            //console.log(`Copying from '${sourcePath}' to '${destinationPath}'.`);
-            fse.copySync(sourcePath, destinationPath);
-          } else {
-            //console.log(`'${sourcePath}' already exists.`);
-          }
+          //console.log(`Copying from '${sourcePath}' to '${destinationPath}'.`);
+          fse.copySync(sourcePath, destinationPath, {overwrite: false});
         };
         
         // HACK: Copy dependencies
